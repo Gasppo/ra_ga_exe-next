@@ -2,12 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import GithubLink from "../UI/index/GithubLink";
 
-type TechnologyCardProps = {
-  name: string;
-  description: string;
-  documentation: string;
-};
-
 const Home: NextPage = () => {
   return (
     <>

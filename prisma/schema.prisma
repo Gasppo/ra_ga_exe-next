@@ -12,4 +12,5 @@ datasource db {
 
 model Example {
     id String @id @default(cuid())
+    name String
 }

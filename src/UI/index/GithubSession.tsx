@@ -16,6 +16,9 @@ const GithubSession = () => {
             <button onClick={() => signIn("github")} className="text-cyan-600 ml-2" >
                 Github
             </button>
+            <button onClick={() => signIn("google")} className="text-cyan-600 ml-2" >
+                Google
+            </button>
         </div>
 
     )

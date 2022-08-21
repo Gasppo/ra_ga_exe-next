@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import GithubLink from "../UI/index/GithubLink";
+import GithubSession from "../UI/index/GithubSession";
 
 const Home: NextPage = () => {
+
   return (
     <>
       <Head>
@@ -15,7 +17,8 @@ const Home: NextPage = () => {
         <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
           Hola <span className="text-purple-300">Amigos</span>
         </h1>
-        <p className="text-2xl text-gray-700">Bienvenidos</p>
+        <p className="text-2xl text-gray-700">Bienvenido</p>
+        <GithubSession />
         <div>Desarrollado por </div>
         <div className="flex flex-row my-10">
           <GithubLink href="https://github.com/RamaOnate" label="Rama" />

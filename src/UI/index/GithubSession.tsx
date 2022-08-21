@@ -26,7 +26,7 @@ const GithubSession = () => {
             <p className='text-slate-400 text-sm'>{data.user?.email}</p>
             <div className="mt-4 flex flex-row" >
                 <Image src={data.user?.image || ''} width="32" height="32" className='rounded-full' alt=""></Image>
-                <button className='ml-10 bg-gray-300 px-2 py-1 rounded-lg hover:bg-purple-300 transition-all duration-500' onClick={() => signOut()}>
+                <button className='ml-10 bg-gray-300 px-2 py-1 rounded-xl hover:bg-purple-300 transition-all duration-500' onClick={() => signOut()}>
                     Sign out
                 </button>
             </div>

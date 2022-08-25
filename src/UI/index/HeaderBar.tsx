@@ -7,11 +7,12 @@ const HeaderBar = () => {
     const { data, status } = useSession({ required: false });
 
     return (
-        <div className='flex justify-between items-center w-full h-14 m-0 transition-all duration-200 bg-zinc-800 text-white px-10 py-4' >
-            <div className='flex flex-row'>
+        <div className='flex justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-10 py-4' >
+            <div className='hidden md:flex md:flex-row'>
                 <div className='font-bold'>Contacto:</div>
                 <div className='ml-4 text-cyan-600 font-bold'>+123 466 777</div>
             </div>
+            <div className='md:hidden'/>
             <div>
                 {status !== 'authenticated' && (
                     <div className="flex flex-row" >

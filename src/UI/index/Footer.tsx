@@ -8,14 +8,16 @@ const Footer = () => {
                 <div>
                     Desarrollado por:
                 </div>
-                <div className="ml-4 underline" >
-                    <a href={"https://github.com/RamaOnate"} target="_blank" rel="noreferrer">{"@RamaOnate"}</a>
-                </div>
-                <div className="ml-4 underline" >
-                    <a href={"https://github.com/Gasppo"} target="_blank" rel="noreferrer">{"@Gasppo"}</a>
-                </div>
-                <div className="ml-4 underline" >
-                    <a href={"https://github.com/tutividela"} target="_blank" rel="noreferrer">{"@TutiVidela"}</a>
+                <div className="flex flex-col md:flex-row" >
+                    <div className="ml-4 mb-2 md:mb-0 underline" >
+                        <a href={"https://github.com/RamaOnate"} target="_blank" rel="noreferrer">{"@RamaOnate"}</a>
+                    </div>
+                    <div className="ml-4 mb-2 md:mb-0 underline" >
+                        <a href={"https://github.com/Gasppo"} target="_blank" rel="noreferrer">{"@Gasppo"}</a>
+                    </div>
+                    <div className="ml-4 mb-2 md:mb-0 underline" >
+                        <a href={"https://github.com/tutividela"} target="_blank" rel="noreferrer">{"@TutiVidela"}</a>
+                    </div>
                 </div>
             </div>
         </div>

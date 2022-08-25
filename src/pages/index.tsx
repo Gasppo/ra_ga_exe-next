@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
       <HeaderBar />
       <main>
-        <div className="container mx-auto flex flex-col items-center justify-center text-center min-h-screen p-4 bg-white mt-20 rounded-xl shadow-2xl">
+        <div className="container mx-auto flex flex-col items-center justify-center text-center min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
           {!isFetching && <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
             Pagina en desarrollo
           </h1>}

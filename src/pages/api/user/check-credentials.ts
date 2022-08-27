@@ -6,7 +6,6 @@ export default async function handle(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    console.log(req.body)
     if (req.method === "POST") {
         await handlePOST(req, res);
     } else {

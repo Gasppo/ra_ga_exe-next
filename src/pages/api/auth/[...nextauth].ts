@@ -56,7 +56,6 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             console.log(err)
                             return null;
                         });
-                    console.log(user)
                     if (user) {
                         return user;
                     } else {

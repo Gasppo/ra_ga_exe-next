@@ -1,10 +1,22 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useState } from 'react';
+import Signup from './Signup/Signup';
 
 
 const HeaderBar = () => {
 
     const { data, status } = useSession({ required: false });
+    const [openSignUp, setOpenSignUp] = useState(false)
+
+    const handleOpenSignUp = () => {
+        setOpenSignUp(true)
+    }
+
+    const handleCloseSignUp = () => {
+        setOpenSignUp(false)
+    }
+
 
     return (
         <div className='flex justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-10 py-4' >
@@ -18,15 +30,12 @@ const HeaderBar = () => {
                     <div className="flex flex-row" >
                         <div className="flex flex-row">
                             <div>Login with: </div>
-                            <button onClick={() => signIn("github")} className="text-cyan-600 ml-2" >
-                                Github
-                            </button>
                             <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
                                 Google
                             </button>
                         </div>
-                        <div className='border-l-2 border-slate-7300 pl-2  ml-2'>
-                            <button className="text-cyan-600" >
+                        <div className='border-l-2 border-opacity-50 border-slate-700 pl-2  ml-2'>
+                            <button className="text-cyan-600" onClick={handleOpenSignUp}>
                                 Sign Up
                             </button>
                         </div>
@@ -48,6 +57,7 @@ const HeaderBar = () => {
                     </div>
                 )}
             </div>
+            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} />}
         </div>
     )
 }

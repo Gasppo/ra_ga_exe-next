@@ -12,17 +12,24 @@ const HeaderBar = () => {
                 <div className='font-bold'>Contacto:</div>
                 <div className='ml-4 text-cyan-600 font-bold'>+123 466 777</div>
             </div>
-            <div className='md:hidden'/>
+            <div className='md:hidden' />
             <div>
                 {status !== 'authenticated' && (
                     <div className="flex flex-row" >
-                        <div>Login with: </div>
-                        <button onClick={() => signIn("github")} className="text-cyan-600 ml-2" >
-                            Github
-                        </button>
-                        <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
-                            Google
-                        </button>
+                        <div className="flex flex-row">
+                            <div>Login with: </div>
+                            <button onClick={() => signIn("github")} className="text-cyan-600 ml-2" >
+                                Github
+                            </button>
+                            <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
+                                Google
+                            </button>
+                        </div>
+                        <div className='border-l-2 border-slate-7300 pl-2  ml-2'>
+                            <button className="text-cyan-600" >
+                                Sign Up
+                            </button>
+                        </div>
                     </div>
                 )}
                 {status === 'authenticated' && (

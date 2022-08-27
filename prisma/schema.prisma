@@ -52,8 +52,9 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role         Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    role          Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade)
     roleId        String?   @default("cl79gksfz0015nrvhrqpdy8ya")
+    password      String?
 }
 
 model VerificationToken {

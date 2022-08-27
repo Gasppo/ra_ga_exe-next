@@ -71,3 +71,8 @@ model Role {
     description String
     users       User[]
 }
+
+model ClothesCategory {
+    id   String @id @default(cuid())
+    name String @unique
+}

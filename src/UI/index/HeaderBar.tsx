@@ -40,14 +40,14 @@ const HeaderBar = () => {
             <div className='md:hidden' />
             <div>
                 {status !== 'authenticated' && (
-                    <div className="flex flex-row" >
+                    <div className="text-xs md:text-base flex flex-row" >
                         <div className="flex flex-row">
                             <div>Iniciar sesion con: </div>
                             <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
                                 Google
                             </button>
-                            <div className="ml-2" >-</div>
-                            <button onClick={handleOpenSignIn} className="text-cyan-600 ml-2 " >
+                            <p className='mx-2'>-</p>
+                            <button onClick={handleOpenSignIn} className="text-cyan-600" >
                                 Usuario
                             </button>
                         </div>
@@ -59,7 +59,7 @@ const HeaderBar = () => {
                     </div>
                 )}
                 {status === 'authenticated' && (
-                    <div className='flex flex-row items-center'>
+                    <div className='flex flex-row items-center text-xs md:text-base'>
                         <div className="flex" >
                             <Image src={data.user?.image || ''} width="32" height="32" className='rounded-full' alt=""></Image>
                         </div>

@@ -117,13 +117,15 @@ const Home: NextPage = () => {
                             </div>
 
                             <div className="md:mt-9 flex justify-evenly">
-                                <div className="hidden md:flex w-2/12 justify-center place-content-center">
-                                    <img src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} alt="..." />
+                                <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                                    <div>
+                                        <Image src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} layout="fill" objectFit="contain" alt="..." />
+                                    </div>
                                 </div>
                                 <div className="grid w-6/12 md:flex-col justify-items-center">
                                     <div className="w-3/6"><TextField disabled fullWidth id="outlined-disabled" label="Cliente" defaultValue={sessionData?.user?.name} /></div>
                                     <div className="md:mt-7 w-3/6">
-                                        <TextField name='tipoPrenda' id="outlined-select-currency" select fullWidth label="Elija categoria" value={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.name : ''} onChange={handleClothesChange} helperText="Seleccione categoría de la prenda">
+                                        <TextField name='tipoPrenda' id="outlined-select-currency" select fullWidth label="Elija categoria" value={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.id : ''} onChange={handleClothesChange} helperText="Seleccione categoría de la prenda">
                                             {clothesData?.map((option) => (
                                                 <MenuItem key={option.id} value={option.id}>
                                                     {option.name}

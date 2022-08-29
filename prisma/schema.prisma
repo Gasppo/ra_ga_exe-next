@@ -73,6 +73,13 @@ model Role {
 }
 
 model ClothesCategory {
-    id   String @id @default(cuid())
-    name String @unique
+    id      String @id @default(cuid())
+    name    String @unique
+    picture String
+}
+
+model Complexity {
+    id          String @id @default(cuid())
+    name        String @unique
+    description String
 }

@@ -23,8 +23,8 @@ const ModalComponent = ({ open, onClose, children, size = 'medium' }: SignupModa
         >
             <Fade in={open}>
                 <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2
-                 ${size === 'small' ? 'w-1/4 min-h-1/4' : 'w-1/2 min-h-1/2'} 
-                  bg-white rounded-2xl flex p-8`
+                 ${size === 'small' ? 'w-full md:w-1/4 md:min-h-1/4' : 'w-1/2 min-h-1/2'} 
+                  bg-white md:rounded-2xl flex p-8`
                 }>
                     {children}
                 </div>

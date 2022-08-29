@@ -61,6 +61,15 @@ const Home: NextPage = () => {
         console.log('Event vale: ', event)
     }
 
+    const handleClothesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setPriceCheckerModel(prev => ({
+            ...prev,
+            [event.target.name]: clothesData.find(clothesType => clothesType.id === event.target.value)
+        }))
+        console.log('Model dps de clickear picture vale:', priceCheckerModel)
+        console.log('Event dps de clickear picture vale: ', event)
+    }
+
     return (
         <div className="bg-split-white-black">
             <Head>
@@ -108,15 +117,15 @@ const Home: NextPage = () => {
                             </div>
 
                             <div className="md:mt-9 flex justify-evenly">
-                                <div className="hidden md:flex w-2/12 justify-center place-content-center bg-black">
-                                    <img src="https://cdn-icons-png.flaticon.com/512/1804/1804974.png" alt="..." />
+                                <div className="hidden md:flex w-2/12 justify-center place-content-center">
+                                    <img src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} alt="..." />
                                 </div>
                                 <div className="grid w-6/12 md:flex-col justify-items-center">
                                     <div className="w-3/6"><TextField disabled fullWidth id="outlined-disabled" label="Cliente" defaultValue={sessionData?.user?.name} /></div>
                                     <div className="md:mt-7 w-3/6">
-                                        <TextField name='tipoPrenda' id="outlined-select-currency" select fullWidth label="Elija categoria" value={priceCheckerModel.tipoPrenda} onChange={handleChange} helperText="Seleccione categoría de la prenda">
+                                        <TextField name='tipoPrenda' id="outlined-select-currency" select fullWidth label="Elija categoria" value={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.name : ''} onChange={handleClothesChange} helperText="Seleccione categoría de la prenda">
                                             {clothesData?.map((option) => (
-                                                <MenuItem key={option.name} value={option.name} >
+                                                <MenuItem key={option.id} value={option.id}>
                                                     {option.name}
                                                 </MenuItem>
                                             ))}

@@ -41,7 +41,7 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                 },
                 authorize: async (credentials: any) => {
                     const user = await fetch(
-                        `${process.env.NEXTAUTH_URL}/api/user/check-credentials`,
+                        `${process.env.NEXTAUTH_URL || process.env.VERCEL_URL}/api/user/check-credentials`,
                         {
                             method: "POST",
                             headers: {

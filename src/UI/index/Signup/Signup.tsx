@@ -17,21 +17,20 @@ type InputData = {
     confirmPassword: string
 }
 
-const postSignup = async (data: InputData) => {
-    const response = await fetch('/api/user/create', {
+const postSignup = (data: InputData) => {
+    return fetch(`/api/user/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
-    })
-    return response.json()
+    }).then(res => res.json())
 }
 
 
 const Signup = ({ open, onClose }: SignupProps) => {
 
-    const { data, isLoading, mutate } = useMutation(postSignup)
+    const { data, isLoading, mutateAsync } = useMutation(postSignup)
 
     const errors = data?.body?.fieldErrors
 
@@ -46,24 +45,23 @@ const Signup = ({ open, onClose }: SignupProps) => {
         event.preventDefault()
 
         try {
-            await mutate(inputData)
+            const res = await mutateAsync(inputData)
+            if (res?.statusCode === 400) throw new Error('Error al crear el usuario')
 
-            if (data?.statusCode === 400) {
-                throw new Error('Error al crear el usuario')
-            }
-            const res = await signIn("credentials", {
+            const resSignin = await signIn("credentials", {
                 username: inputData?.email,
                 password: inputData?.password
             });
 
-            if (res.error) {
+            if (resSignin.error) {
                 throw new Error('Error al crear el usuario')
             }
             onClose()
+
         }
 
         catch (error) {
-            console.log(error)
+            console.log("Error", error)
         }
 
     }

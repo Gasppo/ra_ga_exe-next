@@ -50,7 +50,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
                 providerAccountId: user.id,
             },
         })
-        
+
         res.status(200).json({
             statusCode: 200,
             body: {
@@ -65,7 +65,6 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     catch (e) {
         if (e instanceof ZodError) {
             res.status(400).json({ statusCode: 400, body: e.flatten() })
-            throw e;
         }
         throw e;
     }

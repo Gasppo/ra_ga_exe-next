@@ -42,17 +42,18 @@ const HeaderBar = () => {
                 {status !== 'authenticated' && (
                     <div className="flex flex-row" >
                         <div className="flex flex-row">
-                            <div>Login with: </div>
+                            <div>Iniciar sesion con: </div>
                             <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
                                 Google
                             </button>
+                            <div className="ml-2" >-</div>
                             <button onClick={handleOpenSignIn} className="text-cyan-600 ml-2 " >
-                                User
+                                Usuario
                             </button>
                         </div>
                         <div className='border-l-2 border-opacity-50 border-slate-700 pl-2  ml-2'>
                             <button className="text-cyan-600" onClick={handleOpenSignUp}>
-                                Sign Up
+                                Registrarse
                             </button>
                         </div>
                     </div>
@@ -67,7 +68,7 @@ const HeaderBar = () => {
                         </div>
                         <div className='border-l-2 border-opacity-25 border-slate-400'>
                             <button className='ml-5 px-2 py-1 underline' onClick={() => signOut()}>
-                                Logout
+                                Cerrar Sesion
                             </button>
                         </div>
                     </div>

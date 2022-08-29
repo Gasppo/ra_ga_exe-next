@@ -60,9 +60,9 @@ const HeaderBar = () => {
                 )}
                 {status === 'authenticated' && (
                     <div className='flex flex-row items-center text-xs md:text-base'>
-                        <div className="flex" >
+                        {data.user?.image && <div className="flex" >
                             <Image src={data.user?.image || ''} width="32" height="32" className='rounded-full' alt=""></Image>
-                        </div>
+                        </div>}
                         <div className='ml-2 mr-5'>
                             <div className='font-bold'>{data.user?.name}</div>
                         </div>

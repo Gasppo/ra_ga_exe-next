@@ -10,9 +10,7 @@ export default async function handle(
     if (req.method === "POST") {
         await handlePOST(req, res);
     } else {
-        throw new Error(
-            `The HTTP ${req.method} method is not supported at this route.`,
-        );
+        res.status(400).end(`The HTTP ${req.method} method is not supported at this route.`);
     }
 }
 

@@ -1,4 +1,4 @@
-import { signIn } from 'next-auth/react'
+import DoneIcon from '@mui/icons-material/Done'
 import React, { useState } from 'react'
 import { useMutation } from 'react-query'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
@@ -8,6 +8,7 @@ import InputField from './InputField'
 interface SignupProps {
     open: boolean
     onClose: () => void
+    onSignin: () => void
 }
 
 type InputData = {
@@ -28,7 +29,7 @@ const postSignup = (data: InputData) => {
 }
 
 
-const Signup = ({ open, onClose }: SignupProps) => {
+const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
     const { data, isLoading, mutateAsync } = useMutation(postSignup)
 
@@ -41,24 +42,15 @@ const Signup = ({ open, onClose }: SignupProps) => {
         confirmPassword: ''
     })
 
+    const [completedSignUp, setCompletedSignUp] = useState(false)
+
     const handleSubmit = async (event: React.SyntheticEvent) => {
         event.preventDefault()
 
         try {
             const res = await mutateAsync(inputData)
             if (res?.statusCode === 400) throw new Error('Error al crear el usuario')
-
-            const resSignin = await signIn("credentials", {
-                username: inputData?.email,
-                password: inputData?.password,
-                redirect: false
-            });
-
-            if (resSignin.error) {
-                throw new Error('Error al crear el usuario')
-            }
-            onClose()
-
+            setCompletedSignUp(true)
         }
 
         catch (error) {
@@ -85,18 +77,33 @@ const Signup = ({ open, onClose }: SignupProps) => {
                 <div className="mt-10" >
                     <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center">
                         <div className="flex flex-row flex-wrap justify-center w-3/4">
-                            <InputField name='name' label='Nombre' onChange={handleChange} errors={errors} />
-                            <InputField name='email' label="Correo" onChange={handleChange} errors={errors} />
-                            <InputField name='password' label='Contraseña' onChange={handleChange} errors={errors} type="password" />
-                            <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
+                            {completedSignUp && (
+                                <>
+                                    <div className='mt-6'>
+                                        <DoneIcon className="text-green-500 rounded-full border-4 border-green-500" style={{ width: 100, height: 100 }} />
+                                    </div>
+                                    <div className='mt-4 text-green-500 text-base'>
+                                        <p>{'Creacion de cuenta exitosa!'}</p>
+                                    </div>
+                                    <div className='mt-6 bg-gray-700 text-white p-2 rounded-lg hover:animate-pulse text-sm'>
+                                        <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
+                                    </div>
+                                </>
+                            )}
+                            {!completedSignUp && (<>
+                                <InputField name='name' label='Nombre' onChange={handleChange} errors={errors} />
+                                <InputField name='email' label="Correo" onChange={handleChange} errors={errors} />
+                                <InputField name='password' label='Contraseña' onChange={handleChange} errors={errors} type="password" />
+                                <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
+                            </>)}
                         </div>
                         <div className='flex justify-between'>
                             <div className='mt-4  text-gray-700 p-2 mx-2 rounded-lg hover:animate-pulse'>
                                 <button onClick={onClose}>Cancelar</button>
                             </div>
-                            <div className='mt-4 bg-gray-700 text-white p-2 mx-2 rounded-lg hover:animate-pulse'>
+                            {!completedSignUp && <div className='mt-4 bg-gray-700 text-white p-2 mx-2 rounded-lg hover:animate-pulse'>
                                 <button type='submit'>Crear Usuario</button>
-                            </div>
+                            </div>}
                         </div>
                     </form>
                 </div>

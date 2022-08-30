@@ -50,7 +50,8 @@ const Signup = ({ open, onClose }: SignupProps) => {
 
             const resSignin = await signIn("credentials", {
                 username: inputData?.email,
-                password: inputData?.password
+                password: inputData?.password,
+                redirect: false
             });
 
             if (resSignin.error) {

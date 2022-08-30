@@ -1,4 +1,4 @@
-import { Fade, Slide } from "@mui/material";
+import { Slide } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -10,7 +10,6 @@ const Home: NextPage = () => {
   const { data } = useSession()
   const isFetching = false
   const role = useGetRole(data?.user?.email || '')
-
 
   return (
     <div className="bg-split-white-black">

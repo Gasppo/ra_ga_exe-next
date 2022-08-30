@@ -1,6 +1,6 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
 
@@ -11,8 +11,9 @@ const HeaderBar = () => {
     const [openSignUp, setOpenSignUp] = useState(false)
     const [openSignIn, setOpenSignIn] = useState(false)
 
-    const handleOpenSignUp = () => {
-        setOpenSignUp(true)
+
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false)
     }
 
     const handleCloseSignUp = () => {
@@ -20,11 +21,13 @@ const HeaderBar = () => {
     }
 
     const handleOpenSignIn = () => {
+        handleCloseSignUp()
         setOpenSignIn(true)
     }
 
-    const handleCloseSignIn = () => {
-        setOpenSignIn(false)
+    const handleOpenSignUp = () => {
+        handleCloseSignIn()
+        setOpenSignUp(true)
     }
 
     return (
@@ -70,7 +73,7 @@ const HeaderBar = () => {
                     </div>
                 )}
             </div>
-            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} />}
+            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
             {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
         </div>
     )

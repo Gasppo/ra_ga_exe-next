@@ -17,7 +17,7 @@ const InputField = ({ errors, name, onChange, label, type, errorFlag }: InputFie
     const error = errors?.[name] ? true : false
 
     return (
-        <div className="mx-4 mb-6" >
+        <div className="mx-4 mb-4" >
             <TextField InputLabelProps={{ shrink: true }} name={name} label={label} onChange={onChange} error={error || errorFlag} helperText={errors?.[name]?.[0]} className="w-72" type={type} size='small' />
         </div>
     )

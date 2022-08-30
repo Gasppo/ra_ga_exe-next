@@ -77,7 +77,7 @@ const Signup = ({ open, onClose }: SignupProps) => {
         <ModalComponent open={open} onClose={onClose} size='small'>
             <LoadingIndicator show={isLoading} className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
                 <div>
-                    <h1 className="text-5xl md:text-[3rem] leading-normal font-extrabold text-gray-700">
+                    <h1 className="text-xl md:text-[1.5rem] leading-normal font-extrabold text-gray-700">
                         Crear Cuenta
                     </h1>
                 </div>
@@ -90,10 +90,10 @@ const Signup = ({ open, onClose }: SignupProps) => {
                             <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
                         </div>
                         <div className='flex justify-between'>
-                            <div className='mt-10  text-gray-700 p-2 mx-2 rounded-lg hover:animate-pulse'>
+                            <div className='mt-4  text-gray-700 p-2 mx-2 rounded-lg hover:animate-pulse'>
                                 <button onClick={onClose}>Cancelar</button>
                             </div>
-                            <div className='mt-10 bg-gray-700 text-white p-2 mx-2 rounded-lg hover:animate-pulse'>
+                            <div className='mt-4 bg-gray-700 text-white p-2 mx-2 rounded-lg hover:animate-pulse'>
                                 <button type='submit'>Crear Usuario</button>
                             </div>
                         </div>

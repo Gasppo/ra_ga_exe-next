@@ -91,7 +91,7 @@ const Home: NextPage = () => {
                                 {step === 2 && <ProductionForm />}
                             </div>
 
-                            <div className="flex justify-end w-10/12 space-x-4 md:mt-24">
+                            <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 md:mt-24">
                                 <div>
                                     <Button variant="outlined" disabled={backDisabled} onClick={goBackOneStep}>Atrás</Button>
                                 </div>

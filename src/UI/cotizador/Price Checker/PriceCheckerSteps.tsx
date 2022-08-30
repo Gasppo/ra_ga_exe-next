@@ -30,7 +30,7 @@ const PriceCheckerSteps = (props: PriceCheckerStepsProps) => {
                     })}
                 </Stepper>
             </div>
-            <div className="ml-4 text-5xl md:text-[2rem]" >
+            <div className="ml-4 text-2xl md:text-[2rem]" >
                 ${price}
             </div>
             <div className="w-0" />

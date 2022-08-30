@@ -18,6 +18,7 @@ const fromDate = (time: number, date = Date.now()) => {
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
     // Do whatever you want here, before the request is passed down to `NextAuth`
     return await NextAuth(req, res, {
+        useSecureCookies: false,
         adapter: PrismaAdapter(prisma),
         providers: [
             GithubProvider({

@@ -24,7 +24,7 @@ const ModelForm = (props: ModelFormProps) => {
     }
 
     const handleComplexityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newData = clothesData.find(clothesType => clothesType.id === event.target.value)
+        const newData = complexityData.find(complexityType => complexityType.id === event.target.value)
         onChangeModel<PriceCheckerModel>(newData, "complejidad")
     }
 

@@ -72,7 +72,9 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             e.format
             res.status(400).json({ statusCode: 400, body: e.flatten() })
         }
-        throw e;
+        else{
+            res.status(500).json({ statusCode: 500, body: e.message })
+        }
     }
 
 }

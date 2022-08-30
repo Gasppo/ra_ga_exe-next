@@ -78,25 +78,36 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
                     <form onSubmit={handleSubmit} className="flex flex-col items-center justify-center">
                         <div className="flex flex-row flex-wrap justify-center w-3/4">
                             {completedSignUp && (
-                                <>
-                                    <div className='mt-6'>
-                                        <DoneIcon className="text-green-500 rounded-full border-4 border-green-500" style={{ width: 100, height: 100 }} />
+                                <div className="w-auto" >
+                                    <div className='flex flex-row flex-wrap justify-center items-center'>
+                                        <div className='mt-6  mx-4'>
+                                            <DoneIcon className="text-green-500 rounded-full border-4 border-green-500" style={{ width: 100, height: 100 }} />
+                                        </div>
+                                        <div className='mt-4 mx-4 text-green-500 text-base'>
+                                            <p>{'Creacion de cuenta exitosa!'}</p>
+                                        </div>
+                                        <div className='mt-6  mx-4 bg-gray-700 text-white p-2 rounded-lg hover:animate-pulse text-sm'>
+                                            <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
+                                        </div>
                                     </div>
-                                    <div className='mt-4 text-green-500 text-base'>
-                                        <p>{'Creacion de cuenta exitosa!'}</p>
-                                    </div>
-                                    <div className='mt-6 bg-gray-700 text-white p-2 rounded-lg hover:animate-pulse text-sm'>
-                                        <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
-                                    </div>
-                                </>
+                                </div>
                             )}
-                            {!completedSignUp && (<>
-                                <InputField name='name' label='Nombre' onChange={handleChange} errors={errors} />
-                                <InputField name='email' label="Correo" onChange={handleChange} errors={errors} />
-                                <InputField name='password' label='Contraseña' onChange={handleChange} errors={errors} type="password" />
-                                <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
-                            </>)}
+                            {!completedSignUp && (
+                                <div className="flex flex-row flex-wrap justify-center items-center">
+                                    <InputField name='name' label='Nombre' onChange={handleChange} errors={errors} />
+                                    <InputField name='email' label="Correo" onChange={handleChange} errors={errors} />
+                                    <InputField name='password' label='Contraseña' onChange={handleChange} errors={errors} type="password" />
+                                    <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
+                                </div>
+                            )} 
                         </div>
+                        {!!completedSignUp && errors && Object?.keys(errors)?.length === 0 && data?.body?.formErrors.length > 0 && (
+                            <div className="w-3/4 " >
+                                <div className='text-red-600 text-sm mx-4'>
+                                    <p>{data?.body?.formErrors?.[0] || 'Error al registrar usuario'}</p>
+                                </div>
+                            </div>
+                        )}
                         <div className='flex justify-between'>
                             <div className='mt-4  text-gray-700 p-2 mx-2 rounded-lg hover:animate-pulse'>
                                 <button onClick={onClose}>Cancelar</button>

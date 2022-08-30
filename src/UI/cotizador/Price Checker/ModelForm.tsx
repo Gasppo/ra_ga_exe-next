@@ -1,13 +1,13 @@
 import { MenuItem, TextField } from "@mui/material";
 import { ClothesCategory, Complexity } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { PriceCheckerModel } from "../../pages/cotizador";
+import { PriceCheckerModel } from "../../../pages/cotizador";
 
 interface ModelFormProps {
     clothesData: ClothesCategory[],
     complexityData: Complexity[],
     priceCheckerModel: PriceCheckerModel,
-    onChangeModel: <T>(newData: T[keyof T], field: keyof T) => void
+    onChangeModel: <Model>(newData: Model[keyof Model], field: keyof Model) => void
 }
 
 

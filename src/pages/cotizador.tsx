@@ -9,10 +9,10 @@ import { useState } from 'react';
 import { useQuery } from "react-query";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
-import DevelopmentForm from "../UI/Price Checker/DevelopmentForm";
-import ModelForm from "../UI/Price Checker/ModelForm";
-import PriceCheckerSteps from "../UI/Price Checker/PriceCheckerSteps";
-import ProductionForm from "../UI/Price Checker/ProductionForm";
+import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
+import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
+import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
+import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 
 
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
             setStep(prev => prev - 1)
     }
 
-    function handleChangeModel<T>(newData: T[keyof T], field: keyof T) {
+    function handleChangeModel<Model>(newData: Model[keyof Model], field: keyof Model) {
         setPriceCheckerModel(prev => ({
             ...prev,
             [field]: newData

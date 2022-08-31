@@ -71,34 +71,36 @@ const Home: NextPage = () => {
             <HeaderBar />
             <main>
                 <Slide in={true} timeout={500} direction='up'>
-                    <LoadingIndicator show={isFetchingClothes || isFetchingComplexity}>
-                        <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-                            <div  >
-                                <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7" onClick={advanceStep}>
-                                    Cotizador
-                                </h1>
-                            </div>
-                            <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
+                    <div>
+                        <LoadingIndicator show={isFetchingClothes || isFetchingComplexity}>
+                            <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
+                                <div  >
+                                    <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7" onClick={advanceStep}>
+                                        Cotizador
+                                    </h1>
+                                </div>
+                                <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
 
-                            <div className="md:mt-9 grow flex justify-evenly">
-                                <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
-                                    <Image src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                <div className="md:mt-9 grow flex justify-evenly">
+                                    <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                                        <Image src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                    </div>
+                                    {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} priceCheckerModel={priceCheckerModel} onChangeModel={handleChangeModel} />}
+                                    {step === 1 && <DevelopmentForm />}
+                                    {step === 2 && <ProductionForm />}
                                 </div>
-                                {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} priceCheckerModel={priceCheckerModel} onChangeModel={handleChangeModel} />}
-                                {step === 1 && <DevelopmentForm />}
-                                {step === 2 && <ProductionForm />}
-                            </div>
 
-                            <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
-                                <div>
-                                    <Button variant="outlined" disabled={backDisabled} onClick={goBackOneStep}>Atrás</Button>
-                                </div>
-                                <div>
-                                    <Button variant="outlined" disabled={continueDisabled} onClick={advanceStep}>Continuar</Button>
+                                <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
+                                    <div>
+                                        <Button variant="outlined" disabled={backDisabled} onClick={goBackOneStep}>Atrás</Button>
+                                    </div>
+                                    <div>
+                                        <Button variant="outlined" disabled={continueDisabled} onClick={advanceStep}>Continuar</Button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </LoadingIndicator>
+                        </LoadingIndicator>
+                    </div>
                 </Slide>
             </main>
             <Footer />

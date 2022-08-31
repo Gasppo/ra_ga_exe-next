@@ -29,7 +29,7 @@ const ModelForm = (props: ModelFormProps) => {
     }
 
     return (
-        <div className="grid md:w-6/12 md:flex-col justify-items-center mt-10 md:mt-0">
+        <div className="flex md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0">
             <div className="md:w-3/6"><TextField disabled fullWidth id="outlined-disabled" label="Cliente" defaultValue={data?.user?.name} /></div>
             <div className="mt-7 md:w-3/6">
                 <TextField name='tipoPrenda' id="outlined-select-currency" select fullWidth label="Elija categoria" value={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.id : ''} onChange={handleClothesChange} helperText="Seleccione categoría de la prenda">

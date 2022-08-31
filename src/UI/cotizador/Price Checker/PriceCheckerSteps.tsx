@@ -13,8 +13,8 @@ const PriceCheckerSteps = (props: PriceCheckerStepsProps) => {
     const { step, steps, price, isStepOptional } = props
 
     return (
-        <div className="flex flex-row mt-10 justify-between">
-            <div className="hidden md:flex md:displ md:pr-4 md:ml-10 md:w-4/5 items-center justify-start">
+        <div className="flex flex-col md:flex-row mt-10 items-center md:justify-between">
+            <div className=" md:flex md:displ md:pr-4 md:ml-10 md:w-4/5 items-center justify-start">
                 <Stepper activeStep={step} orientation='horizontal' alternativeLabel>
                     {steps.map((label, index) => {
                         const stepProps: { completed?: boolean } = {};
@@ -30,7 +30,7 @@ const PriceCheckerSteps = (props: PriceCheckerStepsProps) => {
                     })}
                 </Stepper>
             </div>
-            <div className="ml-4 text-2xl md:text-[2rem]" >
+            <div className="md:ml-4 text-lg border-2 border-slate-500 w-7/12 rounded-sm md:border-0 md:w-auto flex justify-center mt-4 md:mt-0 md:text-[2rem]" >
                 ${price}
             </div>
             <div className="w-0" />

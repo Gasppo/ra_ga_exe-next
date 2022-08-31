@@ -1,15 +1,21 @@
-import { Slide } from "@mui/material";
+import { Button, Slide } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
+import Link from "next/link";
+import DashboardAdmin from "../UI/index/Dashboard/DashboardAdmin";
+import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
+import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { useGetRole } from "../utils/useGetRole";
+
 const Home: NextPage = () => {
 
   const { data } = useSession()
-  const isFetching = false
   const role = useGetRole(data?.user?.email || '')
+
+
 
   return (
     <div className="bg-split-white-black">
@@ -22,18 +28,26 @@ const Home: NextPage = () => {
       <HeaderBar />
       <main>
         <Slide in={true} timeout={500} direction='up'>
-          <div className="container mx-auto flex flex-col items-center justify-center text-center min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-            <>
-              {!isFetching && <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
-                Pagina en desarrollo
-              </h1>}
-              {isFetching && <h1 className="text-5xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
-                Cargando...
-              </h1>}
-              <h1>
-                Rol de usuario: {role}
-              </h1>
-            </>
+          <div>
+            <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
+              <div className="flex justify-between " >
+                <div>
+                  <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-10">
+                    HS-Taller
+                  </h1>
+                </div>
+                {data?.user && <div className="hidden md:flex md:mr-10 mt-10" >
+                  <div className="rounded-2xl" >
+                    <Link href={'/cotizador'}>
+                      <Button variant="text" >Nueva Orden</Button>
+                    </Link>
+                  </div>
+                </div>}
+              </div>
+              {!data?.user && <DashboardDesconectado />}
+              {data?.user && role !== 'admin' && <DashboardCliente />}
+              {data?.user && role === 'admin' && <DashboardAdmin />}
+            </div>
           </div>
         </Slide>
       </main>

@@ -7,7 +7,7 @@ interface ModelFormProps {
     clothesData: ClothesCategory[],
     complexityData: Complexity[],
     priceCheckerModel: PriceCheckerModel,
-    onChangeModel: <Model>(newData: Model[keyof Model], field: keyof Model) => void
+    onChangeModel: (newData: PriceCheckerModel[keyof PriceCheckerModel], field: keyof PriceCheckerModel) => void
 }
 
 
@@ -20,12 +20,12 @@ const ModelForm = (props: ModelFormProps) => {
 
     const handleClothesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newData = clothesData.find(clothesType => clothesType.id === event.target.value)
-        onChangeModel<PriceCheckerModel>(newData, "tipoPrenda")
+        onChangeModel(newData, "tipoPrenda")
     }
 
     const handleComplexityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newData = complexityData.find(complexityType => complexityType.id === event.target.value)
-        onChangeModel<PriceCheckerModel>(newData, "complejidad")
+        onChangeModel(newData, "complejidad")
     }
 
     return (

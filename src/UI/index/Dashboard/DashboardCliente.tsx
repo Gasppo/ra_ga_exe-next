@@ -4,7 +4,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import { TextField } from '@mui/material';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
-
+import AddIcon from '@mui/icons-material/Add';
+import ActionButton from './ActionButton';
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const DashboardCliente = () => {
 
@@ -22,7 +24,6 @@ const DashboardCliente = () => {
                     <div>
                         Mis pedidos
                     </div>
-
                 </div>
                 <div>
                     <BasicTable />
@@ -49,6 +50,26 @@ const DashboardCliente = () => {
                     </div>
                 </div>
             </div>
+            <div className="flex flex-col  md:hidden w-full" >
+                <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4 my-4'>
+                    <div className="text-xl font-bold" >
+                        <div>
+                            Mis pedidos
+                        </div>
+                    </div>
+                    <div>
+                        detalles de pedidos abiertos aca...
+                    </div>
+                </div>
+
+                <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4'>
+                    <div className="flex flex-row flex-wrap items-center justify-start mt-2" >
+                        <ActionButton Icon={AddIcon} label="Nueva Cotizacion" href='/cotizador' />
+                        <ActionButton Icon={ManageAccountsIcon} label="Editar mi Perfil" href='/cotizador' />
+                    </div>
+                </div>
+            </div>
+
         </div>
     )
 }

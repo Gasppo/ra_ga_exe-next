@@ -7,14 +7,13 @@ import Head from "next/head";
 import Image from "next/image";
 import { Dispatch, SetStateAction, useState } from 'react';
 import { useQuery } from "react-query";
-import Footer from "../UI/index/Footer";
-import HeaderBar from "../UI/index/HeaderBar";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
 import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
 import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
+import Footer from "../UI/index/Footer";
+import HeaderBar from "../UI/index/HeaderBar";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { boolean } from "zod";
 
 
 
@@ -115,20 +114,21 @@ const Home: NextPage = () => {
         muestraProduccion: { selected: false },
         envios: { selected: false, viajes: 0, total: 0 }
     })
-    const [priceCheckerProductionForm, setPriceCheckerProductionForm] = useState<PriceCheckerProductionForm>({
-        fichaTecnica: { selected: false, cantidad: 0 },
-        muestraProduccion: { selected: false },
-        programacionTizada: { selected: false, metros: 0 },
-        impresionTizada: { selected: false, metros: 0 },
-        corte: { selected: false, cantPrendas: 0, precioPorPrenda: 0 },
-        confeccion: { selected: false, cantPrendas: 0, precioPorPrenda: 0 },
-        envios: { selected: false, viajes: 0 }
-    })
+
+    // const [priceCheckerProductionForm, setPriceCheckerProductionForm] = useState<PriceCheckerProductionForm>({
+    //     fichaTecnica: { selected: false, cantidad: 0 },
+    //     muestraProduccion: { selected: false },
+    //     programacionTizada: { selected: false, metros: 0 },
+    //     impresionTizada: { selected: false, metros: 0 },
+    //     corte: { selected: false, cantPrendas: 0, precioPorPrenda: 0 },
+    //     confeccion: { selected: false, cantPrendas: 0, precioPorPrenda: 0 },
+    //     envios: { selected: false, viajes: 0 }
+    // })
 
     const steps = ['Modelo', 'Desarrollo', 'Produccion']
     const backDisabled = step === 0
     const continueDisabled = step === steps.length - 1
-    const isStepOptional = (index: number) => false
+    const isStepOptional = () => false
 
     const advanceStep = () => {
         if (step < 2)
@@ -157,6 +157,22 @@ const Home: NextPage = () => {
         handleChangeGeneric(newData, field, setPriceCheckerDevelopmentForm)
     }
 
+    function handleToggleChange<Model>(toggle: boolean, field: string, updateStateFunction: Dispatch<SetStateAction<Model>>) {
+        updateStateFunction(prev => ({
+            ...prev,
+            [field]: {
+                ...prev[field],
+                selected: toggle
+            }
+        }))
+    }
+
+    function handleToggleDevelopment(event: React.ChangeEvent<HTMLInputElement>) {
+        handleToggleChange<PriceCheckerDevelopmentForm>(event.target.checked, event.target.name, setPriceCheckerDevelopmentForm)
+    }
+
+
+
     return (
 
         <div className="bg-split-white-black">
@@ -183,8 +199,22 @@ const Home: NextPage = () => {
                                     <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
                                         <Image src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
                                     </div>
-                                    {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} priceCheckerModel={priceCheckerModel} onChangeModel={handleChangeModel} />}
-                                    {step === 1 && <DevelopmentForm priceCheckerDevelopmentForm={priceCheckerDevelopmentForm} complexityData={complexityData} onChangeDevelopment={handleChangeDevelopment} />}
+                                    {step === 0 && (
+                                        <ModelForm
+                                            clothesData={clothesData}
+                                            complexityData={complexityData}
+                                            priceCheckerModel={priceCheckerModel}
+                                            onChangeObject={handleChangeModel}
+                                        />
+                                    )}
+                                    {step === 1 && (
+                                        <DevelopmentForm
+                                            priceCheckerDevelopmentForm={priceCheckerDevelopmentForm}
+                                            complexityData={complexityData}
+                                            onObjectChange={handleChangeDevelopment}
+                                            onToggleChange={handleToggleDevelopment}
+                                        />
+                                    )}
                                     {step === 2 && <ProductionForm />}
                                 </div>
 

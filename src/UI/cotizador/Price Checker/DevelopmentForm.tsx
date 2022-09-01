@@ -1,20 +1,21 @@
 import { FormControlLabel, IconButton, MenuItem, Switch, TextField } from "@mui/material";
 import { Complexity } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PriceCheckerDevelopmentForm } from "../../../pages/cotizador";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 
 interface DevelopmentFormProps {
     complexityData: Complexity[],
     priceCheckerDevelopmentForm: PriceCheckerDevelopmentForm,
-    onChangeDevelopment: (newData: PriceCheckerDevelopmentForm[keyof PriceCheckerDevelopmentForm], field: keyof PriceCheckerDevelopmentForm) => void
+    onObjectChange: (newData: PriceCheckerDevelopmentForm[keyof PriceCheckerDevelopmentForm], field: keyof PriceCheckerDevelopmentForm) => void
+    onToggleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 
 const DevelopmentForm = (props: DevelopmentFormProps) => {
 
-    const { priceCheckerDevelopmentForm, complexityData, onChangeDevelopment } = props
+    const { priceCheckerDevelopmentForm, complexityData, onObjectChange, onToggleChange } = props
 
     const { data } = useSession()
 
@@ -25,15 +26,13 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
         const complexity = complexityData.find(complexityType => complexityType.name === event.target.value)
         const newData = { selected: priceCheckerDevelopmentForm.corteMuestra.selected, telaCorte: complexity.name }
         console.log('New data vale', newData)
-        onChangeDevelopment(newData, "corteMuestra")
+        onObjectChange(newData, "corteMuestra")
     }
-
-
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
             <div className="w-full">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Molderia Base" labelPlacement="end" />
+                <FormControlLabel value="start" control={<Switch color="primary" name="molderiaBase" checked={priceCheckerDevelopmentForm.molderiaBase.selected} onChange={onToggleChange} />} label="Molderia Base" labelPlacement="end" />
                 <IconButton color="primary" aria-label="upload picture" component="label" disabled={!priceCheckerDevelopmentForm.molderiaBase.selected} className="justify-end">
                     <input hidden accept="image/*" type="file" />
                     <FileUploadIcon />
@@ -60,7 +59,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                 <FormControlLabel value="start" control={<Switch color="primary" />} label="Geometral" labelPlacement="end" />
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Corte Muestra" labelPlacement="end" />
+                <FormControlLabel value="start" control={<Switch color="primary" name="corteMuestra" onChange={onToggleChange} />} label="Corte Muestra" labelPlacement="end" />
                 <div className="flex w-full md:justify-end justify-center">
                     <TextField name='complejidad' id="outlined-select-currency" select label="Complejidad" className="w-72" value={priceCheckerDevelopmentForm.corteMuestra.telaCorte} onChange={handleComplexityChange}>
                         {complexityData?.map((option) => (

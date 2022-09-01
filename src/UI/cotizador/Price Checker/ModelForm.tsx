@@ -7,13 +7,13 @@ interface ModelFormProps {
     clothesData: ClothesCategory[],
     complexityData: Complexity[],
     priceCheckerModel: PriceCheckerModel,
-    onChangeModel: (newData: PriceCheckerModel[keyof PriceCheckerModel], field: keyof PriceCheckerModel) => void
+    onChangeObject: (newData: PriceCheckerModel[keyof PriceCheckerModel], field: keyof PriceCheckerModel) => void
 }
 
 
 const ModelForm = (props: ModelFormProps) => {
 
-    const { clothesData, complexityData, onChangeModel, priceCheckerModel } = props
+    const { clothesData, complexityData, onChangeObject: onChangeModel, priceCheckerModel } = props
 
     const { data } = useSession()
 

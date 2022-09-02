@@ -1,26 +1,22 @@
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { FormControlLabel, IconButton, MenuItem, Switch, TextField } from "@mui/material";
 import { Complexity } from "@prisma/client";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { PriceCheckerDevelopmentForm } from "../../../pages/cotizador";
-import FileUploadIcon from '@mui/icons-material/FileUpload';
+import CotizadorInput from '../CotizadorInput';
 
 interface DevelopmentFormProps {
     complexityData: Complexity[],
     priceCheckerDevelopmentForm: PriceCheckerDevelopmentForm,
     onObjectChange: (newData: PriceCheckerDevelopmentForm[keyof PriceCheckerDevelopmentForm], field: keyof PriceCheckerDevelopmentForm) => void
     onToggleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+    onValueChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, parentElement: string) => void
+
 }
 
 
 const DevelopmentForm = (props: DevelopmentFormProps) => {
 
-    const { priceCheckerDevelopmentForm, complexityData, onObjectChange, onToggleChange } = props
-
-    const { data } = useSession()
-
-    const [molderiaBase, setMolderiaBase] = useState(true)
-    const [corteMuestraComplejidad, setCorteMuestraComplejidad] = useState<Complexity>()
+    const { priceCheckerDevelopmentForm, complexityData, onObjectChange, onToggleChange, onValueChange } = props
 
     const handleComplexityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const complexity = complexityData.find(complexityType => complexityType.name === event.target.value)
@@ -40,13 +36,9 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">
                 <FormControlLabel value="start" control={<Switch color="primary" />} label="Digitalización y Progresión +4" labelPlacement="end" />
-                <div className="flex w-full flex-col md:space-x-4 justify-end md:flex-row">
-                    <div className="flex justify-center">
-                        <TextField id="outlined-disabled" label="Moldes" type="number" className="w-36" />
-                    </div>
-                    <div className="flex justify-center">
-                        <TextField id="outlined-disabled" label="Avíos" type="number" className="w-36" />
-                    </div>
+                <div className="flex w-full flex-col md:space-x-4 justify-end md:flex-row" >
+                    <CotizadorInput label="Moldes" name="moldes" value={priceCheckerDevelopmentForm.digitalizacionYProgresion.moldes} onChange={(e) => { onValueChange(e, 'digitalizacionYProgresion') }} type="number" />
+                    <CotizadorInput label="Avíos" name="moldes" value={priceCheckerDevelopmentForm.digitalizacionYProgresion.avios} onChange={(e) => { onValueChange(e, 'digitalizacionYProgresion') }} type="number" />
                 </div>
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">

@@ -5,7 +5,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
@@ -93,7 +93,7 @@ const getComplexity = () => fetch('/api/complexity/obtain').then(res => res.json
 
 const Home: NextPage = () => {
 
-    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<ClothesCategory[]>(['clothes'], getGlothes, { refetchOnWindowFocus: false });
+    const { data: clothesData, isFetching: isFetchingClothes, } = useQuery<ClothesCategory[]>(['clothes'], getGlothes, { refetchOnWindowFocus: false });
     const { data: complexityData, isFetching: isFetchingComplexity } = useQuery<Complexity[]>(['complexities'], getComplexity, { refetchOnWindowFocus: false });
 
     const [price] = useState(0)
@@ -157,20 +157,27 @@ const Home: NextPage = () => {
         handleChangeGeneric(newData, field, setPriceCheckerDevelopmentForm)
     }
 
-    function handleToggleChange<Model>(toggle: boolean, field: string, updateStateFunction: Dispatch<SetStateAction<Model>>) {
+    function handleToggleChange<Model>(value: boolean | string | number, parentField: string, field: string, updateStateFunction: Dispatch<SetStateAction<Model>>,) {
         updateStateFunction(prev => ({
             ...prev,
-            [field]: {
-                ...prev[field],
-                selected: toggle
+            [parentField]: {
+                ...prev[parentField],
+                [field]: value
             }
         }))
     }
 
     function handleToggleDevelopment(event: React.ChangeEvent<HTMLInputElement>) {
-        handleToggleChange<PriceCheckerDevelopmentForm>(event.target.checked, event.target.name, setPriceCheckerDevelopmentForm)
+        handleToggleChange<PriceCheckerDevelopmentForm>(event.target.checked, event.target.name, 'selected', setPriceCheckerDevelopmentForm)
     }
 
+    function handleDevelopmentValueChange(event: React.ChangeEvent<HTMLInputElement>, parentElement: string) {
+        handleToggleChange<PriceCheckerDevelopmentForm>(event.target.type === 'number' ? parseInt(event.target.value) : event.target.value, parentElement, event.target.name, setPriceCheckerDevelopmentForm)
+    }
+
+    useEffect(() => {
+        console.log(priceCheckerDevelopmentForm)
+    }, [priceCheckerDevelopmentForm]);
 
 
     return (
@@ -213,6 +220,7 @@ const Home: NextPage = () => {
                                             complexityData={complexityData}
                                             onObjectChange={handleChangeDevelopment}
                                             onToggleChange={handleToggleDevelopment}
+                                            onValueChange={handleDevelopmentValueChange}
                                         />
                                     )}
                                     {step === 2 && <ProductionForm />}

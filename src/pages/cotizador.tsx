@@ -3,14 +3,17 @@ import Button from '@mui/material/Button';
 import { ClothesCategory, Complexity } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
 import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
+import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { emptyCotizadorForm, PriceCheckerDevelopmentForm } from "../UI/Types/cotizadorTypes";
@@ -23,6 +26,8 @@ const getGlothes = () => fetch('/api/clothes/obtain').then(res => res.json())
 const getComplexity = () => fetch('/api/complexity/obtain').then(res => res.json())
 
 const Home: NextPage = () => {
+
+    const router = useRouter()
 
     const { data: clothesData, isFetching: isFetchingClothes, } = useQuery<ClothesCategory[]>(['clothes'], getGlothes, { refetchOnWindowFocus: false });
     const { data: complexityData, isFetching: isFetchingComplexity } = useQuery<Complexity[]>(['complexities'], getComplexity, { refetchOnWindowFocus: false });
@@ -99,7 +104,7 @@ const Home: NextPage = () => {
     }
 
     const formContext = useForm({
-        defaultValues: { ...emptyCotizadorForm, user: sessionData.user }
+        defaultValues: { ...emptyCotizadorForm, user: sessionData?.user }
     })
 
     return (
@@ -132,15 +137,10 @@ const Home: NextPage = () => {
                                             </div>
                                             {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} />}
                                             {step === 1 && (
-                                                <DevelopmentForm
-                                                    priceCheckerDevelopmentForm={priceCheckerDevelopmentForm}
-                                                    complexityData={complexityData}
-                                                    onObjectChange={handleChangeDevelopment}
-                                                    onToggleChange={handleToggleDevelopment}
-                                                    onValueChange={handleDevelopmentValueChange}
-                                                />
+                                                <DevelopmentForm complexityData={complexityData} />
                                             )}
-                                            {/* {step === 2 && <ProductionForm />} */}
+                                            {step === 2 && (
+                                                <ProductionForm />)}
                                         </div>
                                     </form>
                                 </FormProvider>
@@ -166,6 +166,13 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession({ req: context.req });
-
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
     return { props: { session } };
 };

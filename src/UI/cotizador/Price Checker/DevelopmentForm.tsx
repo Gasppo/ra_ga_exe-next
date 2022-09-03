@@ -1,81 +1,66 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { FormControlLabel, IconButton, MenuItem, Switch, TextField } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
-import { PriceCheckerDevelopmentForm } from "../../../pages/cotizador";
-import CotizadorInput from '../CotizadorInput';
+import { useFormContext } from 'react-hook-form';
+import { CotizadorForm, PriceCheckerDevelopmentForm } from '../../Types/cotizadorTypes';
+import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
 
 interface DevelopmentFormProps {
-    complexityData: Complexity[],
-    priceCheckerDevelopmentForm: PriceCheckerDevelopmentForm,
-    onObjectChange: (newData: PriceCheckerDevelopmentForm[keyof PriceCheckerDevelopmentForm], field: keyof PriceCheckerDevelopmentForm) => void
-    onToggleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-    onValueChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, parentElement: string) => void
-
+    complexityData: Complexity[]
 }
 
 
 const DevelopmentForm = (props: DevelopmentFormProps) => {
 
-    const { priceCheckerDevelopmentForm, complexityData, onObjectChange, onToggleChange, onValueChange } = props
+    const { complexityData } = props
 
-    const handleComplexityChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const complexity = complexityData.find(complexityType => complexityType.name === event.target.value)
-        const newData = { selected: priceCheckerDevelopmentForm.corteMuestra.selected, telaCorte: complexity.name }
-        console.log('New data vale', newData)
-        onObjectChange(newData, "corteMuestra")
-    }
+    const { watch } = useFormContext<CotizadorForm>()
+    const cotizadorData = watch()
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
             <div className="w-full">
-                <FormControlLabel value="start" control={<Switch color="primary" name="molderiaBase" checked={priceCheckerDevelopmentForm.molderiaBase.selected} onChange={onToggleChange} />} label="Molderia Base" labelPlacement="end" />
-                <IconButton color="primary" aria-label="upload picture" component="label" disabled={!priceCheckerDevelopmentForm.molderiaBase.selected} className="justify-end">
+                <CotizadorFormItem scope="molderiaBase.selected" renderer={'Switch'} label="Molderia Base" labelPlacement='end' />
+                <IconButton color="primary" aria-label="upload picture" component="label" disabled={!cotizadorData.molderiaBase.selected} className="justify-end">
                     <input hidden accept="image/*" type="file" />
                     <FileUploadIcon />
                 </IconButton>
+
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Digitalización y Progresión +4" labelPlacement="end" />
+                <CotizadorFormItem scope="digitalizacionYProgresion.selected" renderer={'Switch'} label="Digitalización y Progresión +4" labelPlacement='end' />
                 <div className="flex w-full flex-col md:space-x-4 justify-end md:flex-row" >
-                    <CotizadorInput label="Moldes" name="moldes" value={priceCheckerDevelopmentForm.digitalizacionYProgresion.moldes} onChange={(e) => { onValueChange(e, 'digitalizacionYProgresion') }} type="number" />
-                    <CotizadorInput label="Avíos" name="moldes" value={priceCheckerDevelopmentForm.digitalizacionYProgresion.avios} onChange={(e) => { onValueChange(e, 'digitalizacionYProgresion') }} type="number" />
+                    <CotizadorFormItem scope="digitalizacionYProgresion.moldes" renderer='Input' label='Moldes' type='number' disabled={!cotizadorData.digitalizacionYProgresion.selected} />
+                    <CotizadorFormItem scope="digitalizacionYProgresion.avios" renderer='Input' label='Avíos' type='number' disabled={!cotizadorData.digitalizacionYProgresion.selected} />
                 </div>
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Impresión Molde" labelPlacement="end" />
+                <CotizadorFormItem scope="impresionMolde.selected" renderer={'Switch'} label="Impresión Molde" labelPlacement='end' />
                 <div className="flex w-full md:justify-end justify-center">
-                    <TextField id="outlined-disabled" label="Metros" type="number" className="w-36" />
+                    <CotizadorFormItem scope="impresionMolde.meters" renderer='Input' label='Metros' type='number' disabled={!cotizadorData.impresionMolde.selected} />
                 </div>
             </div>
             <div className="w-full md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Geometral" labelPlacement="end" />
+                <CotizadorFormItem scope="geometral.selected" renderer={'Switch'} label="Geometral" labelPlacement='end' />
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" name="corteMuestra" onChange={onToggleChange} />} label="Corte Muestra" labelPlacement="end" />
-                <div className="flex w-full md:justify-end justify-center">
-                    <TextField name='complejidad' id="outlined-select-currency" select label="Complejidad" className="w-72" value={priceCheckerDevelopmentForm.corteMuestra.telaCorte} onChange={handleComplexityChange}>
-                        {complexityData?.map((option) => (
-                            <MenuItem key={option.id} value={option.name}>
-                                {option.name}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </div>
+                <CotizadorFormItem scope="corteMuestra.selected" renderer={'Switch'} label="Corte Muestra" labelPlacement='end' />
+                <CotizadorFormItem renderer="Select" scope={"corteMuestra.telaCorte"} label="Elija Complejidad" options={complexityData} optionKey={"name"} optionText={'name'} helperText={"Seleccione categoría de la prenda"} disabled={!cotizadorData.corteMuestra.selected} />
             </div>
             <div className="w-full md:mt-5">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Confeccion Muestrista" labelPlacement="end" />
+                <CotizadorFormItem scope="confeccionMuestrista.selected" renderer={'Switch'} label="Confección Muestrista" labelPlacement='end' />
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5 ">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Muestra producción" labelPlacement="end" />
+                <CotizadorFormItem scope="muestraProduccion.selected" renderer={'Switch'} label="Muestra Producción" labelPlacement='end' />
             </div>
             <div className="w-full flex flex-col md:flex-row md:mt-5 ">
-                <FormControlLabel value="start" control={<Switch color="primary" />} label="Envios" labelPlacement="end" />
+                <CotizadorFormItem scope="envios.selected" renderer={'Switch'} label="Envios" labelPlacement='end' />
                 <div className="flex w-full flex-col md:flex-row md:space-x-4 justify-end">
                     <div className="flex justify-center">
-                        <TextField id="outlined-disabled" label="Viajes" type="number" className="w-36" />
+                        <CotizadorFormItem scope="envios.viajes" renderer='Input' label='Viajes' type='number' disabled={!cotizadorData.envios.selected} />
                     </div>
                     <div className="flex justify-center">
-                        <TextField id="outlined-disabled" label="Total" type="number" className="w-36" />
+                        <CotizadorFormItem scope="envios.total" renderer='Input' label='Total' type='number' disabled={!cotizadorData.envios.selected} />
                     </div>
                 </div>
             </div>

@@ -2,91 +2,22 @@ import { Slide } from "@mui/material";
 import Button from '@mui/material/Button';
 import { ClothesCategory, Complexity } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { FormProvider, useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
 import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
-import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
+import { emptyCotizadorForm, PriceCheckerDevelopmentForm } from "../UI/Types/cotizadorTypes";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 
 
 
-export type PriceCheckerModel = {
-    cliente: string,
-    tipoPrenda: ClothesCategory | '',
-    complejidad: Complexity | ''
-}
-
-export type PriceCheckerDevelopmentForm = {
-    molderiaBase: {
-        selected: boolean
-    },
-    digitalizacionYProgresion: {
-        selected: boolean,
-        moldes: number,
-        avios: number
-    },
-    impresionMolde: {
-        selected: boolean,
-        meters: number
-    },
-    geometral: {
-        selected: boolean
-    },
-    corteMuestra: {
-        selected: boolean,
-        telaCorte: string
-    },
-    confeccionMuestrista: {
-        selected: boolean
-    },
-    muestraProduccion: {
-        selected: boolean
-    },
-    envios: {
-        selected: boolean,
-        viajes: number,
-        total: number
-    }
-}
-
-export type PriceCheckerProductionForm = {
-    fichaTecnica: {
-        selected: boolean,
-        cantidad: number
-    },
-    muestraProduccion: {
-        selected: boolean
-    },
-    programacionTizada: {
-        selected: boolean,
-        metros: number
-    },
-    impresionTizada: {
-        selected: boolean,
-        metros: number
-    },
-    corte: {
-        selected: boolean,
-        cantPrendas: number,
-        precioPorPrenda: number
-    },
-    confeccion: {
-        selected: boolean,
-        cantPrendas: number,
-        precioPorPrenda: number
-    },
-    envios: {
-        selected: boolean,
-        viajes: number
-    }
-}
 
 const getGlothes = () => fetch('/api/clothes/obtain').then(res => res.json())
 const getComplexity = () => fetch('/api/complexity/obtain').then(res => res.json())
@@ -95,15 +26,10 @@ const Home: NextPage = () => {
 
     const { data: clothesData, isFetching: isFetchingClothes, } = useQuery<ClothesCategory[]>(['clothes'], getGlothes, { refetchOnWindowFocus: false });
     const { data: complexityData, isFetching: isFetchingComplexity } = useQuery<Complexity[]>(['complexities'], getComplexity, { refetchOnWindowFocus: false });
-
+    const { data: sessionData } = useSession()
     const [price] = useState(0)
     const [step, setStep] = useState(0)
 
-    const [priceCheckerModel, setPriceCheckerModel] = useState<PriceCheckerModel>({
-        cliente: '',
-        tipoPrenda: '',
-        complejidad: ''
-    })
     const [priceCheckerDevelopmentForm, setPriceCheckerDevelopmentForm] = useState<PriceCheckerDevelopmentForm>({
         molderiaBase: { selected: false },
         digitalizacionYProgresion: { selected: false, moldes: 0, avios: 0 },
@@ -149,9 +75,6 @@ const Home: NextPage = () => {
         }))
     }
 
-    function handleChangeModel(newData: PriceCheckerModel[keyof PriceCheckerModel], field: keyof PriceCheckerModel) {
-        handleChangeGeneric(newData, field, setPriceCheckerModel)
-    }
 
     function handleChangeDevelopment(newData: PriceCheckerDevelopmentForm[keyof PriceCheckerDevelopmentForm], field: keyof PriceCheckerDevelopmentForm) {
         handleChangeGeneric(newData, field, setPriceCheckerDevelopmentForm)
@@ -175,10 +98,9 @@ const Home: NextPage = () => {
         handleToggleChange<PriceCheckerDevelopmentForm>(event.target.type === 'number' ? parseInt(event.target.value) : event.target.value, parentElement, event.target.name, setPriceCheckerDevelopmentForm)
     }
 
-    useEffect(() => {
-        console.log(priceCheckerDevelopmentForm)
-    }, [priceCheckerDevelopmentForm]);
-
+    const formContext = useForm({
+        defaultValues: { ...emptyCotizadorForm, user: sessionData.user }
+    })
 
     return (
 
@@ -201,31 +123,27 @@ const Home: NextPage = () => {
                                     </h1>
                                 </div>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
-
-                                <div className="md:mt-9 grow flex justify-evenly">
-                                    <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
-                                        <Image src={priceCheckerModel.tipoPrenda !== '' ? priceCheckerModel.tipoPrenda.picture : ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
-                                    </div>
-                                    {step === 0 && (
-                                        <ModelForm
-                                            clothesData={clothesData}
-                                            complexityData={complexityData}
-                                            priceCheckerModel={priceCheckerModel}
-                                            onChangeObject={handleChangeModel}
-                                        />
-                                    )}
-                                    {step === 1 && (
-                                        <DevelopmentForm
-                                            priceCheckerDevelopmentForm={priceCheckerDevelopmentForm}
-                                            complexityData={complexityData}
-                                            onObjectChange={handleChangeDevelopment}
-                                            onToggleChange={handleToggleDevelopment}
-                                            onValueChange={handleDevelopmentValueChange}
-                                        />
-                                    )}
-                                    {step === 2 && <ProductionForm />}
-                                </div>
-
+                                <FormProvider {...formContext} >
+                                    <form onSubmit={formContext.handleSubmit((data) => { console.log(data) })}>
+                                        <button type="submit">A</button>
+                                        <div className="md:mt-9 grow flex justify-evenly">
+                                            <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                                                <Image src={''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                            </div>
+                                            {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} />}
+                                            {step === 1 && (
+                                                <DevelopmentForm
+                                                    priceCheckerDevelopmentForm={priceCheckerDevelopmentForm}
+                                                    complexityData={complexityData}
+                                                    onObjectChange={handleChangeDevelopment}
+                                                    onToggleChange={handleToggleDevelopment}
+                                                    onValueChange={handleDevelopmentValueChange}
+                                                />
+                                            )}
+                                            {/* {step === 2 && <ProductionForm />} */}
+                                        </div>
+                                    </form>
+                                </FormProvider>
                                 <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
                                     <div>
                                         <Button variant="outlined" disabled={backDisabled} onClick={goBackOneStep}>Atrás</Button>

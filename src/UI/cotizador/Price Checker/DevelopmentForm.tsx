@@ -33,7 +33,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                 </IconButton>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="digitalizacionYProgresion.selected" renderer='Switch' label="Digitalización y Progresión +4" labelPlacement='end' />
                 <div className="form-input-inner-section" >
@@ -42,7 +42,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="impresionMolde.selected" renderer='Switch' label="Impresión Molde" labelPlacement='end' />
                 <div className="form-input-inner-section">
@@ -50,12 +50,12 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="w-full md:mt-5">
                 <CotizadorFormItem scope="geometral.selected" renderer='Switch' label="Geometral" labelPlacement='end' />
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="corteMuestra.selected" renderer='Switch' label="Corte Muestra" labelPlacement='end' />
                 <div className="form-input-inner-section">
@@ -63,17 +63,17 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="confeccionMuestrista.selected" renderer='Switch' label="Confección Muestrista" labelPlacement='end' />
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="muestraProduccion.selected" renderer='Switch' label="Muestra Producción" labelPlacement='end' />
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="envios.selected" renderer='Switch' label="Envios" labelPlacement='end' />
                 <div className="form-input-inner-section">

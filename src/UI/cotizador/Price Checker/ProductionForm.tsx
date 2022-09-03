@@ -18,12 +18,12 @@ const ProductionForm = () => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="muestraProduccion.selected" renderer={'Switch'} label="Muestra Produccion" labelPlacement='end' />
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="programacionTizada.selected" renderer={'Switch'} label="Programación Tizada" labelPlacement='end' />
                 <div className="form-input-inner-section">
@@ -31,7 +31,7 @@ const ProductionForm = () => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="impresionTizada.selected" renderer={'Switch'} label="Impresión Tizada" labelPlacement='end' />
                 <div className="form-input-inner-section">
@@ -39,7 +39,7 @@ const ProductionForm = () => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="corte.selected" renderer={'Switch'} label="Corte" labelPlacement='end' />
                 <div className="form-input-inner-section">
@@ -48,7 +48,7 @@ const ProductionForm = () => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <div>
                     <CotizadorFormItem scope="confeccion.selected" renderer={'Switch'} label="Confección" labelPlacement='end' />
@@ -59,7 +59,7 @@ const ProductionForm = () => {
                 </div>
             </div>
 
-            <Divider variant='middle' className="form-divider" />
+            <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="envios.selected" renderer={'Switch'} label="Envios" labelPlacement='end' />
                 <div className="form-input-inner-section ">

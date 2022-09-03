@@ -14,7 +14,7 @@ a {
       @apply w-full flex flex-col md:flex-row md:mt-5  justify-between
     }
     .form-divider{
-      @apply my-4 w-full md:hidden
+      @apply my-6 w-full md:hidden
     }
 
     .form-input-inner-section {

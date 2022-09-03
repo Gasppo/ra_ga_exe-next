@@ -14,10 +14,11 @@ export type SelectProps<Model, T> =  {
     optionKey?: keyof T
     optionText?: keyof T
     helperText?: string
+    className?: string
 }
 
 function Select<Model, T>(props: SelectProps<Model, T>) {
-    const { label, scope, required, variant, disabled, optionKey, optionText, options, helperText } = props
+    const { label, scope, required, variant, disabled, optionKey, optionText, options, helperText, className } = props
 
     return (
         <>
@@ -36,6 +37,7 @@ function Select<Model, T>(props: SelectProps<Model, T>) {
                         <TextField
                             id={`${name}-select`}
                             fullWidth
+                            className={className}
                             select
                             onBlur={onBlur}
                             data-testid={name}

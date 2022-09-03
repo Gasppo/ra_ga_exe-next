@@ -10,10 +10,11 @@ export type SwitchProps<Model> = {
     disabled?: boolean
     label: string,
     labelPlacement?: "end" | "bottom" | "top" | "start"
+    className?: string
 }
 
 function Switch<Model>(props: SwitchProps<Model>) {
-    const { scope, disabled, required, label, labelPlacement } = props
+    const { scope, disabled, required, label, labelPlacement, className } = props
 
 
     return (
@@ -34,7 +35,7 @@ function Switch<Model>(props: SwitchProps<Model>) {
                     return (
                         <>
                             <FormControlLabel
-                                className='ml-0'
+                                className={className ? className : 'ml-0'}
                                 control={
                                     <MSwitch
                                         id={`${name}-switch`}

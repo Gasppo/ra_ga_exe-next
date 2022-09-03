@@ -72,24 +72,26 @@ const Signin = ({ onClose, open }: SigninProps) => {
     }
 
     return (
-        <ModalComponent open={open} onClose={onClose} size='small'  ref={containerRef}>
-            <LoadingIndicator show={loading} className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
-                <div>
-                    <h1 className="text-xl md:text-[1.5rem] leading-normal font-extrabold text-gray-700">
-                        {emailRecovery ? 'Recuperar contraseña' : 'Iniciar sesión'}
-                    </h1>
-                </div>
-                <div className="mt-10" ref={containerRef}>
-                    <Slide in={emailRecovery} direction="left" container={containerRef.current}>
-                        <div>
-                            {emailRecovery && <RecoveryForm errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={emailRecoverySubmit} />}
-                        </div>
-                    </Slide>
-                    <Slide in={!emailRecovery} direction="right"  container={containerRef.current}>
-                        <div>
-                            {!emailRecovery && <SignInForm errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={loginSubmit} />}
-                        </div>
-                    </Slide>
+        <ModalComponent open={open} onClose={onClose} size='small' ref={containerRef}>
+            <LoadingIndicator show={loading} >
+                <div className="container mx-auto flex flex-col items-center rounded-none">
+                    <div>
+                        <h1 className="text-xl md:text-[1.5rem] leading-normal font-extrabold text-gray-700">
+                            {emailRecovery ? 'Recuperar contraseña' : 'Iniciar sesión'}
+                        </h1>
+                    </div>
+                    <div className="mt-10" ref={containerRef}>
+                        <Slide in={emailRecovery} direction="left" container={containerRef.current}>
+                            <div>
+                                {emailRecovery && <RecoveryForm errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={emailRecoverySubmit} />}
+                            </div>
+                        </Slide>
+                        <Slide in={!emailRecovery} direction="right" container={containerRef.current}>
+                            <div>
+                                {!emailRecovery && <SignInForm errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={loginSubmit} />}
+                            </div>
+                        </Slide>
+                    </div>
                 </div>
             </LoadingIndicator>
         </ModalComponent>

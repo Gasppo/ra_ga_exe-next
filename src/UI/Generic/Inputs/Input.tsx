@@ -10,11 +10,12 @@ export type InputProps<Model> = {
     label: string
     disabled?: boolean
     type?: string
+    className?: string
 }
 
 function Input<Model>(props: InputProps<Model>) {
 
-    const { scope, size, labelClassName, variant, label, disabled, type } = props
+    const { scope, size, labelClassName, variant, label, disabled, type, className } = props
 
 
 
@@ -42,7 +43,7 @@ function Input<Model>(props: InputProps<Model>) {
                     inputRef={ref}
                     name={name}
                     label={label}
-                    className="border-gray-50"
+                    className={className ? className : "border-gray-50"}
                     onChange={onChange}
                 />
             )

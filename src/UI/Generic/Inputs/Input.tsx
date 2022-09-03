@@ -2,7 +2,7 @@ import { TextField } from '@mui/material'
 import { Controller } from 'react-hook-form'
 import { Paths } from '../../Types/nestedObjTypes'
 
-interface TextProps<Model> {
+export type InputProps<Model> = {
     scope: Paths<Model>
     size?: "small" | "medium"
     labelClassName?: string
@@ -12,7 +12,7 @@ interface TextProps<Model> {
     type?: string
 }
 
-function Input<Model>(props: TextProps<Model>) {
+function Input<Model>(props: InputProps<Model>) {
 
     const { scope, size, labelClassName, variant, label, disabled, type } = props
 

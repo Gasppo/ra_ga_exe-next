@@ -4,15 +4,13 @@ import { Paths } from '../../Types/nestedObjTypes'
 
 
 
-interface SwitchProps<Model> {
+export type SwitchProps<Model> = {
     scope: Paths<Model>,
     required?: boolean
     disabled?: boolean
     label: string,
     labelPlacement?: "end" | "bottom" | "top" | "start"
 }
-
-
 
 function Switch<Model>(props: SwitchProps<Model>) {
     const { scope, disabled, required, label, labelPlacement } = props

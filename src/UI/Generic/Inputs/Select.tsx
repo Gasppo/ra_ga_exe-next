@@ -4,7 +4,7 @@ import TextField from '@mui/material/TextField'
 import { Controller } from 'react-hook-form'
 import { Paths } from '../../Types/nestedObjTypes'
 
-interface SelectProps<Model, T> {
+export type SelectProps<Model, T> =  {
     scope: Paths<Model>
     variant?: "outlined" | "standard" | "filled"
     label: string

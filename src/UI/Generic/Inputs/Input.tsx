@@ -31,7 +31,6 @@ function Input<Model>(props: InputProps<Model>) {
                     value={val}
                     fullWidth
                     InputProps={{
-                        disableUnderline: true,
                         classes: { input: `${size === "medium" ? 'text-36' : 'text-14'}` } as any,
                     } as any}
                     InputLabelProps={{

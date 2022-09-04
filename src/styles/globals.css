@@ -3,9 +3,6 @@
 @tailwind utilities;
 
 
-a {
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-  }
 
 
   @layer components {
@@ -21,3 +18,8 @@ a {
       @apply flex md:w-1/2  md:justify-end justify-center flex-row mt-4 md:mt-0 
     }
   }
+
+  
+a {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}

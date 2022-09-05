@@ -5,8 +5,8 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useMemo, useState } from 'react';
-import { FormProvider, useForm } from "react-hook-form";
+import { useEffect, useMemo, useState } from 'react';
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
@@ -14,10 +14,8 @@ import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
 import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
-import { emptyCotizadorForm } from "../UI/Types/cotizadorTypes";
+import { CotizadorForm, emptyCotizadorForm } from "../UI/Types/cotizadorTypes";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-
-
 
 
 const getGlothes = () => fetch('/api/clothes/obtain').then(res => res.json())
@@ -34,8 +32,7 @@ const Home: NextPage = () => {
 
 
     const steps = ['Modelo', 'Desarrollo', 'Produccion']
-    const backDisabled = step === 0
-    const continueDisabled = step === steps.length - 1
+
     const isStepOptional = () => false
 
     const advanceStep = () => {
@@ -56,6 +53,14 @@ const Home: NextPage = () => {
 
     const clothesName = formContext.watch('tipoPrenda.name')
     const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
+
+    const modelFormComplete = formContext.watch()
+    const disableContinueModel = !modelFormComplete.tipoPrenda || !modelFormComplete.complejidad
+
+    const backDisabled = step === 0
+    const continueDisabled = step === steps.length - 1 || disableContinueModel
+
+
 
     return (
 

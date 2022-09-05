@@ -36,7 +36,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
             <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="digitalizacionYProgresion.selected" renderer='Switch' label="Digitalización y Progresión +4" labelPlacement='end' />
-                <div className="form-input-inner-section" >
+                <div className="form-input-inner-section space-x-4" >
                     <CotizadorFormItem scope="digitalizacionYProgresion.moldes" renderer='Input' label='Moldes' type='number' disabled={digitalizacionDisabled} className='mx-4' />
                     <CotizadorFormItem scope="digitalizacionYProgresion.avios" renderer='Input' label='Avíos' type='number' disabled={digitalizacionDisabled} className='mx-4' />
                 </div>
@@ -76,7 +76,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
             <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="envios.selected" renderer='Switch' label="Envios" labelPlacement='end' />
-                <div className="form-input-inner-section">
+                <div className="form-input-inner-section space-x-4">
                     <CotizadorFormItem scope="envios.viajes" renderer='Input' label='Viajes' type='number' disabled={enviosDisabled} className='mx-4' />
                     <CotizadorFormItem scope="envios.total" renderer='Input' label='Total' type='number' disabled={enviosDisabled} className='mx-4' />
                 </div>

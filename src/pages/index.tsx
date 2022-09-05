@@ -31,11 +31,7 @@ const Home: NextPage = () => {
           <div>
             <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
               <div className="flex justify-between " >
-                <div>
-                  <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-10">
-                    HS-Taller
-                  </h1>
-                </div>
+                <div />
                 {data?.user && <div className="hidden md:flex md:mr-10 mt-10" >
                   <div className="rounded-2xl" >
                     <Link href={'/cotizador'}>

@@ -1,7 +1,10 @@
+
 import React, { useState } from 'react'
 import Signin from '../Signin/Signin'
 import Signup from '../Signup/Signup'
-
+import Image from 'next/image'
+import BackGroundImage from './LandingBackground.jpg'
+import { Button, TextField } from '@mui/material'
 
 const DashboardDesconectado = () => {
 
@@ -29,21 +32,30 @@ const DashboardDesconectado = () => {
 
 
     return (
-        <div className="md:mt-9 flex flex-col items-center justify-center md:mx-10 lg:mx-0">
-            <div>
-                <h1 className="text-xl md:text-[2rem] leading-normal font-extrabold text-gray-700">
-                    Pagina en desarrollo
-                </h1>
+
+        <div className='w-auto h-auto flex flex-col place-items-center border-8 border-double border-gray-800 m-auto p-20'>
+            <h1 className="text-3xl md:text-[3rem] leading-normal font-extrabold text-gray-700">
+                HS-Taller
+            </h1>
+            <div className='w-4/5 mt-8'>
+                <TextField id="standard-search" label="Email" type="search" variant="standard" className='w-full' />
             </div>
-            <div className="text-lg md:text-[1rem] leading-normal  text-gray-700">
-                <button type='button' onClick={handleOpenSignIn}>Iniciar session</button>
+            <div className='w-4/5 mt-12'>
+                <TextField id="standard-password-input" label="Contraseña" type="password" autoComplete="current-password" variant="standard" className='w-full' />
             </div>
-            <div className="text-lg md:text-[1rem] leading-normal  text-gray-700">
-                <button type='button' onClick={handleOpenSignUp}>Registrarse</button>
+
+            <div className='flex md:flex-row flex-col md:space-x-10 mt-20'>
+                <div className='my-2'>
+                    <Button variant="outlined" onClick={handleOpenSignIn} className="w-36">Iniciar Sesión</Button>
+                </div>
+                <div className='my-2'>
+                    <Button variant="outlined" onClick={handleOpenSignIn} className="w-36">Registrarse</Button>
+                </div>
+                {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
+                {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
             </div>
-            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
-            {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
         </div>
+
     )
 }
 

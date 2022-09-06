@@ -60,13 +60,17 @@ const Home: NextPage = () => {
     const backDisabled = step === 0
     const continueDisabled = step === steps.length - 1 || disableContinueModel
 
-    const handleFormSubmit = (data: CotizadorForm) => {
-        if (data?.files.length > 0) data?.files.forEach(async (file) => await handleUploadFile(file))
+    const handleFormSubmit = async (data: CotizadorForm) => {
+        if (data?.files?.length > 0) {
+            for (const file of data?.files) {
+                await handleUploadFile(file)
+            }
+        }
         console.log(data)
     }
 
     const handleUploadFile = async (file: File) => {
-        const folderName = 'Gaspo'
+        const folderName = sessionData?.user.name || 'Sin Asignar'
         const formData = new FormData()
         formData.append('file', file)
         return await fetch(`/api/drive/upload?id=${folderName}`, {
@@ -113,16 +117,21 @@ const Home: NextPage = () => {
                                             {step === 1 && <DevelopmentForm complexityData={complexityData} />}
                                             {step === 2 && <ProductionForm />}
                                         </div>
+                                        <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
+                                            <div className="mx-4" >
+                                                <Button variant="outlined" disabled={backDisabled} type="button" onClick={goBackOneStep}>Atrás</Button>
+                                            </div>
+                                            <div className="mx-4" >
+                                                <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
+                                            </div>
+                                            <div className="mx-4" >
+                                                <Button variant="outlined" disabled={continueDisabled} type="submit">Submit [DEBUG]</Button>
+                                            </div>
+                                            <div className="mx-4" >
+                                            </div>
+                                        </div>
                                     </form>
                                 </FormProvider>
-                                <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
-                                    <div className="mx-4" >
-                                        <Button variant="outlined" disabled={backDisabled} onClick={goBackOneStep}>Atrás</Button>
-                                    </div>
-                                    <div className="mx-4" >
-                                        <Button variant="outlined" disabled={continueDisabled} onClick={advanceStep}>Continuar</Button>
-                                    </div>
-                                </div>
                             </div>
                         </LoadingIndicator>
                     </div>

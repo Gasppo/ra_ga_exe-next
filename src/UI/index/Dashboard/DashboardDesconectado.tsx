@@ -1,10 +1,8 @@
 
-import React, { useState } from 'react'
+import { Button, TextField } from '@mui/material'
+import { useState } from 'react'
 import Signin from '../Signin/Signin'
 import Signup from '../Signup/Signup'
-import Image from 'next/image'
-import BackGroundImage from './LandingBackground.jpg'
-import { Button, TextField } from '@mui/material'
 
 const DashboardDesconectado = () => {
 
@@ -24,12 +22,6 @@ const DashboardDesconectado = () => {
         handleCloseSignUp()
         setOpenSignIn(true)
     }
-
-    const handleOpenSignUp = () => {
-        handleCloseSignIn()
-        setOpenSignUp(true)
-    }
-
 
     return (
 

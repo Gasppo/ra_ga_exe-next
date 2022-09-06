@@ -5,8 +5,8 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from 'react';
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { useMemo, useState } from 'react';
+import { FormProvider, useForm } from "react-hook-form";
 import { useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
@@ -60,7 +60,28 @@ const Home: NextPage = () => {
     const backDisabled = step === 0
     const continueDisabled = step === steps.length - 1 || disableContinueModel
 
+    const handleFormSubmit = (data: CotizadorForm) => {
+        if (data?.files.length > 0) data?.files.forEach(async (file) => await handleUploadFile(file))
+        console.log(data)
+    }
 
+    const handleUploadFile = async (file: File) => {
+        const folderName = 'Gaspo'
+        const formData = new FormData()
+        formData.append('file', file)
+        return await fetch(`/api/drive/upload?id=${folderName}`, {
+            method: 'POST',
+            body: formData,
+        }
+        )
+            .then((response) => response.json())
+            .then((result) => {
+                console.log('Success:', result);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
 
     return (
 
@@ -83,7 +104,7 @@ const Home: NextPage = () => {
                                 </div>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <FormProvider {...formContext} >
-                                    <form onSubmit={formContext.handleSubmit((data) => { console.log(data) })}>
+                                    <form onSubmit={formContext.handleSubmit(handleFormSubmit)}>
                                         <div className="md:mt-9 grow flex justify-evenly">
                                             <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
                                                 <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />

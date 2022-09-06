@@ -1,6 +1,7 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CotizadorForm } from '../../Types/cotizadorTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
@@ -14,7 +15,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
 
     const { complexityData } = props
 
-    const { watch } = useFormContext<CotizadorForm>()
+    const { watch, setValue } = useFormContext<CotizadorForm>()
     const cotizadorData = watch()
 
     const molderiaBaseDisabled = !cotizadorData.molderiaBase.selected
@@ -23,16 +24,24 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
     const enviosDisabled = !cotizadorData.envios.selected
     const corteMuestraDisabled = !cotizadorData.corteMuestra.selected
 
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(event.target.files)
+        setValue('files', files)
+    }
+
+    useEffect(() => {
+        console.log(cotizadorData)
+    }, [cotizadorData]);
+
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
             <div className="form-input-section justify-start flex-row">
                 <CotizadorFormItem scope="molderiaBase.selected" renderer='Switch' label="Molderia Base" labelPlacement='end' />
                 <IconButton color="primary" aria-label="upload picture" component="label" disabled={molderiaBaseDisabled} className="justify-end">
-                    <input hidden accept="image/*" type="file" />
+                    <input multiple hidden accept="image/*" type="file" onChange={handleFileUpload} />
                     <FileUploadIcon />
                 </IconButton>
             </div>
-
             <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">
                 <CotizadorFormItem scope="digitalizacionYProgresion.selected" renderer='Switch' label="Digitalización y Progresión +4" labelPlacement='end' />

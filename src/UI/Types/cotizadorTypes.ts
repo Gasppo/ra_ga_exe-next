@@ -78,6 +78,7 @@ export type CotizadorForm = PriceCheckerDevelopmentForm & PriceCheckerProduction
         email?: string;
         image?: string;
     }
+    files?: File[];
 }
 
 //generate an empty object with the same structure as the type CotizadorForm

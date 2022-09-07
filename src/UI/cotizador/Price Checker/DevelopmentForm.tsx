@@ -1,9 +1,11 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
+import { useEffect, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CotizadorForm } from '../../Types/cotizadorTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
+import HelpIcon from '@mui/icons-material/Help';
 
 interface DevelopmentFormProps {
     complexityData: Complexity[]
@@ -23,10 +25,16 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
     const enviosDisabled = !cotizadorData.envios.selected
     const corteMuestraDisabled = !cotizadorData.corteMuestra.selected
 
+    let fileNames = cotizadorData.files?.reduce((previous, current) => [...previous, current.name], [],).join(', ')
+
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files)
         setValue('files', files)
     }
+
+    useEffect(() => {
+        console.log(cotizadorData)
+    }, [cotizadorData]);
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
@@ -36,6 +44,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
                     <input multiple hidden accept="image/*" type="file" onChange={handleFileUpload} />
                     <FileUploadIcon />
                 </IconButton>
+                <HelpIcon titleAccess={fileNames} />
             </div>
             <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">

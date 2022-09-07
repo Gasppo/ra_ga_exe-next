@@ -1,6 +1,7 @@
 import formidable from "formidable";
 import { createReadStream } from "fs";
 import { OAuth2Client } from "google-auth-library";
+import { GaxiosResponse } from "gaxios";
 import { drive_v3, google } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
 /**
@@ -25,7 +26,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const clientName = Array.isArray(client) ? client[0] : client;
   const orderId = Array.isArray(order) ? order[0] : order;
 
-  const form = new formidable.IncomingForm();
+  const form = new formidable.IncomingForm({ multiples: true });
   form.parse(req, async function (err, fields, files) {
     const file = files.uploadedFile || files.file;
     //Verify if there is a file
@@ -33,9 +34,22 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       res.status(400).send("No file uploaded");
       return;
     }
-    if (Array.isArray(file)) return res.status(400).json({ error: 'File is an array' });
+
     try {
-      const resfile = await saveFile(file, clientName || 'No name', orderId || 'No order');
+      const service = getDriveService();
+
+      const folderId = await createDirectory(service, clientName, orderId);
+
+      if (Array.isArray(file)) {
+        const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
+        for (const f of file) {
+          filesUploaded.push(await saveFile(f, folderId, service));
+        }
+        res.status(200).send({ data: filesUploaded });
+        return
+      }
+
+      const resfile = await saveFile(file, folderId, service);
       res.status(201).json({ data: resfile })
       return;
     } catch (error) {
@@ -46,7 +60,9 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   return
 };
 
-const saveFile = async (file: formidable.File, clientName: string, orderId: string) => {
+
+//generate drive service
+const getDriveService = () => {
   try {
     const oauth = new OAuth2Client({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -56,7 +72,29 @@ const saveFile = async (file: formidable.File, clientName: string, orderId: stri
 
     oauth.setCredentials({ refresh_token: process.env.GOOOGLE_DRIVE_REFRESH_TOKEN });
     const service = google.drive({ version: 'v3', auth: oauth });
+    return service;
+  }
+  catch (error) {
+    throw error;
+  }
+}
 
+
+
+//save file to drive
+const saveFile = async (file: formidable.File, folderId: string, service: drive_v3.Drive) => {
+  try {
+    return await upload(service, file, folderId);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
+
+
+
+const createDirectory = async (service: drive_v3.Drive, clientName: string, orderId: string) => {
+  try {
     //find client folder
     const clientNameFolderId = await findFolderId(service, clientName);
 
@@ -64,7 +102,7 @@ const saveFile = async (file: formidable.File, clientName: string, orderId: stri
     if (!clientNameFolderId) {
       const newClientNameFolderId = await createFolder(service, clientName);
       const newFolderId = await createFolder(service, orderId, newClientNameFolderId);
-      return await upload(service, file, newFolderId);
+      return await newFolderId
     }
 
     //find order folder
@@ -73,19 +111,15 @@ const saveFile = async (file: formidable.File, clientName: string, orderId: stri
     //create order folder if not exists
     if (!newFolderId) {
       const newFolderId = await createFolder(service, orderId, clientNameFolderId);
-      return await upload(service, file, newFolderId);
+      return newFolderId;
     }
 
-    //upload file
-    return await upload(service, file, newFolderId);
-
-  } catch (error) {
-    console.log(error);
+    return newFolderId;
+  }
+  catch (error) {
     throw error;
   }
-};
-
-
+}
 
 //upload file to folder
 async function upload(service: drive_v3.Drive, file: formidable.File, folderId: string) {

@@ -19,25 +19,34 @@ const update = (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { id } = req.query;
+  const { client, order } = req.query;
 
 
-  const folderName = Array.isArray(id) ? id[0] : id;
+  const clientName = Array.isArray(client) ? client[0] : client;
+  const orderId = Array.isArray(order) ? order[0] : order;
 
   const form = new formidable.IncomingForm();
   form.parse(req, async function (err, fields, files) {
     const file = files.uploadedFile || files.file;
+    //Verify if there is a file
+    if (!file) {
+      res.status(400).send("No file uploaded");
+      return;
+    }
     if (Array.isArray(file)) return res.status(400).json({ error: 'File is an array' });
     try {
-      await saveFile(file, folderName || 'No name');
-      return res.status(201).json({ data: form });
+      const resfile = await saveFile(file, clientName || 'No name', orderId || 'No order');
+      res.status(201).json({ data: resfile })
+      return;
     } catch (error) {
-      return res.status(500).json({ error: error });
+      res.status(500).json({ error: error })
+      return;
     }
   });
+  return
 };
 
-const saveFile = async (file: formidable.File, folderName: string) => {
+const saveFile = async (file: formidable.File, clientName: string, orderId: string) => {
   try {
     const oauth = new OAuth2Client({
       clientId: process.env.GOOGLE_CLIENT_ID,
@@ -48,19 +57,34 @@ const saveFile = async (file: formidable.File, folderName: string) => {
     oauth.setCredentials({ refresh_token: process.env.GOOOGLE_DRIVE_REFRESH_TOKEN });
     const service = google.drive({ version: 'v3', auth: oauth });
 
-    const folderId = await findFolderId(service, folderName);
+    //find client folder
+    const clientNameFolderId = await findFolderId(service, clientName);
 
-    if (!folderId) {
-      const newFolderId = await createFolder(service, folderName);
+    //create client folder if not exists
+    if (!clientNameFolderId) {
+      const newClientNameFolderId = await createFolder(service, clientName);
+      const newFolderId = await createFolder(service, orderId, newClientNameFolderId);
       return await upload(service, file, newFolderId);
     }
-    return await upload(service, file, folderId);
+
+    //find order folder
+    const newFolderId = await findFolderId(service, orderId, clientNameFolderId);
+
+    //create order folder if not exists
+    if (!newFolderId) {
+      const newFolderId = await createFolder(service, orderId, clientNameFolderId);
+      return await upload(service, file, newFolderId);
+    }
+
+    //upload file
+    return await upload(service, file, newFolderId);
 
   } catch (error) {
     console.log(error);
     throw error;
   }
 };
+
 
 
 //upload file to folder
@@ -77,9 +101,9 @@ async function upload(service: drive_v3.Drive, file: formidable.File, folderId: 
 }
 
 //find folder id by name
-async function findFolderId(service: drive_v3.Drive, folderName: string) {
+async function findFolderId(service: drive_v3.Drive, folderName: string, parentFolderId?: string) {
   const folderId = await service.files.list({
-    q: `name='${folderName}' and mimeType='application/vnd.google-apps.folder'`,
+    q: `name='${folderName}' and mimeType='application/vnd.google-apps.folder' ${parentFolderId ? `and '${parentFolderId}' in parents` : ''}`,
     fields: 'files(id)',
   });
   return folderId?.data?.files?.[0]?.id || null;
@@ -87,10 +111,11 @@ async function findFolderId(service: drive_v3.Drive, folderName: string) {
 
 
 //create folder by name
-async function createFolder(service: drive_v3.Drive, folderName: string) {
+async function createFolder(service: drive_v3.Drive, folderName: string, parentFolderId?: string) {
   const fileMetadata = {
     name: folderName,
     mimeType: 'application/vnd.google-apps.folder',
+    parents: [parentFolderId || 'root']
   };
   const folder = await service.files.create({
     requestBody: fileMetadata,

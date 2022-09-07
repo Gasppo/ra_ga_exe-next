@@ -71,9 +71,11 @@ const Home: NextPage = () => {
 
     const handleUploadFile = async (file: File) => {
         const folderName = sessionData?.user.name || 'Sin Asignar'
+        const random = Math.floor(Math.random() * 10000);
+        const orderID = `#ID-${random}`;
         const formData = new FormData()
         formData.append('file', file)
-        return await fetch(`/api/drive/upload?id=${folderName}`, {
+        return await fetch(`/api/drive/upload?client=${folderName}&order=${orderID}`, {
             method: 'POST',
             body: formData,
         }
@@ -112,7 +114,7 @@ const Home: NextPage = () => {
                                         <div className="flex flex-col " >
                                             <div className="md:mt-9 grow flex justify-evenly">
                                                 <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
-                                                    <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                                    {image && <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />}
                                                 </div>
                                                 {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} />}
                                                 {step === 1 && <DevelopmentForm complexityData={complexityData} />}

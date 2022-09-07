@@ -72,7 +72,7 @@ const Home: NextPage = () => {
     const handleUploadFile = async (file: File) => {
         const folderName = sessionData?.user.name || 'Sin Asignar'
         const random = Math.floor(Math.random() * 10000);
-        const orderID = `#ID-${random}`;
+        const orderID = `ID-${random}`;
         const formData = new FormData()
         formData.append('file', file)
         return await fetch(`/api/drive/upload?client=${folderName}&order=${orderID}`, {

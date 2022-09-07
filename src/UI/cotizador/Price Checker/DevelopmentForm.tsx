@@ -1,11 +1,11 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import HelpIcon from '@mui/icons-material/Help';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CotizadorForm } from '../../Types/cotizadorTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
-import HelpIcon from '@mui/icons-material/Help';
 
 interface DevelopmentFormProps {
     complexityData: Complexity[]
@@ -25,7 +25,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
     const enviosDisabled = !cotizadorData.envios.selected
     const corteMuestraDisabled = !cotizadorData.corteMuestra.selected
 
-    let fileNames = cotizadorData.files?.map(el => el.name).join(', ')
+    const fileNames = cotizadorData.files?.map(el => el.name).join(', ')
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files)

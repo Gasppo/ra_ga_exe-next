@@ -2,10 +2,10 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HelpIcon from '@mui/icons-material/Help';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
-import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CotizadorForm } from '../../Types/cotizadorTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
+import FileInfoTag from '../Inputs/FileInfoTag';
 
 interface DevelopmentFormProps {
     complexityData: Complexity[]
@@ -32,19 +32,28 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
         setValue('files', files)
     }
 
-    useEffect(() => {
-        console.log(cotizadorData)
-    }, [cotizadorData]);
+    const handleFileRemove = (fileName: string) => {
+        const updatedFiles = cotizadorData?.files.filter(file => file.name !== fileName)
+        setValue('files', updatedFiles)
+    }
+
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
-            <div className="form-input-section justify-start flex-row">
+            <div className="form-input-section justify-start flex-row ">
                 <CotizadorFormItem scope="molderiaBase.selected" renderer='Switch' label="Molderia Base" labelPlacement='end' />
                 <IconButton color="primary" aria-label="upload picture" component="label" disabled={molderiaBaseDisabled} className="justify-end">
                     <input multiple hidden accept="image/*" type="file" onChange={handleFileUpload} />
                     <FileUploadIcon />
                 </IconButton>
-                <HelpIcon titleAccess={fileNames} />
+                <div className="flex justify-center text-gray-600 items-center mb-1">
+                    <HelpIcon titleAccess={fileNames} />
+                </div>
+            </div>
+            <div className="form-input-section mt-2" >
+                <div className='border-2 md:w-full mx-2 md:mx-4 p-4 flex flex-row flex-wrap'>
+                    {cotizadorData?.files.map((file, i) => <FileInfoTag file={file} key={i} onRemove={handleFileRemove} />)}
+                </div>
             </div>
             <Divider variant='fullWidth' className="form-divider" />
             <div className="form-input-section">

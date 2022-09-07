@@ -142,7 +142,8 @@ export const emptyCotizadorForm: CotizadorForm = {
         name: '',
         email: '',
         image: ''
-    }
+    },
+    files: []
 }
 
 //generate a an array of strings with all the paths to the properties of an object

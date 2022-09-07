@@ -15,6 +15,8 @@ export const config = {
   }
 };
 
+const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", 'application/pdf'];
+
 const update = (req: NextApiRequest, res: NextApiResponse) => {
   req.method === 'POST' ? post(req, res) : res.status(404).send("");
 };
@@ -43,22 +45,38 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       if (Array.isArray(file)) {
         const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
         for (const f of file) {
+          const isValidateFileType = verifyFileType(f);
+          if (!isValidateFileType) {
+            res.status(400).send(`File ${f.originalFilename} was not uploaded. File type ${f.mimetype} not allowed`);
+            return;
+          }
           filesUploaded.push(await saveFile(f, folderId, service));
         }
         res.status(200).send({ data: filesUploaded });
         return
       }
 
+      const isValidateFileType = verifyFileType(file);
+      if (!isValidateFileType) {
+        res.status(400).send(`File ${file.originalFilename} was not uploaded. File type ${file.mimetype} not allowed`);
+        return;
+      }
       const resfile = await saveFile(file, folderId, service);
       res.status(201).json({ data: resfile })
       return;
-    } catch (error) {
+    }
+    catch (error) {
       res.status(500).json({ error: error })
       return;
     }
   });
   return
 };
+
+
+const verifyFileType = (file: formidable.File) => {
+  return allowedFileTypes.includes(file.mimetype);
+}
 
 
 //generate drive service

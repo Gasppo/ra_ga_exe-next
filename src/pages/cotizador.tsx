@@ -41,13 +41,14 @@ const Home: NextPage = () => {
     const clothesName = formContext.watch('tipoPrenda.name')
     const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
 
-    const modelFormComplete = formContext.watch()
-    const disableContinueModel = !modelFormComplete.tipoPrenda || !modelFormComplete.complejidad
+    const disableContinueModel = !formContext.watch('tipoPrenda.name') || !formContext.watch('complejidad.name')
+    const disableContinueProduction = !formContext.watch('digitalizacionYProgresion.selected')
+    const disableContinueDevelopment = !formContext.watch('impresionTizada.selected')
 
     const backDisabled = step === 0
-    const continueDisabled = step === steps.length - 1 || disableContinueModel
-    const submitDisabled = false
-
+    //const continueDisabled = step === steps.length - 1 || (disableContinueModel || disableContinueProduction)
+    const continueDisabled = (step === 0) ? disableContinueModel : ((step === 1) ? disableContinueProduction : disableContinueProduction)
+    const submitDisabled = disableContinueDevelopment
 
     const handleFormSubmit = async (data: CotizadorForm) => {
         if (data?.files?.length > 0) {

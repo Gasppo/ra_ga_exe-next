@@ -46,8 +46,8 @@ const Home: NextPage = () => {
 
     const backDisabled = step === 0
     const continueDisabled = step === steps.length - 1 || disableContinueModel
+    const submitDisabled = false
 
-    
 
     const handleFormSubmit = async (data: CotizadorForm) => {
         if (data?.files?.length > 0) {
@@ -101,12 +101,15 @@ const Home: NextPage = () => {
                                                 <div className="mx-4" >
                                                     <Button variant="outlined" disabled={backDisabled} type="button" onClick={goBackOneStep}>Atrás</Button>
                                                 </div>
-                                                <div className="mx-4" >
+                                                {step !== 2 && <div className="mx-4" >
                                                     <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
-                                                </div>
-                                                <div className="mx-4 hidden md:flex" >
+                                                </div>}
+                                                {step !== 2 && <div className="mx-4 hidden md:flex" >
                                                     <Button variant="outlined" disabled={continueDisabled} type="submit">Submit [DEBUG]</Button>
-                                                </div>
+                                                </div>}
+                                                {step === 2 && <div className="mx-4 md:flex" >
+                                                    <Button variant="outlined" disabled={submitDisabled} type="submit">Submit </Button>
+                                                </div>}
                                                 <div className="mx-4" >
                                                 </div>
                                             </div>

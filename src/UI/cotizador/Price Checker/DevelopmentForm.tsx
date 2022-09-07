@@ -25,7 +25,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
     const enviosDisabled = !cotizadorData.envios.selected
     const corteMuestraDisabled = !cotizadorData.corteMuestra.selected
 
-    let fileNames = cotizadorData.files?.reduce((previous, current) => [...previous, current.name], [],).join(', ')
+    let fileNames = cotizadorData.files?.map(el => el.name).join(', ')
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files)

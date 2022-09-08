@@ -1,11 +1,11 @@
-import { Slide } from "@mui/material";
+import { Alert, Slide, Snackbar } from "@mui/material";
 import Button from '@mui/material/Button';
 import { ClothesCategory, Complexity } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
@@ -15,18 +15,32 @@ import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { CotizadorForm, emptyCotizadorForm } from "../UI/Types/cotizadorTypes";
+import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
+import { ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
 
 
 const Home: NextPage = () => {
 
-    const { data: clothesData, isFetching: isFetchingClothes, } = useQuery<ClothesCategory[]>(['clothes'], getClothes, { refetchOnWindowFocus: false });
-    const { data: complexityData, isFetching: isFetchingComplexity } = useQuery<Complexity[]>(['complexities'], getComplexity, { refetchOnWindowFocus: false });
-    const { isLoading: isUploadingFiless, mutateAsync } = useMutation(uploadFile)
+    const { addError, errors, removeError } = useContext(ErrorHandlerContext)
+
+    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<ClothesCategory[], ErrorMessage>(['clothes'], getClothes,
+        { refetchOnWindowFocus: false, onError: (error) => addError(error.error) });
+
+    const { data: complexityData, isFetching: isFetchingComplexity } = useQuery<Complexity[], ErrorMessage>(['complexities'], getComplexity,
+        { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
+    );
+
+    const { isLoading: isUploadingFiless, mutateAsync, } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+        { onError: (error) => addError(error.error) }
+    )
     const { data: sessionData } = useSession()
     const [price] = useState(0)
     const [step, setStep] = useState(0)
+
+    const handleClose = (uuid: string) => {
+        removeError(uuid)
+    }
 
 
     const steps = ['Modelo', 'Desarrollo', 'Produccion']
@@ -88,6 +102,13 @@ const Home: NextPage = () => {
                                 </div>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <FormProvider {...formContext} >
+                                    {errors.map(err => (
+                                        <Snackbar key={err.id} autoHideDuration={5000} open={true} onClose={() => handleClose(err.id)} anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
+                                            <Alert onClose={() => handleClose(err.id)} severity="error" sx={{ width: '100%' }}>
+                                                {err.message}
+                                            </Alert>
+                                        </Snackbar>
+                                    ))}
                                     <form onSubmit={formContext.handleSubmit(handleFormSubmit)}>
                                         <div className="flex flex-col " >
                                             <div className="md:mt-9 grow flex justify-evenly">

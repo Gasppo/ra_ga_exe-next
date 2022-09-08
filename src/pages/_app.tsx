@@ -7,6 +7,7 @@ import LoadingOverlay from "../utils/LoadingIndicator/LoadingOverlay";
 import LoadingSlider from "../utils/LoadingIndicator/LoadingSlider";
 import LoadingSkeleton from "../utils/LoadingIndicator/LoadingSkeleton";
 import { StyledEngineProvider } from "@mui/material";
+import ErrorHandlerProvider from "../utils/ErrorHandler/error";
 
 const queryClient = new QueryClient()
 
@@ -18,13 +19,15 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <StyledEngineProvider injectFirst>
       <SessionProvider session={pageProps.session}>
         <QueryClientProvider client={queryClient}>
-          <LoadingIndicatorProvider
-            blocking={LoadingOverlay}
-            nonBlocking={LoadingSlider}
-            replacing={LoadingSkeleton}
-          >
-            <Component {...pageProps} />
-          </LoadingIndicatorProvider>
+          <ErrorHandlerProvider>
+            <LoadingIndicatorProvider
+              blocking={LoadingOverlay}
+              nonBlocking={LoadingSlider}
+              replacing={LoadingSkeleton}
+            >
+              <Component {...pageProps} />
+            </LoadingIndicatorProvider>
+          </ErrorHandlerProvider>
         </QueryClientProvider>
       </SessionProvider>
     </StyledEngineProvider>

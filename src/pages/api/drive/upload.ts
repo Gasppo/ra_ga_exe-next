@@ -29,48 +29,52 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   const orderId = Array.isArray(order) ? order[0] : order;
 
   const form = new formidable.IncomingForm({ multiples: true });
-  form.parse(req, async function (err, fields, files) {
-    const file = files.uploadedFile || files.file;
-    //Verify if there is a file
-    if (!file) {
-      res.status(400).send("No file uploaded");
-      return;
-    }
-
-    try {
-      const service = getDriveService();
-
-      const folderId = await createDirectory(service, clientName, orderId);
-
-      if (Array.isArray(file)) {
-        const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
-        for (const f of file) {
-          const isValidateFileType = verifyFileType(f);
-          if (!isValidateFileType) {
-            res.status(400).send(`File ${f.originalFilename} was not uploaded. File type ${f.mimetype} not allowed`);
-            return;
-          }
-          filesUploaded.push(await saveFile(f, folderId, service));
-        }
-        res.status(200).send({ data: filesUploaded });
-        return
-      }
-
-      const isValidateFileType = verifyFileType(file);
-      if (!isValidateFileType) {
-        res.status(400).send(`File ${file.originalFilename} was not uploaded. File type ${file.mimetype} not allowed`);
+  try {
+    form.parse(req, async function (err, fields, files) {
+      const file = files.uploadedFile || files.file;
+      //Verify if there is a file
+      if (!file) {
+        res.status(400).send("No file uploaded");
         return;
       }
-      const resfile = await saveFile(file, folderId, service);
-      res.status(201).json({ data: resfile })
-      return;
-    }
-    catch (error) {
-      res.status(500).json({ error: error })
-      return;
-    }
-  });
-  return
+
+      try {
+        const service = getDriveService();
+
+        const folderId = await createDirectory(service, clientName, orderId);
+
+        if (Array.isArray(file)) {
+          const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
+          for (const f of file) {
+            const isValidateFileType = verifyFileType(f);
+            if (!isValidateFileType) {
+              throw `Archivo "${f.originalFilename}" no cargado. Archivos "${f.mimetype}" no permitidos`;
+            }
+            filesUploaded.push(await saveFile(f, folderId, service));
+          }
+          res.status(200).send({ data: filesUploaded });
+          return
+        }
+
+        const isValidateFileType = verifyFileType(file);
+        if (!isValidateFileType) {
+          throw `Archivo "${file.originalFilename}" no cargado. Archivos "${file.mimetype}" no permitidos` ;
+        }
+        const resfile = await saveFile(file, folderId, service);
+        res.status(201).json({ data: resfile })
+        return;
+      }
+      catch (error) {
+        res.status(500).json({ error: error })
+        throw error;
+      }
+    });
+    return
+  }
+  catch (error) {
+    res.status(500).json({ error: error })
+    throw error;
+  }
 };
 
 
@@ -104,7 +108,6 @@ const saveFile = async (file: formidable.File, folderId: string, service: drive_
   try {
     return await upload(service, file, folderId);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -141,39 +144,54 @@ const createDirectory = async (service: drive_v3.Drive, clientName: string, orde
 
 //upload file to folder
 async function upload(service: drive_v3.Drive, file: formidable.File, folderId: string) {
-  const document = await service.files.create({
-    requestBody: { name: file.originalFilename, parents: [folderId] },
-    media: {
-      mimeType: file.mimetype,
-      body: createReadStream(file.filepath),
-    },
-    fields: 'id'
-  });
-  return document;
+  try {
+    const document = await service.files.create({
+      requestBody: { name: file.originalFilename, parents: [folderId] },
+      media: {
+        mimeType: file.mimetype,
+        body: createReadStream(file.filepath),
+      },
+      fields: 'id'
+    });
+    return document;
+  }
+  catch (error) {
+    throw error;
+  }
 }
 
 //find folder id by name
 async function findFolderId(service: drive_v3.Drive, folderName: string, parentFolderId?: string) {
-  const folderId = await service.files.list({
-    q: `name='${folderName}' and mimeType='application/vnd.google-apps.folder' ${parentFolderId ? `and '${parentFolderId}' in parents` : ''}`,
-    fields: 'files(id)',
-  });
-  return folderId?.data?.files?.[0]?.id || null;
+  try {
+    const folderId = await service.files.list({
+      q: `name='${folderName}' and mimeType='application/vnd.google-apps.folder' ${parentFolderId ? `and '${parentFolderId}' in parents` : ''}`,
+      fields: 'files(id)',
+    });
+    return folderId?.data?.files?.[0]?.id || null;
+  }
+  catch (error) {
+    throw error;
+  }
 }
 
 
 //create folder by name
 async function createFolder(service: drive_v3.Drive, folderName: string, parentFolderId?: string) {
-  const fileMetadata = {
-    name: folderName,
-    mimeType: 'application/vnd.google-apps.folder',
-    parents: [parentFolderId || 'root']
-  };
-  const folder = await service.files.create({
-    requestBody: fileMetadata,
-    fields: 'id',
-  });
-  return folder.data.id;
+  try {
+    const fileMetadata = {
+      name: folderName,
+      mimeType: 'application/vnd.google-apps.folder',
+      parents: [parentFolderId || 'root']
+    };
+    const folder = await service.files.create({
+      requestBody: fileMetadata,
+      fields: 'id',
+    });
+    return folder.data.id;
+  }
+  catch (error) {
+    throw error;
+  }
 }
 
 export default update;

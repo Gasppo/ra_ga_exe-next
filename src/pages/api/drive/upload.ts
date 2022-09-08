@@ -59,24 +59,24 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const isValidateFileType = verifyFileType(file);
         if (!isValidateFileType) {
-        console.log('Breakpoint 3');
-        throw `Archivo '${file.originalFilename}' no cargado. Archivos '${file.mimetype}' no permitidos`;
+          console.log('Breakpoint 3');
+          throw `Archivo '${file.originalFilename}' no cargado. Archivos '${file.mimetype}' no permitidos`;
         }
         const resfile = await saveFile(file, folderId, service);
         res.status(201).json({ data: resfile })
         return;
       }
       catch (error) {
-        res.status(400).json({ error: error })
-        console.log(error);
+        console.log('Breakpoint 4');
         throw error;
       }
     });
     return
   }
   catch (error) {
-    res.status(500).json({ error: error })
     console.log('Breakpoint 5');
+    console.log(error)
+    res.status(400).json({ error: error })
     throw error;
   }
 };

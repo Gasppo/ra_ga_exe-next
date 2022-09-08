@@ -4,9 +4,11 @@ type Props = {
     children: React.ReactNode
 }
 
+type AlertTypes = 'info' | 'warning' | 'error' | 'success'
+
 export const ErrorHandlerContext = React.createContext<{
-    errors: { message: string, id: string }[],
-    addError: (message: string) => void;
+    errors: { message: string, id: string, level?: AlertTypes }[],
+    addError: (message: string, level?: AlertTypes) => void;
     removeError: (uuid: string) => void
 }>({
     errors: [],
@@ -19,7 +21,7 @@ const ErrorHandlerProvider = ({ children }: Props) => {
 
     const [errors, setErrors] = useState<{ message: string, id: string }[]>([])
 
-    const addError = useCallback((message: string) => setErrors(prev => [...prev, { id: crypto.randomUUID(), message }]), [])
+    const addError = useCallback((message: string, level?: AlertTypes) => setErrors(prev => [...prev, { id: crypto.randomUUID(), message, level }]), [])
     const removeError = useCallback((uuid: string) => setErrors(prev => prev.filter(err => err.id !== uuid)), [])
 
     const contextValues = {

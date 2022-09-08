@@ -16,9 +16,10 @@ const DashboardAdmin = () => {
             </div>
             <div>
                 <h1 className="text-5xl md:text-[1rem] leading-normal  text-gray-700" onClick={() => {
-                    errorContext.addError('Error Prueba #1')
-                    errorContext.addError('Nuevo Prueba #2')
-                    errorContext.addError('Nuevo Prueba #3')
+                    errorContext.addError('Error Prueba #1', 'error')
+                    errorContext.addError('Nuevo Prueba #2', 'info')
+                    errorContext.addError('Nuevo Prueba #3', 'success')
+                    errorContext.addError('Nuevo Prueba #3', 'warning')
                     }}>
                     goddddd
                 </h1>

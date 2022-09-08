@@ -1,4 +1,4 @@
-import { Alert, Slide, Snackbar } from "@mui/material";
+import { Slide } from "@mui/material";
 import Button from '@mui/material/Button';
 import { ClothesCategory, Complexity } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
     );
 
     const { isLoading: isUploadingFiless, mutateAsync, } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
-        { onError: (error) => addError(error.error) }
+        { onError: (error) => addError(error.error), }
     )
     const { data: sessionData } = useSession()
     const [price] = useState(0)

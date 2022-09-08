@@ -1,5 +1,4 @@
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import HelpIcon from '@mui/icons-material/Help';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
 import { useEffect } from 'react';
@@ -38,7 +37,7 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
 
     useEffect(() => {
         if (molderiaBaseDisabled) setValue('files', [])
-    }, [molderiaBaseDisabled])
+    }, [molderiaBaseDisabled, setValue])
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">

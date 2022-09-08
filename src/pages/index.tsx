@@ -8,6 +8,7 @@ import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
 import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
+import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import { useGetRole } from "../utils/useGetRole";
 
 const Home: NextPage = () => {
@@ -16,11 +17,10 @@ const Home: NextPage = () => {
   const role = useGetRole(data?.user?.email || '')
 
 
-
   return (
     <div className="bg-split-white-black">
       <Head>
-        <title>Ra_Ga.exe</title>
+        <title>HS-Taller</title>
         <meta name="description" content="Ramiro Onate, Gaspar Garcia, Exequiel videla" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -29,6 +29,7 @@ const Home: NextPage = () => {
       <main>
         <Slide in={true} timeout={500} direction='up'>
           <div>
+            <ErrorAlerter />
             <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
               <div className="flex justify-between " >
                 <div />

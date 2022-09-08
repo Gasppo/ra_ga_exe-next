@@ -16,13 +16,14 @@ import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { CotizadorForm, emptyCotizadorForm } from "../UI/Types/cotizadorTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
+import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
 
 
 const Home: NextPage = () => {
 
-    const { addError, errors, removeError } = useContext(ErrorHandlerContext)
+    const { addError } = useContext(ErrorHandlerContext)
 
     const { data: clothesData, isFetching: isFetchingClothes } = useQuery<ClothesCategory[], ErrorMessage>(['clothes'], getClothes,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) });
@@ -37,11 +38,6 @@ const Home: NextPage = () => {
     const { data: sessionData } = useSession()
     const [price] = useState(0)
     const [step, setStep] = useState(0)
-
-    const handleClose = (uuid: string) => {
-        removeError(uuid)
-    }
-
 
     const steps = ['Modelo', 'Desarrollo', 'Produccion']
 
@@ -85,7 +81,7 @@ const Home: NextPage = () => {
 
         <div className="bg-split-white-black">
             <Head>
-                <title>Ra_Ga.exe</title>
+                <title>HS-Taller - Cotizador</title>
                 <meta name="description" content="Ramiro Onate, Gaspar Garcia, Exequiel videla" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -102,13 +98,7 @@ const Home: NextPage = () => {
                                 </div>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <FormProvider {...formContext} >
-                                    {errors.map(err => (
-                                        <Snackbar key={err.id} autoHideDuration={5000} open={true} onClose={() => handleClose(err.id)} anchorOrigin={{ horizontal: 'right', vertical: 'top' }}>
-                                            <Alert onClose={() => handleClose(err.id)} severity="error" sx={{ width: '100%' }}>
-                                                {err.message}
-                                            </Alert>
-                                        </Snackbar>
-                                    ))}
+                                    <ErrorAlerter />
                                     <form onSubmit={formContext.handleSubmit(handleFormSubmit)}>
                                         <div className="flex flex-col " >
                                             <div className="md:mt-9 grow flex justify-evenly">

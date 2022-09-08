@@ -14,15 +14,15 @@ const errorHandle = (res: Response) => res.json().then(json => Promise.reject(js
 
 // Obtener lista de ropas
 export const getClothes = () => fetch('/api/clothes/obtain')
-    .then(res => !res.ok ? errorHandle(res) : res.json())
+    .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
 // Obtener lista de complejidades
 export const getComplexity = () => fetch('/api/complexity/obtain')
-    .then(res => !res.ok ? errorHandle(res) : res.json())
+    .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
 // Cargar archivos a Google Drive
 export const uploadFile = (data: FileUploadData): Promise<FileUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
-    .then(res => !res.ok ? errorHandle(res) : res.json())
+    .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });

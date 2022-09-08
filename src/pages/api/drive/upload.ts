@@ -67,8 +67,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         return;
       }
       catch (error) {
-        res.status(500).json({ error: error })
-        console.log('Breakpoint 4');
+        res.status(400).json({ error: error })
+        console.log(error);
         throw error;
       }
     });

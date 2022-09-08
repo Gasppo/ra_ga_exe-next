@@ -2,6 +2,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import HelpIcon from '@mui/icons-material/Help';
 import { Divider, IconButton } from "@mui/material";
 import { Complexity } from "@prisma/client";
+import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { CotizadorForm } from '../../Types/cotizadorTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
@@ -24,8 +25,6 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
     const enviosDisabled = !cotizadorData.envios.selected
     const corteMuestraDisabled = !cotizadorData.corteMuestra.selected
 
-    const fileNames = cotizadorData.files?.map(el => el.name).join(', ')
-
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(event.target.files)
         setValue('files', files)
@@ -36,18 +35,19 @@ const DevelopmentForm = (props: DevelopmentFormProps) => {
         setValue('files', updatedFiles)
     }
 
+
+    useEffect(() => {
+        if (molderiaBaseDisabled) setValue('files', [])
+    }, [molderiaBaseDisabled])
+
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
-            <button>a</button>
             <div className="form-input-section justify-start flex-row ">
                 <CotizadorFormItem scope="molderiaBase.selected" renderer='Switch' label="Molderia Base" labelPlacement='end' />
                 <IconButton color="primary" aria-label="upload picture" component="label" disabled={molderiaBaseDisabled} className="justify-end">
                     <input multiple hidden accept="image/*" type="file" onChange={handleFileUpload} />
                     <FileUploadIcon />
                 </IconButton>
-                <div className="flex justify-center text-gray-600 items-center mb-1">
-                    <HelpIcon titleAccess={fileNames} />
-                </div>
             </div>
             <div className="form-input-section mt-2" >
                 <div className='border-2 md:w-full mx-2 md:mx-4 p-4 flex flex-row flex-wrap'>

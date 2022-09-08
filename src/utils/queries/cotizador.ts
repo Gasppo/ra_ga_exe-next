@@ -25,4 +25,4 @@ export const getComplexity = () => fetch('/api/complexity/obtain')
 // Cargar archivos a Google Drive
 export const uploadFile = (data: FileUploadData): Promise<FileUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
     .then(res => res.ok ? res.json() : errorHandle(res))
-    .catch((error) => { throw error });
+    .catch((error) => { console.log('Broke here'); throw error });

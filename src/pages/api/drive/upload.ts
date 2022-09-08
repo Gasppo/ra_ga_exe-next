@@ -42,12 +42,13 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         const service = getDriveService();
 
         const folderId = await createDirectory(service, clientName, orderId);
-
+        console.log('Breakpoint 1');
         if (Array.isArray(file)) {
           const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
           for (const f of file) {
             const isValidateFileType = verifyFileType(f);
             if (!isValidateFileType) {
+              console.log('Breakpoint 2');
               throw `Archivo '${f.originalFilename}' no cargado. Archivos '${f.mimetype}' no permitidos`;
             }
             filesUploaded.push(await saveFile(f, folderId, service));
@@ -58,7 +59,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const isValidateFileType = verifyFileType(file);
         if (!isValidateFileType) {
-          throw `Archivo '${file.originalFilename}' no cargado. Archivos '${file.mimetype}' no permitidos` ;
+        console.log('Breakpoint 3');
+        throw `Archivo '${file.originalFilename}' no cargado. Archivos '${file.mimetype}' no permitidos`;
         }
         const resfile = await saveFile(file, folderId, service);
         res.status(201).json({ data: resfile })
@@ -66,6 +68,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
       }
       catch (error) {
         res.status(500).json({ error: error })
+        console.log('Breakpoint 4');
         throw error;
       }
     });
@@ -73,6 +76,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   catch (error) {
     res.status(500).json({ error: error })
+    console.log('Breakpoint 5');
     throw error;
   }
 };
@@ -97,6 +101,7 @@ const getDriveService = () => {
     return service;
   }
   catch (error) {
+    console.log('Breakpoint 6');
     throw error;
   }
 }
@@ -108,6 +113,7 @@ const saveFile = async (file: formidable.File, folderId: string, service: drive_
   try {
     return await upload(service, file, folderId);
   } catch (error) {
+    console.log('Breakpoint 6');
     throw error;
   }
 };
@@ -138,6 +144,7 @@ const createDirectory = async (service: drive_v3.Drive, clientName: string, orde
     return newFolderId;
   }
   catch (error) {
+    console.log('Breakpoint 7');
     throw error;
   }
 }
@@ -156,6 +163,7 @@ async function upload(service: drive_v3.Drive, file: formidable.File, folderId: 
     return document;
   }
   catch (error) {
+    console.log('Breakpoint 8');
     throw error;
   }
 }
@@ -170,6 +178,7 @@ async function findFolderId(service: drive_v3.Drive, folderName: string, parentF
     return folderId?.data?.files?.[0]?.id || null;
   }
   catch (error) {
+    console.log('Breakpoint 9');
     throw error;
   }
 }
@@ -190,6 +199,7 @@ async function createFolder(service: drive_v3.Drive, folderName: string, parentF
     return folder.data.id;
   }
   catch (error) {
+    console.log('Breakpoint 10');
     throw error;
   }
 }

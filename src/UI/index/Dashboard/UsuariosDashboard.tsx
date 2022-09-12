@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import BasicTable from '../../../utils/Examples/BasicTable'
 import EditIcon from '@mui/icons-material/Edit';
-import { Button, InputBase, Link, TextField } from '@mui/material';
+import { InputBase, Link, TextField } from '@mui/material';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react';
 import AddIcon from '@mui/icons-material/Add';
@@ -10,31 +10,27 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SearchIcon from '@mui/icons-material/Search';
 import DownloadIcon from '@mui/icons-material/Download';
 
-const DashboardCliente = () => {
+const UsuariosDashboard = () => {
 
-    const [editEnabled, setEditEnabled] = useState(false)
     const { data } = useSession()
 
-    const handleEnableEdit = () => {
-        setEditEnabled(prev => !prev)
-    }
+    const editEnabled = false
 
     return (
         <div>
-
-            <div className="flex justify-between " >
-                <div />
-                {data?.user && <div className="hidden md:flex md:mr-10 mt-10" >
-                    <div className="rounded-2xl" >
-                        <Link href={'/cotizador'}>
-                            <Button variant="text" >Nueva Orden</Button>
-                        </Link>
-                    </div>
-                </div>}
+            <div>
+                <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7">
+                    Usuarios
+                </h1>
+                <Link href='/'>
+                    Volver al inicio
+                </Link>
             </div>
-
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
+
+
+
                     <div className="text-xl my-8 flex flex-row justify-between" >
                         <div className='border-gray-400 border-2 rounded-xl w-2/3 p-2 flex items-center shadow-md'>
                             <SearchIcon className='w-1/12' />
@@ -56,14 +52,14 @@ const DashboardCliente = () => {
                             Mis datos
                         </div>
                         <div className="cursor-pointer" >
-                            <EditIcon onClick={handleEnableEdit} />
+                            <EditIcon onClick={() => console.log('adios')} />
                         </div>
                     </div>
                     <div className="my-2">
-                        <TextField variant="standard" disabled={!editEnabled} label='Nombre' value={data.user.name} InputProps={{ disableUnderline: !editEnabled }} />
+                        <TextField variant="standard" disabled={!editEnabled} label='Nombre' value={data?.user.name || 'Chau'} InputProps={{ disableUnderline: !editEnabled }} />
                     </div>
                     <div className="my-2">
-                        <TextField variant="standard" disabled label='Correo' value={data.user.email} InputProps={{ disableUnderline: true }} />
+                        <TextField variant="standard" disabled label='Correo' value={data?.user.email || 'Hola'} InputProps={{ disableUnderline: true }} />
                     </div>
                     <div className="my-10 flex justify-center">
                         <div className="rounded-full flex items-center hover:opacity-25 transition-all duration-300" >
@@ -92,9 +88,8 @@ const DashboardCliente = () => {
                 </div>
 
             </div>
-
         </div>
     )
 }
 
-export default DashboardCliente
+export default UsuariosDashboard

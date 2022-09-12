@@ -17,6 +17,14 @@
     .form-input-inner-section {
       @apply flex md:w-1/2  md:justify-end justify-center flex-row mt-4 md:mt-0 
     }
+
+    .dashboard-card-enabled {
+          @apply text-slate-800 border-gray-200 border-2 rounded-xl shadow-lg flex flex-col items-center justify-center transition-all duration-300 hover:bg-gray-200 hover:text-teal-600 cursor-pointer
+        }
+    
+    .dashboard-card-disabled {
+          @apply text-slate-800 bg-gray-400 border-gray-200 border-2 rounded-xl shadow-lg flex flex-col items-center justify-center transition-all duration-300 cursor-default
+        }
   }
 
   

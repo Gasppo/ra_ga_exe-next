@@ -32,7 +32,7 @@ const ConfirmationForm = () => {
 
             <div className="mt-3 w-2/4">
                 <div>{cotizadorData.fichaTecnica.selected ? "✔️" : "❌"} Ficha Técnica{cotizadorData.fichaTecnica.selected ? ' - Cantidad: ' + cotizadorData.fichaTecnica.cantidad : ""} </div>
-                <div>{cotizadorData.muestraProduccion ? "✔️" : "❌"} Muestra Producción</div>
+                <div>{cotizadorData.muestraProduccion.selected ? "✔️" : "❌"} Muestra Producción</div>
                 <div>{cotizadorData.programacionTizada.selected ? "✔️" : "❌"} Programación Tizada{cotizadorData.programacionTizada.selected ? ' - ' + cotizadorData.programacionTizada.metros + ' metros' : ''}</div>
                 <div>{cotizadorData.impresionTizada.selected ? "✔️" : "❌"} Impresión Tizada{cotizadorData.impresionTizada.selected ? ' - ' + cotizadorData.impresionTizada.metros + ' metros' : ''}</div>
                 <div>{cotizadorData.corte.selected ? "✔️" : "❌"} Corte{cotizadorData.corte.selected ? ' - ' + cotizadorData.corte.cantPrendas + ' prendas y ' + cotizadorData.corte.precioPorPrenda + '$ por prenda' : ""} </div>

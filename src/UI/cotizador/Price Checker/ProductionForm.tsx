@@ -55,7 +55,7 @@ const ProductionForm = () => {
                 </div>
                 <div className="form-input-inner-section">
                     <CotizadorFormItem scope="confeccion.cantPrendas" renderer='Input' label='# Prendas' type='number' disabled={!cotizadorData.confeccion.selected} className='mx-4' />
-                    <CotizadorFormItem scope="confeccion.precioPorPrenda" renderer='Input' label='$ por prendas' type='number' disabled={!cotizadorData.confeccion.selected} className='mx-4' />
+                    <CotizadorFormItem scope="confeccion.precioPorPrenda" renderer='Input' label='$ por prenda' type='number' disabled={!cotizadorData.confeccion.selected} className='mx-4' />
                 </div>
             </div>
 
@@ -63,7 +63,7 @@ const ProductionForm = () => {
             <div className="form-input-section">
                 <CotizadorFormItem scope="envios.selected" renderer={'Switch'} label="Envios" labelPlacement='end' />
                 <div className="form-input-inner-section ">
-                    <CotizadorFormItem scope="envios.viajes" renderer='Input' label='$ por prendas' type='number' disabled={!cotizadorData.envios.selected} className='mx-4' />
+                    <CotizadorFormItem scope="envios.viajes" renderer='Input' label='$ por prenda' type='number' disabled={!cotizadorData.envios.selected} className='mx-4' />
                 </div>
             </div>
         </div>

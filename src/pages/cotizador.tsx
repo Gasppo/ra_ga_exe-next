@@ -8,6 +8,7 @@ import Image from "next/image";
 import { useContext, useMemo, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
+import ConfirmationForm from "../UI/cotizador/Price Checker/ConfirmationForm";
 import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
 import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
@@ -39,11 +40,11 @@ const Home: NextPage = () => {
     const [price] = useState(0)
     const [step, setStep] = useState(0)
 
-    const steps = ['Modelo', 'Desarrollo', 'Produccion']
+    const steps = ['Modelo', 'Desarrollo', 'Producción', 'Confirmación']
 
     const isStepOptional = () => false
 
-    const advanceStep = () => step < 2 ? setStep(prev => prev + 1) : alert('No se puede ir mass para adelante')
+    const advanceStep = () => step < 3 ? setStep(prev => prev + 1) : alert('No se puede ir mass para adelante')
     const goBackOneStep = () => step > 0 ? setStep(prev => prev - 1) : alert('No se puede ir mas para atras')
 
     const formContext = useForm({ defaultValues: { ...emptyCotizadorForm, user: sessionData?.user } })
@@ -108,12 +109,13 @@ const Home: NextPage = () => {
                                                 {step === 0 && <ModelForm clothesData={clothesData} complexityData={complexityData} />}
                                                 {step === 1 && <DevelopmentForm complexityData={complexityData} />}
                                                 {step === 2 && <ProductionForm />}
+                                                {step === 3 && <ConfirmationForm />}
                                             </div>
                                             <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
                                                 <div className="mx-4" >
                                                     <Button variant="outlined" disabled={backDisabled} type="button" onClick={goBackOneStep}>Atrás</Button>
                                                 </div>
-                                                {step !== 2 && <div className="mx-4" >
+                                                {step !== 3 && <div className="mx-4" >
                                                     <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
                                                 </div>}
                                                 {step !== 2 && <div className="mx-4 hidden md:flex" >

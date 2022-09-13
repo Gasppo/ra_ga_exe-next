@@ -6,7 +6,7 @@ import LinkCard from './LinkCard';
 const DashboardAdmin = () => {
 
     const sections = [
-        { title: 'Ordenes', description: 'Acceso a ordenes de clientes', Icon: ReceiptIcon, href: '/usuarios' },
+        { title: 'Ordenes', description: 'Acceso a ordenes de clientes', Icon: ReceiptIcon, href: '/ordenes' },
         { title: 'Usuarios', description: 'Acceso a manejo de usuarios', Icon: PeopleIcon, href: '/usuarios' },
         { title: 'Precios base', description: 'Acceso a la vista calendario', Icon: PriceChangeIcon, href: '/preciosBase' },
     ]

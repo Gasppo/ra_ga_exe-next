@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BasicTable from '../../../utils/Examples/BasicTable'
+import BasicTable from '../../../utils/Examples/BasicOrderTable'
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, InputBase, Link, TextField } from '@mui/material';
 import Image from 'next/image';

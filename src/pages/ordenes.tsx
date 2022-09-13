@@ -1,7 +1,8 @@
-import { Link, Slide } from "@mui/material";
+import { Slide } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
+import OrdenesDashboard from "../UI/index/Dashboard/OrdenesDashboard";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
@@ -22,17 +23,8 @@ const Home: NextPage = () => {
                     <div>
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-                            <div>
-                                <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7">
-                                    Precios base
-                                </h1>
-                                <Link href='/' className="md:ml-7">
-                                    Volver al inicio
-                                </Link>
-                            </div>
-                            <div className="m-auto">Pagina en desarrollo</div>
+                            <OrdenesDashboard />
                         </div>
-
                     </div>
                 </Slide>
             </main>

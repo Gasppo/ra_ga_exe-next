@@ -1,5 +1,5 @@
 import React from 'react'
-import BasicTable from '../../../utils/Examples/BasicTable'
+import BasicUserTable from '../../../utils/Examples/BasicUserTable'
 import EditIcon from '@mui/icons-material/Edit';
 import { InputBase, Link, TextField } from '@mui/material';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ const UsuariosDashboard = () => {
                 <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7">
                     Usuarios
                 </h1>
-                <Link href='/'>
+                <Link href='/' className='md:ml-7'>
                     Volver al inicio
                 </Link>
             </div>
@@ -43,7 +43,7 @@ const UsuariosDashboard = () => {
                         </div>
                     </div>
                     <div>
-                        <BasicTable />
+                        <BasicUserTable />
                     </div>
                 </div>
                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">

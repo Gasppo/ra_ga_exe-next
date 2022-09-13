@@ -6,7 +6,7 @@ interface LinkCardProps {
     children?: React.ReactNode
     description?: string
     title: string
-    Icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>
+    Icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, "svg">>
     href?: string,
     customSize?: string,
 }

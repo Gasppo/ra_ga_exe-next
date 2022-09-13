@@ -33,13 +33,6 @@ const Home: NextPage = () => {
             <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
               <div className="flex justify-between " >
                 <div />
-                {data?.user && <div className="hidden md:flex md:mr-10 mt-10" >
-                  <div className="rounded-2xl" >
-                    <Link href={'/cotizador'}>
-                      <Button variant="text" >Nueva Orden</Button>
-                    </Link>
-                  </div>
-                </div>}
               </div>
               {!data?.user && <DashboardDesconectado />}
               {data?.user && role !== 'admin' && <DashboardCliente />}

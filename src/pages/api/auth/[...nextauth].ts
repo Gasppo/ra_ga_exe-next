@@ -52,16 +52,10 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
                             body: JSON.stringify(credentials),
                         },
                     )
-                        .then((res) => res.json())
-                        .catch((err) => {
-                            console.log(err)
-                            return null;
-                        });
-                    if (user) {
-                        return user;
-                    } else {
-                        return null;
-                    }
+                        .then((resp) => resp.json())
+                    if (user?.error) throw new Error(JSON.stringify({ error: user.error }))
+                    if (!user) throw new Error(JSON.stringify({ error: 'Información de login incorrecta' }))
+                    return user;
                 }
             })
         ],

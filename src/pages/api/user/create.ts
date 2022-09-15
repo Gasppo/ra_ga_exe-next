@@ -28,7 +28,7 @@ const User = z.object({
     email: z.string().email({ message: emailErrorMessage() }),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
     confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
-}).refine(data => data.password === data.confirmPassword, "Passwords must match");
+}).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
 
 
 

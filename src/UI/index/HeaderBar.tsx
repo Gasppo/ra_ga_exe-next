@@ -1,5 +1,7 @@
 import { signIn, signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Signin from './Signin/Signin';
 import Signup from './Signup/Signup';
@@ -11,6 +13,7 @@ const HeaderBar = () => {
     const [openSignUp, setOpenSignUp] = useState(false)
     const [openSignIn, setOpenSignIn] = useState(false)
 
+    const { pathname } = useRouter()
 
     const handleCloseSignIn = () => {
         setOpenSignIn(false)
@@ -29,6 +32,7 @@ const HeaderBar = () => {
         handleCloseSignIn()
         setOpenSignUp(true)
     }
+
 
     return (
         <div className='flex justify-center md:justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-2 md:px-10 py-4' >
@@ -63,7 +67,14 @@ const HeaderBar = () => {
                             <Image src={data.user?.image || ''} width="32" height="32" className='rounded-full' alt=""></Image>
                         </div>}
                         <div className='ml-2 mr-5'>
-                            <div className='font-bold'>{data.user?.name}</div>
+                            <div className='font-bold'>
+                                {pathname !== '/' && <Link href={'/'}>
+                                    {data.user?.name}
+                                </Link>}
+                                {pathname === '/' && <div>
+                                    {data.user?.name}
+                                </div>}
+                            </div>
                         </div>
                         <div className='border-l-2 border-opacity-25 border-slate-400'>
                             <button className='ml-5 px-2 py-1 underline' onClick={() => signOut()}>
@@ -72,10 +83,10 @@ const HeaderBar = () => {
                         </div>
                     </div>
                 )}
-            </div>
-            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
-            {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
         </div>
+            { openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} /> }
+    { openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} /> }
+        </div >
     )
 }
 

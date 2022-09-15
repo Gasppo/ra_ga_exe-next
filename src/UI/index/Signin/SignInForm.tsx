@@ -15,7 +15,7 @@ const SignInForm = (props: SignInFormProps) => {
 
     return (
         <form onSubmit={onSubmit} className="flex flex-col items-center justify-center">
-            <div className="flex flex-row flex-wrap justify-center w-3/4" >
+            <div className="flex flex-col items-center" >
                 <InputField name='email' label="Correo" onChange={onChange} errorFlag={errorFlag} />
                 <InputField name='password' label='Contraseña' onChange={onChange} type="password" errorFlag={errorFlag} />
                 {errorFlag && <div className='text-xs -mt-2 text-red-600'>

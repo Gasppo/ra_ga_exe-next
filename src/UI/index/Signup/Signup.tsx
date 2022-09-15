@@ -1,6 +1,7 @@
 import DoneIcon from '@mui/icons-material/Done'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useMutation } from 'react-query'
+import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
 import ModalComponent from '../../Modal/ModalComponent'
 import InputField from './InputField'
@@ -32,7 +33,7 @@ const postSignup = (data: InputData) => {
 const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
     const { data, isLoading, mutateAsync } = useMutation(postSignup)
-
+    const { addError } = useContext(ErrorHandlerContext)
     const errors = data?.body?.fieldErrors
 
     const [inputData, setInputData] = useState<InputData>({
@@ -49,7 +50,18 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
         try {
             const res = await mutateAsync(inputData)
-            if (res?.statusCode === 400) throw new Error('Error al crear el usuario')
+            if (res?.statusCode === 400) {
+                if (res?.body?.formErrors?.length > 0) {
+                    for (const err in res?.body?.formErrors) {
+                        if (Object.prototype.hasOwnProperty.call(res?.body?.formErrors, err)) {
+                            const element = res?.body?.formErrors[err];
+                            addError(element)
+                        }
+                    }
+                }
+
+                throw new Error('Error al crear el usuario')
+            }
             setCompletedSignUp(true)
         }
 
@@ -99,7 +111,7 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
                                     <InputField name='password' label='Contraseña' onChange={handleChange} errors={errors} type="password" />
                                     <InputField name='confirmPassword' label='Confirmar contraseña' onChange={handleChange} errors={errors} type="password" />
                                 </div>
-                            )} 
+                            )}
                         </div>
                         {!!completedSignUp && errors && Object?.keys(errors)?.length === 0 && data?.body?.formErrors.length > 0 && (
                             <div className="w-3/4 " >

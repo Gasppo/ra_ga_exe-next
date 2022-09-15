@@ -18,7 +18,7 @@ const InputField = ({ errors, name, onChange, label, type, errorFlag }: InputFie
 
     return (
         <div className="mx-4 mb-4" >
-            <TextField className="w-64"  InputLabelProps={{ shrink: true }} name={name} label={label} onChange={onChange} error={error || errorFlag} helperText={errors?.[name]?.[0]} type={type} size='small' />
+            <TextField className="md:w-64"  InputLabelProps={{ shrink: true }} name={name} label={label} onChange={onChange} error={error || errorFlag} helperText={errors?.[name]?.[0]} type={type} size='small' />
         </div>
     )
 }

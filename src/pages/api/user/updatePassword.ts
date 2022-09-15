@@ -21,48 +21,48 @@ const hashPassword = (password: string) => {
 
 const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} ${min === 1 ? "caracter" : "caracteres"}`;
 const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
-const emailErrorMessage = () => `Formato de correo electrónico inválido`;
 
-const User = z.object({
-    name: z.string().min(1, { message: minCharErrorMessage(1) }).max(50, { message: maxCharErrorMessage(50) }),
-    email: z.string().email({ message: emailErrorMessage() }),
+const Password = z.object({
+    id: z.string(),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
     confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
 }).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
 
 
+const checkIfUserExists = async (id: string) => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: id,
+        },
+    });
+    return !!user;
+}
+
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const data = User.parse(req.body);
+        const data = Password.parse(req.body);
         const password = hashPassword(data.password);
-        const user = await prisma.user.create({
+        const exists = await checkIfUserExists(data.id);
+
+        if (!exists) {
+            res.status(404).json({ error: "El usuario no existe" });
+            return;
+        }
+
+        const user = await prisma.user.update({
+            where: {
+                id: data.id,
+            },
             data: {
-                email: data.email,
-                name: data.name,
                 password: password,
             }
         });
 
-        await prisma.account.create({
-            data: {
-                userId: user.id,
-                type: "credentials",
-                provider: "credentials",
-                providerAccountId: user.id,
-            },
-        })
-
         res.status(200).json({
             statusCode: 200,
-            body: {
-                user: {
-                    name: user.name,
-                    email: user.email,
-                    image: user.image,
-                }
-            }
+            message: 'Contraseña actualizada correctamente para usuario ' + user.name,
         })
     }
     catch (e) {
@@ -70,7 +70,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             e.format
             res.status(400).json({ error: e.flatten() })
         }
-        else{
+        else {
             res.status(500).json({ error: e.message })
         }
     }

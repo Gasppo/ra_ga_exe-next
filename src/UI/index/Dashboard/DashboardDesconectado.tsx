@@ -38,10 +38,10 @@ const DashboardDesconectado = () => {
             <p className='text-gray-700'>Bienvenidos</p>
             <div className='flex md:flex-row flex-col md:justify-center md:space-x-10 mt-20'>
                 <div className='my-2'>
-                    <Button variant="outlined" onClick={handleOpenSignIn}>Iniciar Sesión</Button>
+                    <Button variant="outlined" onClick={handleOpenSignIn} className="w-40 md:w-auto">Iniciar Sesión</Button>
                 </div>
                 <div className='my-2'>
-                    <Button variant="outlined" onClick={handleOpenSignUp}>Registrarse</Button>
+                    <Button variant="outlined" onClick={handleOpenSignUp} className="w-40 md:w-auto">Registrarse</Button>
                 </div>
                 {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
                 {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}

@@ -1,6 +1,7 @@
 import { Slide } from '@mui/material'
 import { signIn } from 'next-auth/react'
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
+import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
 import ModalComponent from '../../Modal/ModalComponent'
 import RecoveryForm from './RecoveryForm'
@@ -18,6 +19,8 @@ type InputData = {
 }
 
 const Signin = ({ onClose, open }: SigninProps) => {
+
+    const { addError } = useContext(ErrorHandlerContext)
 
     const [loading, setLoading] = useState(false)
     const [errorFlag, setErrorFlag] = useState(false)
@@ -40,7 +43,9 @@ const Signin = ({ onClose, open }: SigninProps) => {
             });
 
             if (res.error) {
-                throw new Error('Error al iniciar sesion')
+                const errorMessage = JSON.parse(res.error)?.error as string || 'Login Invalido'
+                addError(errorMessage)
+                throw new Error(errorMessage)
             }
             onClose()
         }

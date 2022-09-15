@@ -19,19 +19,30 @@ const hashPassword = (password: string) => {
 
 // POST /api/user
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
-    const user = await prisma.user.findFirst({
-        where: { email: req.body.username },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            password: true,
-        },
-    });
-    if (user && user.password == hashPassword(req.body.password)) {
-        res.json(user);
-    } else {
-        res.status(400).end("Invalid credentials");
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            throw "Ingresar usuario y contraseña";
+        }
+        
+        const user = await prisma.user.findFirst({
+            where: { email: req.body.username },
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+                password: true,
+            },
+        });
+        if (user && user.password == hashPassword(req.body.password)) {
+            res.json(user);
+        }
+        else {
+            throw 'Credenciales incorrectas';
+        }
+    }
+    catch (err) {
+        res.status(400).json({ error: err });
     }
 }

@@ -63,6 +63,14 @@ const deleteExpiredTokens = async () => {
     });
 }
 
+const clearUserTokens = async (userId: string) => {
+    await prisma.resetToken.deleteMany({
+        where: {
+            userId: userId,
+        },
+    });
+}
+
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
@@ -72,8 +80,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
         const exists = await checkIfUserExists(userToken.userId);
 
         if (!exists) {
-            res.status(404).json({ error: "El usuario no existe" });
-            return;
+            throw "El usuario no existe"
         }
 
         const user = await prisma.user.update({
@@ -84,6 +91,8 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
                 password: password,
             }
         });
+
+        if (user) await clearUserTokens(userToken.userId);
 
         res.status(200).json({
             statusCode: 200,
@@ -96,7 +105,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             res.status(400).json({ error: e.flatten() })
         }
         else {
-            res.status(500).json({ error: e.message })
+            res.status(500).json({ error: e })
         }
     }
 

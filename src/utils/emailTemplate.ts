@@ -20,7 +20,7 @@ export const emailTemplate = (data: any) => {
                 <div style="color:dimgray">
                     <p>Se ha recibido una solicitud de restablecimiento de contraseña</p>
                     <p>Haga click en el boton para proceder</p>
-                    <a href="${process.env.NEXTAUTH_URL}/user/reset/${data.resetToken}">Resetear clave</a>
+                    <a href="${process.env.NEXTAUTH_URL || process.env.VERCEL_URL}/user/reset/${data.resetToken}">Resetear clave</a>
                 </div>
             </div>
         </div>

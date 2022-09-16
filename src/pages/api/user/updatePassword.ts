@@ -23,7 +23,7 @@ const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} $
 const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
 
 const Password = z.object({
-    id: z.string(),
+    token: z.string(),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
     confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
 }).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
@@ -39,12 +39,28 @@ const checkIfUserExists = async (id: string) => {
 }
 
 
+const verifyToken = async (token: string) => {
+    const user = await prisma.resetToken.findFirst({
+        where: {
+            token: token,
+            expires: { gt: new Date() },
+        },
+        select: {
+            userId: true,
+        }
+    });
+    if (!user) throw "El token no es válido o ha expirado"
+    return user;
+}
+
+
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
         const data = Password.parse(req.body);
         const password = hashPassword(data.password);
-        const exists = await checkIfUserExists(data.id);
+        const userToken = await verifyToken(data.token);
+        const exists = await checkIfUserExists(userToken.userId);
 
         if (!exists) {
             res.status(404).json({ error: "El usuario no existe" });
@@ -53,7 +69,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
         const user = await prisma.user.update({
             where: {
-                id: data.id,
+                id: userToken.userId,
             },
             data: {
                 password: password,

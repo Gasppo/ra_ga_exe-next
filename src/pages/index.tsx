@@ -1,8 +1,7 @@
-import { Button, Slide } from "@mui/material";
+import { Slide } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
-import Link from "next/link";
 import DashboardAdmin from "../UI/index/Dashboard/DashboardAdmin";
 import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
 import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";

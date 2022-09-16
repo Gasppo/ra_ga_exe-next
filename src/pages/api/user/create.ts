@@ -21,7 +21,7 @@ const hashPassword = (password: string) => {
 
 const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} ${min === 1 ? "caracter" : "caracteres"}`;
 const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
-const emailErrorMessage = () => `Formato de correo electrónico inválido`;
+export const emailErrorMessage = () => `Formato de correo electrónico inválido`;
 
 const User = z.object({
     name: z.string().min(1, { message: minCharErrorMessage(1) }).max(50, { message: maxCharErrorMessage(50) }),

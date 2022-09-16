@@ -44,17 +44,26 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model ResetToken {
+    id      String   @id @default(cuid())
+    token   String   @unique
+    userId  String
+    expires DateTime
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role          Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-    roleId        String?   @default("cl79gksfz0015nrvhrqpdy8ya")
+    role          Role?        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    roleId        String?      @default("cl79gksfz0015nrvhrqpdy8ya")
     password      String?
+    ResetToken    ResetToken[]
 }
 
 model VerificationToken {

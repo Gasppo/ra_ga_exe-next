@@ -19,7 +19,7 @@ export type SignupResponse = {
     }
 }
 
-export type PasswordResetData = { password: string; confirmPassword: string; id: string }
+export type PasswordResetData = { password: string; confirmPassword: string; token: string }
 export type PasswordResetResponse = { statusCode: number, message: string }
 
 export type UserHandlerError = {
@@ -40,3 +40,5 @@ export const postSignup = (data: SignupData) => fetch(`/api/user/create`, { meth
 export const updatePasssword = (data: PasswordResetData) => fetch(`/api/user/updatePassword`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
 
+export const sendEmail = async (data: { email: string }) => fetch('/api/user/reset-email', { method: 'POST', body: JSON.stringify(data), headers: { 'Content-Type': 'application/json' } })
+    .then(res => res.ok ? res.json() : errorHandle(res))

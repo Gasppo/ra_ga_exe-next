@@ -27,7 +27,7 @@ export const generateEmailer = ({
 
         try {
             const result = await mailer.send(to, subject, html);
-            console.log('Done', result);
+            console.log('Done', result, html);
         } catch (error) {
             console.error('Error: ', error);
         }

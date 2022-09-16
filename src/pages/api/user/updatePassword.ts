@@ -40,6 +40,7 @@ const checkIfUserExists = async (id: string) => {
 
 
 const verifyToken = async (token: string) => {
+    await deleteExpiredTokens();
     const user = await prisma.resetToken.findFirst({
         where: {
             token: token,
@@ -53,6 +54,14 @@ const verifyToken = async (token: string) => {
     return user;
 }
 
+
+const deleteExpiredTokens = async () => {
+    await prisma.resetToken.deleteMany({
+        where: {
+            expires: { lt: new Date() },
+        },
+    });
+}
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 

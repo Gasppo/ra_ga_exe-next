@@ -35,6 +35,16 @@ const checkIfUserExists = async (id: string) => {
             id: id,
         },
     });
+    if (user && !user.password) {
+        await prisma.account.create({
+            data: {
+                userId: user.id,
+                type: "credentials",
+                provider: "credentials",
+                providerAccountId: user.id,
+            },
+        })
+    }
     return !!user;
 }
 

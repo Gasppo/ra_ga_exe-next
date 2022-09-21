@@ -15,7 +15,9 @@ const PasswordReset = (props: PasswordResetProps) => {
 
     const { token: resetToken } = props
     const { addError } = useContext(ErrorHandlerContext)
-    const { data: passwordResetData, isLoading, mutateAsync, error } = useMutation<PasswordResetResponse, UserHandlerError, PasswordResetData>(updatePasssword, {})
+    const { data: passwordResetData, isLoading, mutateAsync, error } = useMutation<PasswordResetResponse, UserHandlerError, PasswordResetData>(updatePasssword, {
+        onSuccess: () => { addError('Clave cambiada exitosamente', 'success') }
+    })
 
     const errors = error?.error ? (typeof error.error === 'string' ? {} : error?.error.fieldErrors) : {}
     const completedReset = passwordResetData?.statusCode === 200

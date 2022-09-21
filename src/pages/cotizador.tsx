@@ -67,7 +67,6 @@ const Home: NextPage = () => {
         if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
         }
-        console.log(data)
     }
 
     const handleUploadFile = async (file: File[]) => {

@@ -31,11 +31,9 @@ const PasswordReset = (props: PasswordResetProps) => {
         event.preventDefault()
 
         try {
-            const res = await mutateAsync({ ...inputData, token: resetToken })
-            console.log(res)
+            await mutateAsync({ ...inputData, token: resetToken })
         }
         catch (error) {
-            console.log('Error', error)
             if (error?.error?.formErrors?.length > 0) {
                 for (const err in error?.error?.formErrors) {
                     if (Object.prototype.hasOwnProperty.call(error?.error?.formErrors, err)) {

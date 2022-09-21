@@ -81,8 +81,8 @@ const UsuariosDashboard = () => {
 
                     <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4'>
                         <div className="flex flex-row flex-wrap items-center justify-start mt-2" >
-                            <ActionButton Icon={AddIcon} label="Nueva Cotizacion" href='/cotizador' />
-                            <ActionButton Icon={ManageAccountsIcon} label="Editar mi Perfil" href='/cotizador' />
+                            <ActionButton Icon={AddIcon} label="Nueva Cotizacion" href='/fichaTecnicaNueva' />
+                            <ActionButton Icon={ManageAccountsIcon} label="Editar mi Perfil" href='/fichaTecnicaNueva' />
                         </div>
                     </div>
                 </div>

@@ -1,14 +1,9 @@
-import { randomUUID } from "crypto";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z, ZodError } from "zod";
-import { prisma } from '../../../server/db/client';
+import { checkIfUserExists, createResetToken } from "../../../utils/dbcalls/user";
 import { emailTemplate } from "../../../utils/emailTemplate";
 import { generateEmailer } from "../../../utils/generateEmailer";
 
-
-const fromDate = (time: number, date = Date.now()) => {
-    return new Date(date + time * 1000)
-}
 
 
 export default async function handle(
@@ -27,7 +22,6 @@ const Email = z.object({
 })
 
 
-// POST /api/user
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { email } = Email.parse(req.body);
@@ -39,22 +33,10 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             fromTitle: 'Soporte HS-Taller'
         })
 
-        const user = await prisma.user.findUnique({
-            where: { email: email },
-            select: { id: true, name: true, email: true }
-        });
+        const user = await checkIfUserExists({ email: email });
 
-        if (!user) {
-            throw 'Email incorrecto';
-        }
-
-        const token = await prisma.resetToken.create({
-            data: {
-                userId: user.id,
-                token: randomUUID(),
-                expires: fromDate(600)
-            }
-        })
+        if (!user) throw 'Email incorrecto';
+        const token = await createResetToken(user.id);
 
         sendEmail({
             to: email,

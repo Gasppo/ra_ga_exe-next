@@ -1,22 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import sha256 from "crypto-js/sha256";
-import { prisma } from "../../../server/db/client";
 import { z, ZodError } from "zod";
+import { createCredentialsAccountForUser, createNewUser } from "../../../utils/dbcalls/user";
 
-export default async function handle(
-    req: NextApiRequest,
-    res: NextApiResponse,
-) {
-    if (req.method === "POST") {
-        await handlePOST(req, res);
-    } else {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === "POST") await handlePOST(req, res);
+
+    else {
         res.status(400).end(`The HTTP ${req.method} method is not supported at this route.`);
     }
 }
-
-const hashPassword = (password: string) => {
-    return sha256(password).toString();
-};
 
 
 const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} ${min === 1 ? "caracter" : "caracteres"}`;
@@ -35,24 +27,10 @@ const User = z.object({
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const data = User.parse(req.body);
-        const password = hashPassword(data.password);
-        const user = await prisma.user.create({
-            data: {
-                email: data.email,
-                name: data.name,
-                password: password,
-            }
-        });
+        const { name, email, password } = User.parse(req.body);
+        const user = await createNewUser({ name, email, password });
 
-        await prisma.account.create({
-            data: {
-                userId: user.id,
-                type: "credentials",
-                provider: "credentials",
-                providerAccountId: user.id,
-            },
-        })
+        await createCredentialsAccountForUser(user.id);
 
         res.status(200).json({
             statusCode: 200,
@@ -70,7 +48,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             e.format
             res.status(400).json({ error: e.flatten() })
         }
-        else{
+        else {
             res.status(500).json({ error: e.message })
         }
     }

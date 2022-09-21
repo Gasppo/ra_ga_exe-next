@@ -39,7 +39,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             subject: 'Reseteo de contraseña - HS-Taller',
             html: emailTemplate({ name: user.name, resetToken: token.token })
         }).then(() => res.json({ message: 'Email enviado' })).catch(err => res.status(400).json({ error: err }))
-        res.json({ message: 'Email enviado', token })
+
     }
     catch (e) {
         if (e instanceof ZodError) {

@@ -1,24 +1,28 @@
-import { NodeMailgun } from 'ts-mailgun';
+import nodemailer from "nodemailer";
+import Mail from "nodemailer/lib/mailer";
 
-
-export type UseEmailSenderData = { apiKey: string, domain: string, from: string, fromTitle: string }
+export type UseEmailSenderData = { user: string, password: string, from: string, fromTitle: string }
 
 export type SendEmailData = { to: string, subject: string, html: string }
 
 export const generateEmailer = ({
-    apiKey,
-    domain,
+    user,
+    password,
     from,
     fromTitle,
 }: UseEmailSenderData) => {
 
-    const mailer = new NodeMailgun();
-    mailer.apiKey = apiKey; // Set your API key
-    mailer.domain = domain; // Set the domain you registered earlier
-    mailer.fromEmail = from; // Set your from email
-    mailer.fromTitle = fromTitle; // Set the name you would like to send from
 
-    mailer.init();
+
+    const transporter = nodemailer.createTransport({
+        service: 'Mailgun',
+        auth: {
+            user: user,
+            pass: password
+        },
+    });
+
+
 
 
     const sendEmail = async (data: SendEmailData) => {
@@ -26,8 +30,14 @@ export const generateEmailer = ({
         const { to, subject, html } = data;
 
         try {
-            const result = await mailer.send(to, subject, html);
-            console.log('Done', result);
+            const mailOptions: Mail.Options = {
+                from: `${fromTitle} <${from}>`,
+                to: to,
+                subject: subject,
+                html: html
+            }
+            const info = await transporter.sendMail(mailOptions);
+            console.log('Done', info);
         } catch (error) {
             console.error('Error: ', error);
         }

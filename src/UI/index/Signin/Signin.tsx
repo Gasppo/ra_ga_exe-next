@@ -40,6 +40,7 @@ const Signin = ({ onClose, open }: SigninProps) => {
     const { data: emailData, mutateAsync, isLoading: loadingRecovery, error } = useMutation<{ message?: string }, { error?: string | { formErrors?: string[], fieldErrors?: { [key: string]: string[] } } }, { email: string }>(sendEmail, {
         onError: (error) => {
             if (typeof error.error === 'string') addError(error.error)
+            if (Object.keys(error).length === 0) addError('Error al enviar el correo')
         },
         onSuccess: () => { addError('Correo enviado!', 'success'), onClose() }
     })
@@ -76,7 +77,6 @@ const Signin = ({ onClose, open }: SigninProps) => {
         mutateAsync({
             email: inputData.email
         })
-        console.log(`TODO: Recuperar contraseña para ${inputData.email}`)
     }
 
 

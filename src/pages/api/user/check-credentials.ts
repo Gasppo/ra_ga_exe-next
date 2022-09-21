@@ -15,8 +15,9 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
         if (!username || !password) throw "Ingresar usuario y contraseña";
 
         const user = await checkIfUserExists({ email: username });
+        console.log(user.password , hashPassword(req.body.password))
 
-        if (!user || user.password === hashPassword(req.body.password)) throw 'Credenciales incorrectas';
+        if (!user || user.password !== hashPassword(req.body.password)) throw 'Credenciales incorrectas';
 
         res.json(user);
     }

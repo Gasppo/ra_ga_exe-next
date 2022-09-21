@@ -66,6 +66,7 @@ const Home: NextPage = () => {
         if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
         }
+
     }
 
     const handleUploadFile = async (file: File[]) => {
@@ -93,11 +94,6 @@ const Home: NextPage = () => {
                         <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
-                                <div  >
-                                    <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7" onClick={advanceStep}>
-                                        Ficha Técnica
-                                    </h1>
-                                </div>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <FormProvider {...formContext} >
                                     <ErrorAlerter />

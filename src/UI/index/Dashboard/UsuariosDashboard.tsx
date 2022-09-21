@@ -1,14 +1,14 @@
-import React from 'react'
-import BasicUserTable from '../../../utils/Examples/BasicUserTable'
-import EditIcon from '@mui/icons-material/Edit';
-import { InputBase, Link, TextField } from '@mui/material';
-import Image from 'next/image';
-import { useSession } from 'next-auth/react';
 import AddIcon from '@mui/icons-material/Add';
-import ActionButton from './ActionButton';
+import DownloadIcon from '@mui/icons-material/Download';
+import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SearchIcon from '@mui/icons-material/Search';
-import DownloadIcon from '@mui/icons-material/Download';
+import { InputBase, TextField } from '@mui/material';
+import { useSession } from 'next-auth/react';
+import Image from 'next/image';
+import BasicUserTable from '../../../utils/Examples/BasicUserTable';
+import PageTitle from '../../Generic/Utils/PageTitle';
+import ActionButton from './ActionButton';
 
 const UsuariosDashboard = () => {
 
@@ -18,19 +18,9 @@ const UsuariosDashboard = () => {
 
     return (
         <div>
-            <div>
-                <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7">
-                    Usuarios
-                </h1>
-                <Link href='/' className='md:ml-7'>
-                    Volver al inicio
-                </Link>
-            </div>
+            <PageTitle title='Usuarios' hasBack />
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
-
-
-
                     <div className="text-xl my-8 flex flex-row justify-between" >
                         <div className='border-gray-400 border-2 rounded-xl w-2/3 p-2 flex items-center shadow-md'>
                             <SearchIcon className='w-1/12' />

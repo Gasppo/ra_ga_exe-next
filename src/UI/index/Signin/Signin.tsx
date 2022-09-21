@@ -5,6 +5,7 @@ import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
 import { sendEmail } from '../../../utils/queries/user'
+import PageTitle from '../../Generic/Utils/PageTitle'
 import ModalComponent from '../../Modal/ModalComponent'
 import RecoveryForm from './RecoveryForm'
 import SignInForm from './SignInForm'
@@ -39,7 +40,8 @@ const Signin = ({ onClose, open }: SigninProps) => {
     const { data: emailData, mutateAsync, isLoading: loadingRecovery, error } = useMutation<{ message?: string }, { error?: string | { formErrors?: string[], fieldErrors?: { [key: string]: string[] } } }, { email: string }>(sendEmail, {
         onError: (error) => {
             if (typeof error.error === 'string') addError(error.error)
-        }
+        },
+        onSuccess: () => { addError('Correo enviado!', 'success'), onClose() }
     })
 
     const errors = error?.error ? (typeof error?.error === 'string' ? {} : error.error) : {}
@@ -94,11 +96,7 @@ const Signin = ({ onClose, open }: SigninProps) => {
         <ModalComponent open={open} onClose={onClose} size='small' ref={containerRef}>
             <LoadingIndicator show={loading || loadingRecovery} >
                 <div className="container mx-auto flex flex-col items-center rounded-none">
-                    <div>
-                        <h1 className="text-xl md:text-[1.5rem] leading-normal font-extrabold text-gray-700">
-                            {emailRecovery ? 'Recuperar contraseña' : 'Iniciar sesión'}
-                        </h1>
-                    </div>
+                    <PageTitle title={emailRecovery ? 'Recuperar contraseña' : 'Iniciar sesión'} size='small' />
                     <div className="mt-10" ref={containerRef}>
                         <Slide in={emailRecovery} direction="left" container={containerRef.current}>
                             <div>

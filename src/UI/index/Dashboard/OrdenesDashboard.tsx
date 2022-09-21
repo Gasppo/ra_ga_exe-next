@@ -1,20 +1,14 @@
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputBase, Link } from '@mui/material';
+import { InputBase } from '@mui/material';
 import BasicOrderTable from '../../../utils/Examples/BasicOrderTable';
+import PageTitle from '../../Generic/Utils/PageTitle';
 
 const UsuariosDashboard = () => {
 
     return (
         <div>
-            <div>
-                <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7">
-                    Ordenes
-                </h1>
-                <Link href='/' className='md:ml-7'>
-                    Volver al inicio
-                </Link>
-            </div>
+            <PageTitle title='Ordenes' hasBack />
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
 

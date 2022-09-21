@@ -13,6 +13,7 @@ import DevelopmentForm from "../UI/cotizador/Price Checker/DevelopmentForm";
 import ModelForm from "../UI/cotizador/Price Checker/ModelForm";
 import PriceCheckerSteps from "../UI/cotizador/Price Checker/PriceCheckerSteps";
 import ProductionForm from "../UI/cotizador/Price Checker/ProductionForm";
+import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { CotizadorForm, emptyCotizadorForm } from "../UI/Types/cotizadorTypes";
@@ -36,6 +37,7 @@ const Home: NextPage = () => {
     const { isLoading: isUploadingFiless, mutateAsync, } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
+
     const { data: sessionData } = useSession()
     const [price] = useState(0)
     const [step, setStep] = useState(0)
@@ -92,11 +94,7 @@ const Home: NextPage = () => {
                     <div>
                         <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-                                <div  >
-                                    <h1 className="text-5xl md:text-[4rem] leading-normal font-extrabold text-gray-700 md:ml-7" onClick={advanceStep}>
-                                        Cotizador
-                                    </h1>
-                                </div>
+                                <PageTitle title="Cotizador" />
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <FormProvider {...formContext} >
                                     <ErrorAlerter />
@@ -117,9 +115,6 @@ const Home: NextPage = () => {
                                                 </div>
                                                 {step !== 3 && <div className="mx-4" >
                                                     <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
-                                                </div>}
-                                                {step !== 2 && <div className="mx-4 hidden md:flex" >
-                                                    <Button variant="outlined" disabled={continueDisabled} type="submit">Submit [DEBUG]</Button>
                                                 </div>}
                                                 {step === 2 && <div className="mx-4 md:flex" >
                                                     <Button variant="outlined" disabled={submitDisabled} type="submit">Submit </Button>

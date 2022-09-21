@@ -38,16 +38,6 @@ const RecoveryForm = (props: RecoveryFormProps) => {
                         <button type='submit'>{'Enviar correo'}</button>
                     </div>
                 </div>}
-                {sent && (
-                    <div className='flex justify-between'>
-                        <div className='mt-10  text-gray-700 p-2 mx-2 rounded-lg hover:animate-pulse'>
-                            <button type='button' onClick={onClose}>Cancelar</button>
-                        </div>
-                        <div className='mt-10 bg-gray-700 text-white p-2 mx-2 rounded-lg hover:animate-pulse'>
-                            <button type='button' onClick={onRecovery}>Iniciar sesion</button>
-                        </div>
-                    </div>
-                )}
             </div>
         </form>
     )

@@ -64,6 +64,7 @@ model User {
     roleId        String?      @default("cl79gksfz0015nrvhrqpdy8ya")
     password      String?
     ResetToken    ResetToken[]
+    orders        Orden[]
 }
 
 model VerificationToken {
@@ -101,10 +102,9 @@ model Categoria {
     idComplexity    String
     complexity      Complexity      @relation(fields: [idComplexity], references: [id])
     clothesCategory ClothesCategory @relation(fields: [idCC], references: [id])
-    //orden Orden?
-
     nombre          String
     precioEnDolares Float
+    Orden           Orden[]
 }
 
 model Corte {
@@ -122,12 +122,14 @@ model Confeccion {
     factorDeAjuste Float
 }
 
-model Servicios {
-    id                  String @id @default(cuid())
+model Servicio {
+    id                  String            @id @default(cuid())
     nombre              String
     factorDeAjusteMolde Float
     factorDeAjusteAvio  Float
-    servicioPorOrden ServicioPorOrden[]
+    servicioPorOrden    ArchivoServicio[]
+
+    @@map("Servicios")
 }
 
 model PrecioDelDolar {
@@ -138,30 +140,30 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id String @id @default(cuid())
-    idCategoria String @unique
-    //categoria Categoria @relation(fields: [idCategoria], references: [id]) 
-    nombre String
-    cantidad Int
-    idEstado Int @unique
-    estado Estado @relation(fields: [idEstado] ,references: [id])
-    //Deberia ser una relacion OneToMany con model User pero borraria toda la base de User mepa :(
-    idUsuario String
-    servicioPorOrden ServicioPorOrden[]
+    id               String            @id @default(cuid())
+    idCategoria      String            @unique
+    categoria        Categoria         @relation(fields: [idCategoria], references: [id])
+    nombre           String
+    cantidad         Int
+    idEstado         Int               @unique
+    estado           EstadoOrden       @relation(fields: [idEstado], references: [id])
+    archivosServicio ArchivoServicio[]
+    User             User              @relation(fields: [userId], references: [id])
+    userId           String
 }
 
-model Estado {
-    id Int @id @default(autoincrement())
+model EstadoOrden {
+    id     Int    @id @default(autoincrement())
     nombre String
-    orden Orden?
+    orden  Orden?
 }
 
-model ServicioPorOrden {
-    id Int @id @default(autoincrement())
-    idOrden String
-    orden Orden @relation(fields: [idOrden],references: [id])
-    idServicio String 
-    servicio Servicios @relation(fields: [idServicio],references: [id])
-    archivo String
+model ArchivoServicio {
+    id            Int      @id @default(autoincrement())
+    idOrden       String
+    orden         Orden    @relation(fields: [idOrden], references: [id])
+    idServicio    String
+    servicio      Servicio @relation(fields: [idServicio], references: [id])
+    url           String
     observaciones String
 }

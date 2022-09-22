@@ -2,7 +2,7 @@ import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { Divider, IconButton } from "@mui/material";
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { FichaTecnicaForm } from '../../Types/cotizadorTypes';
+import { FichaTecnicaForm } from '../../Types/fichaTecnicaTypes';
 import { CotizadorFormItem } from '../Inputs/CotizadorSelect';
 import FileInfoTag from '../Inputs/FileInfoTag';
 

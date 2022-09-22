@@ -101,6 +101,8 @@ model Categoria {
     idComplexity    String
     complexity      Complexity      @relation(fields: [idComplexity], references: [id])
     clothesCategory ClothesCategory @relation(fields: [idCC], references: [id])
+    //orden Orden?
+
     nombre          String
     precioEnDolares Float
 }
@@ -125,6 +127,7 @@ model Servicios {
     nombre              String
     factorDeAjusteMolde Float
     factorDeAjusteAvio  Float
+    servicioPorOrden ServicioPorOrden[]
 }
 
 model PrecioDelDolar {
@@ -132,4 +135,33 @@ model PrecioDelDolar {
     precio     Float
     fechaDesde DateTime
     fechaHasta DateTime
+}
+
+model Orden {
+    id String @id @default(cuid())
+    idCategoria String @unique
+    //categoria Categoria @relation(fields: [idCategoria], references: [id]) 
+    nombre String
+    cantidad Int
+    idEstado Int @unique
+    estado Estado @relation(fields: [idEstado] ,references: [id])
+    //Deberia ser una relacion OneToMany con model User pero borraria toda la base de User mepa :(
+    idUsuario String
+    servicioPorOrden ServicioPorOrden[]
+}
+
+model Estado {
+    id Int @id @default(autoincrement())
+    nombre String
+    orden Orden?
+}
+
+model ServicioPorOrden {
+    id Int @id @default(autoincrement())
+    idOrden String
+    orden Orden @relation(fields: [idOrden],references: [id])
+    idServicio String 
+    servicio Servicios @relation(fields: [idServicio],references: [id])
+    archivo String
+    observaciones String
 }

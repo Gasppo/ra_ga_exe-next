@@ -1,13 +1,14 @@
 import { Paths } from "../Types/nestedObjTypes";
 import { Renderers } from "./formRenderers";
 
+type UpToTwelve = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
 export interface LayoutElement<Model> {
     type: Renderers;
     spacing?: number;
     elements?: LayoutElement<Model>[];
     label?: string;
     scope?: Paths<Model>;
-    width?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+    width?: UpToTwelve | { xs?: UpToTwelve, sm?: UpToTwelve, md?: UpToTwelve, lg?: UpToTwelve, xl?: UpToTwelve };
     textStyle?: string;
     options?: Options;
     className?: string;
@@ -18,7 +19,14 @@ export interface LayoutElement<Model> {
     divider?: string;
     wrap?: boolean;
     justifyContent?: string;
+    rules?: Rule<Model>[];
 
+}
+
+
+export interface Rule<Model> {
+    type: 'required' | 'min' | 'max' | 'minLength' | 'maxLength' | 'pattern' | 'validate';
+    scope?: Paths<Model>;
 }
 
 export interface Options {
@@ -27,6 +35,10 @@ export interface Options {
     size?: 'small' | 'medium'
     variant?: 'standard' | 'outlined' | 'filled';
     disabled?: boolean,
+    required?: boolean,
     helperText?: string
-    name?: string
+    optionsName?: string
+    labelPlacement?: 'start' | 'end' | 'top' | 'bottom'
+    multiline?: number
+    multifile?: boolean
 }

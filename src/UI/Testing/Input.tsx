@@ -1,6 +1,7 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { Controller } from 'react-hook-form';
 import { LayoutElement } from './types';
+import { useIsDisabled } from './useIsDisabled';
 
 export type InputProps<Model> = {
     layout: LayoutElement<Model>;
@@ -11,7 +12,7 @@ export type InputProps<Model> = {
 function Input<Model>(props: InputProps<Model>) {
 
     const { layout, ...textFieldProps } = props
-
+    const isDisabled = useIsDisabled(layout?.rules || [])
 
 
     return (<Controller
@@ -23,7 +24,7 @@ function Input<Model>(props: InputProps<Model>) {
             return (
                 <TextField
                     {...textFieldProps}
-                    disabled={layout?.options?.disabled}
+                    disabled={layout?.options?.disabled || isDisabled}
                     value={val}
                     fullWidth
                     InputProps={{
@@ -40,6 +41,8 @@ function Input<Model>(props: InputProps<Model>) {
                     label={layout?.label}
                     className={layout?.className ? layout?.className : "border-gray-50"}
                     onChange={onChange}
+                    multiline={!!layout?.options?.multiline}
+                    minRows={layout?.options?.multiline}
 
                 />
             )

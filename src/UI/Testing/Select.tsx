@@ -15,7 +15,7 @@ export type SelectProps<Model> = {
 function Select<Model>(props: SelectProps<Model>) {
     const { layout, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
-    const options = context?.[layout?.options?.name] || []
+    const options = context?.[layout?.options?.optionsName] || []
     console.log(options)
     return (
         <>

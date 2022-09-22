@@ -18,7 +18,7 @@ export const clothingSelectionLayout: LayoutElement<FichaTecnicaForm> = {
             scope: 'tipoPrenda.name',
             label: 'Tipo de prenda',
             options: {
-                name: 'clothesData',
+                optionsName: 'clothesData',
                 helperText: 'Seleccione categoría de la prenda'
             }
         }

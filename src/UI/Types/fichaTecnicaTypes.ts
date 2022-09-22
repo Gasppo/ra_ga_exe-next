@@ -1,78 +1,63 @@
-import { ClothesCategory, Complexity } from "@prisma/client"
+import { ClothesCategory } from "@prisma/client"
 
-export type PriceCheckerModel = {
+export type SeleccionPrendaForm = {
     cliente: string,
-    tipoPrenda: ClothesCategory | '',
-    complejidad: Complexity | ''
+    tipoPrenda: ClothesCategory | ''
 }
 
-export type PriceCheckerDevelopmentForm = {
+export type MolderiaForm = {
     molderiaBase: {
-        selected: boolean
-    },
-    digitalizacionYProgresion: {
         selected: boolean,
-        moldes: number,
-        avios: number
-    },
-    impresionMolde: {
-        selected: boolean,
-        meters: number
+        observaciones: string
     },
     geometral: {
-        selected: boolean
-    },
-    corteMuestra: {
         selected: boolean,
-        telaCorte: string
-    },
-    confeccionMuestrista: {
-        selected: boolean
-    },
-    muestraProduccion: {
-        selected: boolean
-    },
-    envios: {
-        selected: boolean,
-        viajes: number,
-        total: number
+        observaciones: string
     }
 }
 
-export type PriceCheckerProductionForm = {
-    fichaTecnica: {
+export type EspecificacionesForm = {
+    logoMarca: {
         selected: boolean,
-        cantidad: number
+        observaciones: string
     },
-    muestraProduccion: {
-        selected: boolean
-    },
-    programacionTizada: {
+    bolsillos: {
         selected: boolean,
-        metros: number
+        cantidad: number,
+        observaciones: string
     },
-    impresionTizada: {
+    elastico: {
         selected: boolean,
-        metros: number
+        metros: number,
+        observaciones: string
     },
-    corte: {
+    botones: {
         selected: boolean,
-        cantPrendas: number,
-        precioPorPrenda: number
+        cantidad: number,
+        observaciones: string
     },
-    confeccion: {
+    cierre: {
         selected: boolean,
-        cantPrendas: number,
-        precioPorPrenda: number
+        observaciones: string
     },
-    envios: {
+    manga: {
         selected: boolean,
-        viajes: number
+        observaciones: string
+    }
+}
+
+export type TallesForm = {
+    talles: {
+        selected: boolean,
+        talle: Array <{
+            nombre: string,
+            medidas: string
+        }>
     }
 }
 
 
-export type CotizadorForm = PriceCheckerDevelopmentForm & PriceCheckerProductionForm & PriceCheckerModel & {
+export type FichaTecnicaForm = SeleccionPrendaForm & MolderiaForm & EspecificacionesForm & TallesForm & {
     user: {
         name?: string;
         email?: string;
@@ -82,62 +67,58 @@ export type CotizadorForm = PriceCheckerDevelopmentForm & PriceCheckerProduction
 }
 
 //generate an empty object with the same structure as the type CotizadorForm
-export const emptyCotizadorForm: CotizadorForm = {
-    molderiaBase: {
-        selected: false
-    },
-    digitalizacionYProgresion: {
-        selected: false,
-        moldes: 0,
-        avios: 0
-    },
-    impresionMolde: {
-        selected: false,
-        meters: 0
-    },
-    geometral: {
-        selected: false
-    },
-    corteMuestra: {
-        selected: false,
-        telaCorte: ''
-    },
-    confeccionMuestrista: {
-        selected: false
-    },
-    muestraProduccion: {
-        selected: false
-    },
-    envios: {
-        selected: false,
-        viajes: 0,
-        total: 0
-    },
-    fichaTecnica: {
-        selected: false,
-        cantidad: 0
-    },
-    programacionTizada: {
-        selected: false,
-        metros: 0
-    },
-    impresionTizada: {
-        selected: false,
-        metros: 0
-    },
-    corte: {
-        selected: false,
-        cantPrendas: 0,
-        precioPorPrenda: 0
-    },
-    confeccion: {
-        selected: false,
-        cantPrendas: 0,
-        precioPorPrenda: 0
-    },
+export const fichaTecnicaVaciaForm: FichaTecnicaForm = {
+    
+    // Paso 1: Seleccion de prenda
     cliente: '',
     tipoPrenda: '',
-    complejidad: '',
+
+    // Paso 2: Moldería
+    molderiaBase: {
+        selected: false,
+        observaciones: ''
+    },
+    geometral: {
+        selected: false,
+        observaciones: ''
+    },
+
+    // Paso 3: Especificaciones
+    logoMarca: {
+        selected: false,
+        observaciones: ''
+    },
+    bolsillos: {
+        selected: false,
+        cantidad: 0,
+        observaciones: ''
+    },
+    elastico: {
+        selected: false,
+        metros: 0,
+        observaciones: ''
+    },
+    botones: {
+        selected: false,
+        cantidad: 0,
+        observaciones: ''
+    },
+    cierre: {
+        selected: false,
+        observaciones: ''
+    },
+    manga: {
+        selected: false,
+        observaciones: ''
+    },
+    
+    // Paso 4: Talles
+    talles: {
+        selected: false,
+        talle: []
+    },
+
+
     user: {
         name: '',
         email: '',

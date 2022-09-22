@@ -44,17 +44,27 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+model ResetToken {
+    id      String   @id @default(cuid())
+    token   String   @unique
+    userId  String
+    expires DateTime
+    user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 model User {
-    id            String    @id @default(cuid())
+    id            String       @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?      @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
-    role          Role?     @relation(fields: [roleId], references: [id], onDelete: Cascade)
-    roleId        String?   @default("cl79gksfz0015nrvhrqpdy8ya")
+    role          Role?        @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    roleId        String?      @default("cl79gksfz0015nrvhrqpdy8ya")
     password      String?
+    ResetToken    ResetToken[]
+    orders        Orden[]
 }
 
 model VerificationToken {
@@ -73,13 +83,87 @@ model Role {
 }
 
 model ClothesCategory {
-    id      String @id @default(cuid())
-    name    String @unique
-    picture String
+    id        String      @id @default(cuid())
+    name      String      @unique
+    picture   String
+    Categoria Categoria[]
 }
 
 model Complexity {
-    id          String @id @default(cuid())
-    name        String @unique
+    id          String      @id @default(cuid())
+    name        String      @unique
     description String
+    Categoria   Categoria[]
+}
+
+model Categoria {
+    id              String          @id @default(cuid())
+    idCC            String
+    idComplexity    String
+    complexity      Complexity      @relation(fields: [idComplexity], references: [id])
+    clothesCategory ClothesCategory @relation(fields: [idCC], references: [id])
+    nombre          String
+    precioEnDolares Float
+    Orden           Orden[]
+}
+
+model Corte {
+    id             String @id @default(cuid())
+    nombre         String
+    cantidadMin    Int
+    cantidadMax    Int
+    factorDeAjuste Float
+}
+
+model Confeccion {
+    id             String @id @default(cuid())
+    cantidadMin    Int
+    cantidadMax    Int
+    factorDeAjuste Float
+}
+
+model Servicio {
+    id                  String            @id @default(cuid())
+    nombre              String
+    factorDeAjusteMolde Float
+    factorDeAjusteAvio  Float
+    servicioPorOrden    ArchivoServicio[]
+
+    @@map("Servicios")
+}
+
+model PrecioDelDolar {
+    id         String   @id @default(cuid())
+    precio     Float
+    fechaDesde DateTime
+    fechaHasta DateTime
+}
+
+model Orden {
+    id               String            @id @default(cuid())
+    idCategoria      String            @unique
+    categoria        Categoria         @relation(fields: [idCategoria], references: [id])
+    nombre           String
+    cantidad         Int
+    idEstado         Int               @unique
+    estado           EstadoOrden       @relation(fields: [idEstado], references: [id])
+    archivosServicio ArchivoServicio[]
+    User             User              @relation(fields: [userId], references: [id])
+    userId           String
+}
+
+model EstadoOrden {
+    id     Int    @id @default(autoincrement())
+    nombre String
+    orden  Orden?
+}
+
+model ArchivoServicio {
+    id            Int      @id @default(autoincrement())
+    idOrden       String
+    orden         Orden    @relation(fields: [idOrden], references: [id])
+    idServicio    String
+    servicio      Servicio @relation(fields: [idServicio], references: [id])
+    url           String
+    observaciones String
 }

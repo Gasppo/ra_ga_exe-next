@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import BasicTable from '../../../utils/Examples/BasicOrderTable'
+import BasicOrderTable from '../../../utils/Examples/BasicOrderTable'
 import EditIcon from '@mui/icons-material/Edit';
 import { Button, InputBase, Link, TextField } from '@mui/material';
 import Image from 'next/image';
@@ -26,8 +26,8 @@ const DashboardCliente = () => {
                 <div />
                 {data?.user && <div className="hidden md:flex md:mr-10 mt-10" >
                     <div className="rounded-2xl" >
-                        <Link href={'/cotizador'}>
-                            <Button variant="text" >Nueva Orden</Button>
+                        <Link href={'/fichaTecnicaForm'}>
+                            <Button variant="text" >Nueva cotización</Button>
                         </Link>
                     </div>
                 </div>}
@@ -47,7 +47,7 @@ const DashboardCliente = () => {
                         </div>
                     </div>
                     <div>
-                        <BasicTable />
+                        <BasicOrderTable />
                     </div>
                 </div>
                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
@@ -83,7 +83,7 @@ const DashboardCliente = () => {
                         </div>
                     </div>
 
-                    <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4'>
+                    <div className=' bg-red-300 border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4'>
                         <div className="flex flex-row flex-wrap items-center justify-start mt-2" >
                             <ActionButton Icon={AddIcon} label="Nueva Cotizacion" href='/cotizador' />
                             <ActionButton Icon={ManageAccountsIcon} label="Editar mi Perfil" href='/cotizador' />

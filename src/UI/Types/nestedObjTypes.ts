@@ -1,3 +1,8 @@
 export type Paths<T> = T extends object
-    ? { [K in keyof T]-?: K extends string ? `${K}` | `${K}.${Paths<T[K]>}` : never }[keyof T]
+    ? { [K in keyof T]-?: K extends string ?
+        T[K] extends Array<infer U> ?
+        `${K}[${number}].${Paths<U>}` :
+        `${K}` | `${K}.${Paths<T[K]>}` : never
+
+    }[keyof T]
     : never;

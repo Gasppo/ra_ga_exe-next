@@ -1,46 +1,25 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../../../server/db/client";
-import sha256 from "crypto-js/sha256";
+import { checkIfUserExists, hashPassword } from "../../../utils/dbcalls/user";
 
-export default async function handle(
-    req: NextApiRequest,
-    res: NextApiResponse,
-) {
-    if (req.method === "POST") {
-        await handlePOST(req, res);
-    } else {
+export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+    if (req.method === "POST") await handlePOST(req, res);
+    else {
         res.status(400).end(`The HTTP ${req.method} method is not supported at this route.`);
     }
 }
 
-const hashPassword = (password: string) => {
-    return sha256(password).toString();
-};
 
-// POST /api/user
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     try {
         const { username, password } = req.body;
-        if (!username || !password) {
-            throw "Ingresar usuario y contraseña";
-        }
-        
-        const user = await prisma.user.findFirst({
-            where: { email: req.body.username },
-            select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true,
-                password: true,
-            },
-        });
-        if (user && user.password == hashPassword(req.body.password)) {
-            res.json(user);
-        }
-        else {
-            throw 'Credenciales incorrectas';
-        }
+        if (!username || !password) throw "Ingresar usuario y contraseña";
+
+        const user = await checkIfUserExists({ email: username });
+        console.log(user.password , hashPassword(req.body.password))
+
+        if (!user || user.password !== hashPassword(req.body.password)) throw 'Credenciales incorrectas';
+
+        res.json(user);
     }
     catch (err) {
         res.status(400).json({ error: err });

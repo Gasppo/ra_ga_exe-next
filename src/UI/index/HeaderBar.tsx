@@ -83,9 +83,9 @@ const HeaderBar = () => {
                         </div>
                     </div>
                 )}
-        </div>
-            { openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} /> }
-    { openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} /> }
+            </div>
+            {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} />}
+            {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
         </div >
     )
 }

@@ -54,7 +54,6 @@ const rows = [
   createData('43-T-PRIMAVERA', 'Media', 25, 'Cancelado'),
   createData('44-J-PRIMAVERA', 'Buzo', 100, 'Rechazado'),
   createData('45-P-VERANO', 'Remera', 110, 'Aguardando Seña'),
-
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {

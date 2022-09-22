@@ -10,7 +10,7 @@ interface PriceCheckerStepsProps {
 
 const PriceCheckerSteps = (props: PriceCheckerStepsProps) => {
 
-    const { step, steps, price, isStepOptional } = props
+    const { step, steps, isStepOptional } = props
 
     return (
         <div className="flex flex-col md:flex-row mt-10 items-center md:justify-between">

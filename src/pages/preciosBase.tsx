@@ -5,13 +5,9 @@ import Head from "next/head";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
-import FormItem from "../UI/Testing/FormItem";
-import { FichaTecnicaForm } from "../UI/Types/fichaTecnicaTypes";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 
 const Home: NextPage = () => {
-
-    const Item = FormItem<FichaTecnicaForm>
 
     return (
         <div className="bg-split-white-black">

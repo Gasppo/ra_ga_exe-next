@@ -5,7 +5,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
@@ -79,6 +79,10 @@ const Home: NextPage = () => {
         await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
     }
 
+    useEffect(() => {
+        console.log(clothesData)
+    }, [clothesData]);
+    
     return (
 
         <div className="bg-split-white-black">

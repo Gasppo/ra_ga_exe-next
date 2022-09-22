@@ -41,4 +41,5 @@ export interface Options {
     labelPlacement?: 'start' | 'end' | 'top' | 'bottom'
     multiline?: number
     multifile?: boolean
+    textType?: string
 }

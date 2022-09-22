@@ -15,7 +15,7 @@ const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} $
 const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
 export const emailErrorMessage = () => `Formato de correo electrónico inválido`;
 
-const User = z.object({
+export const UserSchema = z.object({
     name: z.string().min(1, { message: minCharErrorMessage(1) }).max(50, { message: maxCharErrorMessage(50) }),
     email: z.string().email({ message: emailErrorMessage() }),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
@@ -27,7 +27,7 @@ const User = z.object({
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const { name, email, password } = User.parse(req.body);
+        const { name, email, password } = UserSchema.parse(req.body);
         const user = await createNewUser({ name, email, password });
 
         await createCredentialsAccountForUser(user.id);

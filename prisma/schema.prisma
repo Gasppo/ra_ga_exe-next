@@ -101,7 +101,8 @@ model Categoria {
     idComplexity    String
     complexity      Complexity      @relation(fields: [idComplexity], references: [id])
     clothesCategory ClothesCategory @relation(fields: [idCC], references: [id])
-    orden Orden?
+    //orden Orden?
+
     nombre          String
     precioEnDolares Float
 }
@@ -139,7 +140,8 @@ model PrecioDelDolar {
 model Orden {
     id String @id @default(cuid())
     idCategoria String @unique
-    categoria Categoria @relation(fields: [idCategoria], references: [id]) 
+    //categoria Categoria @relation(fields: [idCategoria], references: [id]) 
+    nombre String
     cantidad Int
     idEstado Int @unique
     estado Estado @relation(fields: [idEstado] ,references: [id])

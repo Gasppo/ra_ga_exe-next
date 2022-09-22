@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form";
-import { FichaTecnicaForm } from "../../Types/cotizadorTypes";
+import { FichaTecnicaForm } from "../../Types/fichaTecnicaTypes";
 
 const ClothingConfirmationForm = () => {
 

@@ -1,4 +1,4 @@
-import { LayoutElement } from "../../../Testing/types";
+import { LayoutElement } from "../../../Forms/types";
 import { FichaTecnicaForm } from "../../../Types/fichaTecnicaTypes";
 
 export const clothingSelectionLayout: LayoutElement<FichaTecnicaForm> = {

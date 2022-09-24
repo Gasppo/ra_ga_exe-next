@@ -7,7 +7,7 @@ import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
 import { PasswordResetData, PasswordResetResponse, updatePasssword, UserHandlerError } from '../../../utils/queries/user'
-import FormItem from '../../Testing/FormItem'
+import FormItem from '../../Forms/FormItem'
 import { passwordResetLayout } from './form/passwordReset.layout'
 import { PasswordResetSchema } from './form/passwordResetSchema'
 

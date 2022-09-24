@@ -1,4 +1,4 @@
-import FormItem from '../../../Testing/FormItem'
+import FormItem from '../../../Forms/FormItem'
 import { signupLayout } from '../form/signup.layout'
 
 

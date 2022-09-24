@@ -1,5 +1,5 @@
 import { useFormContext } from "react-hook-form"
-import { Rule } from "./types"
+import { Rule } from "../UI/Forms/types"
 
 
 export function useIsDisabled<Model>(rules: Rule<Model>[]) {

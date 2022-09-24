@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import FormItem from '../../Testing/FormItem';
+import FormItem from '../../Forms/FormItem';
 import { FichaTecnicaForm } from '../../Types/fichaTecnicaTypes';
 import { clothingMouldsLayout } from './forms/clothingMoulds.layout';
 

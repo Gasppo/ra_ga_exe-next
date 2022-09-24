@@ -1,4 +1,4 @@
-import { LayoutElement } from "../../../Testing/types";
+import { LayoutElement } from "../../../Forms/types";
 
 export const passwordResetLayout: LayoutElement<{ password: string, confirmPassword: string }> = {
     type: 'Vertical',

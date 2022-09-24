@@ -3,8 +3,8 @@ import MenuItem from '@mui/material/MenuItem'
 import TextField, { TextFieldProps } from '@mui/material/TextField'
 import { useContext } from 'react'
 import { Controller } from 'react-hook-form'
-import { SelectOptionsContext } from './SelectOptionsContext'
-import { LayoutElement } from './types'
+import { SelectOptionsContext } from '../SelectOptionsContext'
+import { LayoutElement } from '../types'
 
 export type SelectProps<Model> = {
     layout: LayoutElement<Model>;

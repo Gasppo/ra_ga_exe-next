@@ -1,7 +1,7 @@
 import { TextField, TextFieldProps } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { LayoutElement } from './types';
-import { useIsDisabled } from './useIsDisabled';
+import { useIsDisabled } from '../../../utils/useIsDisabled';
+import { LayoutElement } from '../types';
 
 export type InputProps<Model> = {
     layout: LayoutElement<Model>;

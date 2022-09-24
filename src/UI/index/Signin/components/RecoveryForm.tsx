@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
-import FormItem from '../../../Testing/FormItem'
+import FormItem from '../../../Forms/FormItem'
 import { recoveryLayout } from '../forms/recovery.layout'
 import { RecoverySchema } from '../forms/recoverySchema'
 

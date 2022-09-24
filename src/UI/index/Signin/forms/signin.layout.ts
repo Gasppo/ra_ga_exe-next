@@ -1,4 +1,4 @@
-import { LayoutElement } from "../../../Testing/types";
+import { LayoutElement } from "../../../Forms/types";
 import { SignInData } from "../components/SignInForm";
 
 export const signInLayout: LayoutElement<SignInData> = {

@@ -1,8 +1,8 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import clsx from 'clsx';
-import LayoutItem from './LayoutItem';
-import { LayoutElement } from './types';
+import LayoutItem from '../LayoutItem';
+import { LayoutElement } from '../types';
 
 interface VerticalProps<Model> {
     layout: LayoutElement<Model>;

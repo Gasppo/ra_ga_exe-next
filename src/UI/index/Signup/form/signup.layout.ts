@@ -1,5 +1,5 @@
 import { SignupData } from "../../../../utils/queries/user";
-import { LayoutElement } from "../../../Testing/types";
+import { LayoutElement } from "../../../Forms/types";
 
 export const signupLayout: LayoutElement<SignupData> = {
     type: 'Vertical',

@@ -1,10 +1,10 @@
 import { Controller } from 'react-hook-form';
-import { LayoutElement } from './types';
+import { LayoutElement } from '../types';
 
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { IconButton } from "@mui/material";
-import FileInfoTag from '../cotizador/Inputs/FileInfoTag';
-import { useIsDisabled } from './useIsDisabled';
+import FileInfoTag from '../../cotizador/Inputs/FileInfoTag';
+import { useIsDisabled } from '../../../utils/useIsDisabled';
 
 export type UploaderProps<Model> = {
     layout: LayoutElement<Model>;

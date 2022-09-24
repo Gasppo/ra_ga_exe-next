@@ -1,4 +1,4 @@
-import { LayoutElement } from "../../../Testing/types";
+import { LayoutElement } from "../../../Forms/types";
 
 export const recoveryLayout: LayoutElement<{ email: string }> = {
     type: 'Horizontal',

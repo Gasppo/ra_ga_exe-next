@@ -1,6 +1,6 @@
 import { FormControlLabel, FormLabel, Switch as MSwitch } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { LayoutElement } from './types';
+import { LayoutElement } from '../types';
 
 
 

@@ -19,7 +19,7 @@ function Horizontal<Model>(props: VerticalProps<Model>) {
     return (
         <>
             {props?.layout?.title ? <Typography className={`${props?.layout?.titleClassName || "text-gray-600 text-14 mb-20"}`}>{props?.layout?.title}</Typography> : null}
-            <Grid wrap={wrap ? 'wrap' : 'nowrap'} justifyContent={'flex-start'} spacing={props.layout.spacing || 1} container direction="row" className={clsx(props.layout.className, { [`${props.layout.divider}:divide-x divide-gray-200`]: props.layout.divider })}>
+            <Grid wrap={wrap ? 'wrap' : 'nowrap'} justifyContent={props?.layout?.justifyContent} alignItems={'center'} spacing={props.layout.spacing || 1} container direction="column" className={clsx(props.layout.className, { [`${props.layout.divider}:divide-x divide-gray-200`]: props.layout.divider })}>
                 {props.layout.elements?.map((item, i) => <LayoutItem
                     parentScope={props.parentScope}
                     key={i} item={props.layout.scope ? {

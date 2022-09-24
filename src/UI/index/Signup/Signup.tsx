@@ -54,19 +54,21 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
     return (
         <ModalComponent open={open} onClose={onClose} size='small'>
-            <LoadingIndicator show={isLoading} className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
-                <PageTitle title="Crear Cuenta" size="small" />
-                <div className="mt-10" >
-                    <FormProvider  {...formContext}>
-                        <form onSubmit={formContext.handleSubmit(handleFormSubmit)} className="flex flex-col items-center justify-center">
-                            <div className="flex flex-row flex-wrap justify-center w-3/4">
-                                {completedSignUp && <SignUpCompleted onSignin={onSignin} />}
-                                {!completedSignUp && <SignUpForm />}
-                            </div>
-                            {completedSignUp && errors && <SignUpFormErrors errors={errors} />}
-                            <SignUpButtons onClose={onClose} showCreate={!completedSignUp} />
-                        </form>
-                    </FormProvider>
+            <LoadingIndicator show={isLoading}>
+                <div className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
+                    <PageTitle title="Crear Cuenta" size="small" />
+                    <div className="mt-10" >
+                        <FormProvider  {...formContext}>
+                            <form onSubmit={formContext.handleSubmit(handleFormSubmit)} className="flex flex-col items-center justify-center">
+                                <div className="flex flex-row flex-wrap justify-center w-3/4">
+                                    {completedSignUp && <SignUpCompleted onSignin={onSignin} />}
+                                    {!completedSignUp && <SignUpForm />}
+                                </div>
+                                {completedSignUp && errors && <SignUpFormErrors errors={errors} />}
+                                <SignUpButtons onClose={onClose} showCreate={!completedSignUp} />
+                            </form>
+                        </FormProvider>
+                    </div>
                 </div>
             </LoadingIndicator>
         </ModalComponent>

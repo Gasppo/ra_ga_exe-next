@@ -17,11 +17,10 @@ const ClothingDetailForm = () => {
         if (logoMarcaDisabled) setValue('files', [])
     }, [logoMarcaDisabled, setValue])
 
-    const Item = FormItem<FichaTecnicaForm>
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
-                <Item layout={clothingDetailLayout}/>
+                <FormItem layout={clothingDetailLayout}/>
         </div>
     )
 }

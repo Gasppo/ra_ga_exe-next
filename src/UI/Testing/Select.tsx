@@ -16,7 +16,6 @@ function Select<Model>(props: SelectProps<Model>) {
     const { layout, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
     const options = context?.[layout?.options?.optionsName] || []
-    console.log(options)
     return (
         <>
             <Controller

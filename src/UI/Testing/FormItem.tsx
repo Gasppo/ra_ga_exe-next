@@ -22,8 +22,8 @@ function FormItem<Model>(props: FormItemProps<Model>) {
         return <Typography className="text-red-500">{"No renderer found for type:"} {layout.type}</Typography>
     }
 
-    console.log(selectOptions)
     if (!selectOptions) return <FormComponent layout={layout} hasParent={hasParent || false} parentScope={parentScope} />
+    
     return (
         <SelectOptionsProvider value={selectOptions} >
             <FormComponent layout={layout} hasParent={hasParent || false} parentScope={parentScope} />

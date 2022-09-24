@@ -20,12 +20,10 @@ const ClothingMouldsForm = () => {
         if (geometralDisabled) setValue('files', [])
     }, [geometralDisabled, setValue])
 
-    const Item = FormItem<FichaTecnicaForm>
-
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
             <div className="form-input-section">
-                <Item layout={clothingMouldsLayout} />
+                <FormItem layout={clothingMouldsLayout} />
             </div>
         </div>
     )

@@ -60,14 +60,12 @@ const SignInForm = (props: SignInFormProps) => {
         }
     }
 
-    const Item = FormItem<SignInData>
-
     return (
         <FormProvider  {...formContext}>
             <form onSubmit={formContext.handleSubmit(loginSubmit)} className="flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center" >
                     <div className='w-64 mx-4'>
-                        <Item layout={signInLayout} />
+                        <FormItem layout={signInLayout} />
                     </div>
                     {errorFlag && <div className='text-xs mt-2 text-red-600'>
                         <p>Inicio de sesion incorrecto</p>

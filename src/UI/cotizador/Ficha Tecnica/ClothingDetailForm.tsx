@@ -1,8 +1,8 @@
+import { clothingDetailLayout } from '@UI/cotizador/Ficha Tecnica/forms/clothingDetail.layout';
+import FormItem from '@UI/Forms/FormItem';
+import { FichaTecnicaForm } from '@UI/Types/fichaTecnicaTypes';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import FormItem from '../../Forms/FormItem';
-import { FichaTecnicaForm } from '../../Types/fichaTecnicaTypes';
-import { clothingDetailLayout } from './forms/clothingDetail.layout.';
 
 const ClothingDetailForm = () => {
 
@@ -20,7 +20,7 @@ const ClothingDetailForm = () => {
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
-                <FormItem layout={clothingDetailLayout}/>
+            <FormItem layout={clothingDetailLayout} />
         </div>
     )
 }

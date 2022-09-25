@@ -26,7 +26,7 @@ const UsuariosDashboard = () => {
                         </div>
                     </div>
                     <div>
-                        <BasicOrderTable />
+                        <BasicOrderTable rows={[]} />
                     </div>
                 </div>
 

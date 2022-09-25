@@ -19,10 +19,10 @@ import { FichaTecnicaForm, fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnic
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
+import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
 import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
 import PriceCheckerSteps from "../UI/cotizador/Stepper";
-
+import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
 
@@ -42,6 +42,8 @@ const Home: NextPage = () => {
     const { data: sessionData } = useSession()
     const [price] = useState(0)
     const [step, setStep] = useState(0)
+
+    const router = useRouter()
 
     const steps = ['Selección Prenda', 'Moldería', 'Especificaciones', 'Talles', 'Confirmación']
 
@@ -63,9 +65,12 @@ const Home: NextPage = () => {
     // const continueDisabled = (step === 0) ? disableContinueModel : ((step === 1) ? disableContinueProduction : disableContinueProduction)
 
     const handleFormSubmit = async (data: FichaTecnicaForm) => {
-        if (data?.files?.length > 0) {
+        /*if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
-        }
+        }*/
+
+        createOrder(data).then((res) => { if (res.ok) return router.replace('/') })
+
 
     }
 
@@ -116,10 +121,7 @@ const Home: NextPage = () => {
                                                 {step !== 4 && <div className="mx-4" >
                                                     <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
                                                 </div>}
-                                                {step !== 2 && <div className="mx-4 hidden md:flex" >
-                                                    <Button variant="outlined" disabled={false} type="submit">Submit [DEBUG]</Button>
-                                                </div>}
-                                                {step === 2 && <div className="mx-4 md:flex" >
+                                                {step === 4 && <div className="mx-4 md:flex" >
                                                     <Button variant="outlined" disabled={false} type="submit">Submit </Button>
                                                 </div>}
                                                 <div className="mx-4" >

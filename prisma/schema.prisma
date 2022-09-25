@@ -140,27 +140,27 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id               String            @id @default(cuid())
-    idCategoria      String            @unique
-    categoria        Categoria         @relation(fields: [idCategoria], references: [id])
-    nombre           String
-    cantidad         Int
-    idEstado         Int               @unique
-    estado           EstadoOrden       @relation(fields: [idEstado], references: [id])
-    archivosServicio ArchivoServicio[]
-    User             User              @relation(fields: [userId], references: [id])
-    userId           String
+    id               String           @id @default(cuid())
+    idCategoria      String?
+    categoria        Categoria?       @relation(fields: [idCategoria], references: [id])
+    nombre           String?
+    cantidad         Int?
+    idEstado         Int?
+    estado           EstadoOrden?     @relation(fields: [idEstado], references: [id])
+    archivosServicio ArchivoServicio?
+    user             User?            @relation(fields: [userId], references: [id])
+    userId           String?
 }
 
 model EstadoOrden {
-    id     Int    @id @default(autoincrement())
+    id     Int     @id @default(autoincrement())
     nombre String
-    orden  Orden?
+    orden  Orden[]
 }
 
 model ArchivoServicio {
     id            Int      @id @default(autoincrement())
-    idOrden       String
+    idOrden       String   @unique
     orden         Orden    @relation(fields: [idOrden], references: [id])
     idServicio    String
     servicio      Servicio @relation(fields: [idServicio], references: [id])

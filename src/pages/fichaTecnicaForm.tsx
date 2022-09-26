@@ -35,7 +35,7 @@ const Home: NextPage = () => {
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
     );
 
-    const { isLoading: isUploadingFiless, mutateAsync, } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+    const { isLoading: isUploadingFiless} = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
 

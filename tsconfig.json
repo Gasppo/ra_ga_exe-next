@@ -14,7 +14,15 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "noUncheckedIndexedAccess": true
+    "noUncheckedIndexedAccess": true,
+    "baseUrl": "src",
+    "paths": {
+      "@UI/*": ["UI/*"],
+      "@styles/*": ["styles/*"],
+      "@pages/*": ["pages/*"],
+      "@server/*": ["server/*"],
+      "@utils/*": ["utils/*"],
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -22,6 +30,6 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.js"
-  ],
+, "src/UI/cotizador/Ficha Tecnica/forms/clothingDetail.layout.}ts"  ],
   "exclude": ["node_modules"]
 }

@@ -13,8 +13,8 @@ const FileInfoTag = ({ file, onRemove }: FileInfoTagProps) => {
     }
 
     return (
-        <div className=" bg-gray-200 p-1 flex flex-row m-2 items-center text-gray-800 rounded-lg" >
-            <div className='mx-2'>
+        <div className=" bg-gray-200 max-w-[10rem]  md:w-full p-1 flex flex-row m-1 items-center text-gray-800 rounded-lg" >
+            <div className='mx-2 truncate '>
                 <p>{file.name}</p>
             </div>
             <div>

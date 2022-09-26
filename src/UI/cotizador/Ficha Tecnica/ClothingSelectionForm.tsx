@@ -1,5 +1,7 @@
 import { ClothesCategory } from "@prisma/client";
-import { CotizadorFormItem } from "../Inputs/CotizadorSelect";
+import { useMemo } from "react";
+import FormItem from "../../Forms/FormItem";
+import { clothingSelectionLayout } from "./forms/clothingSelection.layout";
 
 interface ModelFormProps {
     clothesData: ClothesCategory[],
@@ -9,14 +11,12 @@ interface ModelFormProps {
 const ClothingSelectionForm = (props: ModelFormProps) => {
 
     const { clothesData } = props
+    const clothes = useMemo(() => clothesData?.map(el => ({ key: el.name, text: el.name })) || [], [clothesData])
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0">
-            <div className="md:w-3/6">
-                <CotizadorFormItem scope={"user.name"} renderer={'Input'} disabled label="Cliente" />
-            </div>
             <div className="mt-7 md:w-3/6">
-                <CotizadorFormItem renderer="Select" scope={"tipoPrenda.name"} label="Elija Categoría" options={clothesData} optionKey={"name"} optionText={'name'} helperText={"Seleccione categoría de la prenda"} />
+                <FormItem layout={clothingSelectionLayout} selectOptions={{ 'clothesData': clothes }} />
             </div>
         </div>
     )

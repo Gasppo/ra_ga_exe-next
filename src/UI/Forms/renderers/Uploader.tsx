@@ -36,7 +36,7 @@ function Uploader<Model>(props: UploaderProps<Model>) {
                                 <input multiple={layout?.options?.multifile} hidden accept="image/*" type="file" onChange={(event) => onChange(Array.from(event.target.files))} />
                                 <FileUploadIcon />
                             </IconButton>
-                            <div className='border-2 w-full mx-2 md:mx-4 p-4 flex flex-col md:flex-row md:flex-wrap overflow-x-scroll'>
+                            <div className='border-2 w-full mx-2 md:mx-4 p-4 flex flex-col md:flex-row md:flex-wrap overflow-x-hidden'>
                                 {value?.map((file: File, i: number) => <FileInfoTag file={file} key={i} onRemove={(fileName) => onChange(value?.filter((file: File) => file.name !== fileName))} />)}
                             </div>
                         </div>

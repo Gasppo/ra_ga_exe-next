@@ -32,7 +32,7 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 type Order = 'asc' | 'desc';
-type Data = Orden & { user: User; estado: EstadoOrden; }
+export type ExtendedOrdenData = Orden & { user: User; estado: EstadoOrden; }
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
@@ -61,7 +61,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof ExtendedOrdenData;
   label: string;
   numeric: boolean;
 
@@ -90,7 +90,7 @@ const headCells: readonly HeadCell[] = [
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ExtendedOrdenData) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -101,7 +101,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof ExtendedOrdenData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -200,12 +200,12 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
 };
 
 interface BasicTableProps {
-  rows: Data[];
+  rows: ExtendedOrdenData[];
 }
 
 export default function BasicTable(props: BasicTableProps) {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('cantidad');
+  const [orderBy, setOrderBy] = React.useState<keyof ExtendedOrdenData>('cantidad');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const dense = false
@@ -213,7 +213,7 @@ export default function BasicTable(props: BasicTableProps) {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof ExtendedOrdenData,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -288,7 +288,7 @@ export default function BasicTable(props: BasicTableProps) {
               rows.slice().sort(getComparator(order, orderBy)) */}
               {stableSort(props.rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: Data, index) => {
+                .map((row: ExtendedOrdenData, index) => {
                   const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 

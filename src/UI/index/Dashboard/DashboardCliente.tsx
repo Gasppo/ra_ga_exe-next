@@ -1,19 +1,18 @@
-import React, { useContext, useState } from "react";
-import BasicTable from "../../../utils/Examples/BasicOrderTable";
-import EditIcon from "@mui/icons-material/Edit";
-import { Button, InputBase, Link, TextField } from "@mui/material";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
 import AddIcon from "@mui/icons-material/Add";
-import ActionButton from "./ActionButton";
+import DownloadIcon from "@mui/icons-material/Download";
+import EditIcon from "@mui/icons-material/Edit";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SearchIcon from "@mui/icons-material/Search";
-import DownloadIcon from "@mui/icons-material/Download";
-import { errorHandle } from "../../../utils/queries/cotizador";
-import { Orden } from "@prisma/client";
+import { Button, InputBase, Link, TextField } from "@mui/material";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
-import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
+import BasicTable, { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
+import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
+import { errorHandle } from "../../../utils/queries/cotizador";
+import ActionButton from "./ActionButton";
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -21,7 +20,7 @@ const DashboardCliente = () => {
 
     const { addError } = useContext(ErrorHandlerContext);
 
-    const fetchOrders = (email: string): Promise<Orden[]> =>
+    const fetchOrders = (email: string): Promise<ExtendedOrdenData[]> =>
         fetch(`/api/orders/obtain`, {
             method: "POST",
             body: JSON.stringify({ email: email }),
@@ -77,7 +76,7 @@ const DashboardCliente = () => {
                     </div>
                     <LoadingIndicator show={isFetchingOrders}>
                         <div>
-                            <BasicTable rows={orderData || []} />
+                            <BasicTable rows={orderData} />
                         </div>
                     </LoadingIndicator>
                 </div>

@@ -9,8 +9,8 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
     
     try {
         const orders = await prisma.orden.findMany({
-            include: { User: true, estado: true },
-            where: { User: { email: req.query.email }}
+            include: { user: true, estado: true },
+            where: { user: { email: req.body.email }}
         })
         res.status(200).json(orders);
     } catch (error) {

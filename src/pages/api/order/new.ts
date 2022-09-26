@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from '@prisma/client';
+import { checkIfUserExists } from "../../../utils/dbcalls/user";
 
 const prisma = new PrismaClient()
 
@@ -19,11 +20,7 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
         }
     })
 
-    const userId = await prisma.user.findFirst({
-        where: {
-            email: req.body.user.email
-        }
-    })
+    const user = await checkIfUserExists({ email: req.body.user.email })
 
     try {
         
@@ -33,7 +30,7 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
                 nombre: categoria.nombre,
                 cantidad: 100,
                 idEstado: estado.id,
-                userId: userId.id
+                userId: user.id
         }})
 
         res.status(200).json({ message: 'Orden creada con éxito' });      

@@ -27,4 +27,6 @@ export const uploadFile = (data: FileUploadData): Promise<FileUploadResponse> =>
     .catch((error) => { console.log('Broke here'); throw error });
 
 // Crear orden
-export const createOrder = (data: FichaTecnicaForm) => fetch(`/api/order/new`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
+export const createOrder = (data: FichaTecnicaForm): Promise<{ message: string }> => fetch(`/api/order/new`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });

@@ -5,14 +5,17 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useContext, useMemo, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
-import PageTitle from "../UI/Generic/Utils/PageTitle";
 import ClothingConfirmationForm from "../UI/cotizador/Ficha Tecnica/ClothingConfirmationForm";
 import ClothingDetailForm from "../UI/cotizador/Ficha Tecnica/ClothingDetailForm";
+import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
 import ClothingSelectionForm from "../UI/cotizador/Ficha Tecnica/ClothingSelectionForm";
 import ClothingSizesForm from "../UI/cotizador/Ficha Tecnica/ClothingSizesForm";
+import PriceCheckerSteps from "../UI/cotizador/Stepper";
+import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { FichaTecnicaForm, fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
@@ -20,9 +23,6 @@ import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
-import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
-import PriceCheckerSteps from "../UI/cotizador/Stepper";
-import { useRouter } from "next/router";
 
 const Home: NextPage = () => {
 
@@ -38,6 +38,12 @@ const Home: NextPage = () => {
     const { isLoading: isUploadingFiless, mutateAsync, } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
+
+
+    const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, FichaTecnicaForm>(createOrder, {
+        onSuccess: () => router.replace('/'),
+        onError: (error) => addError(error.error)
+    })
 
     const { data: sessionData } = useSession()
     const [price] = useState(0)
@@ -68,11 +74,10 @@ const Home: NextPage = () => {
         /*if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
         }*/
-
-        createOrder(data).then((res) => { if (res.ok) return router.replace('/') })
-
+        await createOrderMutation(data)
 
     }
+    const files = formContext.watch('files')
 
     const handleUploadFile = async (file: File[]) => {
         const folderName = sessionData?.user.name || 'Sin Asignar'
@@ -82,6 +87,7 @@ const Home: NextPage = () => {
             formData.append('file', f)
         }
         await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
+       
     }
 
     return (
@@ -96,7 +102,7 @@ const Home: NextPage = () => {
             <main>
                 <Slide in={true} timeout={500} direction='up'>
                     <div>
-                        <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless}>
+                        <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless || isCreatingOrder}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />

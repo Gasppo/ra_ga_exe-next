@@ -1,14 +1,13 @@
 import { Slide } from '@mui/material'
-import { signIn } from 'next-auth/react'
-import React, { useContext, useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
 import { sendEmail } from '../../../utils/queries/user'
 import PageTitle from '../../Generic/Utils/PageTitle'
 import ModalComponent from '../../Modal/ModalComponent'
-import RecoveryForm from './RecoveryForm'
-import SignInForm from './SignInForm'
+import RecoveryForm from './components/RecoveryForm'
+import SignInForm from './components/SignInForm'
 
 interface SigninProps {
     open: boolean,
@@ -16,28 +15,17 @@ interface SigninProps {
 
 }
 
-type InputData = {
-    email: string,
-    password: string,
-}
-
-
 
 const Signin = ({ onClose, open }: SigninProps) => {
 
     const { addError } = useContext(ErrorHandlerContext)
 
     const [loading, setLoading] = useState(false)
-    const [errorFlag, setErrorFlag] = useState(false)
     const [emailRecovery, setEmailRecovery] = useState(false)
-    const [inputData, setInputData] = useState<InputData>({
-        email: '',
-        password: '',
-    })
 
     const containerRef = useRef(null)
 
-    const { data: emailData, mutateAsync, isLoading: loadingRecovery, error } = useMutation<{ message?: string }, { error?: string | { formErrors?: string[], fieldErrors?: { [key: string]: string[] } } }, { email: string }>(sendEmail, {
+    const { data: emailData, mutateAsync, isLoading: loadingRecovery } = useMutation<{ message?: string }, { error?: string | { formErrors?: string[], fieldErrors?: { [key: string]: string[] } } }, { email: string }>(sendEmail, {
         onError: (error) => {
             if (typeof error.error === 'string') addError(error.error)
             if (Object.keys(error).length === 0) addError('Error al enviar el correo')
@@ -45,47 +33,11 @@ const Signin = ({ onClose, open }: SigninProps) => {
         onSuccess: () => { addError('Correo enviado!', 'success'), onClose() }
     })
 
-    const errors = error?.error ? (typeof error?.error === 'string' ? {} : error.error) : {}
 
-    const loginSubmit = async (event: React.SyntheticEvent) => {
-        event.preventDefault()
-        try {
-            setLoading(true)
-            const res = await signIn("credentials", {
-                username: inputData?.email,
-                password: inputData?.password,
-                redirect: false
-            });
-
-            if (res.error) {
-                const errorMessage = JSON.parse(res.error)?.error as string || 'Login Invalido'
-                addError(errorMessage)
-                throw new Error(errorMessage)
-            }
-            onClose()
-        }
-
-        catch (error) {
-            console.log(error)
-            setErrorFlag(true)
-            setLoading(false)
-        }
-    }
-
-    const emailRecoverySubmit = async (event: React.SyntheticEvent) => {
-        event.preventDefault()
+    const emailRecoverySubmit = async (data: { email: string }) => {
         mutateAsync({
-            email: inputData.email
+            email: data.email
         })
-    }
-
-
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (errorFlag) setErrorFlag(false)
-        setInputData(prev => ({
-            ...prev,
-            [event.target.name]: event.target.value
-        }))
     }
 
     const handleChangeToRecovery = () => {
@@ -100,12 +52,12 @@ const Signin = ({ onClose, open }: SigninProps) => {
                     <div className="mt-10" ref={containerRef}>
                         <Slide in={emailRecovery} direction="left" container={containerRef.current}>
                             <div>
-                                {emailRecovery && <RecoveryForm sent={!!emailData?.message} errors={errors.fieldErrors} errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={emailRecoverySubmit} />}
+                                {emailRecovery && <RecoveryForm sent={!!emailData?.message} onClose={onClose} onRecovery={handleChangeToRecovery} onSubmit={emailRecoverySubmit} />}
                             </div>
                         </Slide>
                         <Slide in={!emailRecovery} direction="right" container={containerRef.current}>
                             <div>
-                                {!emailRecovery && <SignInForm errorFlag={errorFlag} onClose={onClose} onRecovery={handleChangeToRecovery} onChange={handleChange} onSubmit={loginSubmit} />}
+                                {!emailRecovery && <SignInForm onLoading={setLoading} onClose={onClose} onRecovery={handleChangeToRecovery} />}
                             </div>
                         </Slide>
                     </div>

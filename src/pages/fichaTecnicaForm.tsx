@@ -8,11 +8,13 @@ import Image from "next/image";
 import { useContext, useMemo, useState } from 'react';
 import { FormProvider, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
-import PageTitle from "../UI/Generic/Utils/PageTitle";
 import ClothingConfirmationForm from "../UI/cotizador/Ficha Tecnica/ClothingConfirmationForm";
 import ClothingDetailForm from "../UI/cotizador/Ficha Tecnica/ClothingDetailForm";
+import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
 import ClothingSelectionForm from "../UI/cotizador/Ficha Tecnica/ClothingSelectionForm";
 import ClothingSizesForm from "../UI/cotizador/Ficha Tecnica/ClothingSizesForm";
+import PriceCheckerSteps from "../UI/cotizador/Stepper";
+import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
 import { FichaTecnicaForm, fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
@@ -20,8 +22,6 @@ import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
-import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
-import PriceCheckerSteps from "../UI/cotizador/Stepper";
 
 
 const Home: NextPage = () => {
@@ -78,7 +78,7 @@ const Home: NextPage = () => {
         }
         await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
     }
-
+    
     return (
 
         <div className="bg-split-white-black">

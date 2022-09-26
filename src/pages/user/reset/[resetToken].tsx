@@ -2,11 +2,12 @@ import { Slide } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
+import { useRouter } from 'next/router';
 import Footer from "../../../UI/index/Footer";
 import HeaderBar from "../../../UI/index/HeaderBar";
-import { useRouter } from 'next/router'
-import PasswordReset from "../../../UI/PasswordReset";
+import PasswordReset from "../../../UI/user/reset/PasswordReset";
 import ErrorAlerter from "../../../utils/ErrorHandler/ErrorAlerter";
+
 const Home: NextPage = () => {
 
     const router = useRouter()

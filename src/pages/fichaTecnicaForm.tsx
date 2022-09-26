@@ -77,18 +77,17 @@ const Home: NextPage = () => {
         await createOrderMutation(data)
 
     }
-    const files = formContext.watch('files')
 
-    const handleUploadFile = async (file: File[]) => {
-        const folderName = sessionData?.user.name || 'Sin Asignar'
-        const orderID = `ID-12345`;
-        const formData = new FormData()
-        for (const f of file) {
-            formData.append('file', f)
-        }
-        await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
+    // const handleUploadFile = async (file: File[]) => {
+    //     const folderName = sessionData?.user.name || 'Sin Asignar'
+    //     const orderID = `ID-12345`;
+    //     const formData = new FormData()
+    //     for (const f of file) {
+    //         formData.append('file', f)
+    //     }
+    //     await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
        
-    }
+    // }
 
     return (
 

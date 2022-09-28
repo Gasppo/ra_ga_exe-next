@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { OrderCreationDataSchema } from '@utils/dbcalls/order';
 import { checkIfUserExists } from '@utils/dbcalls/user';
 import { generateEmailer } from "@utils/generateEmailer";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -6,72 +7,16 @@ import { z } from "zod";
 const prisma = new PrismaClient()
 
 
-const CreationDataSchema = z.object({
-    bolsillos: z.object({
-        selected: z.boolean(),
-        cantidad: z.number(),
-        observaciones: z.string()
-    }),
-    botones: z.object({
-        selected: z.boolean(),
-        cantidad: z.number(),
-        observaciones: z.string()
-    }),
-    cierre: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
-    cliente: z.string(),
-    elastico: z.object({
-        selected: z.boolean(),
-        metros: z.number(),
-        observaciones: z.string()
-    }),
-    geometral: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
-    logoMarca: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
-    manga: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
-    molderiaBase: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
-    talles: z.object({
-        selected: z.boolean(),
-        talle: z.array(z.object({
-            nombre: z.string(),
-            medidas: z.string()
-        }))
-    }),
-    tipoPrenda: z.object({
-        id: z.string().uuid().optional(),
-        name: z.string(),
-        picture: z.string().optional()
-    }),
-    user: z.object({
-        name: z.string(),
-        email: z.string().email(),
-        image: z.string()
-    }),
-    files: z.array(z.instanceof(File)).optional()
-})
 
-export type FichaTecnicaForm = z.infer<typeof CreationDataSchema>
+export type FichaTecnicaForm = z.infer<typeof OrderCreationDataSchema>
 
 
-const examples = async (req: NextApiRequest, res: NextApiResponse) => {
+const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
 
 
     try {
-        const data = CreationDataSchema.parse(req.body);
+        const data = OrderCreationDataSchema.parse(req.body);
 
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -123,4 +68,4 @@ const examples = async (req: NextApiRequest, res: NextApiResponse) => {
 
 }
 
-export default examples;
+export default post;

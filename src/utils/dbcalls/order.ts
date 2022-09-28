@@ -54,5 +54,4 @@ export const OrderCreationDataSchema = z.object({
         email: z.string().email(),
         image: z.string()
     }),
-    files: z.array(z.instanceof(File)).optional()
 })

@@ -5,7 +5,6 @@ export const fichaTecnicaVaciaForm: FichaTecnicaForm = {
     // Paso 1: Seleccion de prenda
     cliente: '',
     tipoPrenda: {
-        id: '',
         name: '',
         picture: ''
     },

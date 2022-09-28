@@ -7,8 +7,7 @@ import { z } from "zod";
 const prisma = new PrismaClient()
 
 
-
-export type FichaTecnicaForm = z.infer<typeof OrderCreationDataSchema>
+export type FichaTecnicaForm = z.infer<typeof OrderCreationDataSchema> & { files: File[] }
 
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -24,6 +23,25 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             from: 'soporte@gasppo.lol',
             fromTitle: 'Soporte HS-Taller'
         })
+
+        const clothesCategory = await prisma.clothesCategory.findFirst({
+            where: {
+                OR: [
+                    { id: data.tipoPrenda.id },
+                    { name: data.tipoPrenda.name }
+                ]
+            }
+        })
+
+
+        const complexity = await prisma.complexity.findFirst({
+            where: {
+                name: 'Basico'
+            }
+        })
+
+
+        console.log(`${clothesCategory.name} ${complexity.name}`)
 
         const categoria = await prisma.categoria.findFirst({
             where: {

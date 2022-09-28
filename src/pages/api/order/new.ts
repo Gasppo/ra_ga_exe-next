@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client';
+import { checkIfUserExists } from '@utils/dbcalls/user';
 import { generateEmailer } from "@utils/generateEmailer";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import { checkIfUserExists } from "../../../utils/dbcalls/user";
-
 const prisma = new PrismaClient()
 
 

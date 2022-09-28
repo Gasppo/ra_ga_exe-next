@@ -1,7 +1,7 @@
+import { FichaTecnicaForm } from '@pages/api/order/new'
 import Input, { InputProps } from '../../Generic/Inputs/Input'
 import Select, { SelectProps } from '../../Generic/Inputs/Select'
 import Switch, { SwitchProps } from '../../Generic/Inputs/Switch'
-import { FichaTecnicaForm } from '../../Types/fichaTecnicaTypes'
 
 type Sel<T> = SelectProps<FichaTecnicaForm, T> & { renderer: 'Select' }
 type Swi = SwitchProps<FichaTecnicaForm> & { renderer: 'Switch' }

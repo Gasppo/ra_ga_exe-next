@@ -18,11 +18,12 @@ import PriceCheckerSteps from "../UI/cotizador/Stepper";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/index/Footer";
 import HeaderBar from "../UI/index/HeaderBar";
-import { FichaTecnicaForm, fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
+import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
+import { FichaTecnicaForm } from "./api/order/new";
 
 const Home: NextPage = () => {
 
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
 
     const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, FichaTecnicaForm>(createOrder, {
         onSuccess: () => router.replace('/'),
-        onError: (error) => addError(error.error)
+        onError: (error) => addError(JSON.stringify(error))
     })
 
     const { data: sessionData } = useSession()

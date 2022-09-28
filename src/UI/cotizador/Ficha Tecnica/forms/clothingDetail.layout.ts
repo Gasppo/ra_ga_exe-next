@@ -1,5 +1,5 @@
+import { FichaTecnicaForm } from "@pages/api/order/new";
 import { LayoutElement } from "../../../Forms/types";
-import { FichaTecnicaForm } from "../../../Types/fichaTecnicaTypes";
 
 export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
     type: 'Horizontal',

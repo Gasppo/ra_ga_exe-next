@@ -1,8 +1,8 @@
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Divider, IconButton } from "@mui/material";
+import { FichaTecnicaForm } from '@pages/api/order/new';
 import { useFormContext } from "react-hook-form";
-import { FichaTecnicaForm } from "../../Types/fichaTecnicaTypes";
 import { CotizadorFormItem } from "../Inputs/CotizadorSelect";
 
 const ClothingSizesForm = () => {

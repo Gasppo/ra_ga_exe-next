@@ -1,6 +1,6 @@
 import { drive_v3 } from "googleapis";
 import { GaxiosResponse } from "gaxios";
-import { FichaTecnicaForm } from "../../UI/Types/fichaTecnicaTypes";
+import { FichaTecnicaForm } from "@pages/api/order/new";
 
 
 // Cargar archivos a Google Drive

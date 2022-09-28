@@ -1,6 +1,6 @@
+import { FichaTecnicaForm } from '@pages/api/order/new';
 import { clothingDetailLayout } from '@UI/cotizador/Ficha Tecnica/forms/clothingDetail.layout';
 import FormItem from '@UI/Forms/FormItem';
-import { FichaTecnicaForm } from '@UI/Types/fichaTecnicaTypes';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 

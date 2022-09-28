@@ -76,7 +76,7 @@ const DashboardCliente = () => {
                     </div>
                     <LoadingIndicator show={isFetchingOrders}>
                         <div>
-                            <BasicTable rows={orderData} />
+                            <BasicTable rows={orderData || []} />
                         </div>
                     </LoadingIndicator>
                 </div>

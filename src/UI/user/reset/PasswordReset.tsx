@@ -1,8 +1,9 @@
 import { PasswordUpdateSchema, PasswordUpdateSchemaType } from '@backend/schemas/PasswordUpdateSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import DoneIcon from '@mui/icons-material/Done'
+import { useFormErrorHandler } from '@utils/ErrorHandler/react-hook-errors'
 import Link from 'next/link'
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
@@ -16,15 +17,15 @@ interface PasswordResetProps {
 }
 
 const PasswordReset = (props: PasswordResetProps) => {
-
+    
     const { token: resetToken } = props
     const { addError, queryErrorHandler } = useContext(ErrorHandlerContext)
     const { data: passwordResetData, isLoading, mutateAsync } = useMutation<PasswordResetResponse, UserHandlerError, PasswordUpdateSchemaType>(updatePasssword, {
         onSuccess: () => { addError('Clave cambiada exitosamente', 'success') }
     })
-
+    
     const completedReset = passwordResetData?.statusCode === 200
-
+    
     const formContext = useForm<PasswordUpdateSchemaType>({
         defaultValues: {
             token: resetToken,
@@ -33,7 +34,8 @@ const PasswordReset = (props: PasswordResetProps) => {
         },
         resolver: zodResolver(PasswordUpdateSchema)
     })
-
+    
+    useFormErrorHandler(formContext.formState.errors)
 
     const handleSubmit = async (data: PasswordUpdateSchemaType) => {
         try {
@@ -44,9 +46,6 @@ const PasswordReset = (props: PasswordResetProps) => {
         }
     }
 
-    useEffect(() => {
-        if (formContext.formState.errors[""]) addError(formContext.formState.errors[""].message)
-    }, [formContext.formState.errors, addError]);
 
     return (
         <div className='w-auto h-auto flex flex-col place-items-center border-8 border-double rounded-lg shadow-2xl border-gray-800 m-auto p-20'>

@@ -1,9 +1,9 @@
-import { FichaTecnicaForm } from "@pages/api/order/new";
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { useFormContext } from "react-hook-form";
 
 const ClothingConfirmationForm = () => {
 
-    const { watch } = useFormContext<FichaTecnicaForm>()
+    const { watch } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
 
     return (

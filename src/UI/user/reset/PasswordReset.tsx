@@ -1,3 +1,4 @@
+import { PasswordUpdateSchema, PasswordUpdateSchemaType } from '@backend/schemas/PasswordUpdateSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import DoneIcon from '@mui/icons-material/Done'
 import Link from 'next/link'
@@ -6,10 +7,9 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
-import { PasswordResetData, PasswordResetResponse, updatePasssword, UserHandlerError } from '../../../utils/queries/user'
+import { PasswordResetResponse, updatePasssword, UserHandlerError } from '../../../utils/queries/user'
 import FormItem from '../../Forms/FormItem'
 import { passwordResetLayout } from './form/passwordReset.layout'
-import { PasswordResetSchema } from './form/passwordResetSchema'
 
 interface PasswordResetProps {
     token: string
@@ -19,24 +19,25 @@ const PasswordReset = (props: PasswordResetProps) => {
 
     const { token: resetToken } = props
     const { addError, queryErrorHandler } = useContext(ErrorHandlerContext)
-    const { data: passwordResetData, isLoading, mutateAsync } = useMutation<PasswordResetResponse, UserHandlerError, PasswordResetData>(updatePasssword, {
+    const { data: passwordResetData, isLoading, mutateAsync } = useMutation<PasswordResetResponse, UserHandlerError, PasswordUpdateSchemaType>(updatePasssword, {
         onSuccess: () => { addError('Clave cambiada exitosamente', 'success') }
     })
 
     const completedReset = passwordResetData?.statusCode === 200
 
-    const formContext = useForm({
+    const formContext = useForm<PasswordUpdateSchemaType>({
         defaultValues: {
+            token: resetToken,
             password: '',
             confirmPassword: ''
         },
-        resolver: zodResolver(PasswordResetSchema)
+        resolver: zodResolver(PasswordUpdateSchema)
     })
 
 
-    const handleSubmit = async (data: { password: string, confirmPassword: string }) => {
+    const handleSubmit = async (data: PasswordUpdateSchemaType) => {
         try {
-            await mutateAsync({ ...data, token: resetToken })
+            await mutateAsync(data)
         }
         catch (error) {
             queryErrorHandler(error)

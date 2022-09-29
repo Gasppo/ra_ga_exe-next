@@ -1,3 +1,4 @@
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { Slide } from "@mui/material";
 import Button from '@mui/material/Button';
 import { ClothesCategory, Complexity } from "@prisma/client";
@@ -16,14 +17,13 @@ import ClothingSelectionForm from "../UI/cotizador/Ficha Tecnica/ClothingSelecti
 import ClothingSizesForm from "../UI/cotizador/Ficha Tecnica/ClothingSizesForm";
 import PriceCheckerSteps from "../UI/cotizador/Stepper";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
-import Footer from "../UI/index/Footer";
-import HeaderBar from "../UI/index/HeaderBar";
+import Footer from "../UI/Generic/Footer";
 import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
-import { FichaTecnicaForm } from "./api/order/new";
+import HeaderBar from "@UI/Generic/HeaderBar";
 
 const Home: NextPage = () => {
 
@@ -41,7 +41,7 @@ const Home: NextPage = () => {
     )
 
 
-    const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, FichaTecnicaForm>(createOrder, {
+    const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
         onSuccess: () => router.replace('/'),
         onError: (error) => addError(JSON.stringify(error))
     })
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
     const continueDisabled = step === steps.length - 1 || (disableContinueSeleccionPrenda /*|| disableContinueProduction*/)
     // const continueDisabled = (step === 0) ? disableContinueModel : ((step === 1) ? disableContinueProduction : disableContinueProduction)
 
-    const handleFormSubmit = async (data: FichaTecnicaForm) => {
+    const handleFormSubmit = async (data: OrderCreationData) => {
         /*if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
         }*/

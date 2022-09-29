@@ -1,7 +1,7 @@
-import { FichaTecnicaForm } from "@pages/api/order/new";
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
 
-export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
+export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
     type: 'Horizontal',
     elements: [
 

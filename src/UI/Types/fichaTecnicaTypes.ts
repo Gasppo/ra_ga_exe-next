@@ -1,6 +1,6 @@
-import { FichaTecnicaForm } from "@pages/api/order/new"
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 
-export const fichaTecnicaVaciaForm: FichaTecnicaForm = {
+export const fichaTecnicaVaciaForm: OrderCreationData = {
 
     // Paso 1: Seleccion de prenda
     cliente: '',

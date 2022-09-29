@@ -45,7 +45,7 @@ export const OrderCreationDataSchema = z.object({
         }))
     }),
     tipoPrenda: z.object({
-        id: z.string().uuid().optional(),
+        id: z.string().cuid().optional(),
         name: z.string(),
         picture: z.string().optional()
     }),
@@ -55,3 +55,5 @@ export const OrderCreationDataSchema = z.object({
         image: z.string()
     }),
 })
+
+export type OrderCreationData = z.infer<typeof OrderCreationDataSchema> & { files: File[] }

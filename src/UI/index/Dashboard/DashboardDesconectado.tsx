@@ -1,8 +1,8 @@
 
 import { Button } from '@mui/material'
+import Signin from '@UI/Generic/Signin/Signin'
+import Signup from '@UI/Generic/Signup/Signup'
 import { useState } from 'react'
-import Signin from '../Signin/Signin'
-import Signup from '../Signup/Signup'
 
 const DashboardDesconectado = () => {
 

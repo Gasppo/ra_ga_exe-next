@@ -2,7 +2,7 @@ import formidable from "formidable";
 import { GaxiosResponse } from "gaxios";
 import { drive_v3 } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
-import { createDirectory, getDriveService, saveFile, verifyFileType } from "../../../utils/dbcalls/drive";
+import { createDirectory, getDriveService, saveFile, verifyFileType } from "../../../backend/dbcalls/drive";
 /**
  * Uploads a file to Google Drive
  * @return{obj} file Id

@@ -1,7 +1,7 @@
+import { SignInSchemaType } from "@backend/schemas/SignInSchema";
 import { LayoutElement } from "../../../Forms/types";
-import { SignInData } from "../components/SignInForm";
 
-export const signInLayout: LayoutElement<SignInData> = {
+export const signInLayout: LayoutElement<SignInSchemaType> = {
     type: 'Horizontal',
     elements: [
         {

@@ -1,13 +1,13 @@
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Divider, IconButton } from "@mui/material";
-import { FichaTecnicaForm } from '@pages/api/order/new';
 import { useFormContext } from "react-hook-form";
 import { CotizadorFormItem } from "../Inputs/CotizadorSelect";
 
 const ClothingSizesForm = () => {
 
-    const { watch, setValue } = useFormContext<FichaTecnicaForm>()
+    const { watch, setValue } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
     const talles = cotizadorData.talles.talle
 

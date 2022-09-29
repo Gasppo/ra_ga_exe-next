@@ -1,10 +1,10 @@
 import { Slide } from "@mui/material";
+import HeaderBar from "@UI/Generic/HeaderBar";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from 'next/router';
-import Footer from "../../../UI/index/Footer";
-import HeaderBar from "../../../UI/index/HeaderBar";
+import Footer from "../../../UI/Generic/Footer";
 import PasswordReset from "../../../UI/user/reset/PasswordReset";
 import ErrorAlerter from "../../../utils/ErrorHandler/ErrorAlerter";
 

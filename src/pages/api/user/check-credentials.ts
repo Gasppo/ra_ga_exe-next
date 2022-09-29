@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { checkIfUserExists, hashPassword } from "../../../utils/dbcalls/user";
+import { checkIfUserExists, hashPassword } from "../../../backend/dbcalls/user";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") await handlePOST(req, res);

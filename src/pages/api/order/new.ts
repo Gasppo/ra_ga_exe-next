@@ -1,14 +1,8 @@
-import { PrismaClient } from '@prisma/client';
-import { OrderCreationDataSchema } from '@utils/dbcalls/order';
-import { checkIfUserExists } from '@utils/dbcalls/user';
-import { generateEmailer } from "@utils/generateEmailer";
+import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
+import { generateEmailer } from '@utils/email/generateEmailer';
+import { checkIfUserExists } from 'backend/dbcalls/user';
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z } from "zod";
-const prisma = new PrismaClient()
-
-
-export type FichaTecnicaForm = z.infer<typeof OrderCreationDataSchema> & { files: File[] }
-
+import { prisma } from '@server/db/client';
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 

@@ -52,6 +52,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
         selected: false,
         talle: []
     },
+    cantidad: '',
 
 
     user: {

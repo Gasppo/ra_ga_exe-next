@@ -45,7 +45,9 @@ const ClothingSizesForm = () => {
                 </IconButton>
             </div>
 
-
+            <div className="form-input-section">
+                <CotizadorFormItem scope="cantidad" renderer={'Input'} label="Detalle cantidad" size='medium' />
+            </div>
 
         </div>
     )

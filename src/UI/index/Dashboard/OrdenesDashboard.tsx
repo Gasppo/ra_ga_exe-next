@@ -1,10 +1,41 @@
 import DownloadIcon from '@mui/icons-material/Download';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase } from '@mui/material';
-import BasicOrderTable from '../../../utils/Examples/BasicOrderTable';
+import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
+import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
+import { errorHandle } from '@utils/queries/cotizador';
+import { useSession } from 'next-auth/react';
+import React from 'react';
+import { useQuery } from 'react-query';
+import BasicOrderTable, { ExtendedOrdenData } from '../../../utils/Examples/BasicOrderTable';
 import PageTitle from '../../Generic/Utils/PageTitle';
 
+
 const UsuariosDashboard = () => {
+
+    const { data: sessionData } = useSession();
+    const { addError } = React.useContext(ErrorHandlerContext);
+
+    const fetchOrders = (): Promise<ExtendedOrdenData[]> =>
+        fetch(`/api/orders/obtainAll`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                accept: "application/json",
+            },
+        })
+            .then((res) => (res.ok ? res.json() : errorHandle(res)))
+            .catch((error) => {
+                console.log("Broke here");
+                throw error;
+            });
+
+
+    const { data: allOrderData, isLoading: isFetchingAllOrders } = useQuery(
+        ['ordenes', sessionData?.user?.email],
+        () => fetchOrders(), {
+        onError: () => addError('Error al traer ordenes')
+    })
 
     return (
         <div>
@@ -26,7 +57,9 @@ const UsuariosDashboard = () => {
                         </div>
                     </div>
                     <div>
-                        <BasicOrderTable rows={[]} />
+                        <LoadingIndicator show={isFetchingAllOrders}>
+                            <BasicOrderTable rows={allOrderData || []} />
+                        </LoadingIndicator>
                     </div>
                 </div>
 

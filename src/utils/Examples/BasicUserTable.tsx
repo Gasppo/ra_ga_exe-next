@@ -20,37 +20,6 @@ import { visuallyHidden } from '@mui/utils';
 import * as React from 'react';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
-interface Data {
-  usuario: string;
-  rol: string;
-  empresa: string;
-  estado: string;
-}
-
-function createData(
-  usuario: string,
-  rol: string,
-  empresa: string,
-  estado: string
-): Data {
-  return {
-    usuario,
-    rol,
-    empresa,
-    estado
-  };
-}
-
-const rows = [
-  createData('Gaspar', 'Admin', 'UCA', 'activo'),
-  createData('Exequiel', 'Admin', 'UCA', 'activo'),
-  createData('Ramiro', 'Admin', 'UCA', 'activo'),
-  createData('Horacio', 'Admin', 'HS Taller', 'activo'),
-  createData('Julian', 'Cliente', 'Telas CD', 'activo'),
-  createData('Ricardo', 'Cliente', 'Telas CD', 'bloqueado'),
-  createData('Mariana', 'Cliente', 'Telas CD', 'bloqueado'),
-];
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -91,7 +60,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof ReducedUser;
   label: string;
   numeric: boolean;
 
@@ -99,35 +68,30 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: 'usuario',
-    numeric: false,
-    disablePadding: true,
-    label: 'Usuario',
+    id: 'name',
+    numeric: true,
+    disablePadding: false,
+    label: 'Nombre',
   },
   {
-    id: 'rol',
+    id: 'email',
+    numeric: true,
+    disablePadding: false,
+    label: 'Email',
+  },
+  {
+    id: 'role',
     numeric: true,
     disablePadding: false,
     label: 'Rol',
   },
-  {
-    id: 'empresa',
-    numeric: true,
-    disablePadding: false,
-    label: 'Empresa',
-  },
-  {
-    id: 'estado',
-    numeric: true,
-    disablePadding: false,
-    label: 'Estado',
-  },
+
 
 ];
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ReducedUser) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -138,7 +102,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof ReducedUser) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -236,9 +200,20 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   );
 };
 
-export default function BasicTable() {
+export interface ReducedUser {
+  id: string;
+  name: string,
+  email: string,
+  role: string,
+}
+
+interface BasicTableProps {
+  rows: ReducedUser[];
+}
+
+export default function BasicTable(props: BasicTableProps) {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('usuario');
+  const [orderBy, setOrderBy] = React.useState<keyof ReducedUser>('name');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const dense = false
@@ -246,7 +221,7 @@ export default function BasicTable() {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof ReducedUser,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -255,7 +230,7 @@ export default function BasicTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.usuario);
+      const newSelected = props.rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -296,7 +271,7 @@ export default function BasicTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -314,25 +289,25 @@ export default function BasicTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={props.rows.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
               rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(props.rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: Data, index) => {
-                  const isItemSelected = isSelected(row.usuario);
+                .map((row: ReducedUser, index) => {
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.usuario)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.usuario}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -344,17 +319,10 @@ export default function BasicTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.usuario}
-                      </TableCell>
-                      <TableCell align="right">{row.rol}</TableCell>
-                      <TableCell align="right">{row.empresa}</TableCell>
-                      <TableCell align="right">{row.estado}</TableCell>
+
+                      <TableCell align="right">{row.name}</TableCell>
+                      <TableCell align="right">{row.email}</TableCell>
+                      <TableCell align="right">{row.role.name}</TableCell>
                       <TableCell align="right">
                         <div onClick={() => alert('Nueva pagina :)')}>
                           <IconButton aria-label="Example">
@@ -380,7 +348,7 @@ export default function BasicTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={props.rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

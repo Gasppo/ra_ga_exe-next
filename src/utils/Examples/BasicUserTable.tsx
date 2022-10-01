@@ -69,19 +69,19 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
   {
     id: 'name',
-    numeric: false,
-    disablePadding: true,
+    numeric: true,
+    disablePadding: false,
     label: 'Nombre',
   },
   {
     id: 'email',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Email',
   },
   {
     id: 'role',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Rol',
   },
@@ -319,17 +319,10 @@ export default function BasicTable(props: BasicTableProps) {
                           }}
                         />
                       </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none"
-                      >
-                        {row.id}
-                      </TableCell>
+
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.role}</TableCell>
+                      <TableCell align="right">{row.role.name}</TableCell>
                       <TableCell align="right">
                         <div onClick={() => alert('Nueva pagina :)')}>
                           <IconButton aria-label="Example">

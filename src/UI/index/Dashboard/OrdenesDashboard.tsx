@@ -19,17 +19,13 @@ const UsuariosDashboard = () => {
     const fetchOrders = (): Promise<ExtendedOrdenData[]> =>
         fetch(`/api/orders/obtainAll`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                accept: "application/json",
-            },
+            headers: { "Content-Type": "application/json", accept: "application/json" },
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
-                console.log("Broke here");
+                console.log("Broke bringing orders");
                 throw error;
             });
-
 
     const { data: allOrderData, isLoading: isFetchingAllOrders } = useQuery(
         ['ordenes', sessionData?.user?.email],
@@ -37,14 +33,12 @@ const UsuariosDashboard = () => {
         onError: () => addError('Error al traer ordenes')
     })
 
+
     return (
         <div>
             <PageTitle title='Ordenes' hasBack />
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
-
-
-
                     <div className="text-xl my-8 flex flex-row justify-between" >
                         <div className='border-gray-400 border-2 rounded-xl w-2/3 p-2 flex items-center shadow-md'>
                             <SearchIcon className='w-1/12' />

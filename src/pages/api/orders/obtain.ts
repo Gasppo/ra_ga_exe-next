@@ -1,9 +1,7 @@
-// src/pages/api/examples.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient()
-
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 

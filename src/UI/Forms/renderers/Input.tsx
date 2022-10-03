@@ -42,11 +42,20 @@ function Input<Model>(props: InputProps<Model>) {
                         name={name}
                         label={layout?.label}
                         className={layout?.className ? layout?.className : "border-gray-50"}
-                        onChange={onChange}
+                        onChange={(e) => {
+                            let parsedValue: string | number = e.target.value
+                            if (layout?.options?.numeric) {
+                                parsedValue = parseInt(parsedValue, 10)
+                                if (isNaN(parsedValue as number)) {
+                                    parsedValue = ''
+                                }
+                                return onChange(parsedValue)
+                            }
+                        }}
                         multiline={!!layout?.options?.multiline}
                         minRows={layout?.options?.multiline}
                         error={!!error}
-                        type={layout?.options?.textType}
+                        type={layout?.options?.textType || layout?.options?.numeric ? 'number' : 'text'}
                         helperText={error?.message || layout?.options?.helperText}
                     />
                 </>

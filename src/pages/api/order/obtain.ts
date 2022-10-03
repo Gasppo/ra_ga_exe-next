@@ -6,17 +6,8 @@ const prisma = new PrismaClient()
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
-        const orders = await prisma.orden.findMany({
-            select: {
-                id: true,
-                nombre: true,
-                cantidad: true,
-                estado: {
-                    select: {
-                        nombre: true
-                    }
-                }
-            }
+        const orders = await prisma.orden.findUnique({
+            where: { id: req.body.orderId }
         })
         res.status(200).json(orders);
     } catch (error) {

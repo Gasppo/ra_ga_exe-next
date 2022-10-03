@@ -38,7 +38,6 @@ const DashboardCliente = () => {
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), { onError: () => addError('Error al traer ordenes') })
 
-
     const handleEnableEdit = () => {
         setEditEnabled((prev) => !prev);
     };

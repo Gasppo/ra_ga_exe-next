@@ -19,6 +19,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
 import { EstadoOrden, Orden, User } from '@prisma/client';
+import Link from 'next/link';
 import * as React from 'react';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -70,7 +71,7 @@ interface HeadCell {
 const headCells: readonly HeadCell[] = [
   {
     id: 'nombre',
-    numeric: false,
+    numeric: true,
     disablePadding: false,
     label: 'Tipo Prenda',
   },
@@ -253,7 +254,7 @@ export default function BasicTable(props: BasicTableProps) {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -311,21 +312,22 @@ export default function BasicTable(props: BasicTableProps) {
                           }}
                         />
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
                       >
                         {row.nombre}
-                      </TableCell>
+                      </TableCell> */}
+                      <TableCell align="right">{row.nombre}</TableCell>
                       <TableCell align="right">{row.cantidad}</TableCell>
                       <TableCell align="right">{row?.estado?.nombre || 'Sin estado'}</TableCell>
                       <TableCell align="right">
-                        <div onClick={() => alert('Nueva pagina :)')}>
+                        <Link href={{ pathname: '/orden', query: { id: row.id } }}>
                           <IconButton aria-label="Example">
                             <OpenInNewIcon />
                           </IconButton>
-                        </div>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   );

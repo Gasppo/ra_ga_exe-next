@@ -36,7 +36,7 @@ const Home: NextPage = () => {
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
     );
 
-    const { isLoading: isUploadingFiless} = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+    const { isLoading: isUploadingFiless } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
 
@@ -75,6 +75,7 @@ const Home: NextPage = () => {
         /*if (data?.files?.length > 0) {
             await handleUploadFile(data.files)
         }*/
+        console.log(data)
         await createOrderMutation(data)
 
     }
@@ -87,7 +88,7 @@ const Home: NextPage = () => {
     //         formData.append('file', f)
     //     }
     //     await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
-       
+
     // }
 
     return (

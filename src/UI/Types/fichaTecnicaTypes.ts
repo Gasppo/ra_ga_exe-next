@@ -58,7 +58,6 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     user: {
         name: '',
         email: '',
-        image: ''
     },
     files: []
 }

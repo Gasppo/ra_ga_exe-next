@@ -53,7 +53,6 @@ export const OrderCreationDataSchema = z.object({
     user: z.object({
         name: z.string(),
         email: z.string().email(),
-        image: z.string()
     }),
 })
 

@@ -36,8 +36,8 @@ function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  a: { [key in Key]: number | string | object },
+  b: { [key in Key]: number | string | object },
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -204,7 +204,9 @@ export interface ReducedUser {
   id: string;
   name: string,
   email: string,
-  role: string,
+  role: {
+    name: string
+  }
 }
 
 interface BasicTableProps {
@@ -322,7 +324,7 @@ export default function BasicTable(props: BasicTableProps) {
 
                       <TableCell align="right">{row.name}</TableCell>
                       <TableCell align="right">{row.email}</TableCell>
-                      <TableCell align="right">{row.role.name}</TableCell>
+                      <TableCell align="right">{row?.role?.name || 'Sin estado'}</TableCell>
                       <TableCell align="right">
                         <div onClick={() => alert('Nueva pagina :)')}>
                           <IconButton aria-label="Example">

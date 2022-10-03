@@ -74,7 +74,10 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     },
                     rules: [
                         { type: 'required', scope: 'bolsillos.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',
@@ -121,7 +124,10 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     },
                     rules: [
                         { type: 'required', scope: 'elastico.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',
@@ -168,7 +174,10 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     },
                     rules: [
                         { type: 'required', scope: 'botones.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',

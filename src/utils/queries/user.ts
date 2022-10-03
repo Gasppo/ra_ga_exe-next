@@ -1,12 +1,7 @@
+import { UserCreationSchemaType } from "@backend/schemas/UserCreationSchema"
 
 export type ErrorMessage = { error: string }
 
-export type SignupData = {
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword: string
-}
 
 export type SignupResponse = {
     statusCode: number,
@@ -33,7 +28,7 @@ export type UserHandlerError = {
 const errorHandle = (res: Response) => res.json().then(json => Promise.reject(json))
 
 
-export const postSignup = (data: SignupData) => fetch(`/api/user/create`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+export const postSignup = (data: UserCreationSchemaType) => fetch(`/api/user/create`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
 
 

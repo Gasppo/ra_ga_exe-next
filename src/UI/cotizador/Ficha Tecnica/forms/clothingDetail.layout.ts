@@ -1,7 +1,7 @@
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
-import { FichaTecnicaForm } from "../../../Types/fichaTecnicaTypes";
 
-export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
+export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
     type: 'Horizontal',
     elements: [
 
@@ -74,7 +74,10 @@ export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
                     },
                     rules: [
                         { type: 'required', scope: 'bolsillos.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',
@@ -121,7 +124,10 @@ export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
                     },
                     rules: [
                         { type: 'required', scope: 'elastico.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',
@@ -168,7 +174,10 @@ export const clothingDetailLayout: LayoutElement<FichaTecnicaForm> = {
                     },
                     rules: [
                         { type: 'required', scope: 'botones.selected' }
-                    ]
+                    ],
+                    options: {
+                        numeric: true
+                    }
                 },
                 {
                     type: 'Input',

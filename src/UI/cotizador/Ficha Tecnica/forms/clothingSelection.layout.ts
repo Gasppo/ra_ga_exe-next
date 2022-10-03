@@ -1,7 +1,7 @@
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
-import { FichaTecnicaForm } from "../../../Types/fichaTecnicaTypes";
 
-export const clothingSelectionLayout: LayoutElement<FichaTecnicaForm> = {
+export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
     type: 'Vertical',
     spacing: 4,
     elements: [

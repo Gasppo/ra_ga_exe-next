@@ -1,3 +1,4 @@
+import { SignInSchema, SignInSchemaType } from '@backend/schemas/SignInSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signIn } from 'next-auth/react'
 import React, { useContext, useState } from 'react'
@@ -5,7 +6,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { ErrorHandlerContext } from '../../../../utils/ErrorHandler/error'
 import FormItem from '../../../Forms/FormItem'
 import { signInLayout } from '../forms/signin.layout'
-import { SignInSchema } from '../forms/signinSchema'
 import SignInButtons from './SignInButtons'
 
 interface SignInFormProps {
@@ -14,10 +14,6 @@ interface SignInFormProps {
     onLoading: (value: boolean) => void
 }
 
-export type SignInData = {
-    email: string,
-    password: string,
-}
 
 const SignInForm = (props: SignInFormProps) => {
 
@@ -35,7 +31,7 @@ const SignInForm = (props: SignInFormProps) => {
     })
 
 
-    const loginSubmit = async (data: SignInData) => {
+    const loginSubmit = async (data: SignInSchemaType) => {
         try {
             onLoading(true)
             const res = await signIn("credentials", {

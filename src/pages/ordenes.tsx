@@ -3,9 +3,9 @@ import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import OrdenesDashboard from "../UI/index/Dashboard/OrdenesDashboard";
-import Footer from "../UI/index/Footer";
-import HeaderBar from "../UI/index/HeaderBar";
+import Footer from "../UI/Generic/Footer";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
+import HeaderBar from "@UI/Generic/HeaderBar";
 
 const Home: NextPage = () => {
 

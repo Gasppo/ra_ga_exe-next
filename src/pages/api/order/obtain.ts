@@ -1,14 +1,13 @@
+import { findOrder } from "@backend/dbcalls/order";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
+    const { id } = req.query;
+
     try {
-        const orders = await prisma.orden.findUnique({
-            where: { id: req.body.orderId }
-        })
+        const orders = await findOrder(id as string);
         res.status(200).json(orders);
     } catch (error) {
         res.status(500).json({ error: error })

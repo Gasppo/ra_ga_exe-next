@@ -1,5 +1,6 @@
+import { CredentialCheckSchema } from "@backend/schemas/CredentialCheckSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { checkIfUserExists, hashPassword } from "../../../utils/dbcalls/user";
+import { checkIfUserExists, hashPassword } from "../../../backend/dbcalls/user";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") await handlePOST(req, res);
@@ -11,11 +12,11 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { username, password } = req.body;
+        const { username, password } = CredentialCheckSchema.parse(req.body);
         if (!username || !password) throw "Ingresar usuario y contraseña";
 
         const user = await checkIfUserExists({ email: username });
-        console.log(user.password , hashPassword(req.body.password))
+        console.log(user.password, hashPassword(req.body.password))
 
         if (!user || user.password !== hashPassword(req.body.password)) throw 'Credenciales incorrectas';
 

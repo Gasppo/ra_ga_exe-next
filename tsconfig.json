@@ -22,6 +22,7 @@
       "@pages/*": ["pages/*"],
       "@server/*": ["server/*"],
       "@utils/*": ["utils/*"],
+      "@backend/*": ["backend/*"],
     }
   },
   "include": [

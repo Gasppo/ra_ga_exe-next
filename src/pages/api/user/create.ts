@@ -1,6 +1,7 @@
+import { createCredentialsAccountForUser, createNewUser } from "@backend/dbcalls/user";
+import { UserCreationSchema } from "@backend/schemas/UserCreationSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z, ZodError } from "zod";
-import { createCredentialsAccountForUser, createNewUser } from "../../../utils/dbcalls/user";
+import { ZodError } from "zod";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") await handlePOST(req, res);
@@ -11,23 +12,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 }
 
 
-const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} ${min === 1 ? "caracter" : "caracteres"}`;
-const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
-export const emailErrorMessage = () => `Formato de correo electrónico inválido`;
-
-export const UserSchema = z.object({
-    name: z.string().min(1, { message: minCharErrorMessage(1) }).max(50, { message: maxCharErrorMessage(50) }),
-    email: z.string().email({ message: emailErrorMessage() }),
-    password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
-    confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
-}).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
-
-
-
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const { name, email, password } = UserSchema.parse(req.body);
+        const { name, email, password } = UserCreationSchema.parse(req.body);
         const user = await createNewUser({ name, email, password });
 
         await createCredentialsAccountForUser(user.id);

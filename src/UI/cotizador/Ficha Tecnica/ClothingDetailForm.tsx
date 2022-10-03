@@ -1,13 +1,13 @@
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
 import { clothingDetailLayout } from '@UI/cotizador/Ficha Tecnica/forms/clothingDetail.layout';
 import FormItem from '@UI/Forms/FormItem';
-import { FichaTecnicaForm } from '@UI/Types/fichaTecnicaTypes';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 const ClothingDetailForm = () => {
 
 
-    const { watch, setValue } = useFormContext<FichaTecnicaForm>()
+    const { watch, setValue } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
 
     const logoMarcaDisabled = !cotizadorData.molderiaBase.selected

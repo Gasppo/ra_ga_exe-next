@@ -1,12 +1,12 @@
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
+import FormItem from '@UI/Forms/FormItem';
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import FormItem from '../../Forms/FormItem';
-import { FichaTecnicaForm } from '../../Types/fichaTecnicaTypes';
 import { clothingMouldsLayout } from './forms/clothingMoulds.layout';
 
 const ClothingMouldsForm = () => {
 
-    const { watch, setValue } = useFormContext<FichaTecnicaForm>()
+    const { watch, setValue } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
 
     const molderiaBaseDisabled = !cotizadorData.molderiaBase.selected

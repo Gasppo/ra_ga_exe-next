@@ -1,17 +1,17 @@
+import { UserCreationSchema, UserCreationSchemaType } from "@backend/schemas/UserCreationSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useContext, useEffect, useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
-import { postSignup, SignupData, SignupResponse, UserHandlerError } from '../../../utils/queries/user'
+import { postSignup, SignupResponse, UserHandlerError } from '../../../utils/queries/user'
 import PageTitle from "../../Generic/Utils/PageTitle"
 import ModalComponent from '../../Modal/ModalComponent'
 import SignUpButtons from "./components/SignUpButtons"
 import SignUpCompleted from "./components/SignUpCompleted"
 import SignUpForm from "./components/SignUpForm"
 import SignUpFormErrors from "./components/SignUpFormErrors"
-import { SignUpSchema } from "./form/signupSchema"
 
 
 interface SignupProps {
@@ -22,7 +22,7 @@ interface SignupProps {
 
 const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
-    const { isLoading, mutateAsync, error } = useMutation<SignupResponse, UserHandlerError, SignupData>(postSignup)
+    const { isLoading, mutateAsync, error } = useMutation<SignupResponse, UserHandlerError, UserCreationSchemaType>(postSignup)
     const { addError, queryErrorHandler } = useContext(ErrorHandlerContext)
 
     const errors = error?.error ? (typeof error.error === 'string' ? {} : error?.error.fieldErrors) : {}
@@ -35,10 +35,10 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
             password: '',
             confirmPassword: ''
         },
-        resolver: zodResolver(SignUpSchema)
+        resolver: zodResolver(UserCreationSchema)
     })
 
-    const handleFormSubmit = async (data: SignupData) => {
+    const handleFormSubmit = async (data: UserCreationSchemaType) => {
         try {
             const res = await mutateAsync(data)
             if (res.statusCode === 200) setCompletedSignUp(true)

@@ -5,10 +5,10 @@ import Head from "next/head";
 import DashboardAdmin from "../UI/index/Dashboard/DashboardAdmin";
 import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
 import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";
-import Footer from "../UI/index/Footer";
-import HeaderBar from "../UI/index/HeaderBar";
+import Footer from "../UI/Generic/Footer";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import { useGetRole } from "../utils/useGetRole";
+import HeaderBar from "@UI/Generic/HeaderBar";
 
 const Home: NextPage = () => {
 

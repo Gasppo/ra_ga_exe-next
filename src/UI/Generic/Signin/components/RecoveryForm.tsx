@@ -1,9 +1,8 @@
+import { SendResetEmailSchema } from '@backend/schemas/SendResetEmailSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import FormItem from '../../../Forms/FormItem'
 import { recoveryLayout } from '../forms/recovery.layout'
-import { RecoverySchema } from '../forms/recoverySchema'
 
 interface RecoveryFormProps {
     onClose: () => void
@@ -21,7 +20,7 @@ const RecoveryForm = (props: RecoveryFormProps) => {
         defaultValues: {
             email: '',
         },
-        resolver: zodResolver(RecoverySchema)
+        resolver: zodResolver(SendResetEmailSchema)
     })
 
 

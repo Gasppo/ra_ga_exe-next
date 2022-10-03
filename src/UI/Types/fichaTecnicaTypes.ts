@@ -1,77 +1,13 @@
-import { ClothesCategory } from "@prisma/client"
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 
-export type SeleccionPrendaForm = {
-    cliente: string,
-    tipoPrenda: ClothesCategory | ''
-}
+export const fichaTecnicaVaciaForm: OrderCreationData = {
 
-export type MolderiaForm = {
-    molderiaBase: {
-        selected: boolean,
-        observaciones: string
-    },
-    geometral: {
-        selected: boolean,
-        observaciones: string
-    }
-}
-
-export type EspecificacionesForm = {
-    logoMarca: {
-        selected: boolean,
-        observaciones: string
-    },
-    bolsillos: {
-        selected: boolean,
-        cantidad: number,
-        observaciones: string
-    },
-    elastico: {
-        selected: boolean,
-        metros: number,
-        observaciones: string
-    },
-    botones: {
-        selected: boolean,
-        cantidad: number,
-        observaciones: string
-    },
-    cierre: {
-        selected: boolean,
-        observaciones: string
-    },
-    manga: {
-        selected: boolean,
-        observaciones: string
-    }
-}
-
-export type TallesForm = {
-    talles: {
-        selected: boolean,
-        talle: Array <{
-            nombre: string,
-            medidas: string
-        }>
-    }
-}
-
-
-export type FichaTecnicaForm = SeleccionPrendaForm & MolderiaForm & EspecificacionesForm & TallesForm & {
-    user: {
-        name?: string;
-        email?: string;
-        image?: string;
-    }
-    files?: File[];
-}
-
-export const fichaTecnicaVaciaForm: FichaTecnicaForm = {
-    
     // Paso 1: Seleccion de prenda
     cliente: '',
-    tipoPrenda: '',
-
+    tipoPrenda: {
+        name: '',
+        picture: ''
+    },
     // Paso 2: Moldería
     molderiaBase: {
         selected: false,
@@ -110,18 +46,18 @@ export const fichaTecnicaVaciaForm: FichaTecnicaForm = {
         selected: false,
         observaciones: ''
     },
-    
+
     // Paso 4: Talles
     talles: {
         selected: false,
         talle: []
     },
+    cantidad: '',
 
 
     user: {
         name: '',
         email: '',
-        image: ''
     },
     files: []
 }

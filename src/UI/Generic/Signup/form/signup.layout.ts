@@ -1,7 +1,7 @@
-import { SignupData } from "../../../../utils/queries/user";
+import { UserCreationSchemaType } from "@backend/schemas/UserCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
 
-export const signupLayout: LayoutElement<SignupData> = {
+export const signupLayout: LayoutElement<UserCreationSchemaType> = {
     type: 'Vertical',
     spacing: 2,
     elements: [

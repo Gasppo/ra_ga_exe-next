@@ -1,7 +1,6 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { Slide } from "@mui/material";
 import Button from '@mui/material/Button';
-import { ClothesCategory, Complexity } from "@prisma/client";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -24,15 +23,16 @@ import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
 import HeaderBar from "@UI/Generic/HeaderBar";
+import { Complejidad, Prenda } from "@prisma/client";
 
 const Home: NextPage = () => {
 
     const { addError } = useContext(ErrorHandlerContext)
 
-    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<ClothesCategory[], ErrorMessage>(['clothes'], getClothes,
+    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<Prenda[], ErrorMessage>(['clothes'], getClothes,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) });
 
-    const { isFetching: isFetchingComplexity } = useQuery<Complexity[], ErrorMessage>(['complexities'], getComplexity,
+    const { isFetching: isFetchingComplexity } = useQuery<Complejidad[], ErrorMessage>(['complexities'], getComplexity,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
     );
 

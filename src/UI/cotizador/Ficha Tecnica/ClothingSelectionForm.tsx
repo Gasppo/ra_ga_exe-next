@@ -1,10 +1,10 @@
-import { ClothesCategory } from "@prisma/client";
+import { Prenda } from "@prisma/client";
 import { useMemo } from "react";
 import FormItem from "../../Forms/FormItem";
 import { clothingSelectionLayout } from "./forms/clothingSelection.layout";
 
 interface ModelFormProps {
-    clothesData: ClothesCategory[],
+    clothesData: Prenda[],
 }
 
 

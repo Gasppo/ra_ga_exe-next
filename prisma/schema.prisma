@@ -84,14 +84,15 @@ model Role {
     users       User[]
 }
 
-model ClothesCategory {
+model Prenda {
     id        String      @id @default(cuid())
     name      String      @unique
     picture   String
     Categoria Categoria[]
+    PropiedadPorPrenda PropiedadPorPrenda[]
 }
 
-model Complexity {
+model Complejidad {
     id          String      @id @default(cuid())
     name        String      @unique
     description String
@@ -99,11 +100,11 @@ model Complexity {
 }
 
 model Categoria {
-    id              String          @id @default(cuid())
+    id              String   @id @default(cuid())
     idCC            String
     idComplexity    String
-    complexity      Complexity      @relation(fields: [idComplexity], references: [id])
-    clothesCategory ClothesCategory @relation(fields: [idCC], references: [id])
+    Complejidad     Complejidad  @relation(fields: [idComplexity], references: [id])
+    Prenda          Prenda    @relation(fields: [idCC], references: [id])
     nombre          String
     precioEnDolares Float
     Orden           Orden[]
@@ -170,4 +171,19 @@ model ArchivoServicio {
     servicio      Servicio @relation(fields: [idServicio], references: [id])
     url           String
     observaciones String
+}
+
+model Propiedad {
+    id Int @id @default(autoincrement())
+    nombre String
+    descripcion String?
+    PropiedadPorPrenda PropiedadPorPrenda[]
+}
+
+model PropiedadPorPrenda {
+    id  String  @id @default(cuid())
+    idPropiedad Int
+    idPrenda String
+    Propiedad Propiedad @relation(fields: [idPropiedad] ,references: [id])
+    Prenda Prenda @relation(fields: [idPrenda] ,references: [id])
 }

@@ -18,7 +18,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             fromTitle: 'Soporte HS-Taller'
         })
 
-        const clothesCategory = await prisma.clothesCategory.findFirst({
+        const clothesCategory = await prisma.prenda.findFirst({
             where: {
                 OR: [
                     { id: data.tipoPrenda.id },
@@ -28,7 +28,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         })
 
 
-        const complexity = await prisma.complexity.findFirst({
+        const complexity = await prisma.complejidad.findFirst({
             where: {
                 name: 'Basico'
             }

@@ -7,12 +7,24 @@ import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
-import React from "react";
+import React, { useContext } from "react";
 import InfoIcon from '@mui/icons-material/Info';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Router from "next/router";
+import { useQuery } from "react-query";
+import { EstadoOrden } from "@prisma/client";
+import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
+import { generateEmailer } from "@utils/email/generateEmailer";
 
 const Home: NextPage = () => {
+
+    const { addError } = useContext(ErrorHandlerContext);
+    const { sendEmail } = generateEmailer({
+        password: process.env.MAILGUN_SMTP_PASS,
+        user: 'postmaster@gasppo.lol',
+        from: 'soporte@gasppo.lol',
+        fromTitle: 'Soporte HS-Taller'
+    })
 
     const [step, setStep] = React.useState(0)
     const [price] = React.useState(0)
@@ -58,7 +70,7 @@ const Home: NextPage = () => {
     ]
 
 
-    /*   const { data: orderStateData, isFetching: isFetchingComplexity } = useQuery(
+      const { data: orderStateData, isFetching: isFetchingComplexity } = useQuery(
           ['orderStates'],
           () => fetchOrderStates(), {
           onError: () => addError('Error al traer estados de ordenes')
@@ -68,12 +80,22 @@ const Home: NextPage = () => {
           // on confirm, submit the new state
           // print id of the order and the new state
           console.log('holaa', event.target.id, event.target.value);
-          confirm('Modificar estado a: "' + event.target.value + '"?') ? modifyOrderState(event.target.id, event.target.value) : alert('No se modificó el estado, error');
+          const rta = confirm('Modificar estado a: "' + event.target.value + '"?') ? modifyOrderState(event.target.id, event.target.value) : alert('No se modificó el estado, error');
+          if(typeof rta === "string") {
+            addError(rta, "success");
+            sendEmail({
+                to: "exequiel.videlapm@gmail.com",
+                subject: 'Reseteo de contraseña - HS-Taller',
+                html: `<h1>Orden Actualizada</h1>
+        <p>Se ha actualizado una orden con el nombre</p>`
+              }).then((res) => console.log(res)).catch(err => console.log(err))
+
+          }
       }
   
       const fetchOrderStates = (): Promise<EstadoOrden[]> =>
           fetch(`/api/orders/states`, {})
-              .then((res) => (res.ok ? res.json() : errorHandle(res)))
+              .then((res) => (res.ok ? res.json() : console.log(res)))
               .catch((error) => {
                   console.log("Broke bringing order states");
                   throw error;
@@ -85,12 +107,12 @@ const Home: NextPage = () => {
               headers: { "Content-Type": "application/json", accept: "application/json" },
               body: JSON.stringify({ id, newOrderState }),
           })
-              .then((res) => (res.ok ? res.json() : errorHandle(res)))
+              .then((res) => (res.ok ? res.json() : console.log(res)))
               .catch((error) => {
                   console.log("Broke trying to update order");
                   throw error;
               });
-      }; */
+      };
 
     return (
         <div className="bg-split-white-black">

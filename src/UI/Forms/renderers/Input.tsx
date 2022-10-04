@@ -51,11 +51,12 @@ function Input<Model>(props: InputProps<Model>) {
                                 }
                                 return onChange(parsedValue)
                             }
+                            return onChange(parsedValue)
                         }}
                         multiline={!!layout?.options?.multiline}
                         minRows={layout?.options?.multiline}
                         error={!!error}
-                        type={layout?.options?.textType || layout?.options?.numeric ? 'number' : 'text'}
+                        type={layout?.options?.textType || (layout?.options?.numeric ? 'number' : 'text')}
                         helperText={error?.message || layout?.options?.helperText}
                     />
                 </>

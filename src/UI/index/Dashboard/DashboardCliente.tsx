@@ -127,7 +127,7 @@ const DashboardCliente = () => {
                         <div>detalles de pedidos abiertos aca...</div>
                     </div>
 
-                    <div className=" bg-red-300 border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4">
+                    <div className=" bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4">
                         <div className="flex flex-row flex-wrap items-center justify-start mt-2">
                             <ActionButton
                                 Icon={AddIcon}

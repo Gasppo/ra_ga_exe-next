@@ -132,12 +132,12 @@ const DashboardCliente = () => {
                             <ActionButton
                                 Icon={AddIcon}
                                 label="Nueva Cotizacion"
-                                href="/cotizador"
+                                href="/fichaTecnicaForm"
                             />
                             <ActionButton
                                 Icon={ManageAccountsIcon}
                                 label="Editar mi Perfil"
-                                href="/cotizador"
+                                href="/perfil"
                             />
                         </div>
                     </div>

@@ -1,8 +1,5 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-
-const prisma = new PrismaClient();
-
+import { prisma } from '@server/db/client';
 
 const role = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id }: { id?: string } = req.query;

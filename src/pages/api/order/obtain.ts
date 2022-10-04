@@ -1,9 +1,10 @@
+import { findOrder } from "@backend/dbcalls/order";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient()
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
+
+    const { id } = req.query;
 
     try {
         const orders = await prisma.orden.findUnique({

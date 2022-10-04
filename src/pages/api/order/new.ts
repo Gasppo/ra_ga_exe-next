@@ -1,8 +1,9 @@
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { generateEmailer } from '@utils/email/generateEmailer';
-import { checkIfUserExists } from 'backend/dbcalls/user';
+import { checkIfUserExists, fromToday } from 'backend/dbcalls/user';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
+import { createOrder, updateExpiredOrders } from '@backend/dbcalls/order';
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -17,6 +18,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             from: 'soporte@gasppo.lol',
             fromTitle: 'Soporte HS-Taller'
         })
+
+        await updateExpiredOrders();
 
         const clothesCategory = await prisma.prenda.findFirst({
             where: {
@@ -52,14 +55,13 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         const user = await checkIfUserExists({ email: data.user.email })
 
 
-        const orden = await prisma.orden.create({
-            data: {
-                idCategoria: categoria.id,
-                nombre: categoria.nombre,
-                cantidad: 100,
-                idEstado: estado.id,
-                userId: user.id
-            }
+        const orden = await createOrder({
+            idCategoria: categoria.id,
+            nombre: categoria.nombre,
+            cantidad: 100,
+            idEstado: estado.id,
+            userId: user.id,
+            expiresAt: fromToday(60 * 60 * 24 * 15),
         })
 
         await sendEmail({

@@ -5,7 +5,7 @@ import { randomUUID } from "crypto";
 
 
 
-const fromDate = (time: number, date = Date.now()) => {
+export const fromToday = (time: number, date = Date.now()) => {
     return new Date(date + time * 1000)
 }
 
@@ -91,7 +91,7 @@ export const createResetToken = async (userId: string) => {
         data: {
             userId: userId,
             token: randomUUID(),
-            expires: fromDate(600)
+            expires: fromToday(600)
         }
     })
 }

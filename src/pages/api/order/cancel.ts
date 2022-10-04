@@ -6,7 +6,6 @@ import type { NextApiRequest, NextApiResponse } from "next";
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
-
         const { newOrderState, id: orderId } = OrderStateUpdateSchema.parse(req.body);
 
         await changeOrderState(orderId, newOrderState);

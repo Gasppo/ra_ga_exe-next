@@ -7,6 +7,26 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const orders = await prisma.orden.findUnique({
+            include: { 
+                user: { 
+                    select: {
+                        name: true,
+                        email: true,
+                    }
+                }, 
+                estado: true,
+                // bring image inside category inside prenda
+                categoria: {
+                    select: {
+                        nombre: true,
+                        Prenda: {
+                            select: {
+                                picture: true
+                            }
+                        }
+                    }
+                }                      
+            },
             where: { id: req.body.orderId }
         })
         res.status(200).json(orders);

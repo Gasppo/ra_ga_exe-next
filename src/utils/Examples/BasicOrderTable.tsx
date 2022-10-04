@@ -86,6 +86,12 @@ const headCells: readonly HeadCell[] = [
     numeric: true,
     disablePadding: false,
     label: 'Estado'
+  },
+  {
+    id: 'createdAt',
+    numeric: true,
+    disablePadding: false,
+    label: 'Creación'
   }
 ];
 
@@ -322,8 +328,9 @@ export default function BasicTable(props: BasicTableProps) {
                       <TableCell align="right">{row.nombre}</TableCell>
                       <TableCell align="right">{row.cantidad}</TableCell>
                       <TableCell align="right">{row?.estado?.nombre || 'Sin estado'}</TableCell>
+                      <TableCell align='right'>{row?.createdAt?.toString().split('T')[0].split('-').reverse().join('/')}</TableCell>
                       <TableCell align="right">
-                        <Link href={{ pathname: '/orden', query: { id: row.id } }}>
+                        <Link href={{ pathname: `/orden/${row.id}` }}>
                           <IconButton aria-label="Example">
                             <OpenInNewIcon />
                           </IconButton>

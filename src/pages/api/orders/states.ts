@@ -8,6 +8,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const orders = await prisma.estadoOrden.findMany({
             select: {
+                id: true,
                 nombre: true,
             }
         })

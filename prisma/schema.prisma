@@ -85,10 +85,10 @@ model Role {
 }
 
 model Prenda {
-    id        String      @id @default(cuid())
-    name      String      @unique
-    picture   String
-    Categoria Categoria[]
+    id                 String               @id @default(cuid())
+    name               String               @unique
+    picture            String
+    Categoria          Categoria[]
     PropiedadPorPrenda PropiedadPorPrenda[]
 }
 
@@ -100,11 +100,11 @@ model Complejidad {
 }
 
 model Categoria {
-    id              String   @id @default(cuid())
+    id              String      @id @default(cuid())
     idCC            String
     idComplexity    String
-    Complejidad     Complejidad  @relation(fields: [idComplexity], references: [id])
-    Prenda          Prenda    @relation(fields: [idCC], references: [id])
+    Complejidad     Complejidad @relation(fields: [idComplexity], references: [id])
+    Prenda          Prenda      @relation(fields: [idCC], references: [id])
     nombre          String
     precioEnDolares Float
     Orden           Orden[]
@@ -174,16 +174,16 @@ model ArchivoServicio {
 }
 
 model Propiedad {
-    id Int @id @default(autoincrement())
-    nombre String
-    descripcion String?
+    id                 Int                  @id @default(autoincrement())
+    nombre             String
+    descripcion        String?
     PropiedadPorPrenda PropiedadPorPrenda[]
 }
 
 model PropiedadPorPrenda {
-    id  String  @id @default(cuid())
+    id          String    @id @default(cuid())
     idPropiedad Int
-    idPrenda String
-    Propiedad Propiedad @relation(fields: [idPropiedad] ,references: [id])
-    Prenda Prenda @relation(fields: [idPrenda] ,references: [id])
+    idPrenda    String
+    Propiedad   Propiedad @relation(fields: [idPropiedad], references: [id])
+    Prenda      Prenda    @relation(fields: [idPrenda], references: [id])
 }

@@ -15,7 +15,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                     select: {
                         nombre: true
                     }
-                }
+                },
+                createdAt: true,
             }
         })
         res.status(200).json(orders);

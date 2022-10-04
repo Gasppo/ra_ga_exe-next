@@ -42,7 +42,10 @@ const Home: NextPage = () => {
 
 
     const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
-        onSuccess: () => router.replace('/'),
+        onSuccess: (obj) => {
+            router.replace('/');
+            addError(obj.message,"info");
+        },
         onError: (error) => addError(JSON.stringify(error))
     })
 

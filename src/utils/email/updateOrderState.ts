@@ -1,7 +1,7 @@
 export const updateOrderStateHTML = (data: any) => {
     return `
     <!DOCTYPE html>
-        html lang="en">
+        <html lang="en">
 
         <head>
 
@@ -17,10 +17,11 @@ export const updateOrderStateHTML = (data: any) => {
                 <h1 style="font-family:Georgia;color:darkslategrey">Señor ${data.name}</h1>
             </div>
             <div style="color:dimgray">
-                <p>Se ha actualizado el estado de la orden ${data.orderId} a ${data.newOrderState}</p>
+                <p>Se ha actualizado el estado de la orden <em>${data.orderId}</em> a <b>${data.newOrderState}</b></p>
             </div>
         </div>
     </div>
 </body>
+</html>
     `
 }

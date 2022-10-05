@@ -24,10 +24,9 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         sendEmail({
             to: orden.user.email,
             subject: 'Modificación pedido orden - HS-Taller',
-            html: updateOrderStateHTML({ name: orden.user.name, orderId, newOrderState: newStateId })
-        }).then(() => res.json({ message: 'Email enviado' })).catch(err => res.status(400).json({ error: err }))
+            html: updateOrderStateHTML({ name: orden.user.name, orderId, newOrderState: orden.estado.nombre })
+        }).then(() => res.json({ message: 'Estado de orden actualizado' })).catch(err => res.status(400).json({ error: err }))
 
-        res.status(200).json({ message: 'Estado de orden actualizado' });
     } catch (error) {
         res.status(500).json({ error: error })
         throw error;

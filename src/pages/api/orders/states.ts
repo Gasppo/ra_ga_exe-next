@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@server/db/client';
 
-const prisma = new PrismaClient()
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const orders = await prisma.estadoOrden.findMany({
             select: {
+                id: true,
                 nombre: true,
             }
         })

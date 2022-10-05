@@ -24,3 +24,20 @@ export const findOrder = async (id: string) => {
         where: { id: id }
     })
 }
+
+export const changeOrderState = async (id: string, newOrderState: string) => {
+    const stateObject = await prisma.estadoOrden.findFirst({
+        where: { nombre: newOrderState }
+    })
+
+    await prisma.orden.update({
+        where: { id: id },
+        data: {
+            estado: {
+                connect: {
+                    id: stateObject.id
+                }
+            }
+        }
+    })
+}

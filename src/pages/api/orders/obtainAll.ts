@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@server/db/client';
 
-const prisma = new PrismaClient()
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -15,7 +14,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                     select: {
                         nombre: true
                     }
-                }
+                },
+                createdAt: true,
             }
         })
         res.status(200).json(orders);

@@ -1,5 +1,14 @@
 ### Sitio web para Taller-HS
 
+## Indice
+
+- [Objetivos](#objetivos)
+- [Funcionalidad del proyecto](#funcionalidad)
+- [Complejidad](#complejidad)
+- [Flujo de ordenes](#flujo)
+
+<a name="objetivos"/>
+
 ## Objetivos
 
 Este proyecto surgió como una alternativa de desarrollo planteada a los alumnos de la Universidad
@@ -19,6 +28,8 @@ actualmente se realiza de manera manual a través de hojas de cálculo Excel, a 
 a la hora de informar al cliente el estado de sus órdenes, ya que será posible consultarlas dentro del
 portal web.
 
+<a name="funcionalidad"/>
+
 ## Funcionalidad del proyecto
 
 Las funcionalidades principales brindadas por la aplicación son las siguientes:
@@ -27,6 +38,8 @@ Las funcionalidades principales brindadas por la aplicación son las siguientes:
 - Poder visualizar las ordenes y cotizaciones que un usuario cliente posee al igual que su información de usuario: <p align="center"><img src='https://i.imgur.com/Y3yuZNp.png'/></p>
 - Hay dos usuarios: Administradores y Clientes.
 - Los usuarios Administradores tienen un panel donde pueden visualizar las ordenes, usuarios y modificar precios base de los productos. <p align="center"><img src='https://i.imgur.com/4BvPnTT.png'/></p>
+
+<a name="complejidad"/>
 
 ## Complejidad
 
@@ -40,6 +53,8 @@ Uno de los puntos más importantes a la hora de determinar el precio de las pren
 *	Extremadamente Complejo.
 
 Para que el cotizador pueda funcionar de manera precisa indicando el precio, es necesario que tenga en cuenta cuál es la complejidad de la prenda. 
+
+<a name="flujo"/>
 
 ## Flujo de ordenes
 

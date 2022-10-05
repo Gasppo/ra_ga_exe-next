@@ -1,13 +1,15 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { Slide } from "@mui/material";
-import Button from '@mui/material/Button';
+import { Complejidad, Prenda } from "@prisma/client";
+import ClothingImage from "@UI/cotizador/Ficha Tecnica/ClothingImage";
+import FichaTecnicaControls from "@UI/cotizador/Ficha Tecnica/FichaTecnicaControls";
+import HookForm from "@UI/Forms/HookForm";
+import HeaderBar from "@UI/Generic/HeaderBar";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useContext, useMemo, useState } from 'react';
-import { FormProvider, useForm } from "react-hook-form";
+import { useContext, useState } from 'react';
 import { useMutation, useQuery } from "react-query";
 import ClothingConfirmationForm from "../UI/cotizador/Ficha Tecnica/ClothingConfirmationForm";
 import ClothingDetailForm from "../UI/cotizador/Ficha Tecnica/ClothingDetailForm";
@@ -15,15 +17,13 @@ import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm
 import ClothingSelectionForm from "../UI/cotizador/Ficha Tecnica/ClothingSelectionForm";
 import ClothingSizesForm from "../UI/cotizador/Ficha Tecnica/ClothingSizesForm";
 import PriceCheckerSteps from "../UI/cotizador/Stepper";
-import PageTitle from "../UI/Generic/Utils/PageTitle";
 import Footer from "../UI/Generic/Footer";
+import PageTitle from "../UI/Generic/Utils/PageTitle";
 import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
-import HeaderBar from "@UI/Generic/HeaderBar";
-import { Complejidad, Prenda } from "@prisma/client";
 
 const Home: NextPage = () => {
 
@@ -59,17 +59,6 @@ const Home: NextPage = () => {
     const advanceStep = () => step < 4 ? setStep(prev => prev + 1) : alert('No se puede ir mass para adelante')
     const goBackOneStep = () => step > 0 ? setStep(prev => prev - 1) : alert('No se puede ir mas para atras')
 
-    const formContext = useForm({ defaultValues: { ...fichaTecnicaVaciaForm, user: sessionData?.user } })
-
-    const clothesName = formContext.watch('tipoPrenda.name')
-    const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
-
-    const disableContinueSeleccionPrenda = !formContext.watch('tipoPrenda.name')
-
-
-    const backDisabled = step <= 0
-    const continueDisabled = step === steps.length - 1 || (disableContinueSeleccionPrenda /*|| disableContinueProduction*/)
-    // const continueDisabled = (step === 0) ? disableContinueModel : ((step === 1) ? disableContinueProduction : disableContinueProduction)
 
     const handleFormSubmit = async (data: OrderCreationData) => {
         /*if (data?.files?.length > 0) {
@@ -107,36 +96,22 @@ const Home: NextPage = () => {
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
-                                <FormProvider {...formContext} >
-                                    <ErrorAlerter />
-                                    <form onSubmit={formContext.handleSubmit(handleFormSubmit)}>
-                                        <div className="flex flex-col " >
-                                            <div className="md:mt-9 grow flex justify-evenly">
-                                                <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
-                                                    {image && <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />}
-                                                </div>
-                                                {step === 0 && <ClothingSelectionForm clothesData={clothesData} />}
-                                                {step === 1 && <ClothingMouldsForm />}
-                                                {step === 2 && <ClothingDetailForm />}
-                                                {step === 3 && <ClothingSizesForm />}
-                                                {step === 4 && <ClothingConfirmationForm />}
-                                            </div>
-                                            <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
-                                                <div className="mx-4" >
-                                                    <Button variant="outlined" disabled={backDisabled} type="button" onClick={goBackOneStep}>Atrás</Button>
-                                                </div>
-                                                {step !== 4 && <div className="mx-4" >
-                                                    <Button variant="outlined" disabled={continueDisabled} type="button" onClick={advanceStep}>Continuar</Button>
-                                                </div>}
-                                                {step === 4 && <div className="mx-4 md:flex" >
-                                                    <Button variant="outlined" disabled={false} type="submit">Submit </Button>
-                                                </div>}
-                                                <div className="mx-4" >
-                                                </div>
-                                            </div>
+                                <ErrorAlerter />
+                                <HookForm defaultValues={{ ...fichaTecnicaVaciaForm, user: sessionData?.user }} onSubmit={handleFormSubmit}>
+                                    <div className="flex flex-col " >
+                                        <div className="md:mt-9 grow flex justify-evenly">
+                                            <ClothingImage clothesData={clothesData} />
+                                            {step === 0 && <ClothingSelectionForm clothesData={clothesData} />}
+                                            {step === 1 && <ClothingMouldsForm />}
+                                            {step === 2 && <ClothingDetailForm />}
+                                            {step === 3 && <ClothingSizesForm />}
+                                            {step === 4 && <ClothingConfirmationForm />}
                                         </div>
-                                    </form>
-                                </FormProvider>
+                                        <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
+                                            <FichaTecnicaControls currStep={step} numberSteps={steps.length} onBack={goBackOneStep} onForward={advanceStep} />
+                                        </div>
+                                    </div>
+                                </HookForm>
                                 <div className="hidden md:flex" />
                                 <div className="hidden md:flex" />
                                 <div className="hidden md:flex" />

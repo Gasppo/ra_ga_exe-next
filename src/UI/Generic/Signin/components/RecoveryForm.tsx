@@ -1,6 +1,6 @@
 import { SendResetEmailSchema } from '@backend/schemas/SendResetEmailSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FormProvider, useForm } from 'react-hook-form'
+import HookForm from '@UI/Forms/HookForm'
 import FormItem from '../../../Forms/FormItem'
 import { recoveryLayout } from '../forms/recovery.layout'
 
@@ -15,18 +15,9 @@ const RecoveryForm = (props: RecoveryFormProps) => {
 
     const { onClose, onRecovery, sent, onSubmit } = props
 
-
-    const formContext = useForm({
-        defaultValues: {
-            email: '',
-        },
-        resolver: zodResolver(SendResetEmailSchema)
-    })
-
-
     return (
-        <FormProvider  {...formContext}>
-            <form onSubmit={formContext.handleSubmit(onSubmit)} className="flex flex-col items-center justify-center">
+        <HookForm defaultValues={{ email: '' }} onSubmit={onSubmit} formOptions={{ resolver: zodResolver(SendResetEmailSchema) }} >
+            <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-row flex-wrap justify-center w-3/4" >
                     {!sent && <>
                         <FormItem layout={recoveryLayout} />
@@ -47,8 +38,8 @@ const RecoveryForm = (props: RecoveryFormProps) => {
                         </div>
                     </div>}
                 </div>
-            </form>
-        </FormProvider >
+            </div>
+        </HookForm>
     )
 }
 

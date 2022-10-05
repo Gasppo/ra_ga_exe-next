@@ -1,8 +1,8 @@
 import { SignInSchema, SignInSchemaType } from '@backend/schemas/SignInSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import HookForm from '@UI/Forms/HookForm'
 import { signIn } from 'next-auth/react'
-import React, { useContext, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { useContext, useState } from 'react'
 import { ErrorHandlerContext } from '../../../../utils/ErrorHandler/error'
 import FormItem from '../../../Forms/FormItem'
 import { signInLayout } from '../forms/signin.layout'
@@ -22,13 +22,10 @@ const SignInForm = (props: SignInFormProps) => {
     const [errorFlag, setErrorFlag] = useState(false)
 
 
-    const formContext = useForm({
-        defaultValues: {
-            email: '',
-            password: '',
-        },
-        resolver: zodResolver(SignInSchema)
-    })
+    const defaultFormValues = {
+        email: '',
+        password: '',
+    }
 
 
     const loginSubmit = async (data: SignInSchemaType) => {
@@ -57,8 +54,8 @@ const SignInForm = (props: SignInFormProps) => {
     }
 
     return (
-        <FormProvider  {...formContext}>
-            <form onSubmit={formContext.handleSubmit(loginSubmit)} className="flex flex-col items-center justify-center">
+        <HookForm defaultValues={defaultFormValues} onSubmit={loginSubmit} formOptions={{ resolver: zodResolver(SignInSchema) }}>
+            <div className="flex flex-col items-center justify-center">
                 <div className="flex flex-col items-center" >
                     <div className='w-64 mx-4'>
                         <FormItem layout={signInLayout} />
@@ -71,8 +68,8 @@ const SignInForm = (props: SignInFormProps) => {
                     </div>
                 </div>
                 <SignInButtons onClose={onClose} />
-            </form>
-        </FormProvider>
+            </div>
+        </HookForm>
     )
 }
 

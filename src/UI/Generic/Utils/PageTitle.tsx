@@ -13,9 +13,11 @@ const PageTitle = ({ title, hasBack, size }: PageTitleProps) => {
             <h1 className={`${size === 'small' ? 'text-xl md:text-[1.5rem]' : 'text-5xl md:text-[4rem]  md:ml-7'} leading-normal font-extrabold text-gray-700`} >
                 {title}
             </h1>
-            {hasBack && <Link href='/' className='md:ml-7'>
-                Volver al inicio
-            </Link>}
+            {hasBack && <div className='leading-normal font-extralight ml-8 italic'>
+                <Link href='/'>
+                    Volver al inicio
+                </Link>
+            </div>}
         </div>
     )
 }

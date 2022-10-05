@@ -1,9 +1,10 @@
+import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { useFormContext } from "react-hook-form";
-import { FichaTecnicaForm } from "../../Types/fichaTecnicaTypes";
+import NumbersIcon from '@mui/icons-material/Numbers';
 
 const ClothingConfirmationForm = () => {
 
-    const { watch } = useFormContext<FichaTecnicaForm>()
+    const { watch } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
 
     return (
@@ -42,6 +43,7 @@ const ClothingConfirmationForm = () => {
                 <div>{cotizadorData.talles.selected ? cotizadorData.talles.talle.map((talle, index) => {
                     return <div className="ml-3" key={index}>Nombre: {' ' + talle.nombre} - Medidas: {' ' + talle.medidas} </div>
                 }) : ""}</div>
+                <div><NumbersIcon /> Cantidad: {cotizadorData.cantidad}</div>
             </div>
 
         </div>

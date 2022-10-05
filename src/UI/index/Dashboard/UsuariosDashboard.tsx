@@ -4,17 +4,46 @@ import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SearchIcon from '@mui/icons-material/Search';
 import { InputBase, TextField } from '@mui/material';
+import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
+import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
+import { errorHandle } from '@utils/queries/cotizador';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import BasicUserTable from '../../../utils/Examples/BasicUserTable';
+import { useContext } from 'react';
+import { useQuery } from 'react-query';
+import BasicUserTable, { ReducedUser } from '../../../utils/Examples/BasicUserTable';
 import PageTitle from '../../Generic/Utils/PageTitle';
 import ActionButton from './ActionButton';
 
 const UsuariosDashboard = () => {
 
-    const { data } = useSession()
-
+    const { data: sessionData } = useSession()
     const editEnabled = false
+
+    const { addError } = useContext(ErrorHandlerContext);
+
+    const fetchOrders = (): Promise<ReducedUser[]> =>
+        fetch(`/api/users/obtainAll`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                accept: "application/json",
+            },
+        })
+            .then((res) => (res.ok ? res.json() : errorHandle(res)))
+            .catch((error) => {
+                console.log("Broke here");
+                throw error;
+            });
+
+
+    const { data: usersData, isLoading: isFetchingUsers } = useQuery(
+        ['ordenes', sessionData?.user?.email],
+        () => fetchOrders(),
+        {
+            onError: () => addError('Error al traer ordenes')
+        })
+
 
     return (
         <div>
@@ -33,7 +62,9 @@ const UsuariosDashboard = () => {
                         </div>
                     </div>
                     <div>
-                        <BasicUserTable />
+                        <LoadingIndicator show={isFetchingUsers} >
+                            <BasicUserTable rows={usersData || []} />
+                        </LoadingIndicator>
                     </div>
                 </div>
                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
@@ -46,14 +77,14 @@ const UsuariosDashboard = () => {
                         </div>
                     </div>
                     <div className="my-2">
-                        <TextField variant="standard" disabled={!editEnabled} label='Nombre' value={data?.user.name || 'Chau'} InputProps={{ disableUnderline: !editEnabled }} />
+                        <TextField variant="standard" disabled={!editEnabled} label='Nombre' value={sessionData?.user.name || 'Chau'} InputProps={{ disableUnderline: !editEnabled }} />
                     </div>
                     <div className="my-2">
-                        <TextField variant="standard" disabled label='Correo' value={data?.user.email || 'Hola'} InputProps={{ disableUnderline: true }} />
+                        <TextField variant="standard" disabled label='Correo' value={sessionData?.user.email || 'Hola'} InputProps={{ disableUnderline: true }} />
                     </div>
                     <div className="my-10 flex justify-center">
                         <div className="rounded-full flex items-center hover:opacity-25 transition-all duration-300" >
-                            <Image src={data?.user?.image || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg'} alt="" width={128} height={128} className="rounded-full hover:b" />
+                            <Image src={sessionData?.user?.image || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg'} alt="" width={128} height={128} className="rounded-full hover:b" />
                         </div>
                     </div>
                 </div>

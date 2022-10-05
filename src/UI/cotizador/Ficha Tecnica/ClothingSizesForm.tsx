@@ -1,14 +1,13 @@
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
 import { Button, Divider, IconButton } from "@mui/material";
 import { useFormContext } from "react-hook-form";
-import { FichaTecnicaForm } from "../../Types/fichaTecnicaTypes";
 import { CotizadorFormItem } from "../Inputs/CotizadorSelect";
-import AddIcon from '@mui/icons-material/Add';
-import { useEffect } from "react";
-import RemoveIcon from '@mui/icons-material/Remove';
 
 const ClothingSizesForm = () => {
 
-    const { watch, setValue } = useFormContext<FichaTecnicaForm>()
+    const { watch, setValue } = useFormContext<OrderCreationData>()
     const cotizadorData = watch()
     const talles = cotizadorData.talles.talle
 
@@ -18,11 +17,6 @@ const ClothingSizesForm = () => {
         const newTalles = [...talles, { nombre: '', medidas: '' }]
         setValue('talles.talle', newTalles)
     }
-
-    useEffect(() => {
-        console.log(cotizadorData)
-    }, [cotizadorData])
-
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
@@ -51,7 +45,9 @@ const ClothingSizesForm = () => {
                 </IconButton>
             </div>
 
-
+            <div className="form-input-section">
+                <CotizadorFormItem scope="cantidad" renderer={'Input'} label="Detalle cantidad" size='medium' />
+            </div>
 
         </div>
     )

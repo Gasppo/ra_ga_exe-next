@@ -1,5 +1,6 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
@@ -17,44 +18,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
+import { EstadoOrden, Orden, User } from '@prisma/client';
+import Link from 'next/link';
 import * as React from 'react';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-
-interface Data {
-  orden: string;
-  prenda: string;
-  cantidad: number;
-  estado: string;
-}
-
-function createData(
-  orden: string,
-  prenda: string,
-  cantidad: number,
-  estado: string
-): Data {
-  return {
-    orden,
-    prenda,
-    cantidad,
-    estado
-  };
-}
-
-const rows = [
-  createData('34-J-VERANO', 'Buzo', 300, 'Aguardando seña'),
-  createData('35-F-VERANO', 'Campera', 150, 'Cancelado'),
-  createData('36-F-INVIERNO', 'Overol', 50, 'Cancelado'),
-  createData('37-J-OTOÑO', 'Buzo', 25, 'Entregado'),
-  createData('38-P-OTOÑO', 'Boxer', 120, 'Esperando costurero'),
-  createData('39-T-PIRMAVERA', 'Guante', 300, 'Rechazado'),
-  createData('40-F-VERANO', 'Gorro', 500, 'Aguardando seña'),
-  createData('41-J-INVIERNO', 'Pantalon', 200, 'Pendiente envío'),
-  createData('42-L-OTOÑO', 'Jean', 75, 'Aguardando geometral'),
-  createData('43-T-PRIMAVERA', 'Media', 25, 'Cancelado'),
-  createData('44-J-PRIMAVERA', 'Buzo', 100, 'Rechazado'),
-  createData('45-P-VERANO', 'Remera', 110, 'Aguardando Seña'),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -67,13 +33,13 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 type Order = 'asc' | 'desc';
-
+export type ExtendedOrdenData = Orden & { user: User; estado: EstadoOrden; }
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
 ): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  a: { [key in Key]: number | string | object },
+  b: { [key in Key]: number | string | object },
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -96,7 +62,7 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Data;
+  id: keyof ExtendedOrdenData;
   label: string;
   numeric: boolean;
 
@@ -104,13 +70,7 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: 'orden',
-    numeric: false,
-    disablePadding: true,
-    label: '# Orden',
-  },
-  {
-    id: 'prenda',
+    id: 'nombre',
     numeric: true,
     disablePadding: false,
     label: 'Tipo Prenda',
@@ -122,17 +82,22 @@ const headCells: readonly HeadCell[] = [
     label: 'Cantidad (u)',
   },
   {
-    id: 'estado',
+    id: 'idEstado',
     numeric: true,
     disablePadding: false,
-    label: 'Estado',
+    label: 'Estado'
   },
-
+  {
+    id: 'createdAt',
+    numeric: true,
+    disablePadding: false,
+    label: 'Creación'
+  }
 ];
 
 interface EnhancedTableProps {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof ExtendedOrdenData) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -143,7 +108,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
     props;
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof ExtendedOrdenData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -241,9 +206,13 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   );
 };
 
-export default function BasicTable() {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('orden');
+interface BasicTableProps {
+  rows: ExtendedOrdenData[];
+}
+
+export default function BasicTable(props: BasicTableProps) {
+  const [order, setOrder] = React.useState<Order>('desc');
+  const [orderBy, setOrderBy] = React.useState<keyof ExtendedOrdenData>('createdAt');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const dense = false
@@ -251,7 +220,7 @@ export default function BasicTable() {
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof ExtendedOrdenData,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -260,7 +229,7 @@ export default function BasicTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.orden);
+      const newSelected = props.rows.map((n) => n.id);
       setSelected(newSelected);
       return;
     }
@@ -291,7 +260,7 @@ export default function BasicTable() {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -301,7 +270,7 @@ export default function BasicTable() {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.rows.length) : 0;
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -319,25 +288,25 @@ export default function BasicTable() {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={props.rows.length}
             />
             <TableBody>
               {/* if you don't need to support IE11, you can replace the `stableSort` call with:
               rows.slice().sort(getComparator(order, orderBy)) */}
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(props.rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row: Data, index) => {
-                  const isItemSelected = isSelected(row.orden);
+                .map((row: ExtendedOrdenData, index) => {
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.orden)}
+                      onClick={(event) => handleClick(event, row.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.orden}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -349,23 +318,23 @@ export default function BasicTable() {
                           }}
                         />
                       </TableCell>
-                      <TableCell
+                      {/* <TableCell
                         component="th"
                         id={labelId}
                         scope="row"
-                        padding="none"
                       >
-                        {row.orden}
-                      </TableCell>
-                      <TableCell align="right">{row.prenda}</TableCell>
+                        {row.nombre}
+                      </TableCell> */}
+                      <TableCell align="right">{row.nombre}</TableCell>
                       <TableCell align="right">{row.cantidad}</TableCell>
-                      <TableCell align="right">{row.estado}</TableCell>
+                      <TableCell align="right">{row?.estado?.nombre || 'Sin estado'}</TableCell>
+                      <TableCell align='right'>{row?.createdAt?.toString().split('T')[0].split('-').reverse().join('/')}</TableCell>
                       <TableCell align="right">
-                        <div onClick={() => alert('Nueva pagina :)')}>
+                        <Link href={{ pathname: `/orden/${row.id}` }}>
                           <IconButton aria-label="Example">
                             <OpenInNewIcon />
                           </IconButton>
-                        </div>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   );
@@ -385,7 +354,7 @@ export default function BasicTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={props.rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

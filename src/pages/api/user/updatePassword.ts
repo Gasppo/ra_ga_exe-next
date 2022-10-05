@@ -1,6 +1,7 @@
+import { checkIfUserExists, clearUserTokens, createCredentialsAccountForUser, hashPassword, updateUserByID, verifyToken } from "@backend/dbcalls/user";
+import { PasswordUpdateSchema } from "@backend/schemas/PasswordUpdateSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z, ZodError } from "zod";
-import { checkIfUserExists, clearUserTokens, createCredentialsAccountForUser, hashPassword, updateUserByID, verifyToken } from "../../../utils/dbcalls/user";
+import { ZodError } from "zod";
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") {
@@ -11,20 +12,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 }
 
 
-const minCharErrorMessage = (min: number) => `Se requiere un mínimo de ${min} ${min === 1 ? "caracter" : "caracteres"}`;
-const maxCharErrorMessage = (max: number) => `Se tiene un máximo de ${max} ${max === 1 ? "caracter" : "caracteres"}`;
-
-const Password = z.object({
-    token: z.string(),
-    password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
-    confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
-}).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
-
-
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const data = Password.parse(req.body);
+        const data = PasswordUpdateSchema.parse(req.body);
         const password = hashPassword(data.password);
         const userToken = await verifyToken(data.token);
         const existingUser = await checkIfUserExists({ id: userToken.userId });

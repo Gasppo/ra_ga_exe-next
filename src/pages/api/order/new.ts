@@ -1,0 +1,84 @@
+import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
+import { generateEmailer } from '@utils/email/generateEmailer';
+import { checkIfUserExists, fromToday } from 'backend/dbcalls/user';
+import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '@server/db/client';
+import { createOrder, updateExpiredOrders } from '@backend/dbcalls/order';
+import { newOrderNotificationHTML } from '@utils/email/newOrderNotification';
+
+const post = async (req: NextApiRequest, res: NextApiResponse) => {
+
+
+
+    try {
+        const data = OrderCreationDataSchema.parse(req.body);
+
+        const { sendEmail } = generateEmailer({
+            password: process.env.MAILGUN_SMTP_PASS,
+            user: 'postmaster@gasppo.lol',
+            from: 'soporte@gasppo.lol',
+            fromTitle: 'Soporte HS-Taller'
+        })
+
+        await updateExpiredOrders();
+
+        const clothesCategory = await prisma.prenda.findFirst({
+            where: {
+                OR: [
+                    { id: data.tipoPrenda.id },
+                    { name: data.tipoPrenda.name }
+                ]
+            }
+        })
+
+
+        const complexity = await prisma.complejidad.findFirst({
+            where: {
+                name: 'Basico'
+            }
+        })
+
+
+        console.log(`${clothesCategory.name} ${complexity.name}`)
+
+        const categoria = await prisma.categoria.findFirst({
+            where: {
+                nombre: 'Pantalon Basico'
+            }
+        })
+
+        const estado = await prisma.estadoOrden.findFirst({
+            where: {
+                id: 1
+            }
+        })
+
+        const user = await checkIfUserExists({ email: data.user.email })
+
+
+        const orden = await createOrder({
+            idCategoria: categoria.id,
+            nombre: categoria.nombre,
+            cantidad: 100,
+            idEstado: estado.id,
+            userId: user.id,
+            expiresAt: fromToday(60 * 60 * 24 * 15),
+        })
+
+        await sendEmail({
+            html: newOrderNotificationHTML({ name: user.name, orderId: orden.id }),
+            to: user.email,
+            subject: 'Orden creada'
+        })
+
+        res.status(200).json({ message: 'Orden creada con éxito' });
+
+    } catch (error) {
+        res.status(500).json({ error: error })
+        throw error;
+    }
+
+
+}
+
+export default post;

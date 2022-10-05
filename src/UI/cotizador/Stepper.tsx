@@ -6,16 +6,17 @@ interface PriceCheckerStepsProps {
     steps: string[]
     price: number
     isStepOptional: (index: number) => boolean
+    orientation?: 'horizontal' | 'vertical'
 }
 
 const PriceCheckerSteps = (props: PriceCheckerStepsProps) => {
 
-    const { step, steps, price, isStepOptional } = props
+    const { step, steps, isStepOptional, orientation = 'horizontal' } = props
 
     return (
         <div className="flex flex-col md:flex-row mt-10 items-center md:justify-between">
-            <div className=" md:flex md:displ md:pr-4 md:ml-10 md:w-4/5 items-center justify-start">
-                <Stepper activeStep={step} orientation='horizontal' alternativeLabel>
+            <div className=" md:flex md:displ md:pr-4 md:ml-10 md:w-4/5">
+                <Stepper activeStep={step} orientation={orientation} alternativeLabel>
                     {steps.map((label, index) => {
                         const stepProps: { completed?: boolean } = {};
                         const labelProps: {

@@ -1,8 +1,9 @@
+import { checkIfUserExists, createResetToken } from "@backend/dbcalls/user";
+import { SendResetEmailSchema } from "@backend/schemas/SendResetEmailSchema";
+import { emailTemplate } from "@utils/email/emailTemplate";
+import { generateEmailer } from "@utils/email/generateEmailer";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { z, ZodError } from "zod";
-import { checkIfUserExists, createResetToken } from "../../../utils/dbcalls/user";
-import { emailTemplate } from "../../../utils/emailTemplate";
-import { generateEmailer } from "../../../utils/generateEmailer";
+import { ZodError } from "zod";
 
 
 
@@ -13,14 +14,10 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
     }
 }
 
-const Email = z.object({
-    email: z.string().email({ message: 'Formato de correo electrónico inválido' }),
-})
-
 
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const { email } = Email.parse(req.body);
+        const { email } = SendResetEmailSchema.parse(req.body);
 
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -34,6 +31,7 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
         if (!user) throw 'Error al enviar el correo';
 
         const token = await createResetToken(user.id);
+        
         sendEmail({
             to: email,
             subject: 'Reseteo de contraseña - HS-Taller',

@@ -1,6 +1,6 @@
 import { createContext } from "react"
 
-export type SelectOptionsContextType = { [key: string]: { key: string, text: string, disabled?: boolean }[] } | null
+export type SelectOptionsContextType = { [key: string]: { key: string | number, text: string, disabled?: boolean }[] } | null
 
 export const SelectOptionsContext = createContext<SelectOptionsContextType>(null)
 

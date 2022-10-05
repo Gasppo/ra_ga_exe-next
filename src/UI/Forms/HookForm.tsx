@@ -14,8 +14,9 @@ export default function HookForm<TFieldValues, TContext = any>(props: HookFormPr
     const { onSubmit, defaultValues, formOptions, children } = props
 
     const formContext = useForm({ defaultValues, ...formOptions })
-    
+
     useFormErrorHandler(formContext.formState.errors)
+
 
     return (
         <FormProvider {...formContext} >

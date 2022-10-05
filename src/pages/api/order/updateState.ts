@@ -7,9 +7,9 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
 
-        const { newOrderState, id: orderId } = OrderStateUpdateSchema.parse(req.body);
+        const { newStateId, id: orderId } = OrderStateUpdateSchema.parse(req.body);
 
-        await changeOrderState(orderId, newOrderState);
+        await changeOrderState(orderId, newStateId);
 
         res.status(200).json({ message: 'Estado de orden actualizado' });
     } catch (error) {

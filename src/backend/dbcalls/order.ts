@@ -1,7 +1,6 @@
 import { Orden } from "@prisma/client";
 import { prisma } from "@server/db/client";
 
-
 export const updateExpiredOrders = async () => {
     await prisma.orden.updateMany({
         where: {
@@ -40,4 +39,5 @@ export const changeOrderState = async (id: string, newOrderState: string) => {
             }
         }
     })
+
 }

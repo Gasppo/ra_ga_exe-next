@@ -211,8 +211,8 @@ interface BasicTableProps {
 }
 
 export default function BasicTable(props: BasicTableProps) {
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof ExtendedOrdenData>('cantidad');
+  const [order, setOrder] = React.useState<Order>('desc');
+  const [orderBy, setOrderBy] = React.useState<keyof ExtendedOrdenData>('createdAt');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const dense = false

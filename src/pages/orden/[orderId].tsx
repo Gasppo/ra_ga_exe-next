@@ -1,6 +1,6 @@
 import { Button, MenuItem, Slide, TextField } from "@mui/material";
 import type { GetServerSideProps, NextPage } from "next";
-import { getSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
@@ -18,7 +18,9 @@ import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
 import Image from "next/image";
 
 const Home: NextPage = () => {
+
     const queryClient = useQueryClient()
+    const { data: sessionData } = useSession()
     const { addError } = React.useContext(ErrorHandlerContext)
 
     const [step, setStep] = React.useState(0)
@@ -113,7 +115,7 @@ const Home: NextPage = () => {
         return await fetch(`/api/order/updateState`, {
             method: "POST",
             headers: { "Content-Type": "application/json", accept: "application/json" },
-            body: JSON.stringify({ id, newOrderState }),
+            body: JSON.stringify({ id, newOrderState, email: sessionData?.user?.email, name: sessionData?.user?.name })
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {

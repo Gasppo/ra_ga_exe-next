@@ -1,7 +1,7 @@
 import { UserCreationSchema, UserCreationSchemaType } from "@backend/schemas/UserCreationSchema"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useContext, useEffect, useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import HookForm from "@UI/Forms/HookForm"
+import { useContext, useState } from 'react'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
@@ -23,20 +23,12 @@ interface SignupProps {
 const Signup = ({ open, onClose, onSignin }: SignupProps) => {
 
     const { isLoading, mutateAsync, error } = useMutation<SignupResponse, UserHandlerError, UserCreationSchemaType>(postSignup)
-    const { addError, queryErrorHandler } = useContext(ErrorHandlerContext)
+    const { queryErrorHandler } = useContext(ErrorHandlerContext)
 
     const errors = error?.error ? (typeof error.error === 'string' ? {} : error?.error.fieldErrors) : {}
     const [completedSignUp, setCompletedSignUp] = useState(false)
 
-    const formContext = useForm({
-        defaultValues: {
-            name: '',
-            email: '',
-            password: '',
-            confirmPassword: ''
-        },
-        resolver: zodResolver(UserCreationSchema)
-    })
+    const defaultFormValues = { name: '', email: '', password: '', confirmPassword: '' }
 
     const handleFormSubmit = async (data: UserCreationSchemaType) => {
         try {
@@ -48,26 +40,22 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
         }
     }
 
-    useEffect(() => {
-        if (formContext.formState.errors[""]) addError(formContext.formState.errors[""].message)
-    }, [formContext.formState.errors, addError]);
-
     return (
         <ModalComponent open={open} onClose={onClose} size='small'>
             <LoadingIndicator show={isLoading}>
                 <div className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
                     <PageTitle title="Crear Cuenta" size="small" />
                     <div className="mt-10" >
-                        <FormProvider  {...formContext}>
-                            <form onSubmit={formContext.handleSubmit(handleFormSubmit)} className="flex flex-col items-center justify-center">
+                        <HookForm defaultValues={defaultFormValues} formOptions={{ resolver: zodResolver(UserCreationSchema) }} onSubmit={handleFormSubmit}>
+                            <div className="flex flex-col items-center justify-center">
                                 <div className="flex flex-row flex-wrap justify-center w-3/4">
                                     {completedSignUp && <SignUpCompleted onSignin={onSignin} />}
                                     {!completedSignUp && <SignUpForm />}
                                 </div>
                                 {completedSignUp && errors && <SignUpFormErrors errors={errors} />}
                                 <SignUpButtons onClose={onClose} showCreate={!completedSignUp} />
-                            </form>
-                        </FormProvider>
+                            </div>
+                        </HookForm>
                     </div>
                 </div>
             </LoadingIndicator>

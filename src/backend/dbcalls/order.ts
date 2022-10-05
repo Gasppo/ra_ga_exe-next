@@ -24,3 +24,13 @@ export const findOrder = async (id: string) => {
         where: { id: id }
     })
 }
+
+export const changeOrderState = async (id: string, newOrderId: number) => {
+
+    await prisma.orden.update({
+        where: { id: id },
+        data: {
+            idEstado: newOrderId
+        }
+    })
+}

@@ -1,10 +1,9 @@
 import { PasswordUpdateSchema, PasswordUpdateSchemaType } from '@backend/schemas/PasswordUpdateSchema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import DoneIcon from '@mui/icons-material/Done'
-import { useFormErrorHandler } from '@utils/ErrorHandler/react-hook-errors'
+import HookForm from '@UI/Forms/HookForm'
 import Link from 'next/link'
 import { useContext } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
 import { useMutation } from 'react-query'
 import { ErrorHandlerContext } from '../../../utils/ErrorHandler/error'
 import LoadingIndicator from '../../../utils/LoadingIndicator/LoadingIndicator'
@@ -17,25 +16,21 @@ interface PasswordResetProps {
 }
 
 const PasswordReset = (props: PasswordResetProps) => {
-    
+
     const { token: resetToken } = props
     const { addError, queryErrorHandler } = useContext(ErrorHandlerContext)
     const { data: passwordResetData, isLoading, mutateAsync } = useMutation<PasswordResetResponse, UserHandlerError, PasswordUpdateSchemaType>(updatePasssword, {
         onSuccess: () => { addError('Clave cambiada exitosamente', 'success') }
     })
-    
+
     const completedReset = passwordResetData?.statusCode === 200
-    
-    const formContext = useForm<PasswordUpdateSchemaType>({
-        defaultValues: {
-            token: resetToken,
-            password: '',
-            confirmPassword: ''
-        },
-        resolver: zodResolver(PasswordUpdateSchema)
-    })
-    
-    useFormErrorHandler(formContext.formState.errors)
+
+    const defaultFormValues = {
+        token: resetToken,
+        password: '',
+        confirmPassword: ''
+    }
+
 
     const handleSubmit = async (data: PasswordUpdateSchemaType) => {
         try {
@@ -46,7 +41,6 @@ const PasswordReset = (props: PasswordResetProps) => {
         }
     }
 
-
     return (
         <div className='w-auto h-auto flex flex-col place-items-center border-8 border-double rounded-lg shadow-2xl border-gray-800 m-auto p-20'>
             <h1 className="text-2xl md:text-[1.5rem] leading-normal font-extrabold text-gray-700">
@@ -54,8 +48,8 @@ const PasswordReset = (props: PasswordResetProps) => {
             </h1>
             <div className='flex md:flex-row flex-col md:justify-center md:space-x-10 mt-10'>
                 <LoadingIndicator show={isLoading}>
-                    <FormProvider  {...formContext}>
-                        <form onSubmit={formContext.handleSubmit(handleSubmit)} className="flex flex-col items-center justify-center">
+                    <HookForm defaultValues={defaultFormValues} formOptions={{ resolver: zodResolver(PasswordUpdateSchema) }} onSubmit={handleSubmit}>
+                        <div className="flex flex-col items-center justify-center">
                             {!completedReset && <>
                                 <div className="flex flex-col items-center" >
                                     <FormItem layout={passwordResetLayout} />
@@ -83,8 +77,8 @@ const PasswordReset = (props: PasswordResetProps) => {
                                     </div>
                                 </div>
                             )}
-                        </form>
-                    </FormProvider>
+                        </div>
+                    </HookForm>
                 </LoadingIndicator>
             </div>
         </div>

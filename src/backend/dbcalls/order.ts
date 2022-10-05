@@ -14,7 +14,7 @@ export const updateExpiredOrders = async () => {
 
 export const createOrder = async (data: Partial<Orden>) => {
     return await prisma.orden.create({
-        data: data
+        data: data,
     })
 }
 

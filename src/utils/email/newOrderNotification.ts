@@ -1,4 +1,4 @@
-export const updateOrderStateHTML = (data: { name: string, orderId: string, newOrderState: string }) => {
+export const newOrderNotificationHTML = (data: { name: string, orderId: string }) => {
     return `
     <!DOCTYPE html>
         <html lang="en">
@@ -17,7 +17,7 @@ export const updateOrderStateHTML = (data: { name: string, orderId: string, newO
                 <h1 style="font-family:Georgia;color:darkslategrey">Señor ${data.name}</h1>
             </div>
             <div style="color:dimgray">
-                <p>Se ha actualizado el estado de la orden <em>${data.orderId}</em> a <b>${data.newOrderState}</b></p>
+                <p>Se ha creado su nueva orden exitosamente</p>
                 <p>Para ver el detalle de la orden, haga <a href="${process.env.NEXTAUTH_URL || process.env.VERCEL_URL}/orden/${data.orderId}">click aqui</a></p>
             </div>
         </div>

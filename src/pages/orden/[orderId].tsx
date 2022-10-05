@@ -22,6 +22,7 @@ import React, { useState } from "react";
 import { useIsFetching, useMutation, useQuery, useQueryClient } from "react-query";
 
 const Home: NextPage = () => {
+
     const queryClient = useQueryClient()
     const isLoading = useIsFetching()
     const { addError } = React.useContext(ErrorHandlerContext)
@@ -144,20 +145,20 @@ const Home: NextPage = () => {
                             <PageTitle title={orderTitle} hasBack />
                             <LoadingIndicator show={!!isLoading || isUpdatingState}>
 
-                                <div className="mt-16 w-full">
+                                <div className="mt-16 w-full hidden md:flex">
                                     <PriceCheckerSteps step={0} price={price} isStepOptional={isStepOptional} steps={stepNames} />
                                 </div>
 
-                                <div className="flex flex-row mx-20 justify-between" >
-                                    <div className="md:mt-9 grow flex flex-col w-6/12 p-10">
+                                <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
+                                    <div className="md:mt-9 grow flex flex-col md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
                                         <div className="hidden md:flex relative h-64">
                                             <Image src={orderData?.categoria?.Prenda?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
                                         </div>
-                                        {orderData?.idEstado && <div className="mt-16 flex italic flex-row">
+                                        {orderData?.idEstado && <div className="mt-16 flex italic flex-row w-full text-xs lg:text-base">
                                             <InfoIcon className="mr-2" /> {stepDescriptions[orderData?.idEstado]}
                                         </div>}
                                     </div>
-                                    <div className="hidden md:flex w-2/12  mt-9" />
+                                    <div className="hidden lg:flex w-2/12  mt-9" />
                                     <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10 ">
                                         <HookForm defaultValues={defaultFormData} onSubmit={handleFormSubmit}>
                                             <OrderStateChange order={orderData} />

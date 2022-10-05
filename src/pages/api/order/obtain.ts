@@ -4,7 +4,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
-    const { id } = req.query;
+    //const { id } = req.query;
 
     try {
         const orders = await prisma.orden.findUnique({

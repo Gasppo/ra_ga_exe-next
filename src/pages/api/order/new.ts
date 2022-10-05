@@ -4,6 +4,7 @@ import { checkIfUserExists, fromToday } from 'backend/dbcalls/user';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 import { createOrder, updateExpiredOrders } from '@backend/dbcalls/order';
+import { newOrderNotificationHTML } from '@utils/email/newOrderNotification';
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -65,11 +66,9 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         })
 
         await sendEmail({
-            html: `
-        <h1>Orden creada ${user.name}</h1>
-        <p>Se ha creado una orden con el nombre ${categoria.nombre} y la cantidad de ${orden.cantidad}</p>
-        <p>Para ver mas detalles de la orden ingresa a <a href="${process.env.NEXTAUTH_URL || 'http://localhost:3000'}/">este enlace</a></p>
-        `, to: user.email, subject: 'Orden creada'
+            html: newOrderNotificationHTML({ name: user.name, orderId: orden.id }),
+            to: user.email,
+            subject: 'Orden creada'
         })
 
         res.status(200).json({ message: 'Orden creada con éxito' });

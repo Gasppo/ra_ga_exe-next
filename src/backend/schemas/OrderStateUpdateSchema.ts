@@ -2,9 +2,7 @@ import { z } from "zod";
 
 export const OrderStateUpdateSchema = z.object({
     id: z.string(),
-    newOrderState: z.string(),
-    email: z.string(),
-    name: z.string()
+    newStateId: z.number()
 })
 
 export type OrderStateUpdateSchemaType = z.infer<typeof OrderStateUpdateSchema>;

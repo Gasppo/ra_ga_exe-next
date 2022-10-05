@@ -9,10 +9,10 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
 
-        const { newOrderState, id: orderId, email, name } = OrderStateUpdateSchema.parse(req.body);
+        const { newStateId, id: orderId } = OrderStateUpdateSchema.parse(req.body);
 
-        await changeOrderState(orderId, newOrderState)
-        .then(() => {
+        const orden = await changeOrderState(orderId, newStateId)
+
         // send email
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -22,11 +22,10 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         })
 
         sendEmail({
-            to: email,
+            to: orden.user.email,
             subject: 'Modificación pedido orden - HS-Taller',
-            html: updateOrderStateHTML({ name, orderId, newOrderState })
+            html: updateOrderStateHTML({ name: orden.user.name, orderId, newOrderState: newStateId })
         }).then(() => res.json({ message: 'Email enviado' })).catch(err => res.status(400).json({ error: err }))
-    })
 
         res.status(200).json({ message: 'Estado de orden actualizado' });
     } catch (error) {

@@ -1,29 +1,32 @@
-import { Button, MenuItem, Slide, TextField } from "@mui/material";
-import type { GetServerSideProps, NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
-import Head from "next/head";
+import { OrderStateUpdateSchemaType } from "@backend/schemas/OrderStateUpdateSchema";
+import InfoIcon from '@mui/icons-material/Info';
+import { Button, Slide } from "@mui/material";
+import { Categoria, EstadoOrden, Orden, Prenda, User } from "@prisma/client";
+import PriceCheckerSteps from "@UI/cotizador/Stepper";
+import HookForm from "@UI/Forms/HookForm";
+import Footer from "@UI/Generic/Footer";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
-import PriceCheckerSteps from "@UI/cotizador/Stepper";
-import React from "react";
-import InfoIcon from '@mui/icons-material/Info';
-import { useRouter } from "next/router";
-import { Categoria, EstadoOrden, Orden, Prenda, User } from "@prisma/client";
-import { errorHandle } from "@utils/queries/cotizador";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
+import ConfirmStateChangeDialog from "@UI/orden/ConfirmStateChangeDialog";
+import OrderStateChange from "@UI/orden/OrderStateChange";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
-import Footer from "@UI/Generic/Footer";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
+import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
+import { errorHandle } from "@utils/queries/cotizador";
+import type { GetServerSideProps, NextPage } from "next";
+import { getSession } from "next-auth/react";
+import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { useIsFetching, useMutation, useQuery, useQueryClient } from "react-query";
 
 const Home: NextPage = () => {
 
     const queryClient = useQueryClient()
-    const { data: sessionData } = useSession()
+    const isLoading = useIsFetching()
     const { addError } = React.useContext(ErrorHandlerContext)
-
-    const [step, setStep] = React.useState(0)
+    const [confirmOpen, setConfirmOpen] = useState(false)
     const [price] = React.useState(0)
     const isStepOptional = () => false
 
@@ -65,14 +68,6 @@ const Home: NextPage = () => {
         'Orden expirada.'
     ]
 
-
-
-    const { data: orderData, isFetching: isFetchingOrderData } = useQuery(
-        ['order'],
-        () => fetchOrder(), {
-        onError: () => addError('Error al traer orden')
-    });
-
     const fetchOrder = (): Promise<Orden & { estado: EstadoOrden, user: User, categoria: Categoria & { Prenda: Prenda } }> =>
         fetch(`/api/order/obtain`, {
             method: 'POST',
@@ -85,37 +80,22 @@ const Home: NextPage = () => {
                 throw error;
             });
 
-    const { data: orderStateData, isFetching: isFetchingOrderStateData } = useQuery(
-        ['orderStates'],
-        () => fetchOrderStates(), {
-        onError: () => addError('Error al traer estados de ordenes')
+
+    const { data: orderData, } = useQuery(['order'], fetchOrder, {
+        onError: () => addError('Error al traer orden'),
+        refetchOnWindowFocus: false
     });
 
 
     const orderTitle = 'Orden: ' + orderData?.nombre
 
-    const fetchOrderStates = (): Promise<EstadoOrden[]> =>
-        fetch(`/api/orders/states`, {})
-            .then((res) => (res.ok ? res.json() : errorHandle(res)))
-            .catch((error) => {
-                console.log("Broke bringing order states");
-                throw error;
-            });
 
-    const handleOrderStateChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        // on confirm, submit the new state
-        // print id of the order and the new state
-        console.log('holaa', event.target.id, event.target.value);
-        confirm('Modificar estado a: "' + event.target.value + '"?') ? mutate({ id: id as string, newOrderState: event.target.value }) : alert('No se modificó el estado, error');
-
-    }
-
-    const modifyOrderState = async (data: { id: string, newOrderState: string }): Promise<string> => {
-        const { id, newOrderState } = data
+    const modifyOrderState = async (data: OrderStateUpdateSchemaType): Promise<string> => {
+        const { id, newStateId } = data
         return await fetch(`/api/order/updateState`, {
             method: "POST",
             headers: { "Content-Type": "application/json", accept: "application/json" },
-            body: JSON.stringify({ id, newOrderState, email: sessionData?.user?.email, name: sessionData?.user?.name })
+            body: JSON.stringify({ id, newStateId }),
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
@@ -124,20 +104,29 @@ const Home: NextPage = () => {
             });
     };
 
-    const { mutate, isLoading: isChangingState } = useMutation(modifyOrderState, {
+    const { mutate, isLoading: isUpdatingState } = useMutation(modifyOrderState, {
         onSuccess: () => {
             addError('Modificacion exitosa', 'success')
             queryClient.invalidateQueries(['order'])
         }
     })
 
-    React.useEffect(() => {
-        console.log('Order data:' + JSON.stringify(orderData))
-        console.log('Order state data:' + JSON.stringify(orderStateData))
-        console.log('Fetching order', isFetchingOrderData)
-        console.log('Fetching order state', isFetchingOrderStateData)
-        console.log('Imagen: ' + orderData?.categoria?.Prenda.picture)
-    }, [orderData, orderStateData, isFetchingOrderData, isFetchingOrderStateData, orderData?.categoria?.Prenda?.picture])
+    const defaultFormData = {
+        orderState: 0
+    }
+
+
+    const handleFormSubmit = (data: { orderState: number }) => {
+        mutate({ id: id as string, newStateId: data.orderState })
+    }
+
+    const handleOpenConfirmDialog = () => {
+        setConfirmOpen(true)
+    }
+
+    const handleCloseConfirmDialog = () => {
+        setConfirmOpen(false)
+    }
 
     return (
         <div className="bg-split-white-black">
@@ -154,60 +143,34 @@ const Home: NextPage = () => {
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title={orderTitle} hasBack />
-                            <LoadingIndicator show={isFetchingOrderData || isFetchingOrderStateData || isChangingState}>
+                            <LoadingIndicator show={!!isLoading || isUpdatingState}>
+
                                 <div className="mt-16 w-full">
-                                    <PriceCheckerSteps step={step} price={price} isStepOptional={isStepOptional} steps={stepNames} />
+                                    <PriceCheckerSteps step={0} price={price} isStepOptional={isStepOptional} steps={stepNames} />
                                 </div>
 
-                                <div className="flex flex-col" >
-                                    <div className="md:mt-9 grow flex justify-evenly h-64">
-                                        <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                                <div className="flex flex-row mx-20 justify-between" >
+                                    <div className="md:mt-9 grow flex flex-col w-6/12 p-10">
+                                        <div className="hidden md:flex relative h-64">
                                             <Image src={orderData?.categoria?.Prenda?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
                                         </div>
-                                        <div className="mt-16 flex place-content-center italic flex-row">
-                                            <InfoIcon /> {stepDescriptions[step]}
-                                        </div>
-                                    </div>
-                                    <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
-                                        <div className="mx-4" >
-                                            <Button variant="outlined" disabled={true} type="button" >Atrás</Button>
-                                        </div>
-                                        {step !== 4 && <div className="mx-4" >
-                                            <Button variant="outlined" disabled={true} type="button" >Continuar</Button>
+                                        {orderData?.idEstado && <div className="mt-16 flex italic flex-row">
+                                            <InfoIcon className="mr-2" /> {stepDescriptions[orderData?.idEstado]}
                                         </div>}
-                                        {step === 4 && <div className="mx-4 md:flex" >
-                                            <Button variant="outlined" disabled={true} type="submit">Submit </Button>
-                                        </div>}
-                                        <div className="mx-4" >
-                                        </div>
                                     </div>
-                                </div>
-
-
-
-
-                                <div className="mt-16 flex place-content-center">
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        label="Estado de la orden"
-                                        value={orderData?.estado?.nombre || ''}
-                                        onChange={handleOrderStateChange}
-                                        helperText="Modifique el estado de la orden"
-                                        variant="standard"
-                                    >
-                                        {orderStateData?.map((option) => (
-                                            <MenuItem key={option.nombre} value={option.nombre}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        )) || <MenuItem value={''}>No hay estados</MenuItem>}
-                                    </TextField>
-                                </div>
-                                <div className="mt-8">
-                                    <div className="flex flex-row place-content-center">
-                                        <Button onClick={() => setStep(step - 1)} disabled={step === 0}>Paso Anterior</Button>
-                                        <Button onClick={() => setStep(step + 1)} disabled={step === 13}>Siguiente Paso</Button>
+                                    <div className="hidden md:flex w-2/12  mt-9" />
+                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10 ">
+                                        <HookForm defaultValues={defaultFormData} onSubmit={handleFormSubmit}>
+                                            <OrderStateChange order={orderData} />
+                                            <ConfirmStateChangeDialog onClose={handleCloseConfirmDialog} open={confirmOpen} formSubmit={handleFormSubmit} />
+                                            <div className="mt-8">
+                                                <div className="flex flex-row">
+                                                    <Button onClick={handleOpenConfirmDialog}>Confirmar</Button>
+                                                </div>
+                                            </div>
+                                        </HookForm>
                                     </div>
+
                                 </div>
                             </LoadingIndicator>
                         </div>

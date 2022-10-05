@@ -1,3 +1,4 @@
+import { prisma } from '@server/db/client';
 import type { NextApiRequest, NextApiResponse } from "next";
 
 
@@ -7,13 +8,13 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const orders = await prisma.orden.findUnique({
-            include: { 
-                user: { 
+            include: {
+                user: {
                     select: {
                         name: true,
                         email: true,
                     }
-                }, 
+                },
                 estado: true,
                 // bring image inside category inside prenda
                 categoria: {
@@ -25,7 +26,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                             }
                         }
                     }
-                }                      
+                }
             },
             where: { id: req.body.orderId }
         })

@@ -68,7 +68,9 @@ const Home: NextPage = () => {
     const { data: orderData, isFetching: isFetchingOrderData } = useQuery(
         ['order'],
         () => fetchOrder(), {
-        onError: () => addError('Error al traer orden')
+        onError: () => addError('Error al traer orden'),
+        refetchOnWindowFocus: false
+
     });
 
     const fetchOrder = (): Promise<Orden & { estado: EstadoOrden, user: User, categoria: Categoria & { Prenda: Prenda } }> =>
@@ -86,7 +88,8 @@ const Home: NextPage = () => {
     const { data: orderStateData, isFetching: isFetchingOrderStateData } = useQuery(
         ['orderStates'],
         () => fetchOrderStates(), {
-        onError: () => addError('Error al traer estados de ordenes')
+        onError: () => addError('Error al traer estados de ordenes'),
+        refetchOnWindowFocus: false
     });
 
 
@@ -157,56 +160,43 @@ const Home: NextPage = () => {
                                     <PriceCheckerSteps step={step} price={price} isStepOptional={isStepOptional} steps={stepNames} />
                                 </div>
 
-                                <div className="flex flex-col" >
-                                    <div className="md:mt-9 grow flex justify-evenly h-64">
-                                        <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                                <div className="flex flex-row mx-20 justify-between" >
+                                    <div className="md:mt-9 grow flex flex-col w-5/12 p-4 bg-gray-400">
+                                        <div className="hidden md:flex relative h-64">
                                             <Image src={orderData?.categoria?.Prenda?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
                                         </div>
-                                        <div className="mt-16 flex place-content-center italic flex-row">
-                                            <InfoIcon /> {stepDescriptions[step]}
+                                        <div className="mt-16 flex italic flex-row">
+                                            <InfoIcon className="mr-2" /> {stepDescriptions[step]}
                                         </div>
                                     </div>
-                                    <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
-                                        <div className="mx-4" >
-                                            <Button variant="outlined" disabled={true} type="button" >Atrás</Button>
+                                    <div className="hidden md:flex w-2/12  mt-9" />
+                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-4 bg-gray-300">
+                                        <div className="mt-16">
+                                            <TextField
+                                                id="standard-select-currency"
+                                                select
+                                                label="Estado de la orden"
+                                                value={orderData?.estado?.nombre || ''}
+                                                onChange={handleOrderStateChange}
+                                                helperText="Modifique el estado de la orden"
+                                                variant="standard"
+                                            >
+                                                {orderStateData?.map((option) => (
+                                                    <MenuItem key={option.nombre} value={option.nombre}>
+                                                        {option.nombre}
+                                                    </MenuItem>
+                                                )) || <MenuItem value={''}>No hay estados</MenuItem>}
+                                            </TextField>
                                         </div>
-                                        {step !== 4 && <div className="mx-4" >
-                                            <Button variant="outlined" disabled={true} type="button" >Continuar</Button>
-                                        </div>}
-                                        {step === 4 && <div className="mx-4 md:flex" >
-                                            <Button variant="outlined" disabled={true} type="submit">Submit </Button>
-                                        </div>}
-                                        <div className="mx-4" >
+                                        <div className="mt-8">
+                                            <div className="flex flex-row">
+                                                <Button onClick={() => setStep(step + 1)} disabled={step === 13}>Siguiente Paso</Button>
+                                            </div>
                                         </div>
                                     </div>
+
                                 </div>
 
-
-
-
-                                <div className="mt-16 flex place-content-center">
-                                    <TextField
-                                        id="standard-select-currency"
-                                        select
-                                        label="Estado de la orden"
-                                        value={orderData?.estado?.nombre || ''}
-                                        onChange={handleOrderStateChange}
-                                        helperText="Modifique el estado de la orden"
-                                        variant="standard"
-                                    >
-                                        {orderStateData?.map((option) => (
-                                            <MenuItem key={option.nombre} value={option.nombre}>
-                                                {option.nombre}
-                                            </MenuItem>
-                                        )) || <MenuItem value={''}>No hay estados</MenuItem>}
-                                    </TextField>
-                                </div>
-                                <div className="mt-8">
-                                    <div className="flex flex-row place-content-center">
-                                        <Button onClick={() => setStep(step - 1)} disabled={step === 0}>Paso Anterior</Button>
-                                        <Button onClick={() => setStep(step + 1)} disabled={step === 13}>Siguiente Paso</Button>
-                                    </div>
-                                </div>
                             </LoadingIndicator>
                         </div>
                     </div>

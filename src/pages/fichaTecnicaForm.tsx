@@ -98,7 +98,6 @@ const Home: NextPage = () => {
                         <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless || isCreatingOrder}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
-                                <div className="grow"/>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <ErrorAlerter />
                                 <HookForm defaultValues={{ ...fichaTecnicaVaciaForm, user: sessionData?.user }} onSubmit={handleFormSubmit}>

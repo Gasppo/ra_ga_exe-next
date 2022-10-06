@@ -3,16 +3,19 @@ import DownloadIcon from "@mui/icons-material/Download";
 import EditIcon from "@mui/icons-material/Edit";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SearchIcon from "@mui/icons-material/Search";
-import { Button, InputBase, Link, TextField } from "@mui/material";
+import { Button, Divider, InputBase, Link, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
 import BasicTable, { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
+import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -36,11 +39,17 @@ const DashboardCliente = () => {
             });
 
 
-    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), { onError: () => addError('Error al traer ordenes') })
+    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
+        onError: () => addError('Error al traer ordenes')
+    })
 
     const handleEnableEdit = () => {
         setEditEnabled((prev) => !prev);
     };
+
+    useEffect(() => {
+        console.log(isFetchingOrders)
+    }, [isFetchingOrders]);
 
     return (
         <div>
@@ -120,12 +129,7 @@ const DashboardCliente = () => {
                     </div>
                 </div>
                 <div className="flex flex-col  md:hidden w-full">
-                    <div className="bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4 my-4">
-                        <div className="text-xl font-bold">
-                            <div>Mis pedidos</div>
-                        </div>
-                        <div>detalles de pedidos abiertos aca...</div>
-                    </div>
+
 
                     <div className=" bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4">
                         <div className="flex flex-row flex-wrap items-center justify-start mt-2">
@@ -141,6 +145,36 @@ const DashboardCliente = () => {
                             />
                         </div>
                     </div>
+
+                    <div className="bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 my-4">
+                        <div className="text-xl font-bold m-4">
+                            <div>Mis Ordenes</div>
+                        </div>
+                        <Divider />
+                        <div className="flex flex-col">
+                            {isFetchingOrders ? (
+                                <>
+                                    <MobileOrderInfoSkeleton />
+                                    <MobileOrderInfoSkeleton />
+                                    <MobileOrderInfoSkeleton />
+                                </>
+                            ) : orderData?.length > 0 ? orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />) :
+                                <div className="m-4 text-xs">
+                                    No se registran ordenes al momento
+                                </div>
+                            }
+                        </div>
+                        <Divider />
+                        {orderData?.length > 0 && <div className="flex flex-row mx-4 my-2 items-center justify-between text-blue-500 font-semibold text-xs">
+                            <div className="">
+                                Ver todas mis ordenes
+                            </div>
+                            <div className="">
+                                <ArrowForwardIosIcon fontSize='inherit' />
+                            </div>
+                        </div>}
+                    </div>
+
                 </div>
             </div>
         </div>

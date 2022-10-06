@@ -165,14 +165,14 @@ const DashboardCliente = () => {
                             }
                         </div>
                         <Divider />
-                        <div className="flex flex-row mx-4 my-2 items-center justify-between text-blue-500 font-semibold text-xs">
+                        {orderData?.length > 0 && <div className="flex flex-row mx-4 my-2 items-center justify-between text-blue-500 font-semibold text-xs">
                             <div className="">
                                 Ver todas mis ordenes
                             </div>
                             <div className="">
                                 <ArrowForwardIosIcon fontSize='inherit' />
                             </div>
-                        </div>
+                        </div>}
                     </div>
 
                 </div>

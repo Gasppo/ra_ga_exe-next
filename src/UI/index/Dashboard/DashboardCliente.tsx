@@ -6,7 +6,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Button, Divider, InputBase, Link, TextField } from "@mui/material";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
 import BasicTable, { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
@@ -15,6 +15,7 @@ import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
+import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -39,13 +40,16 @@ const DashboardCliente = () => {
 
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
-        onError: () => addError('Error al traer ordenes'),
-        initialData: []
+        onError: () => addError('Error al traer ordenes')
     })
 
     const handleEnableEdit = () => {
         setEditEnabled((prev) => !prev);
     };
+
+    useEffect(() => {
+        console.log(isFetchingOrders)
+    }, [isFetchingOrders]);
 
     return (
         <div>
@@ -143,24 +147,28 @@ const DashboardCliente = () => {
                     </div>
 
                     <div className="bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 my-4">
-                        <LoadingIndicator show={isFetchingOrders}>
-                            <div className="text-xl font-bold m-4">
-                                <div>Mis Ordenes</div>
+                        <div className="text-xl font-bold m-4">
+                            <div>Mis Ordenes</div>
+                        </div>
+                        <Divider />
+                        <div className="flex flex-col">
+                            {isFetchingOrders ? (
+                                <>
+                                    <MobileOrderInfoSkeleton />
+                                    <MobileOrderInfoSkeleton />
+                                    <MobileOrderInfoSkeleton />
+                                </>
+                            ) : orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />)}
+                        </div>
+                        <Divider />
+                        <div className="flex flex-row mx-4 my-2 items-center justify-between text-cyan-400 font-bold text-sm">
+                            <div>
+                                Ver todas mis ordenes
                             </div>
-                            <Divider />
-                            <div className="flex flex-col">
-                                {orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />)}
+                            <div className="">
+                                <ArrowForwardIosIcon fontSize='inherit' />
                             </div>
-                            <Divider />
-                            <div className="flex flex-row mx-4 my-2 items-center justify-between text-cyan-400 font-bold text-sm">
-                                <div>
-                                    Ver todas mis ordenes
-                                </div>
-                                <div className="">
-                                    <ArrowForwardIosIcon fontSize='inherit' />
-                                </div>
-                            </div>
-                        </LoadingIndicator>
+                        </div>
                     </div>
 
                 </div>

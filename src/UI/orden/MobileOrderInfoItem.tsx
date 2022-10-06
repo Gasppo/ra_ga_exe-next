@@ -11,8 +11,8 @@ const MobileOrderInfoItem = ({ orden }: MobileOrderInfoItemProps) => {
 
     return (
         <div className="mx-4 my-2 flex flex-row">
-            <div id="picture relative h-12">
-                <Image src={orden.categoria?.Prenda?.picture || ''} width="100%" height="100%" alt="Seleccione prenda.." />
+            <div id="picture" className='flex '>
+                <Image src={orden.categoria?.Prenda?.picture || ''} width="80px" height="80px"  alt="Seleccione prenda.." />
             </div>
             <div className="flex flex-col text-sm justify-evenly ml-4">
                 <div>

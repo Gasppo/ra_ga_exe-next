@@ -98,10 +98,11 @@ const Home: NextPage = () => {
                         <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless || isCreatingOrder}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
+                                <div className="grow"/>
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
                                 <ErrorAlerter />
                                 <HookForm defaultValues={{ ...fichaTecnicaVaciaForm, user: sessionData?.user }} onSubmit={handleFormSubmit}>
-                                    <div className="flex flex-col " >
+                                    <div className="flex flex-col" >
                                         <div className="md:mt-9 grow flex justify-evenly">
                                             <ClothingImage clothesData={clothesData} />
                                             {step === 0 && <ClothingSelectionForm clothesData={clothesData} />}
@@ -110,9 +111,10 @@ const Home: NextPage = () => {
                                             {step === 3 && <ClothingSizesForm />}
                                             {step === 4 && <ClothingConfirmationForm />}
                                         </div>
-                                        <div className="flex justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 mb-7 md:mt-24">
+                                        <div className="flex justify-self-end justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 md::mb-7 md:mt-24">
                                             <FichaTecnicaControls currStep={step} numberSteps={steps.length} onBack={goBackOneStep} onForward={advanceStep} />
                                         </div>
+                                        
                                     </div>
                                 </HookForm>
                                 <div className="hidden md:flex" />

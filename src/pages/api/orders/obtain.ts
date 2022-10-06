@@ -6,7 +6,13 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const orders = await prisma.orden.findMany({
-            include: { user: true, estado: true },
+            include: {
+                user: true,
+                estado: true,
+                categoria: {
+                    include: { Prenda: true }
+                },
+            },
             where: { user: { email: req.body.email } }
         })
         res.status(200).json(orders);

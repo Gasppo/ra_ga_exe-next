@@ -18,7 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
-import { EstadoOrden, Orden, User } from '@prisma/client';
+import { Categoria, EstadoOrden, Orden, Prenda, User } from '@prisma/client';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -33,7 +33,14 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 type Order = 'asc' | 'desc';
-export type ExtendedOrdenData = Orden & { user: User; estado: EstadoOrden; }
+export type ExtendedOrdenData = Orden & {
+  user: User;
+  estado: EstadoOrden;
+  categoria: Categoria & {
+    Prenda: Prenda;
+  };
+}
+
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,

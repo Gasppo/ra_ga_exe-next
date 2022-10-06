@@ -161,8 +161,8 @@ const DashboardCliente = () => {
                             ) : orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />)}
                         </div>
                         <Divider />
-                        <div className="flex flex-row mx-4 my-2 items-center justify-between text-cyan-400 font-bold text-sm">
-                            <div>
+                        <div className="flex flex-row mx-4 my-2 items-center justify-between text-blue-500 font-semibold text-xs">
+                            <div className="">
                                 Ver todas mis ordenes
                             </div>
                             <div className="">

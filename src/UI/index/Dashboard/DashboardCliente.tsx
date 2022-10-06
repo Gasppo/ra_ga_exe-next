@@ -158,7 +158,11 @@ const DashboardCliente = () => {
                                     <MobileOrderInfoSkeleton />
                                     <MobileOrderInfoSkeleton />
                                 </>
-                            ) : orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />)}
+                            ) : orderData?.length > 0 ? orderData?.slice(0, 3).map(el => <MobileOrderInfoItem orden={el} key={el.id} />) :
+                                <div className="m-4 text-xs">
+                                    No se registran ordenes al momento
+                                </div>
+                            }
                         </div>
                         <Divider />
                         <div className="flex flex-row mx-4 my-2 items-center justify-between text-blue-500 font-semibold text-xs">

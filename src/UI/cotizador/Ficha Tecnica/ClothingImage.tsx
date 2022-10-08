@@ -1,11 +1,11 @@
 import { OrderCreationData } from '@backend/schemas/OrderCreationSchema'
-import { Prenda } from '@prisma/client'
+import { TipoPrenda } from '@prisma/client'
 import Image from 'next/image'
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 interface ClothingImageProps {
-    clothesData: Prenda[]
+    clothesData: TipoPrenda[]
 }
 
 const ClothingImage = ({ clothesData }: ClothingImageProps) => {
@@ -18,9 +18,12 @@ const ClothingImage = ({ clothesData }: ClothingImageProps) => {
 
 
     return (
-        <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
-            {image && <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />}
-        </div>
+        <>
+            <div className="hidden md:flex w-2/12 justify-center place-content-center relative">
+                {image && <Image src={image} layout="fill" objectFit="contain" alt="Seleccione prenda.." />}
+            </div>
+            <button type='button' onClick={() => { console.log(formContext.watch()) }}> O </button>
+        </>
     )
 }
 

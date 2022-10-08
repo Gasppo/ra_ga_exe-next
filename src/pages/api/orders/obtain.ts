@@ -9,9 +9,12 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             include: {
                 user: true,
                 estado: true,
-                categoria: {
-                    include: { Prenda: true }
-                },
+                prenda: {
+                    include: {
+                        tipo: true,
+                        complejidad: true,
+                    }
+                }
             },
             where: { user: { email: req.body.email } }
         })

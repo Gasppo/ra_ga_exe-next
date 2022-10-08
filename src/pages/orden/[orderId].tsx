@@ -1,7 +1,7 @@
 import { OrderStateUpdateSchemaType } from "@backend/schemas/OrderStateUpdateSchema";
 import InfoIcon from '@mui/icons-material/Info';
 import { Button, Slide } from "@mui/material";
-import { Categoria, EstadoOrden, Orden, Prenda, User } from "@prisma/client";
+import { Archivo } from "@prisma/client";
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
 import HookForm from "@UI/Forms/HookForm";
 import Footer from "@UI/Generic/Footer";
@@ -9,8 +9,10 @@ import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import ConfirmStateChangeDialog from "@UI/orden/ConfirmStateChangeDialog";
 import OrderStateChange from "@UI/orden/OrderStateChange";
+import { downloadFromFetch } from "@utils/downloadFromFetch";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
+import { ExtendedOrdenData } from "@utils/Examples/BasicOrderTable";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "@utils/queries/cotizador";
 import type { GetServerSideProps, NextPage } from "next";
@@ -68,7 +70,7 @@ const Home: NextPage = () => {
         'Orden expirada.'
     ]
 
-    const fetchOrder = (): Promise<Orden & { estado: EstadoOrden, user: User, categoria: Categoria & { Prenda: Prenda } }> =>
+    const fetchOrder = (): Promise<ExtendedOrdenData> =>
         fetch(`/api/order/obtain`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', accept: 'application/json' },
@@ -128,6 +130,12 @@ const Home: NextPage = () => {
         setConfirmOpen(false)
     }
 
+    console.log(orderData)
+
+    const handleDownload = (archivo: Archivo) => {
+        downloadFromFetch(`/api/drive/download?file=${archivo.urlID}`, archivo.name)
+    }
+
     return (
         <div className="bg-split-white-black">
             <Head>
@@ -152,7 +160,7 @@ const Home: NextPage = () => {
                                 <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
                                     <div className="md:mt-9 grow flex flex-col md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
                                         <div className="hidden md:flex relative h-64">
-                                            <Image src={orderData?.categoria?.Prenda?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                            <Image src={orderData?.prenda?.tipo?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
                                         </div>
                                         {orderData?.idEstado && <div className="mt-16 flex italic flex-row w-full text-xs lg:text-base">
                                             <InfoIcon className="mr-2" /> {stepDescriptions[orderData?.idEstado]}
@@ -162,6 +170,13 @@ const Home: NextPage = () => {
                                     <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10 ">
                                         <HookForm defaultValues={defaultFormData} onSubmit={handleFormSubmit}>
                                             <OrderStateChange order={orderData} />
+                                            {orderData?.archivos.map(el =>
+                                                <div key={el.id} >
+                                                    <button type="button" onClick={() => handleDownload(el)}>
+                                                        {el.name}
+                                                    </button>
+                                                </div>
+                                            )}
                                             <ConfirmStateChangeDialog onClose={handleCloseConfirmDialog} open={confirmOpen} formSubmit={handleFormSubmit} />
                                             <div className="mt-8">
                                                 <div className="flex flex-row">

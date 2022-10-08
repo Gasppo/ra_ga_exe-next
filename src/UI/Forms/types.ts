@@ -10,7 +10,7 @@ export interface LayoutElement<Model> {
     scope?: Paths<Model>;
     width?: UpToTwelve | { xs?: UpToTwelve, sm?: UpToTwelve, md?: UpToTwelve, lg?: UpToTwelve, xl?: UpToTwelve };
     textStyle?: string;
-    options?: Options;
+    options?: Options<Model>;
     className?: string;
     labelClassName?: string;
     title?: string;
@@ -29,7 +29,7 @@ export interface Rule<Model> {
     scope?: Paths<Model>;
 }
 
-export interface Options {
+export interface Options<Model> {
     shrinkLabel?: boolean;
     numeric?: boolean;
     size?: 'small' | 'medium'
@@ -42,4 +42,5 @@ export interface Options {
     multiline?: number
     multifile?: boolean
     textType?: string
+    fileSection?: Paths<Model>
 }

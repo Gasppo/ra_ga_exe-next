@@ -1,10 +1,11 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { Slide } from "@mui/material";
-import { Complejidad, Prenda } from "@prisma/client";
+import { ComplejidadConfeccion, TipoPrenda } from "@prisma/client";
 import ClothingImage from "@UI/cotizador/Ficha Tecnica/ClothingImage";
 import FichaTecnicaControls from "@UI/cotizador/Ficha Tecnica/FichaTecnicaControls";
 import HookForm from "@UI/Forms/HookForm";
 import HeaderBar from "@UI/Generic/HeaderBar";
+import { Paths } from "@UI/Types/nestedObjTypes";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -23,20 +24,20 @@ import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { createOrder, ErrorMessage, FileUploadData, FileUploadResponse, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
+import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
 
 const Home: NextPage = () => {
 
     const { addError } = useContext(ErrorHandlerContext)
 
-    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<Prenda[], ErrorMessage>(['clothes'], getClothes,
+    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<TipoPrenda[], ErrorMessage>(['clothes'], getClothes,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) });
 
-    const { isFetching: isFetchingComplexity } = useQuery<Complejidad[], ErrorMessage>(['complexities'], getComplexity,
+    const { isFetching: isFetchingComplexity } = useQuery<ComplejidadConfeccion[], ErrorMessage>(['complexities'], getComplexity,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
     );
 
-    const { isLoading: isUploadingFiless } = useMutation<FileUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+    const { mutateAsync: uploadFilesMutation, isLoading: isUploadingFiless } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
 
@@ -44,7 +45,7 @@ const Home: NextPage = () => {
     const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
         onSuccess: (obj) => {
             router.replace('/');
-            addError(obj.message,"info");
+            addError(obj.message, "info");
         },
         onError: (error) => addError(JSON.stringify(error))
     })
@@ -64,24 +65,54 @@ const Home: NextPage = () => {
 
 
     const handleFormSubmit = async (data: OrderCreationData) => {
-        /*if (data?.files?.length > 0) {
-            await handleUploadFile(data.files)
-        }*/
+        if (data?.files?.length > 0) {
+            const uploadedFiles = await (await handleUploadFile(data.files)).data
+            const mapKeys = data.files.reduce((prev, currStep) => ({ ...prev, [currStep.file.name]: currStep.section }), {})
+            if (Array.isArray(uploadedFiles)) {
+                console.log('mapKeys', mapKeys)
+                uploadedFiles.forEach(file => {
+                    console.log('fileName', file.fileName)
+                    if (mapKeys[file.fileName] === 'molderiaBase.files') {
+                        data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+                    }
+                    else if (mapKeys[file.fileName] === 'geometral.files') {
+                        data.geometral.files = data.geometral.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+                    }
+                    else if (mapKeys[file.fileName] === 'logoMarca.files') {
+                        data.logoMarca.files = data.logoMarca.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+                    }
+                })
+            }
+            else {
+                if (mapKeys[uploadedFiles.fileName] === 'molderiaBase.files') {
+                    data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
+                }
+                else if (mapKeys[uploadedFiles.fileName] === 'geometral.files') {
+                    data.geometral.files = data.geometral.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
+                }
+                else if (mapKeys[uploadedFiles.fileName] === 'logoMarca.files') {
+                    data.logoMarca.files = data.logoMarca.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
+                }
+            }
+
+        }
         console.log(data)
         await createOrderMutation(data)
 
     }
 
-    // const handleUploadFile = async (file: File[]) => {
-    //     const folderName = sessionData?.user.name || 'Sin Asignar'
-    //     const orderID = `ID-12345`;
-    //     const formData = new FormData()
-    //     for (const f of file) {
-    //         formData.append('file', f)
-    //     }
-    //     await mutateAsync({ clientName: folderName, orderID: orderID, formData: formData })
+    const handleUploadFile = async (file: { file: File, section: Paths<OrderCreationData> }[]) => {
+        const folderName = sessionData?.user.name || 'Sin Asignar'
+        const orderID = `ID-${Math.random() * 100}`;
+        const formData = new FormData()
+        for (const f of file) {
+            formData.append('file', f.file)
+        }
+        return await uploadFilesMutation({ clientName: folderName, orderID: orderID, formData: formData })
 
-    // }
+    }
+
+
 
     return (
 
@@ -113,7 +144,7 @@ const Home: NextPage = () => {
                                         <div className="flex justify-self-end justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 md::mb-7 md:mt-24">
                                             <FichaTecnicaControls currStep={step} numberSteps={steps.length} onBack={goBackOneStep} onForward={advanceStep} />
                                         </div>
-                                        
+
                                     </div>
                                 </HookForm>
                                 <div className="hidden md:flex" />

@@ -14,6 +14,7 @@ export const config = {
   }
 };
 
+export type FileUploadResponse = { file: GaxiosResponse<drive_v3.Schema$File>, fileName: string }
 
 const update = (req: NextApiRequest, res: NextApiResponse) => {
   req.method === 'POST' ? post(req, res) : res.status(404).json({ error: "Metodo no permitido" });
@@ -41,13 +42,14 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const folderId = await createDirectory(service, clientName, orderId);
         if (Array.isArray(file)) {
-          const filesUploaded: GaxiosResponse<drive_v3.Schema$File>[] = []
+          const filesUploaded: FileUploadResponse[] = []
           for (const f of file) {
             const isValidateFileType = verifyFileType(f);
             if (!isValidateFileType) {
               throw `Archivo '${f.originalFilename}' no cargado. Archivos '${f.mimetype}' no permitidos`;
             }
-            filesUploaded.push(await saveFile(f, folderId, service));
+            const fileUploaded = await saveFile(f, folderId, service)
+            filesUploaded.push({ file: fileUploaded, fileName: f.originalFilename })
           }
           res.status(200).json({ data: filesUploaded });
           return
@@ -58,7 +60,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
           throw `Archivo '${file.originalFilename}' no cargado. Archivos '${file.mimetype}' no permitidos`;
         }
         const resfile = await saveFile(file, folderId, service);
-        res.status(201).json({ data: resfile })
+        res.status(201).json({ data: { file: resfile, fileName: file.originalFilename } })
         return;
       }
       catch (error) {

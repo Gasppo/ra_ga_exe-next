@@ -1,3 +1,4 @@
+import { Paths } from "@UI/Types/nestedObjTypes";
 import { z } from "zod";
 
 export const OrderCreationDataSchema = z.object({
@@ -23,11 +24,21 @@ export const OrderCreationDataSchema = z.object({
     }),
     geometral: z.object({
         selected: z.boolean(),
-        observaciones: z.string()
+        observaciones: z.string(),
+        files: z.array(z.object({
+            name: z.string(),
+            urlID: z.string(),
+            type: z.string()
+        }))
     }),
     logoMarca: z.object({
         selected: z.boolean(),
-        observaciones: z.string()
+        observaciones: z.string(),
+        files: z.array(z.object({
+            name: z.string(),
+            urlID: z.string(),
+            type: z.string()
+        }))
     }),
     manga: z.object({
         selected: z.boolean(),
@@ -35,7 +46,12 @@ export const OrderCreationDataSchema = z.object({
     }),
     molderiaBase: z.object({
         selected: z.boolean(),
-        observaciones: z.string()
+        observaciones: z.string(),
+        files: z.array(z.object({
+            name: z.string(),
+            urlID: z.string(),
+            type: z.string()
+        }))
     }),
     talles: z.object({
         selected: z.boolean(),
@@ -56,4 +72,6 @@ export const OrderCreationDataSchema = z.object({
     }),
 })
 
-export type OrderCreationData = z.infer<typeof OrderCreationDataSchema> & { files: File[] }
+type ValidatedSchema = z.infer<typeof OrderCreationDataSchema>
+
+export type OrderCreationData = ValidatedSchema & { files: { file: File, section: Paths<ValidatedSchema> }[] }

@@ -26,7 +26,10 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     width: 12,
                     rules: [
                         { type: 'required', scope: 'logoMarca.selected' }
-                    ]
+                    ],
+                    options:{
+                        fileSection: 'logoMarca.files'
+                    }
                 },
                 {
                     type: 'Input',

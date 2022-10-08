@@ -12,13 +12,6 @@ datasource db {
     referentialIntegrity = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -84,55 +77,28 @@ model Role {
     users       User[]
 }
 
-model Prenda {
-    id                 String               @id @default(cuid())
-    name               String               @unique
-    picture            String
-    Categoria          Categoria[]
-    PropiedadPorPrenda PropiedadPorPrenda[]
+model PrecioPrenda {
+    id            String                @id @default(cuid())
+    precioBase    Float
+    tipo          TipoPrenda            @relation(fields: [tipoId], references: [id], onDelete: Cascade)
+    tipoId        String
+    complejidad   ComplejidadConfeccion @relation(fields: [complejidadId], references: [id], onDelete: Cascade)
+    complejidadId String
+    ordenes       Orden[]
 }
 
-model Complejidad {
-    id          String      @id @default(cuid())
-    name        String      @unique
+model TipoPrenda {
+    id      String         @id @default(cuid())
+    name    String         @unique
+    picture String
+    precios PrecioPrenda[]
+}
+
+model ComplejidadConfeccion {
+    id          String         @id @default(cuid())
+    name        String         @unique
     description String
-    Categoria   Categoria[]
-}
-
-model Categoria {
-    id              String      @id @default(cuid())
-    idCC            String
-    idComplexity    String
-    Complejidad     Complejidad @relation(fields: [idComplexity], references: [id])
-    Prenda          Prenda      @relation(fields: [idCC], references: [id])
-    nombre          String
-    precioEnDolares Float
-    Orden           Orden[]
-}
-
-model Corte {
-    id             String @id @default(cuid())
-    nombre         String
-    cantidadMin    Int
-    cantidadMax    Int
-    factorDeAjuste Float
-}
-
-model Confeccion {
-    id             String @id @default(cuid())
-    cantidadMin    Int
-    cantidadMax    Int
-    factorDeAjuste Float
-}
-
-model Servicio {
-    id                  String            @id @default(cuid())
-    nombre              String
-    factorDeAjusteMolde Float
-    factorDeAjusteAvio  Float
-    servicioPorOrden    ArchivoServicio[]
-
-    @@map("Servicios")
+    prendas     PrecioPrenda[]
 }
 
 model PrecioDelDolar {
@@ -143,48 +109,43 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id               String           @id @default(cuid())
-    idCategoria      String?
-    categoria        Categoria?       @relation(fields: [idCategoria], references: [id])
-    nombre           String?
-    cantidad         Int?
-    idEstado         Int?
-    estado           EstadoOrden?     @relation(fields: [idEstado], references: [id])
-    archivosServicio ArchivoServicio?
-    user             User?            @relation(fields: [userId], references: [id])
-    userId           String?
-    createdAt        DateTime         @default(now())
-    updatedAt        DateTime         @default(now())
-    expiresAt        DateTime         @default(now())
+    id        String       @id @default(cuid())
+    prenda    PrecioPrenda @relation(fields: [idPrenda], references: [id])
+    idPrenda  String
+    nombre    String?
+    cantidad  Int?
+    idEstado  Int?
+    estado    EstadoOrden? @relation(fields: [idEstado], references: [id])
+    user      User?        @relation(fields: [userId], references: [id])
+    userId    String?
+    createdAt DateTime     @default(now())
+    updatedAt DateTime     @default(now())
+    expiresAt DateTime     @default(now())
+    servicios Servicio[]
+    archivos  Archivo[]
 }
 
 model EstadoOrden {
-    id     Int     @id @default(autoincrement())
-    nombre String
-    orden  Orden[]
+    id      Int     @id @default(autoincrement())
+    nombre  String
+    ordenes Orden[]
 }
 
-model ArchivoServicio {
-    id            Int      @id @default(autoincrement())
-    idOrden       String   @unique
-    orden         Orden    @relation(fields: [idOrden], references: [id])
-    idServicio    String
-    servicio      Servicio @relation(fields: [idServicio], references: [id])
-    url           String
-    observaciones String
+model Servicio {
+    id                  String  @id @default(cuid())
+    name                String  @unique
+    description         String
+    precioFijo          Float   @default(0)
+    factorMultiplicador Float   @default(0)
+    ordenes             Orden[]
 }
 
-model Propiedad {
-    id                 Int                  @id @default(autoincrement())
-    nombre             String
-    descripcion        String?
-    PropiedadPorPrenda PropiedadPorPrenda[]
-}
-
-model PropiedadPorPrenda {
-    id          String    @id @default(cuid())
-    idPropiedad Int
-    idPrenda    String
-    Propiedad   Propiedad @relation(fields: [idPropiedad], references: [id])
-    Prenda      Prenda    @relation(fields: [idPrenda], references: [id])
+model Archivo {
+    id          String  @id @default(cuid())
+    name        String
+    observacion String?
+    urlID       String
+    type        String
+    Orden       Orden   @relation(fields: [ordenId], references: [id])
+    ordenId     String
 }

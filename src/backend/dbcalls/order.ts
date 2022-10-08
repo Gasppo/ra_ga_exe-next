@@ -1,4 +1,4 @@
-import { Orden } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@server/db/client";
 
 export const updateExpiredOrders = async () => {
@@ -12,7 +12,7 @@ export const updateExpiredOrders = async () => {
     });
 }
 
-export const createOrder = async (data: Partial<Orden>) => {
+export const createOrder = async (data: Prisma.OrdenCreateInput) => {
     return await prisma.orden.create({
         data: data,
     })

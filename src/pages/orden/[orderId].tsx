@@ -1,3 +1,4 @@
+import { verifyUserOrder } from '@backend/dbcalls/order';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Tab, Tabs } from "@mui/material";
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
@@ -153,6 +154,16 @@ export default Home;
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const session = await getSession({ req: context.req });
     if (!session) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
+            }
+        }
+    }
+    const correctOrder = await verifyUserOrder(context.query.orderId, session.user.email)
+    console.log(correctOrder)
+    if (!correctOrder) {
         return {
             redirect: {
                 destination: '/',

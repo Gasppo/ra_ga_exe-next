@@ -35,3 +35,19 @@ export const changeOrderState = async (id: string, newOrderId: number) => {
     })
 
 }
+
+
+export const verifyUserOrder = async (orderId: string | string[], userEmail: string) => {
+    const id = Array.isArray(orderId) ? orderId[0] : orderId;
+    const order = await prisma.orden.findFirst({
+        where: {
+            id: id,
+        },
+        include: {
+            user: true
+        }
+    })
+
+    //TODO: Check if user is admin
+    return order?.user.email === userEmail || userEmail === 'garciagb24@gmail.com'
+}

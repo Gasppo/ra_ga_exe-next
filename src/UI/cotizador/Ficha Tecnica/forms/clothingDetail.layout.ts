@@ -28,7 +28,8 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                         { type: 'required', scope: 'logoMarca.selected' }
                     ],
                     options:{
-                        fileSection: 'logoMarca.files'
+                        fileSection: 'logoMarca.files',
+                        multifile: true
                     }
                 },
                 {

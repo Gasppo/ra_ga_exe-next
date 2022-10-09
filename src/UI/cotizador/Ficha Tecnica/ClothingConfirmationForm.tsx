@@ -18,16 +18,16 @@ const ClothingConfirmationForm = () => {
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.molderiaBase.selected ? "✔️" : "❌"} Moldería base {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.molderiaBase.selected ? "✔️" : "❌"} Moldería base {cotizadorData.molderiaBase?.files?.length ? ' - ' + cotizadorData.molderiaBase?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.molderiaBase.observaciones && <div className="ml-3">Observaciones: {cotizadorData.molderiaBase.observaciones}</div>}
-                <div>{cotizadorData.geometral.selected ? "✔️" : "❌"} Geometral {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.geometral.selected ? "✔️" : "❌"} Geometral {cotizadorData.geometral?.files?.length ? ' - ' + cotizadorData.geometral?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.geometral.observaciones && <div className="ml-3">Observaciones: {cotizadorData.geometral.observaciones}</div>}
             </div>
 
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.logoMarca.selected ? "✔️" : "❌"} Logo Marca {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.logoMarca.selected ? "✔️" : "❌"} Logo Marca {cotizadorData.logoMarca?.files?.length ? ' - ' + cotizadorData.logoMarca?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.logoMarca.observaciones && <div className="ml-3">Observaciones logo: {cotizadorData.logoMarca.observaciones}</div>}
                 <div>{cotizadorData.bolsillos.selected ? "✔️" : "❌"} Bolsillos {cotizadorData.bolsillos.selected ? ' - ' + cotizadorData.bolsillos.cantidad + ' bolsillos y observaciones: ' + cotizadorData.bolsillos.observaciones : ""} </div>
                 <div>{cotizadorData.elastico.selected ? "✔️" : "❌"} Elástico {cotizadorData.elastico.selected ? ' - ' + cotizadorData.elastico.metros + ' metros y observaciones: ' + cotizadorData.elastico.observaciones : ""} </div>

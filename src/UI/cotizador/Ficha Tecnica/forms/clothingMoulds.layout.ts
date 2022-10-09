@@ -24,7 +24,8 @@ export const clothingMouldsLayout: LayoutElement<OrderCreationData> = {
                 { type: 'required', scope: 'molderiaBase.selected' }
             ],
             options: {
-                fileSection: 'molderiaBase.files'
+                fileSection: 'molderiaBase.files',
+                multifile: true
             }
         },
         {
@@ -63,7 +64,8 @@ export const clothingMouldsLayout: LayoutElement<OrderCreationData> = {
                     { type: 'required', scope: 'geometral.selected' }
                 ],
                 options: {
-                    fileSection: 'geometral.files'
+                    fileSection: 'geometral.files',
+                    multifile: true
                 }
             },
             {

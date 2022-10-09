@@ -41,7 +41,7 @@ const OrderStateChange = ({ order }: OrderStateChangeProps) => {
 
 
     return (
-        <div className="mt-16 w-64">
+        <div className="mt-10 w-64">
             <FormItem layout={{
                 type: 'Select',
                 scope: 'orderState',

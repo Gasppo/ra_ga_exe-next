@@ -1,15 +1,11 @@
-import { OrderStateUpdateSchemaType } from "@backend/schemas/OrderStateUpdateSchema";
 import InfoIcon from '@mui/icons-material/Info';
-import { Button, Slide } from "@mui/material";
-import { Archivo } from "@prisma/client";
+import { Slide, Tab, Tabs } from "@mui/material";
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
-import HookForm from "@UI/Forms/HookForm";
 import Footer from "@UI/Generic/Footer";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
-import ConfirmStateChangeDialog from "@UI/orden/ConfirmStateChangeDialog";
-import OrderStateChange from "@UI/orden/OrderStateChange";
-import { downloadFromFetch } from "@utils/downloadFromFetch";
+import OrderFilesTab from '@UI/orden/OrderFilesTab';
+import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
 import { ExtendedOrdenData } from "@utils/Examples/BasicOrderTable";
@@ -20,16 +16,18 @@ import { getSession } from "next-auth/react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import { useIsFetching, useMutation, useQuery, useQueryClient } from "react-query";
-
+import React from "react";
+import { useIsFetching, useQuery } from "react-query";
 const Home: NextPage = () => {
 
-    const queryClient = useQueryClient()
     const isLoading = useIsFetching()
     const { addError } = React.useContext(ErrorHandlerContext)
-    const [confirmOpen, setConfirmOpen] = useState(false)
     const [price] = React.useState(0)
+    const [value, setValue] = React.useState(0);
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
+
     const isStepOptional = () => false
 
     const { query } = useRouter()
@@ -88,53 +86,8 @@ const Home: NextPage = () => {
         refetchOnWindowFocus: false
     });
 
-
     const orderTitle = 'Orden: ' + orderData?.nombre
 
-
-    const modifyOrderState = async (data: OrderStateUpdateSchemaType): Promise<string> => {
-        const { id, newStateId } = data
-        return await fetch(`/api/order/updateState`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", accept: "application/json" },
-            body: JSON.stringify({ id, newStateId }),
-        })
-            .then((res) => (res.ok ? res.json() : errorHandle(res)))
-            .catch((error) => {
-                console.log("Broke trying to update order");
-                throw error;
-            });
-    };
-
-    const { mutate, isLoading: isUpdatingState } = useMutation(modifyOrderState, {
-        onSuccess: () => {
-            addError('Modificacion exitosa', 'success')
-            queryClient.invalidateQueries(['order'])
-        }
-    })
-
-    const defaultFormData = {
-        orderState: 0
-    }
-
-
-    const handleFormSubmit = (data: { orderState: number }) => {
-        mutate({ id: id as string, newStateId: data.orderState })
-    }
-
-    const handleOpenConfirmDialog = () => {
-        setConfirmOpen(true)
-    }
-
-    const handleCloseConfirmDialog = () => {
-        setConfirmOpen(false)
-    }
-
-    console.log(orderData)
-
-    const handleDownload = (archivo: Archivo) => {
-        downloadFromFetch(`/api/drive/download?file=${archivo.urlID}`, archivo.name)
-    }
 
     return (
         <div className="bg-split-white-black">
@@ -151,7 +104,7 @@ const Home: NextPage = () => {
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title={orderTitle} hasBack />
-                            <LoadingIndicator show={!!isLoading || isUpdatingState}>
+                            <LoadingIndicator show={!!isLoading}>
 
                                 <div className="mt-16 w-full hidden md:flex">
                                     <PriceCheckerSteps step={0} price={price} isStepOptional={isStepOptional} steps={stepNames} />
@@ -167,23 +120,21 @@ const Home: NextPage = () => {
                                         </div>}
                                     </div>
                                     <div className="hidden lg:flex w-2/12  mt-9" />
-                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10 ">
-                                        <HookForm defaultValues={defaultFormData} onSubmit={handleFormSubmit}>
-                                            <OrderStateChange order={orderData} />
-                                            {orderData?.archivos.map(el =>
-                                                <div key={el.id} >
-                                                    <button type="button" onClick={() => handleDownload(el)}>
-                                                        {el.name}
-                                                    </button>
-                                                </div>
-                                            )}
-                                            <ConfirmStateChangeDialog onClose={handleCloseConfirmDialog} open={confirmOpen} formSubmit={handleFormSubmit} />
-                                            <div className="mt-8">
-                                                <div className="flex flex-row">
-                                                    <Button onClick={handleOpenConfirmDialog}>Confirmar</Button>
-                                                </div>
+                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10">
+                                        <div className='w-full flex flex-col items-start border-2 p-4 shadow-lg max-h-[75vh] overflow-y-auto'>
+                                            <div className='border-b-2 w-full'>
+                                                <Tabs value={value} onChange={handleChange} >
+                                                    <Tab label="Estado" value={0} />
+                                                    <Tab label="Archivos" value={1} />
+                                                </Tabs>
                                             </div>
-                                        </HookForm>
+                                            <div hidden={value !== 0} className='w-full'>
+                                                <OrderStateTab orderData={orderData} />
+                                            </div>
+                                            <div hidden={value !== 1} className='w-full'>
+                                                <OrderFilesTab orderData={orderData} />
+                                            </div>
+                                        </div>
                                     </div>
 
                                 </div>

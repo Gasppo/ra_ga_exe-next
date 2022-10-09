@@ -30,3 +30,16 @@ export const uploadFile = (data: FileUploadData): Promise<DriveUploadResponse> =
 export const createOrder = (data: OrderCreationData): Promise<{ message: string }> => fetch(`/api/order/new`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
+
+
+export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse, mapKeys: { [key: string]: string }) => {
+    if (mapKeys[file.fileName] === 'molderiaBase.files') {
+        data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+    else if (mapKeys[file.fileName] === 'geometral.files') {
+        data.geometral.files = data.geometral.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+    else if (mapKeys[file.fileName] === 'logoMarca.files') {
+        data.logoMarca.files = data.logoMarca.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+}

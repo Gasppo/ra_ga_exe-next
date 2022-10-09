@@ -24,7 +24,7 @@ import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, getComplexity, uploadFile } from "../utils/queries/cotizador";
+import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, getComplexity, updateFileURL, uploadFile } from "../utils/queries/cotizador";
 
 const Home: NextPage = () => {
 
@@ -68,33 +68,9 @@ const Home: NextPage = () => {
         if (data?.files?.length > 0) {
             const uploadedFiles = await (await handleUploadFile(data.files)).data
             const mapKeys = data.files.reduce((prev, currStep) => ({ ...prev, [currStep.file.name]: currStep.section }), {})
-            if (Array.isArray(uploadedFiles)) {
-                console.log('mapKeys', mapKeys)
-                uploadedFiles.forEach(file => {
-                    console.log('fileName', file.fileName)
-                    if (mapKeys[file.fileName] === 'molderiaBase.files') {
-                        data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-                    }
-                    else if (mapKeys[file.fileName] === 'geometral.files') {
-                        data.geometral.files = data.geometral.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-                    }
-                    else if (mapKeys[file.fileName] === 'logoMarca.files') {
-                        data.logoMarca.files = data.logoMarca.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-                    }
-                })
-            }
-            else {
-                if (mapKeys[uploadedFiles.fileName] === 'molderiaBase.files') {
-                    data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
-                }
-                else if (mapKeys[uploadedFiles.fileName] === 'geometral.files') {
-                    data.geometral.files = data.geometral.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
-                }
-                else if (mapKeys[uploadedFiles.fileName] === 'logoMarca.files') {
-                    data.logoMarca.files = data.logoMarca.files.map(el => el.name === uploadedFiles.fileName ? { ...el, urlID: uploadedFiles.file.data.id } : el)
-                }
-            }
-
+            Array.isArray(uploadedFiles) ?
+                uploadedFiles.forEach(file => updateFileURL(data, file, mapKeys)) :
+                updateFileURL(data, uploadedFiles, mapKeys)
         }
         console.log(data)
         await createOrderMutation(data)

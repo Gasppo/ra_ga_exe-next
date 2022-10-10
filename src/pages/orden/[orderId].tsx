@@ -112,11 +112,14 @@ const Home: NextPage = () => {
                                 </div>
 
                                 <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
-                                    <div className="md:mt-9 grow flex flex-col md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
-                                        <div className="hidden md:flex relative h-64">
-                                            <Image src={orderData?.prenda?.tipo?.picture || ''} layout="fill" objectFit="contain" alt="Seleccione prenda.." />
+                                    <div className="md:mt-9 grow flex flex-col items-center md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
+                                        <div className="hidden md:flex">
+                                            <Image src={orderData?.prenda?.tipo?.picture || ''} height='200px' width={'200px'} alt="Seleccione prenda.." />
                                         </div>
-                                        {orderData?.idEstado && <div className="mt-16 flex italic flex-row w-full text-xs lg:text-base">
+                                        <div className="my-4 flex italic  text-xs lg:text-base">
+                                            Precio Estimado: ${orderData?.cotizacionOrden?.[0]?.precio?.toFixed(2) || '0.00'}
+                                        </div>
+                                        {orderData?.idEstado && <div className="mt-4 flex italic flex-row w-full text-xs lg:text-base">
                                             <InfoIcon className="mr-2" /> {stepDescriptions[orderData?.idEstado]}
                                         </div>}
                                     </div>
@@ -126,7 +129,7 @@ const Home: NextPage = () => {
                                             <div className='border-b-2 w-full'>
                                                 <Tabs value={value} onChange={handleChange} >
                                                     <Tab label="Estado" value={0} />
-                                                    <Tab label="Archivos" value={1} />
+                                                    {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                 </Tabs>
                                             </div>
                                             <div hidden={value !== 0} className='w-full'>

@@ -1,4 +1,4 @@
-import { findPrendaPrecioByTypeAndComplexity, updateExpiredOrders } from '@backend/dbcalls/order';
+import { calculateOrderTotal, findPrendaPrecioByTypeAndComplexity, updateExpiredOrders } from '@backend/dbcalls/order';
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { prisma } from '@server/db/client';
 import { generateEmailer } from '@utils/email/generateEmailer';
@@ -24,7 +24,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         await updateExpiredOrders();
 
         const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
-
+        const precio = await calculateOrderTotal(data, debugComplejidadID)
 
         console.log(prendaPrecio)
 
@@ -52,6 +52,11 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                             ...data.geometral.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'geometral' })),
                             ...data.logoMarca.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'logoMarca' })),
                         ]
+                    }
+                },
+                cotizacionOrden: {
+                    create: {
+                        precio: precio,
                     }
                 }
             }

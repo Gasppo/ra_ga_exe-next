@@ -109,20 +109,29 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id        String       @id @default(cuid())
-    prenda    PrecioPrenda @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
-    idPrenda  String
-    nombre    String?
-    cantidad  Int?
-    idEstado  Int?
-    estado    EstadoOrden? @relation(fields: [idEstado], references: [id], onDelete: Cascade)
-    user      User?        @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    String?
-    createdAt DateTime     @default(now())
-    updatedAt DateTime     @default(now())
-    expiresAt DateTime     @default(now())
-    servicios Servicio[]
-    archivos  Archivo[]
+    id              String            @id @default(cuid())
+    prenda          PrecioPrenda      @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
+    idPrenda        String
+    nombre          String?
+    cantidad        Int?
+    idEstado        Int?
+    estado          EstadoOrden?      @relation(fields: [idEstado], references: [id], onDelete: Cascade)
+    user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId          String?
+    createdAt       DateTime          @default(now())
+    updatedAt       DateTime          @default(now())
+    expiresAt       DateTime          @default(now())
+    servicios       Servicio[]
+    archivos        Archivo[]
+    cotizacionOrden CotizacionOrden[]
+}
+
+model CotizacionOrden {
+    id        String   @id @default(cuid())
+    orden     Orden    @relation(fields: [idOrden], references: [id], onDelete: Cascade)
+    idOrden   String
+    precio    Float
+    createdAt DateTime @default(now())
 }
 
 model EstadoOrden {

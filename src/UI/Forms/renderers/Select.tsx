@@ -42,6 +42,10 @@ function Select<Model>(props: SelectProps<Model>) {
                             value={value || ""}
                             size={(layout?.options?.variant === 'outlined' || !layout?.options?.variant) ? "medium" : "small"}
                             inputRef={ref}
+                            InputLabelProps={{
+                                shrink: layout?.options?.shrinkLabel === false ? false : true,
+                                className: layout?.labelClassName
+                            }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             variant={"outlined"}
                             name={name}

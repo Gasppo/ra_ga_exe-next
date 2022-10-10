@@ -19,7 +19,7 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
 
     const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
 
-    const fetchPrice = async (data: OrderCreationData): Promise<{ price: string }> => {
+    const fetchPrice = async (data: OrderCreationData): Promise<{ price: number }> => {
         return await fetch(`/api/order/debug`, {
             method: "POST",
             body: JSON.stringify(data),
@@ -30,8 +30,8 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
         }).then(res => res.json())
     }
 
-    const { data } = useQuery([formData, currStep], () => currStep === 4 ? fetchPrice(formData) : ({ price: '0' }), {
-        initialData: { price: '0.00' },
+    const { data } = useQuery([formData, currStep], () => currStep === 4 ? fetchPrice(formData) : ({ price: 0 }), {
+        initialData: { price: 0 },
         refetchOnWindowFocus: false
     })
 
@@ -41,7 +41,7 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
                 <div className='p-4'>
                     {image && <Image src={image} height='200px' width={'200px'} alt="Seleccione prenda.." />}
                 </div>
-                {currStep === 4 && <div className='mt-4'>Precio Estimado: ${data?.price || '0.00'}</div>}
+                {currStep === 4 && <div className='mt-4'>Precio Estimado: ${data?.price?.toFixed(2) || '0.00'}</div>}
             </div>
         </>
     )

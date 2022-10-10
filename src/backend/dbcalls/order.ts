@@ -86,12 +86,11 @@ export const findPrendaPrecioByTypeAndComplexity = async (tipoId: string, comple
 
 // }
 
-export const calculateOrderTotal = async (orderData: ValidatedOrderSchema) => {
-    const debugComplejidadID = 'cl90cx1ak0119pnvh8o2yp3pm'
+export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, complexityId: string) => {
 
     const precioDolar = await getPrecioDolar()
 
-    const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, debugComplejidadID);
+    const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, complexityId);
 
     const services = await prisma.servicio.findMany({})
 
@@ -111,5 +110,5 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema) => {
     }, { precioFijo: 0, factorMultiplicador: 0 })
 
 
-    return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))?.toFixed(2)
+    return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))
 }

@@ -23,7 +23,12 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                         complejidad: true,
                     }
                 },
-                archivos: true
+                archivos: true,
+                cotizacionOrden: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                },
             },
             where: { id: req.body.orderId }
         })

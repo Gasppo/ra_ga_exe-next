@@ -55,7 +55,7 @@ const Home: NextPage = () => {
 
     const router = useRouter()
 
-    const steps = ['Selección Prenda', 'Moldería', 'Especificaciones', 'Talles', 'Confirmación']
+    const steps = ['Selección Prenda', 'Moldería', 'Especificaciones', 'Talles y Cant.', 'Confirmación']
 
     const isStepOptional = () => false
 

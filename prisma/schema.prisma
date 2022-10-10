@@ -104,8 +104,8 @@ model ComplejidadConfeccion {
 model PrecioDelDolar {
     id         String   @id @default(cuid())
     precio     Float
-    fechaDesde DateTime
-    fechaHasta DateTime
+    fechaDesde DateTime @default(now())
+    fechaHasta DateTime @default(now())
 }
 
 model Orden {

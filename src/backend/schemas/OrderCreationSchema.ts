@@ -72,6 +72,6 @@ export const OrderCreationDataSchema = z.object({
     }),
 })
 
-type ValidatedSchema = z.infer<typeof OrderCreationDataSchema>
+export type ValidatedOrderSchema = z.infer<typeof OrderCreationDataSchema>
 
-export type OrderCreationData = ValidatedSchema & { files: { file: File, section: Paths<ValidatedSchema> }[] }
+export type OrderCreationData = ValidatedOrderSchema & { files: { file: File, section: Paths<ValidatedOrderSchema> }[] }

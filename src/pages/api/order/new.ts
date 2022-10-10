@@ -1,4 +1,4 @@
-import { updateExpiredOrders } from '@backend/dbcalls/order';
+import { findPrendaPrecioByTypeAndComplexity, updateExpiredOrders } from '@backend/dbcalls/order';
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { prisma } from '@server/db/client';
 import { generateEmailer } from '@utils/email/generateEmailer';
@@ -23,16 +23,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         await updateExpiredOrders();
 
-        const prendaPrecio = await prisma.precioPrenda.findFirst({
-            include: {
-                tipo: true,
-                complejidad: true
-            },
-            where: {
-                complejidadId: debugComplejidadID,
-                tipoId: data.tipoPrenda.id
-            }
-        })
+        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
 
 
         console.log(prendaPrecio)

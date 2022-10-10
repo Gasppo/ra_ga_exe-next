@@ -9,13 +9,17 @@ import { LayoutElement } from '../types'
 export type SelectProps<Model> = {
     layout: LayoutElement<Model>;
     onBlur?: (value: any, onChange: (value: any) => any) => any;
+    parentScope?: string
     hasParent?: boolean
 } & Partial<TextFieldProps>
 
 function Select<Model>(props: SelectProps<Model>) {
-    const { layout, ...textFieldProps } = props
+    const { layout, parentScope, hasParent, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
     const options = context?.[layout?.options?.optionsName] || []
+
+    console.log(parentScope, hasParent)
+
     return (
         <>
             <Controller

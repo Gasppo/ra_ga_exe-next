@@ -1,6 +1,6 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { Slide } from "@mui/material";
-import { ComplejidadConfeccion, TipoPrenda } from "@prisma/client";
+import { TipoPrenda } from "@prisma/client";
 import ClothingImage from "@UI/cotizador/Ficha Tecnica/ClothingImage";
 import FichaTecnicaControls from "@UI/cotizador/Ficha Tecnica/FichaTecnicaControls";
 import HookForm from "@UI/Forms/HookForm";
@@ -11,7 +11,7 @@ import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useState } from 'react';
-import { useMutation, useQuery } from "react-query";
+import { useIsFetching, useIsMutating, useMutation, useQuery } from "react-query";
 import ClothingConfirmationForm from "../UI/cotizador/Ficha Tecnica/ClothingConfirmationForm";
 import ClothingDetailForm from "../UI/cotizador/Ficha Tecnica/ClothingDetailForm";
 import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
@@ -24,25 +24,24 @@ import { fichaTecnicaVaciaForm } from "../UI/Types/fichaTecnicaTypes";
 import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
-import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, getComplexity, updateFileURL, uploadFile } from "../utils/queries/cotizador";
+import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, updateFileURL, uploadFile } from "../utils/queries/cotizador";
 
 const Home: NextPage = () => {
 
     const { addError } = useContext(ErrorHandlerContext)
-
-    const { data: clothesData, isFetching: isFetchingClothes } = useQuery<TipoPrenda[], ErrorMessage>(['clothes'], getClothes,
-        { refetchOnWindowFocus: false, onError: (error) => addError(error.error) });
-
-    const { isFetching: isFetchingComplexity } = useQuery<ComplejidadConfeccion[], ErrorMessage>(['complexities'], getComplexity,
+    const isMutating = !!useIsMutating()
+    const isFetching = !!useIsFetching()
+    const { data: clothesData } = useQuery<TipoPrenda[], ErrorMessage>(['clothes'], getClothes,
         { refetchOnWindowFocus: false, onError: (error) => addError(error.error) }
     );
 
-    const { mutateAsync: uploadFilesMutation, isLoading: isUploadingFiless } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+
+    const { mutateAsync: uploadFilesMutation } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
 
 
-    const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
+    const { mutateAsync: createOrderMutation } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
         onSuccess: (obj) => {
             router.replace('/');
             addError(obj.message, "info");
@@ -85,10 +84,7 @@ const Home: NextPage = () => {
             formData.append('file', f.file)
         }
         return await uploadFilesMutation({ clientName: folderName, orderID: orderID, formData: formData })
-
     }
-
-
 
     return (
 
@@ -102,7 +98,7 @@ const Home: NextPage = () => {
             <main>
                 <Slide in={true} timeout={500} direction='up'>
                     <div>
-                        <LoadingIndicator show={isFetchingClothes || isFetchingComplexity || isUploadingFiless || isCreatingOrder}>
+                        <LoadingIndicator show={isFetching || isMutating}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" />
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />
@@ -110,7 +106,7 @@ const Home: NextPage = () => {
                                 <HookForm defaultValues={{ ...fichaTecnicaVaciaForm, user: sessionData?.user }} onSubmit={handleFormSubmit}>
                                     <div className="flex flex-col" >
                                         <div className="md:mt-9 grow flex justify-evenly">
-                                            <ClothingImage clothesData={clothesData} />
+                                            <ClothingImage clothesData={clothesData} currStep={step} />
                                             {step === 0 && <ClothingSelectionForm clothesData={clothesData} />}
                                             {step === 1 && <ClothingMouldsForm />}
                                             {step === 2 && <ClothingDetailForm />}

@@ -31,7 +31,8 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
     }
 
     const { data } = useQuery([formData, currStep], () => currStep === 4 ? fetchPrice(formData) : ({ price: '0' }), {
-        initialData: { price: '0.00' }
+        initialData: { price: '0.00' },
+        refetchOnWindowFocus: false
     })
 
     return (

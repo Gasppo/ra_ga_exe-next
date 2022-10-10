@@ -18,7 +18,7 @@ const PageTitle = ({ title, hasBack, size }: PageTitleProps) => {
                 } leading-normal font-extrabold text-gray-700`} >
                 {title}
             </h1>
-            {hasBack && <div className='leading-normal font-extralight italic'>
+            {hasBack && <div className={`leading-normal font-extralight italic md:ml-7`}>
                 <Link href='/'>
                     Volver al inicio
                 </Link>

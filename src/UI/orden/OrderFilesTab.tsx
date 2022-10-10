@@ -16,19 +16,19 @@ const OrderFilesTab = ({ orderData }: Props) => {
         <div className='flex flex-col mt-4'>
             <div hidden={archivosMolderia.length === 0}>
                 <div className='text-gray-700 text-lg font-medium '>Moldería</div>
-                <div className='flex flex-row' >
+                <div className='flex flex-row flex-wrap' >
                     {archivosMolderia?.map(el => <OrderDownloadItem archivo={el} key={el.id} />)}
                 </div>
             </div>
             <div hidden={archivosGeometral.length === 0}>
                 <div className='text-gray-700 text-lg font-medium '>Geometral</div>
-                <div className='flex flex-row' >
+                <div className='flex flex-row flex-wrap' >
                     {archivosGeometral?.map(el => <OrderDownloadItem archivo={el} key={el.id} />)}
                 </div>
             </div>
             <div hidden={archivosLogo.length === 0}>
                 <div className='text-gray-700 text-lg font-medium '>Logo Marca</div>
-                <div className='flex flex-row' >
+                <div className='flex flex-row flex-wrap' >
                     {archivosLogo?.map(el => <OrderDownloadItem archivo={el} key={el.id} />)}
                 </div>
             </div>

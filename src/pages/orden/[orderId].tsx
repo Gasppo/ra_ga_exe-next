@@ -104,7 +104,7 @@ const Home: NextPage = () => {
                     <div>
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-                            <PageTitle title={orderTitle} hasBack />
+                            <PageTitle title={orderTitle} hasBack size='medium'/>
                             <LoadingIndicator show={!!isLoading}>
 
                                 <div className="mt-16 w-full hidden md:flex">
@@ -116,15 +116,15 @@ const Home: NextPage = () => {
                                         <div className="hidden md:flex">
                                             <Image src={orderData?.prenda?.tipo?.picture || ''} height='200px' width={'200px'} alt="Seleccione prenda.." />
                                         </div>
-                                        <div className="my-4 flex italic  text-xs lg:text-base">
-                                            Precio Estimado: ${orderData?.cotizacionOrden?.[0]?.precio?.toFixed(2) || '0.00'}
+                                        <div className="my-4">
+                                            Precio Estimado: <b className='italic'>${orderData?.cotizacionOrden?.[0]?.precio?.toFixed(2) || '0.00'}</b>
                                         </div>
                                         {orderData?.idEstado && <div className="mt-4 flex italic flex-row w-full text-xs lg:text-base">
                                             <InfoIcon className="mr-2" /> {stepDescriptions[orderData?.idEstado]}
                                         </div>}
                                     </div>
                                     <div className="hidden lg:flex w-2/12  mt-9" />
-                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 md:mt-9 p-10">
+                                    <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 mt-4 md:mt-9 md:p-10">
                                         <div className='w-full flex flex-col items-start border-2 p-4 shadow-lg max-h-[75vh] overflow-y-auto'>
                                             <div className='border-b-2 w-full'>
                                                 <Tabs value={value} onChange={handleChange} >

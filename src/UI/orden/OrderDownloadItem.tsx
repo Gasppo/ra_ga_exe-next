@@ -19,7 +19,7 @@ const OrderDownloadItem = ({ archivo }: Props) => {
     }
 
     return (
-        <div className='my-4 mr-4'>
+        <div className='my-3 mr-4'>
             <LoadingButton
                 onClick={handleDownload}
                 endIcon={<SaveIcon />}

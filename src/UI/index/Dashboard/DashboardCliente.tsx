@@ -19,6 +19,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import PostAddIcon from '@mui/icons-material/PostAdd';
 
+
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();

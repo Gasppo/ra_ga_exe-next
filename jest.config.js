@@ -9,5 +9,6 @@ module.exports = {
     'moduleNameMapper': {
         '@backend/(.*)': '<rootDir>/src/backend/$1',
         '@pages/(.*)': '<rootDir>/src/pages/$1',
+        '@utils/(.*)': '<rootDir>/src/utils/$1',
     }
 };

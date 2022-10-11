@@ -1,6 +1,6 @@
 import { UserCreationSchemaType } from '@backend/schemas/UserCreationSchema'
 import { PrismaClient } from '@prisma/client'
-
+import axios from 'axios'
 const prisma = new PrismaClient()
 
 
@@ -20,7 +20,9 @@ it('Should create a User', async () => {
         confirmPassword: '123456asd'
     }
 
-    const newUser = await fetch(`/api/user/create`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+
+    const newUser = await axios.post('/api/user/create', data)
+
 
     expect(newUser.status).toBe(200)
 

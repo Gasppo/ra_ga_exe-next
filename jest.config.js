@@ -8,5 +8,6 @@ module.exports = {
     transformIgnorePatterns: ['<rootDir>/node_modules/'],
     'moduleNameMapper': {
         '@backend/(.*)': '<rootDir>/src/backend/$1',
+        '@pages/(.*)': '<rootDir>/src/pages/$1',
     }
 };

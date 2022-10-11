@@ -10,7 +10,7 @@
     "postinstall": "prisma generate",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "test": "yarn docker:up && dotenv -e .env.test yarn prisma db push && dotenv  -e .env.test yarn dev && dotenv  -e .env.test jest -i",
+    "test": "yarn docker:up && dotenv -e .env.test yarn prisma db push && dotenv  -e .env.test jest --silent",
     "ci-test": "jest -i"
   },
   "dependencies": {

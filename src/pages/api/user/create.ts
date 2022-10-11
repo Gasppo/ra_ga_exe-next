@@ -3,7 +3,7 @@ import { UserCreationSchema } from "@backend/schemas/UserCreationSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError } from "zod";
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
+export default async function handleUserCreation(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") await handlePOST(req, res);
 
     else {

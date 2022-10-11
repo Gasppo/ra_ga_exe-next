@@ -62,8 +62,8 @@ export const OrderCreationDataSchema = z.object({
     }),
     cantidad: z.string(),
     tipoPrenda: z.object({
-        id: z.string().cuid().optional(),
-        name: z.string(),
+        id: z.string().cuid(),
+        name: z.string().min(1, { message: 'El nombre de la prenda no puede estar vacío' }),
         picture: z.string().optional()
     }),
     user: z.object({

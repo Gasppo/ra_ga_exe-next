@@ -11,17 +11,20 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     // Paso 2: Moldería
     molderiaBase: {
         selected: false,
-        observaciones: ''
+        observaciones: '',
+        files: []
     },
     geometral: {
         selected: false,
-        observaciones: ''
+        observaciones: '',
+        files: []
     },
 
     // Paso 3: Especificaciones
     logoMarca: {
         selected: false,
-        observaciones: ''
+        observaciones: '',
+        files: []
     },
     bolsillos: {
         selected: false,

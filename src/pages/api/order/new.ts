@@ -3,16 +3,17 @@ import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { prisma } from '@server/db/client';
 import { generateEmailer } from '@utils/email/generateEmailer';
 import { newOrderNotificationHTML } from '@utils/email/newOrderNotification';
-import { checkIfUserExists, fromToday } from 'backend/dbcalls/user';
+import { checkIfUserExists, fromToday } from '@backend/dbcalls/user';
 import type { NextApiRequest, NextApiResponse } from "next";
+import { ZodError } from 'zod';
 
-const post = async (req: NextApiRequest, res: NextApiResponse) => {
+const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) => {
 
-    const debugComplejidadID = 'cl90cx1ak0119pnvh8o2yp3pm'
 
 
     try {
         const data = OrderCreationDataSchema.parse(req.body);
+        const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })
 
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -25,19 +26,16 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
         const precio = await calculateOrderTotal(data, debugComplejidadID)
-
-        console.log(prendaPrecio)
+        const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
 
         const user = await checkIfUserExists({ email: data.user.email })
-
-
         const orden = await prisma.orden.create({
             data: {
                 nombre: `${prendaPrecio.tipo.name} ${prendaPrecio.complejidad.name}`,
                 cantidad: 100,
                 expiresAt: fromToday(60 * 60 * 24 * 15),
                 estado: {
-                    connect: { id: 1 }
+                    connect: { id: idEstadoBase }
                 },
                 prenda: {
                     connect: { id: prendaPrecio.id }
@@ -68,14 +66,19 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             subject: 'Orden creada'
         })
 
-        res.status(200).json({ message: 'Orden creada con éxito' });
+        res.status(200).json({ message: 'Orden creada con éxito', data: orden });
 
-    } catch (error) {
-        res.status(500).json({ error: error })
-        throw error;
+    } catch (e) {
+        if (e instanceof ZodError) {
+            e.format
+            res.status(400).json({ error: e.flatten() })
+        }
+        else {
+            res.status(400).json({ error: e })
+        }
     }
 
 
 }
 
-export default post;
+export default handleOrderCreation;

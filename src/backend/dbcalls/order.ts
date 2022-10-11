@@ -109,6 +109,5 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
         return prev
     }, { precioFijo: 0, factorMultiplicador: 0 })
 
-
     return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))
 }

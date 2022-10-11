@@ -5,14 +5,74 @@ import { generateMockRes } from '@utils/tests/generateMockRes';
 import { NextApiRequest } from 'next';
 const prisma = new PrismaClient()
 
-beforeAll(() => {
+beforeAll(async () => {
     jest.spyOn(console, 'log').mockImplementation(jest.fn());
     jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+
+    await prisma.tipoPrenda.createMany({
+        data: [
+            { name: 'Pantalón', picture: 'https://cdn-icons-png.flaticon.com/512/2122/2122621.png' },
+            { name: 'Remera / Camiseta', picture: 'https://cdn-icons-png.flaticon.com/512/2357/2357127.png' },
+        ]
+    })
+
+    await prisma.estadoOrden.createMany({
+        data: [
+            { nombre: 'Aguardando Confirmación' },
+            { nombre: 'Seña Pendiente' },
+            { nombre: 'En produccion' },
+            { nombre: 'Aguarando Servicios Externos' },
+            { nombre: 'Aguardando Envío' },
+            { nombre: 'Rechazado' },
+            { nombre: 'Expirado' },
+            { nombre: 'Cancelado' }
+        ]
+    })
+
+    await prisma.precioDelDolar.create({
+        data: { precio: 100 }
+    })
+
+
+    await prisma.complejidadConfeccion.createMany({
+        data: [
+            { name: 'Básico', description: 'Básico' },
+            { name: 'Medio', description: 'Medio' },
+            { name: 'Complejo', description: 'Complejo' },
+            { name: 'Muy Complejo', description: 'Muy Complejo' },
+            { name: 'Ultra Complejo', description: 'Ultra Complejo' }
+        ]
+    })
+
+    await prisma.precioPrenda.create({
+        data: {
+            precioBase: 18,
+            complejidad: { connect: { name: 'Básico' } },
+            tipo: { connect: { name: 'Pantalón' } },
+        }
+    })
+
+
+    await prisma.precioPrenda.create({
+        data: {
+            precioBase: 12,
+            complejidad: { connect: { name: 'Básico' } },
+            tipo: { connect: { name: 'Remera / Camiseta' } },
+        }
+    })
+
+
 });
 
 afterAll(async () => {
-    //Delete every user
+    //Delete everything created
     await prisma.user.deleteMany({})
+    await prisma.tipoPrenda.deleteMany({})
+    await prisma.estadoOrden.deleteMany({})
+    await prisma.precioDelDolar.deleteMany({})
+    await prisma.complejidadConfeccion.deleteMany({})
+    await prisma.precioPrenda.deleteMany({})
+    
 })
 
 type ExpectedResponse = {
@@ -41,6 +101,8 @@ it('Should not allow get requests', async () => {
     const req = { method: 'GET', body: data } as NextApiRequest
 
     await handleUserCreation(req, res)
+
+
     expect(json.mock.calls[0][0].statusCode).toBe(400)
     expect(json.mock.calls[0][0].error).toBe(`The HTTP GET method is not supported at this route.`)
 
@@ -205,7 +267,7 @@ it('Should validate correct inputs for credential check', async () => {
         password: ''
     }
 
-    
+
     const { res, json, status } = generateMockRes<{
         id?: string,
         name?: string,

@@ -5,15 +5,14 @@ import { generateMockRes } from '@utils/tests/generateMockRes';
 import { NextApiRequest } from 'next';
 const prisma = new PrismaClient()
 
-// beforeAll(() => {
-//     jest.spyOn(console, 'log').mockImplementation(jest.fn());
-//     jest.spyOn(console, 'debug').mockImplementation(jest.fn());
-// });
+beforeAll(() => {
+    jest.spyOn(console, 'log').mockImplementation(jest.fn());
+    jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+});
 
 afterAll(async () => {
     //Delete every user
     await prisma.user.deleteMany({})
-    console.log('✨ User deleted')
 })
 
 type ExpectedResponse = {

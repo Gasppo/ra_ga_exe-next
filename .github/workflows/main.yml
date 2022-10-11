@@ -14,6 +14,7 @@ jobs:
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     env:
       DATABASE_URL: mysql://root:root@localhost:3306/test
+      MAILGUN_SMTP_PASS: testing
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x

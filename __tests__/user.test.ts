@@ -1,13 +1,14 @@
+import handleCheckCredentials from '@pages/api/user/check-credentials';
 import handleUserCreation from '@pages/api/user/create';
 import { PrismaClient } from '@prisma/client';
 import { generateMockRes } from '@utils/tests/generateMockRes';
 import { NextApiRequest } from 'next';
 const prisma = new PrismaClient()
 
-beforeAll(() => {
-    jest.spyOn(console, 'log').mockImplementation(jest.fn());
-    jest.spyOn(console, 'debug').mockImplementation(jest.fn());
-});
+// beforeAll(() => {
+//     jest.spyOn(console, 'log').mockImplementation(jest.fn());
+//     jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+// });
 
 afterAll(async () => {
     //Delete every user
@@ -108,13 +109,13 @@ it('Should not create a User with incorrect password values', async () => {
     expect(json.mock.calls[0][0].error?.formErrors?.[0]).toBe('Las contraseñas deben ser iguales')
     expect(json.mock.calls[0][0].error?.fieldErrors?.password?.[0]).toBe("Se requiere un mínimo de 8 caracteres")
     expect(json.mock.calls[0][0].error?.fieldErrors?.confirmPassword?.[0]).toBe("Se requiere un mínimo de 8 caracteres")
-    
+
 
 })
 
 
 it('Should not create a User with incorrect name values', async () => {
-    
+
     const data = {
         name: '',
         email: 'gasppo2@gmail.com',
@@ -133,3 +134,95 @@ it('Should not create a User with incorrect name values', async () => {
 })
 
 
+it('Should check credentials for existing user', async () => {
+    const data = {
+        username: 'gasppogb@gmail.com',
+        password: '123456asd'
+    }
+
+    const { res, json, status } = generateMockRes<{
+        id?: string,
+        name?: string,
+        email?: string,
+        image?: string,
+        error?: any
+    }>()
+
+    const req = { method: 'POST', body: data } as NextApiRequest
+
+    await handleCheckCredentials(req, res)
+    expect(status.mock.calls[0][0]).toBe(200)
+    expect(json.mock.calls[0][0].email).toBe(data.username)
+})
+
+
+it('Should check incorrect credentials for existing user', async () => {
+    const data = {
+        username: 'gasppogb@gmail.com',
+        password: '12345asd'
+    }
+
+    const { res, json, status } = generateMockRes<{
+        id?: string,
+        name?: string,
+        email?: string,
+        image?: string,
+        error?: any
+    }>()
+
+    const req = { method: 'POST', body: data } as NextApiRequest
+
+    await handleCheckCredentials(req, res)
+    expect(status.mock.calls[0][0]).toBe(400)
+    expect(json.mock.calls[0][0].email).toBe(undefined)
+    expect(json.mock.calls[0][0].error).toBe("Credenciales incorrectas")
+})
+
+it('Should check non existing user', async () => {
+    const data = {
+        username: 'gasppogasd@gmail.com',
+        password: '12345asd'
+    }
+
+    const { res, json, status } = generateMockRes<{
+        id?: string,
+        name?: string,
+        email?: string,
+        image?: string,
+        error?: any
+    }>()
+
+    const req = { method: 'POST', body: data } as NextApiRequest
+
+    await handleCheckCredentials(req, res)
+    expect(status.mock.calls[0][0]).toBe(400)
+    expect(json.mock.calls[0][0].email).toBe(undefined)
+    expect(json.mock.calls[0][0].error).toBe("Credenciales incorrectas")
+})
+
+it('Should validate correct inputs for credential check', async () => {
+    const data = {
+        username: '',
+        password: ''
+    }
+
+    
+    const { res, json, status } = generateMockRes<{
+        id?: string,
+        name?: string,
+        email?: string,
+        image?: string,
+        error?: any
+    }>()
+
+    const req = { method: 'POST', body: data } as NextApiRequest
+
+    await handleCheckCredentials(req, res)
+
+    expect(status.mock.calls[0][0]).toBe(400)
+    expect(json.mock.calls[0][0].error?.fieldErrors?.username?.length).toBe(1)
+    expect(json.mock.calls[0][0].error?.fieldErrors?.username?.[0]).toBe("Formato de correo electrónico inválido")
+    expect(json.mock.calls[0][0].error?.fieldErrors?.password?.length).toBe(1)
+    expect(json.mock.calls[0][0].error?.fieldErrors?.password?.[0]).toBe("Se requiere un mínimo de 8 caracteres")
+
+})

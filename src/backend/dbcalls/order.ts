@@ -100,6 +100,8 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
         return acc
     }, {})
 
+    console.log(servicesPrices)
+
     const factores = Object.keys(orderData).reduce((prev, key) => {
         if (key in servicesPrices) {
             if (orderData[key]?.selected) {

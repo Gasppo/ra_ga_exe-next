@@ -51,12 +51,12 @@ const DashboardCliente = () => {
     };
 
     const columns: GridColumns = [
-        { field: 'id', headerName: 'Id', width: 150 },
-        { field: 'cantidad', headerName: 'Cantidad', width: 75 },
-        { field: 'nombre', headerName: 'Nombre', width: 150 },
-        { field: 'estado', headerName: 'Estado', width: 150, valueGetter: (params) => params.row.estado.nombre },
-        { field: 'createdAt', type: 'date', headerName: 'Creación', width: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString() },
-        { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', width: 75 }
+        { field: 'id', headerName: 'Id', minWidth: 150, flex: 1 },
+        { field: 'cantidad', headerName: 'Cantidad', minWidth: 75, flex: 1 },
+        { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
+        { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
+        { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },
+        { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
     ];
 
     function CustomToolbar() {
@@ -99,7 +99,7 @@ const DashboardCliente = () => {
                                 components={{
                                     Toolbar: CustomToolbar,
                                 }}
-                                pageSize={7}
+                                autoPageSize
                             />
                         </div>
                     </LoadingIndicator>

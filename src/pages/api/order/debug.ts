@@ -13,7 +13,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     } catch (error) {
         res.status(500).json({ error: error })
-        throw error;
     }
 
 

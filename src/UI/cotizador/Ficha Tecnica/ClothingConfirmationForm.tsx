@@ -18,22 +18,22 @@ const ClothingConfirmationForm = () => {
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.molderiaBase.selected ? "✔️" : "❌"} Moldería base {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.molderiaBase.selected ? "✔️" : "❌"} Moldería base {cotizadorData.molderiaBase?.files?.length ? ' - ' + cotizadorData.molderiaBase?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.molderiaBase.observaciones && <div className="ml-3">Observaciones: {cotizadorData.molderiaBase.observaciones}</div>}
-                <div>{cotizadorData.geometral.selected ? "✔️" : "❌"} Geometral {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.geometral.selected ? "✔️" : "❌"} Geometral {cotizadorData.geometral?.files?.length ? ' - ' + cotizadorData.geometral?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.geometral.observaciones && <div className="ml-3">Observaciones: {cotizadorData.geometral.observaciones}</div>}
             </div>
 
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.logoMarca.selected ? "✔️" : "❌"} Logo Marca {cotizadorData.files?.length ? ' - ' + cotizadorData.files.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.logoMarca.selected ? "✔️" : "❌"} Logo Marca {cotizadorData.logoMarca?.files?.length ? ' - ' + cotizadorData.logoMarca?.files?.length + ' archivos seleccionados' : ''}</div>
                 {cotizadorData.logoMarca.observaciones && <div className="ml-3">Observaciones logo: {cotizadorData.logoMarca.observaciones}</div>}
-                <div>{cotizadorData.bolsillos.selected ? "✔️" : "❌"} Bolsillos {cotizadorData.bolsillos.selected ? ' - ' + cotizadorData.bolsillos.cantidad + ' bolsillos y observaciones: ' + cotizadorData.bolsillos.observaciones : ""} </div>
-                <div>{cotizadorData.elastico.selected ? "✔️" : "❌"} Elástico {cotizadorData.elastico.selected ? ' - ' + cotizadorData.elastico.metros + ' metros y observaciones: ' + cotizadorData.elastico.observaciones : ""} </div>
-                <div>{cotizadorData.botones.selected ? "✔️" : "❌"} Botones {cotizadorData.botones.selected ? ' - ' + cotizadorData.botones.cantidad + ' totales y observaciones: ' + cotizadorData.botones.observaciones : ""} </div>
-                <div>{cotizadorData.cierre.selected ? "✔️" : "❌"} Cierre {cotizadorData.cierre.selected ? ' - ' + cotizadorData.cierre.observaciones : ""} </div>
-                <div>{cotizadorData.manga.selected ? "✔️" : "❌"} Manga {cotizadorData.manga.selected ? ' - ' + cotizadorData.manga.observaciones : ""} </div>
+                <div>{cotizadorData.atributosPrenda?.bolsillos.selected ? "✔️" : "❌"} Bolsillos {cotizadorData.atributosPrenda?.bolsillos.selected ? ' - ' + cotizadorData.atributosPrenda?.bolsillos.cantidad + ' bolsillos y observaciones: ' + cotizadorData.atributosPrenda?.bolsillos.observaciones : ""} </div>
+                <div>{cotizadorData.atributosPrenda?.elastico.selected ? "✔️" : "❌"} Elástico {cotizadorData.atributosPrenda?.elastico.selected ? ' - ' + cotizadorData.atributosPrenda?.elastico.cantidad + ' metros y observaciones: ' + cotizadorData.atributosPrenda?.elastico.observaciones : ""} </div>
+                <div>{cotizadorData.atributosPrenda?.botones.selected ? "✔️" : "❌"} Botones {cotizadorData.atributosPrenda?.botones.selected ? ' - ' + cotizadorData.atributosPrenda?.botones.cantidad + ' totales y observaciones: ' + cotizadorData.atributosPrenda?.botones.observaciones : ""} </div>
+                <div>{cotizadorData.atributosPrenda?.cierre.selected ? "✔️" : "❌"} Cierre {cotizadorData.atributosPrenda?.cierre.selected ? ' - ' + cotizadorData.atributosPrenda?.cierre.observaciones : ""} </div>
+                <div>{cotizadorData.atributosPrenda?.manga.selected ? "✔️" : "❌"} Manga {cotizadorData.atributosPrenda?.manga.selected ? ' - ' + cotizadorData.atributosPrenda?.manga.observaciones : ""} </div>
             </div>
 
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>

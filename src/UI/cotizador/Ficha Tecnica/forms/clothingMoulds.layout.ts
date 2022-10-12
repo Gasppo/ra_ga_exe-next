@@ -19,10 +19,14 @@ export const clothingMouldsLayout: LayoutElement<OrderCreationData> = {
         {
             type: 'Uploader',
             scope: 'files',
-            width: 12,  
+            width: 12,
             rules: [
                 { type: 'required', scope: 'molderiaBase.selected' }
-            ]
+            ],
+            options: {
+                fileSection: 'molderiaBase.files',
+                multifile: true
+            }
         },
         {
             type: 'Input',
@@ -58,7 +62,11 @@ export const clothingMouldsLayout: LayoutElement<OrderCreationData> = {
                 width: 12,
                 rules: [
                     { type: 'required', scope: 'geometral.selected' }
-                ]
+                ],
+                options: {
+                    fileSection: 'geometral.files',
+                    multifile: true
+                }
             },
             {
                 type: 'Input',

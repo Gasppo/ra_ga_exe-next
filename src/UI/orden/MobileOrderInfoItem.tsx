@@ -9,12 +9,12 @@ interface MobileOrderInfoItemProps {
 
 const MobileOrderInfoItem = ({ orden }: MobileOrderInfoItemProps) => {
     const date = new Date(orden.updatedAt)
-
+    console.log(orden)
     return (
         <Link href={'/orden/' + orden.id}>
             <div className="mx-4 my-2 flex flex-row active:bg-gray-100">
                 <div id="picture" className='flex '>
-                    <Image src={orden.categoria?.Prenda?.picture || ''} width="80px" height="80px" alt="Seleccione prenda.." />
+                    <Image src={orden?.prenda?.tipo?.picture || ''} width="80px" height="80px" alt="Seleccione prenda.." />
                 </div>
                 <div className="flex flex-col text-sm justify-evenly ml-4">
                     <div>

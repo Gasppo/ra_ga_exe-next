@@ -9,13 +9,17 @@ import { LayoutElement } from '../types'
 export type SelectProps<Model> = {
     layout: LayoutElement<Model>;
     onBlur?: (value: any, onChange: (value: any) => any) => any;
+    parentScope?: string
     hasParent?: boolean
 } & Partial<TextFieldProps>
 
 function Select<Model>(props: SelectProps<Model>) {
-    const { layout, ...textFieldProps } = props
+    const { layout, parentScope, hasParent, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
     const options = context?.[layout?.options?.optionsName] || []
+
+    console.log(parentScope, hasParent)
+
     return (
         <>
             <Controller
@@ -38,6 +42,10 @@ function Select<Model>(props: SelectProps<Model>) {
                             value={value || ""}
                             size={(layout?.options?.variant === 'outlined' || !layout?.options?.variant) ? "medium" : "small"}
                             inputRef={ref}
+                            InputLabelProps={{
+                                shrink: layout?.options?.shrinkLabel === false ? false : true,
+                                className: layout?.labelClassName
+                            }}
                             // eslint-disable-next-line jsx-a11y/no-autofocus
                             variant={"outlined"}
                             name={name}

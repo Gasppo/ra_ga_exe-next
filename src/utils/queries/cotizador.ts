@@ -1,18 +1,18 @@
-import { drive_v3 } from "googleapis";
-import { GaxiosResponse } from "gaxios";
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
+import { FileUploadResponse } from "@pages/api/drive/upload";
+import { TipoPrenda } from "@prisma/client";
 
 
 // Cargar archivos a Google Drive
 export type FileUploadData = { clientName: string, orderID: string, formData: FormData }
-export type FileUploadResponse = { data?: GaxiosResponse<drive_v3.Schema$File> | GaxiosResponse<drive_v3.Schema$File>[] } | { error?: any }
+export type DriveUploadResponse = { data: FileUploadResponse | FileUploadResponse[] }
 export type ErrorMessage = { error: string }
 
 export const errorHandle = (res: Response) => res.json().then(json => Promise.reject(json))
 
 
 // Obtener lista de ropas
-export const getClothes = () => fetch('/api/clothes/obtain')
+export const getClothes = (): Promise<TipoPrenda[]> => fetch('/api/clothes/obtain')
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
@@ -22,7 +22,7 @@ export const getComplexity = () => fetch('/api/complexity/obtain')
     .catch((error) => { throw error });
 
 // Cargar archivos a Google Drive
-export const uploadFile = (data: FileUploadData): Promise<FileUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
+export const uploadFile = (data: FileUploadData): Promise<DriveUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { console.log('Broke here'); throw error });
 
@@ -30,3 +30,16 @@ export const uploadFile = (data: FileUploadData): Promise<FileUploadResponse> =>
 export const createOrder = (data: OrderCreationData): Promise<{ message: string }> => fetch(`/api/order/new`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
+
+
+export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse, mapKeys: { [key: string]: string }) => {
+    if (mapKeys[file.fileName] === 'molderiaBase.files') {
+        data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+    else if (mapKeys[file.fileName] === 'geometral.files') {
+        data.geometral.files = data.geometral.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+    else if (mapKeys[file.fileName] === 'logoMarca.files') {
+        data.logoMarca.files = data.logoMarca.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+    }
+}

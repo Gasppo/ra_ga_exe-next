@@ -1,13 +1,14 @@
-import { Categoria, EstadoOrden, Orden, Prenda, User } from '@prisma/client';
+import { EstadoOrden } from '@prisma/client';
 import FormItem from '@UI/Forms/FormItem';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
+import { ExtendedOrdenData } from '@utils/Examples/BasicOrderTable';
 import { errorHandle } from '@utils/queries/cotizador';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
 interface OrderStateChangeProps {
-    order: Orden & { estado: EstadoOrden, user: User, categoria: Categoria & { Prenda: Prenda } }
+    order: ExtendedOrdenData
 }
 
 const OrderStateChange = ({ order }: OrderStateChangeProps) => {
@@ -40,7 +41,7 @@ const OrderStateChange = ({ order }: OrderStateChangeProps) => {
 
 
     return (
-        <div className="mt-16 w-64">
+        <div className="mt-10 w-64">
             <FormItem layout={{
                 type: 'Select',
                 scope: 'orderState',

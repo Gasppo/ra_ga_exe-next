@@ -1,6 +1,7 @@
 import { calculateOrderTotal } from '@backend/dbcalls/order';
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '@server/db/client';
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
     const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })

@@ -1,4 +1,4 @@
-import { calculateOrderTotal, findPrendaPrecioByTypeAndComplexity, updateExpiredOrders } from '@backend/dbcalls/order';
+import { calculateOrderTotal, findPrendaPrecioByTypeAndComplexity, getAtributosPrenda, updateExpiredOrders } from '@backend/dbcalls/order';
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { prisma } from '@server/db/client';
 import { generateEmailer } from '@utils/email/generateEmailer';
@@ -26,8 +26,9 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
         const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
         const precio = await calculateOrderTotal(data, debugComplejidadID)
+        const atributosPrenda = await getAtributosPrenda(data)
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
-
+        
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
             data: {
@@ -55,6 +56,15 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 cotizacionOrden: {
                     create: {
                         precio: precio,
+                    }
+                },
+                detallesPrenda: {
+                    create: {
+                        atributos: {
+                            createMany: {
+                                data: atributosPrenda.map(atr => ({ name: atr.name, observacion: atr.observaciones, cantidad: atr.cantidad }))
+                            }
+                        }
                     }
                 }
             }

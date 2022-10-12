@@ -111,3 +111,18 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
 
     return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))
 }
+
+
+export const getAtributosPrenda = async (orderData: ValidatedOrderSchema) => {
+
+    const atributos = Object.keys(orderData.atributosPrenda).filter(key => orderData.atributosPrenda[key]?.selected === true).map(key => {
+        return {
+            name: key,
+            observaciones: orderData.atributosPrenda[key]?.observaciones as string || '',
+            cantidad: orderData.atributosPrenda[key]?.cantidad as number || 0
+        }
+    })
+
+    return atributos
+
+}

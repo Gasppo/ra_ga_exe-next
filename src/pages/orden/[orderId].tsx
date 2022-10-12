@@ -5,6 +5,7 @@ import PriceCheckerSteps from "@UI/cotizador/Stepper";
 import Footer from "@UI/Generic/Footer";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
+import OrderDetailsTab from '@UI/orden/OrderDetailsTab';
 import OrderFilesTab from '@UI/orden/OrderFilesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
@@ -104,7 +105,7 @@ const Home: NextPage = () => {
                     <div>
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-                            <PageTitle title={orderTitle} hasBack size='medium'/>
+                            <PageTitle title={orderTitle} hasBack size='medium' />
                             <LoadingIndicator show={!!isLoading}>
 
                                 <div className="mt-16 w-full hidden md:flex">
@@ -130,6 +131,7 @@ const Home: NextPage = () => {
                                                 <Tabs value={value} onChange={handleChange} >
                                                     <Tab label="Estado" value={0} />
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
+                                                    {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}
                                                 </Tabs>
                                             </div>
                                             <div hidden={value !== 0} className='w-full'>
@@ -137,6 +139,9 @@ const Home: NextPage = () => {
                                             </div>
                                             <div hidden={value !== 1} className='w-full'>
                                                 <OrderFilesTab orderData={orderData} />
+                                            </div>
+                                            <div hidden={value !== 2} className='w-full'>
+                                                <OrderDetailsTab orderData={orderData} />
                                             </div>
                                         </div>
                                     </div>

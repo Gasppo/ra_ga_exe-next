@@ -2,26 +2,32 @@ import { Paths } from "@UI/Types/nestedObjTypes";
 import { z } from "zod";
 
 export const OrderCreationDataSchema = z.object({
-    bolsillos: z.object({
-        selected: z.boolean(),
-        cantidad: z.number(),
-        observaciones: z.string()
-    }),
-    botones: z.object({
-        selected: z.boolean(),
-        cantidad: z.number(),
-        observaciones: z.string()
-    }),
-    cierre: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
+    atributosPrenda: z.object({
+        bolsillos: z.object({
+            selected: z.boolean(),
+            cantidad: z.number(),
+            observaciones: z.string()
+        }),
+        botones: z.object({
+            selected: z.boolean(),
+            cantidad: z.number(),
+            observaciones: z.string()
+        }),
+        cierre: z.object({
+            selected: z.boolean(),
+            observaciones: z.string()
+        }),
+        elastico: z.object({
+            selected: z.boolean(),
+            cantidad: z.number(),
+            observaciones: z.string()
+        }),
+        manga: z.object({
+            selected: z.boolean(),
+            observaciones: z.string()
+        }),
     }),
     cliente: z.string(),
-    elastico: z.object({
-        selected: z.boolean(),
-        metros: z.number(),
-        observaciones: z.string()
-    }),
     geometral: z.object({
         selected: z.boolean(),
         observaciones: z.string(),
@@ -40,10 +46,7 @@ export const OrderCreationDataSchema = z.object({
             type: z.string()
         }))
     }),
-    manga: z.object({
-        selected: z.boolean(),
-        observaciones: z.string()
-    }),
+
     molderiaBase: z.object({
         selected: z.boolean(),
         observaciones: z.string(),

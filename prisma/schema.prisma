@@ -109,21 +109,23 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id              String            @id @default(cuid())
-    prenda          PrecioPrenda      @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
-    idPrenda        String
-    nombre          String?
-    cantidad        Int?
-    idEstado        Int?
-    estado          EstadoOrden?      @relation(fields: [idEstado], references: [id], onDelete: Cascade)
-    user            User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId          String?
-    createdAt       DateTime          @default(now())
-    updatedAt       DateTime          @default(now())
-    expiresAt       DateTime          @default(now())
-    servicios       Servicio[]
-    archivos        Archivo[]
-    cotizacionOrden CotizacionOrden[]
+    id               String            @id @default(cuid())
+    prenda           PrecioPrenda      @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
+    idPrenda         String
+    nombre           String?
+    cantidad         Int?
+    idEstado         Int?
+    estado           EstadoOrden?      @relation(fields: [idEstado], references: [id], onDelete: Cascade)
+    user             User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId           String?
+    createdAt        DateTime          @default(now())
+    updatedAt        DateTime          @default(now())
+    expiresAt        DateTime          @default(now())
+    servicios        Servicio[]
+    archivos         Archivo[]
+    cotizacionOrden  CotizacionOrden[]
+    detallesPrenda   DetallesPrenda?
+    idDetallesPrenda String?
 }
 
 model CotizacionOrden {
@@ -157,4 +159,20 @@ model Archivo {
     type        String
     Orden       Orden   @relation(fields: [ordenId], references: [id], onDelete: Cascade)
     ordenId     String
+}
+
+model DetallesPrenda {
+    id        String           @id @default(cuid())
+    atributos AtributoPrenda[]
+    orden     Orden            @relation(fields: [ordenId], references: [id], onDelete: Cascade)
+    ordenId   String           @unique
+}
+
+model AtributoPrenda {
+    id               String         @id @default(cuid())
+    name             String
+    cantidad         Int?
+    observacion      String?
+    DetallesPrenda   DetallesPrenda @relation(fields: [detallesPrendaId], references: [id])
+    detallesPrendaId String
 }

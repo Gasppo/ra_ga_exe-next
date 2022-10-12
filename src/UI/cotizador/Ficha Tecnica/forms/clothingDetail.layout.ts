@@ -27,7 +27,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     rules: [
                         { type: 'required', scope: 'logoMarca.selected' }
                     ],
-                    options:{
+                    options: {
                         fileSection: 'logoMarca.files',
                         multifile: true
                     }
@@ -58,7 +58,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             elements: [
                 {
                     type: 'Switch',
-                    scope: 'bolsillos.selected',
+                    scope: 'atributosPrenda.bolsillos.selected',
                     label: "Bolsillos",
                     options: {
                         labelPlacement: 'end'
@@ -70,14 +70,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'bolsillos.cantidad',
+                    scope: 'atributosPrenda.bolsillos.cantidad',
                     label: 'Cantidad',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'bolsillos.selected' }
+                        { type: 'required', scope: 'atributosPrenda.bolsillos.selected' }
                     ],
                     options: {
                         numeric: true
@@ -85,14 +85,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'bolsillos.observaciones',
+                    scope: 'atributosPrenda.bolsillos.observaciones',
                     label: 'Observaciones',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'bolsillos.selected' }
+                        { type: 'required', scope: 'atributosPrenda.bolsillos.selected' }
                     ]
                 },
             ]
@@ -108,7 +108,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             elements: [
                 {
                     type: 'Switch',
-                    scope: 'elastico.selected',
+                    scope: 'atributosPrenda.elastico.selected',
                     label: "Elástico",
                     options: {
                         labelPlacement: 'end'
@@ -120,14 +120,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'elastico.metros',
+                    scope: 'atributosPrenda.elastico.cantidad',
                     label: 'Cantidad',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'elastico.selected' }
+                        { type: 'required', scope: 'atributosPrenda.elastico.selected' }
                     ],
                     options: {
                         numeric: true
@@ -135,14 +135,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'elastico.observaciones',
+                    scope: 'atributosPrenda.elastico.observaciones',
                     label: 'Observaciones',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'elastico.selected' }
+                        { type: 'required', scope: 'atributosPrenda.elastico.selected' }
                     ]
                 },
             ]
@@ -158,7 +158,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             elements: [
                 {
                     type: 'Switch',
-                    scope: 'botones.selected',
+                    scope: 'atributosPrenda.botones.selected',
                     label: "Botones",
                     options: {
                         labelPlacement: 'end'
@@ -170,14 +170,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'botones.cantidad',
+                    scope: 'atributosPrenda.botones.cantidad',
                     label: 'Cantidad',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'botones.selected' }
+                        { type: 'required', scope: 'atributosPrenda.botones.selected' }
                     ],
                     options: {
                         numeric: true
@@ -185,14 +185,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'botones.observaciones',
+                    scope: 'atributosPrenda.botones.observaciones',
                     label: 'Observaciones',
                     width: {
                         xs: 6,
                         sm: 3
                     },
                     rules: [
-                        { type: 'required', scope: 'botones.selected' }
+                        { type: 'required', scope: 'atributosPrenda.botones.selected' }
                     ]
                 },
             ]
@@ -208,26 +208,26 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             elements: [
                 {
                     type: 'Switch',
-                    scope: 'cierre.selected',
+                    scope: 'atributosPrenda.cierre.selected',
                     label: "Cierre",
                     options: {
                         labelPlacement: 'end'
                     },
-                    width:  {
+                    width: {
                         xs: 12,
                         sm: 6
                     }
                 },
                 {
                     type: 'Input',
-                    scope: 'cierre.observaciones',
+                    scope: 'atributosPrenda.cierre.observaciones',
                     label: 'Observaciones',
-                    width:  {
+                    width: {
                         xs: 12,
                         sm: 6
                     },
                     rules: [
-                        { type: 'required', scope: 'cierre.selected' }
+                        { type: 'required', scope: 'atributosPrenda.cierre.selected' }
                     ]
                 },
             ]
@@ -243,7 +243,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             elements: [
                 {
                     type: 'Switch',
-                    scope: 'manga.selected',
+                    scope: 'atributosPrenda.manga.selected',
                     label: "Manga",
                     options: {
                         labelPlacement: 'end'
@@ -255,14 +255,14 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 },
                 {
                     type: 'Input',
-                    scope: 'manga.observaciones',
+                    scope: 'atributosPrenda.manga.observaciones',
                     label: 'Observaciones',
                     width: {
                         xs: 12,
                         sm: 6
                     },
                     rules: [
-                        { type: 'required', scope: 'manga.selected' }
+                        { type: 'required', scope: 'atributosPrenda.manga.selected' }
                     ]
                 },
             ]

@@ -29,6 +29,9 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                         createdAt: 'desc'
                     }
                 },
+                detallesPrenda: {
+                    include: { atributos: true }
+                }
             },
             where: { id: req.body.orderId }
         })

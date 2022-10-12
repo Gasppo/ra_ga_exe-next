@@ -18,7 +18,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { visuallyHidden } from '@mui/utils';
-import { Archivo, ComplejidadConfeccion, CotizacionOrden, EstadoOrden, Orden, PrecioPrenda, TipoPrenda, User } from '@prisma/client';
+import { Archivo, AtributoPrenda, ComplejidadConfeccion, CotizacionOrden, DetallesPrenda, EstadoOrden, Orden, PrecioPrenda, TipoPrenda, User } from '@prisma/client';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -33,7 +33,13 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 }
 
 type Order = 'asc' | 'desc';
-export type ExtendedOrdenData = Orden & { archivos: Archivo[], estado: EstadoOrden, user: User, prenda: PrecioPrenda & { complejidad: ComplejidadConfeccion; tipo: TipoPrenda; }, cotizacionOrden: CotizacionOrden[] }
+export type ExtendedOrdenData = Orden & {
+  archivos: Archivo[],
+  estado: EstadoOrden,
+  user: User, prenda: PrecioPrenda & { complejidad: ComplejidadConfeccion; tipo: TipoPrenda; },
+  cotizacionOrden: CotizacionOrden[],
+  detallesPrenda: DetallesPrenda & { atributos: AtributoPrenda[] }
+}
 
 function getComparator<Key extends keyof any>(
   order: Order,

@@ -12,9 +12,9 @@ export type InputProps<Model> = {
 
 function Input<Model>(props: InputProps<Model>) {
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { layout, parentScope, hasParent, ...textFieldProps } = props
     const isDisabled = useIsDisabled(layout?.rules || [])
-    console.log(parentScope, hasParent)
 
 
     return (<Controller

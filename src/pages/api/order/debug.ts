@@ -3,7 +3,8 @@ import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const post = async (req: NextApiRequest, res: NextApiResponse) => {
-    const debugComplejidadID = 'cl90cx1ak0119pnvh8o2yp3pm'
+    const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })
+
     try {
         const data = OrderCreationDataSchema.parse(req.body);
 

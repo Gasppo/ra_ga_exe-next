@@ -91,6 +91,7 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
     const precioDolar = await getPrecioDolar()
 
     const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, complexityId);
+    console.log('prendaPrecio', prendaPrecio)
 
     const services = await prisma.servicio.findMany({})
 

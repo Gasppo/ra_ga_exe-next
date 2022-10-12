@@ -1,23 +1,23 @@
 import AddIcon from "@mui/icons-material/Add";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from '@mui/icons-material/Launch';
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PostAddIcon from '@mui/icons-material/PostAdd';
 import { Button, Divider, Link, TextField } from "@mui/material";
+import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import PageTitle from "@UI/Generic/Utils/PageTitle";
+import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
+import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
 import { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
-import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
-import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
-import LaunchIcon from '@mui/icons-material/Launch';
-import PageTitle from "@UI/Generic/Utils/PageTitle";
-import PostAddIcon from '@mui/icons-material/PostAdd';
 
 
 const DashboardCliente = () => {
@@ -50,14 +50,14 @@ const DashboardCliente = () => {
         setEditEnabled((prev) => !prev);
     };
 
-    const columns: GridColumns = [
+    const columns: GridColumns = useMemo(() => ([
         { field: 'id', headerName: 'Id', minWidth: 150, flex: 1 },
-        { field: 'cantidad', headerName: 'Cantidad', minWidth: 75, flex: 1 },
         { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
+        { field: 'cantidad', headerName: 'Cantidad', minWidth: 75, flex: 1 },
         { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
         { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },
         { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
-    ];
+    ]), []);
 
     function CustomToolbar() {
         return (
@@ -66,10 +66,6 @@ const DashboardCliente = () => {
             </GridToolbarContainer>
         );
     }
-
-    useEffect(() => {
-        console.log(isFetchingOrders)
-    }, [isFetchingOrders]);
 
     return (
         <div>
@@ -92,7 +88,7 @@ const DashboardCliente = () => {
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
                     <LoadingIndicator show={isFetchingOrders}>
-                        <div style={{ height: 510, width: '100%' }}>
+                        <div className="w-full h-[510px] p-4">
                             <DataGrid
                                 rows={orderData || []}
                                 columns={columns || []}
@@ -100,6 +96,13 @@ const DashboardCliente = () => {
                                     Toolbar: CustomToolbar,
                                 }}
                                 autoPageSize
+                                initialState={{
+                                    columns: {
+                                        columnVisibilityModel: {
+                                            id: false
+                                        }
+                                    }
+                                }}
                             />
                         </div>
                     </LoadingIndicator>

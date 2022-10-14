@@ -17,15 +17,20 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 estado: true,
                 // bring image inside category inside prenda
-                categoria: {
-                    select: {
-                        nombre: true,
-                        Prenda: {
-                            select: {
-                                picture: true
-                            }
-                        }
+                prenda: {
+                    include: {
+                        tipo: true,
+                        complejidad: true,
                     }
+                },
+                archivos: true,
+                cotizacionOrden: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    }
+                },
+                detallesPrenda: {
+                    include: { atributos: true }
                 }
             },
             where: { id: req.body.orderId }

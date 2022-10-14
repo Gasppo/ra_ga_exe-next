@@ -6,12 +6,14 @@ import { LayoutElement } from '../types';
 export type InputProps<Model> = {
     layout: LayoutElement<Model>;
     onBlur?: (value: any, onChange: (value: any) => any) => any;
-    hasParent?: boolean
+    hasParent?: boolean;
+    parentScope?: string
 } & Partial<TextFieldProps>
 
 function Input<Model>(props: InputProps<Model>) {
 
-    const { layout, ...textFieldProps } = props
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { layout, parentScope, hasParent, ...textFieldProps } = props
     const isDisabled = useIsDisabled(layout?.rules || [])
 
 

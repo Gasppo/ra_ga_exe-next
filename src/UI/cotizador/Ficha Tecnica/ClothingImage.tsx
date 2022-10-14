@@ -20,7 +20,7 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
     const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
 
     const fetchPrice = async (data: OrderCreationData): Promise<{ price: number }> => {
-        return await fetch(`/api/order/debug`, {
+        return await fetch(`/api/order/calculate-price`, {
             method: "POST",
             body: JSON.stringify(data),
             headers: {

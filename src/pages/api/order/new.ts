@@ -6,6 +6,7 @@ import { newOrderNotificationHTML } from '@utils/email/newOrderNotification';
 import { checkIfUserExists, fromToday } from '@backend/dbcalls/user';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError } from 'zod';
+import { generateOrderID } from '@utils/generateOrderID';
 
 const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -14,6 +15,9 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
     try {
         const data = OrderCreationDataSchema.parse(req.body);
         const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })
+
+
+        const idOrden = generateOrderID(data)
 
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -28,10 +32,11 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
         const precio = await calculateOrderTotal(data, debugComplejidadID)
         const atributosPrenda = await getAtributosPrenda(data)
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
-        
+
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
             data: {
+                id: idOrden,
                 nombre: `${prendaPrecio.tipo.name} ${prendaPrecio.complejidad.name}`,
                 cantidad: 100,
                 expiresAt: fromToday(60 * 60 * 24 * 15),

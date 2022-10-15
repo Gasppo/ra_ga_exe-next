@@ -6,6 +6,7 @@ import FichaTecnicaControls from "@UI/cotizador/Ficha Tecnica/FichaTecnicaContro
 import HookForm from "@UI/Forms/HookForm";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import { Paths } from "@UI/Types/nestedObjTypes";
+import { generateOrderID } from "@utils/generateOrderID";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -64,21 +65,21 @@ const Home: NextPage = () => {
 
 
     const handleFormSubmit = async (data: OrderCreationData) => {
+
+        const orderID = generateOrderID(data)
         if (data?.files?.length > 0) {
-            const uploadedFiles = await (await handleUploadFile(data.files)).data
+            const uploadedFiles = await (await handleUploadFile(data.files, orderID)).data
             const mapKeys = data.files.reduce((prev, currStep) => ({ ...prev, [currStep.file.name]: currStep.section }), {})
             Array.isArray(uploadedFiles) ?
                 uploadedFiles.forEach(file => updateFileURL(data, file, mapKeys)) :
                 updateFileURL(data, uploadedFiles, mapKeys)
         }
-        console.log(data)
         await createOrderMutation(data)
 
     }
 
-    const handleUploadFile = async (file: { file: File, section: Paths<OrderCreationData> }[]) => {
+    const handleUploadFile = async (file: { file: File, section: Paths<OrderCreationData> }[], orderID: string) => {
         const folderName = sessionData?.user.name || 'Sin Asignar'
-        const orderID = `ID-${Math.random() * 100}`;
         const formData = new FormData()
         for (const f of file) {
             formData.append('file', f.file)

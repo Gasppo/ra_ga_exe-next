@@ -82,7 +82,6 @@ const Home: NextPage = () => {
     
     const {data:stateNames,} = useQuery(['states'],fetchStateNames,{
         onError: () => console.log("Error al traer los estados"),
-        onSuccess: (data) => console.log("STATENAMES: ", data),
         refetchOnWindowFocus: false,
         initialData: []
     });
@@ -127,7 +126,7 @@ const Home: NextPage = () => {
                             <LoadingIndicator show={!!isLoading}>
 
                                 <div className="mt-16 w-full hidden md:flex">
-                                    <PriceCheckerSteps step={orderData.estado.id} price={price} isStepOptional={isStepOptional} steps={names} />
+                                    <PriceCheckerSteps step={orderData?.estado?.id} price={price} isStepOptional={isStepOptional} steps={names} />
                                    
                                 </div>
 

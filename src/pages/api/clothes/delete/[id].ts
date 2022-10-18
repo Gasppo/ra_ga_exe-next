@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+const del = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const { id } = req.query;
 
@@ -39,4 +39,4 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default get;
+export default del;

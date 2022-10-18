@@ -6,13 +6,16 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import * as React from 'react';
+import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
+import { errorHandle } from '@utils/queries/cotizador';
+import { forwardRef, ReactElement, Ref, useContext } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
-const Transition = React.forwardRef(function Transition(
+const Transition = forwardRef(function Transition(
     props: TransitionProps & {
-        children: React.ReactElement<any, any>;
+        children: ReactElement<any, any>;
     },
-    ref: React.Ref<unknown>,
+    ref: Ref<unknown>,
 ) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -20,18 +23,26 @@ const Transition = React.forwardRef(function Transition(
 interface ConfirmDialogProps {
     open: boolean,
     onClose: () => void,
-    onDeleteConfirm: (data: { orderState: number }) => void
     idToDelete: string
 }
 
 export default function DeleteCategoryDialog(props: ConfirmDialogProps) {
 
+    const queryClient = useQueryClient()
+    const { addError } = useContext(ErrorHandlerContext)
+    const { mutateAsync } = useMutation((id: string) => fetch('/api/clothes/delete/' + id).then(res => res.ok ? res.json() : errorHandle(res))
+        .catch((error) => { throw error }), {
+        onSuccess: () => queryClient.invalidateQueries(['clothes']),
+        onError: (error) => addError(JSON.stringify(error))
+    })
+
+
     const handleClose = () => {
         props.onClose()
     };
 
-    const onSubmit = () => {
-        console.log('deleted nashe')
+    const onSubmit = async () => {
+        await mutateAsync(props.idToDelete)
         props.onClose()
     }
 

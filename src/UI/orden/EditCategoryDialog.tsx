@@ -57,7 +57,7 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
     }
 
     const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrenda, ErrorMessage>(
-        ['clothingAndPriceData'], () => getClothingAndPrices('cl9d13a9t15665wwaiozxdddm'), {
+        ['clothingAndPriceData'], () => getClothingAndPrices(props.idToShow), {
         refetchOnWindowFocus: false,
         onSuccess: () => { console.log('se mando re nashe: ', clothingAndPriceData) },
         onError: (error: any) => addError(error)

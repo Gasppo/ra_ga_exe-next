@@ -1,5 +1,9 @@
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
+import DeleteIcon from '@mui/icons-material/Delete'
+import EditIcon from '@mui/icons-material/Edit'
 import { Button } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import { DataGrid, GridColumns } from '@mui/x-data-grid'
 import { TipoPrenda } from '@prisma/client'
 import DeleteCategoryDialog from '@UI/preciosBase/DeleteCategoryDialog'
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error'
@@ -9,9 +13,6 @@ import { useContext, useState } from 'react'
 import { useIsMutating, useQuery } from 'react-query'
 import AddNewCategoryDialog from './AddNewCategoryDialog'
 import EditCategoryDialog from './EditCategoryDialog'
-import NewClothesListItem from './NewClothesListItem'
-
-
 const NewClothesTab = () => {
 
     const isMutating = !!useIsMutating()
@@ -56,22 +57,50 @@ const NewClothesTab = () => {
     }
 
 
+    const TableActions = (item: TipoPrenda) => (
+        <div className='flex flex-row space-x-4'>
+            <div>
+                <IconButton type='button' onClick={() => handleEditCategoryDialog(item.id)}>
+                    <EditIcon color='primary' />
+                </IconButton>
+            </div>
+            <div >
+                <IconButton type='button' onClick={() => handleDeleteCategoryDialog(item.id)} >
+                    <DeleteIcon />
+                </IconButton>
+            </div>
+
+        </div>
+    )
+
+
+    const columns: GridColumns<TipoPrenda> = [
+        { field: 'name', headerName: 'Nombre', minWidth: 150, flex: 1 },
+        { field: ' ', headerName: 'Acciones', renderCell: (params) => TableActions(params.row), filterable: false, sortable: false, align: 'center', headerAlign: 'center', maxWidth: 200, flex: 1 }
+    ]
+
+
     return (
         <LoadingIndicator show={isFetchingClothesData || isMutating}>
             <AddNewCategoryDialog onClose={handleCloseNewCategoryConfirmDialog} open={confirmNewClothingOpen} />
             <EditCategoryDialog onClose={handleCloseEditCategoryDialog} open={confirmEditPricesOpen} idToShow={focusedItem} />
             <DeleteCategoryDialog onClose={handleCloseDeleteCategoryDialog} open={confirmDeleteClothingOpen} idToDelete={focusedItem} />
-            <div className="flex justify-center items-center text-4xl font-bold mt-5">
+            <div className="flex justify-center items-center text-4xl font-bold mt-5 text-gray-700">
                 Prendas actuales
             </div>
-            <div className="mt-6">
-                {clothesData?.map((item) => <NewClothesListItem
-                    item={item}
-                    key={item.id}
-                    onDelete={handleDeleteCategoryDialog}
-                    onEdit={handleEditCategoryDialog}
+            <div className="mt-6 h-[400px] ">
+                <DataGrid
+                    rows={clothesData || []}
+                    columns={columns || []}
+                    autoPageSize
+                    initialState={{
+                        columns: {
+                            columnVisibilityModel: {
+                                id: false
+                            }
+                        }
+                    }}
                 />
-                )}
             </div>
             <div className="flex items-center justify-center mt-4">
                 <Button variant="outlined" endIcon={<ControlPointIcon />} onClick={handleOpenNewCategoryDialog}>

@@ -38,7 +38,7 @@ const Home: NextPage = () => {
                             <PageTitle title="Precios base" hasBack />
 
                             <div className="flex items-center justify-center">
-                                <div className="w-8/12 mt-16 border-2 shadow-2xl">
+                                <div className="w-full md:w-8/12 mt-16 border-2 shadow-2xl">
                                     <div className='border-b-2'>
                                         <Tabs
                                             orientation="horizontal"
@@ -48,9 +48,9 @@ const Home: NextPage = () => {
                                             aria-label="Vertical tabs example"
                                             sx={{ borderRight: 1, borderColor: 'divider' }}
                                         >
-                                            <Tab label="Prendas" {...a11yProps(0)} />
-                                            <Tab label="Complejidades" {...a11yProps(1)} />
-                                            <Tab label="Precios Base" {...a11yProps(2)} />
+                                            <Tab label="Prendas" style={{fontSize: 12}} {...a11yProps(0)} />
+                                            <Tab label="Complejidades" style={{fontSize: 12}} {...a11yProps(1)} />
+                                            <Tab label="Precios Base" style={{fontSize: 12}} {...a11yProps(2)} />
                                         </Tabs>
                                     </div>
                                     <div className="m-auto flex justify-center items-center">

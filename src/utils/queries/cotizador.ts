@@ -34,7 +34,6 @@ export const getClothes = (): Promise<TipoPrenda[]> => fetch('/api/clothes/obtai
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
-
 // Agregar nueva prenda
 export const addClothes = (data: TipoPrenda): Promise<TipoPrenda> => fetch('/api/clothes/new', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
@@ -44,6 +43,11 @@ export const addClothes = (data: TipoPrenda): Promise<TipoPrenda> => fetch('/api
 
 // Obtener precios de una prenda
 export const getClothingAndPrices = (id: string): Promise<TipoPrendaExtended> => fetch(`/api/clothes/obtain/${id}`)
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
+// Obtener precios de una prenda
+export const getSinglePrice = (id: string): Promise<PrecioPrendaExtended> => fetch(`/api/clothes/singlePrice/obtain/${id}`)
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 

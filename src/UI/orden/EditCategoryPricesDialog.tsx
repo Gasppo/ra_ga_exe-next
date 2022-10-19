@@ -1,3 +1,5 @@
+import { ModifyClothingPriceSchema } from '@backend/schemas/ModifyClothingPriceSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -5,13 +7,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { TipoPrenda } from '@prisma/client';
 import FormItem from '@UI/Forms/FormItem';
 import HookForm from '@UI/Forms/HookForm';
-import { editCategoryLayout } from '@UI/preciosBase/forms/editCategory.layout';
+import { editCategoryPriceLayout } from '@UI/preciosBase/forms/editCategoryPrice.layout';
+
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { ErrorMessage, getClothingAndPrices } from '@utils/queries/cotizador';
+import { ErrorMessage, getSinglePrice, PrecioPrendaExtended } from '@utils/queries/cotizador';
 import * as React from 'react';
 import { useQuery } from 'react-query';
 
@@ -31,18 +33,6 @@ interface ConfirmDialogProps {
     idToShow: string
 }
 
-export interface ClothingAndPrices {
-    id: string,
-    name: string,
-    picture: string,
-    precioBasico: number,
-    precioMedio: number,
-    precioComplejo: number,
-    precioMuyComplejo: number,
-    precioUltraComplejo: number,
-    precioExtremadamenteComplejo: number,
-}
-
 export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
 
     const { addError } = React.useContext(ErrorHandlerContext)
@@ -52,15 +42,23 @@ export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
         props.onClose()
     };
 
-    const handleNewClothingSubmit = (data: ClothingAndPrices) => {
-        console.log('submit del edit es: ' + data)
+    const handleNewClothingSubmit = (data: PrecioPrendaExtended) => {
+        console.log('submit del edit nashe es: ' + JSON.stringify(data))
     }
 
-    const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrenda, ErrorMessage>(
-        ['clothingAndPriceData'], () => getClothingAndPrices(props.idToShow), {
+    const placeHolderData: PrecioPrendaExtended = {
+        id: '',
+        precioBase: 0,
+        complejidad: { name: '' },
+        tipo: { name: '' }
+    }
+
+    const { data: singleClothingPriceData, isFetching: isFetchingSingleClothingPriceData } = useQuery<PrecioPrendaExtended, ErrorMessage>(
+        ['singlePriceData', props.idToShow], () => getSinglePrice(props.idToShow), {
         refetchOnWindowFocus: false,
-        onSuccess: () => { console.log('se mando impresionante: ', clothingAndPriceData) },
-        onError: (error: any) => addError(error)
+        onSuccess: () => { console.log('se mando impresionante: ', singleClothingPriceData) },
+        onError: (error: any) => addError(error),
+        initialData: placeHolderData
     });
 
     return (
@@ -73,12 +71,12 @@ export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
                 fullWidth={true}
             >
                 <div className="p-4">
-                    <DialogTitle>{"Creación nueva prenda"}</DialogTitle>
-                    <LoadingIndicator show={isFetchingClothingAndPriceData} >
-                        {clothingAndPriceData &&
-                            <HookForm defaultValues={clothingAndPriceData} onSubmit={handleNewClothingSubmit} >
+                    <DialogTitle>{("Modificación precio " + singleClothingPriceData.tipo.name + ' ' + singleClothingPriceData.complejidad.name) || ''}</DialogTitle>
+                    <LoadingIndicator show={isFetchingSingleClothingPriceData} >
+                        {!isFetchingSingleClothingPriceData &&
+                            <HookForm defaultValues={singleClothingPriceData} onSubmit={handleNewClothingSubmit} formOptions={{ resolver: zodResolver(ModifyClothingPriceSchema) }} >
                                 <DialogContent className='space-y-5'>
-                                    <FormItem layout={editCategoryLayout} />
+                                    <FormItem layout={editCategoryPriceLayout} />
                                 </DialogContent>
                                 <DialogActions>
                                     <Button type='button' onClick={handleClose}>Cancelar</Button>

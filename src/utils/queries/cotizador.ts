@@ -34,10 +34,15 @@ export const addClothes = (data: TipoPrenda): Promise<TipoPrenda> => fetch('/api
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+// Obtener precios de una prenda
 export const getClothingAndPrices = (id: string): Promise<TipoPrendaExtended> => fetch(`/api/clothes/obtain/${id}`)
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+// Obtener todas las prendas con sus precios
+export const getAllClothesPrices = (): Promise<TipoPrendaExtended[]> => fetch('/api/clothes/obtainPrices')
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
 
 // Modificar prenda
 export const modifyClothes = (data: TipoPrendaExtended): Promise<TipoPrenda> => fetch(

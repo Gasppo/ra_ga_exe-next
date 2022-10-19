@@ -1,5 +1,6 @@
 import { Slide, Tab, Tabs } from "@mui/material";
 import HeaderBar from "@UI/Generic/HeaderBar";
+import BasePricesTab from "@UI/preciosBase/BasePricesTab";
 import ComplexitiesTab from "@UI/preciosBase/ComplexitiesTab";
 import NewClothesTab from '@UI/preciosBase/NewClothesTab';
 import type { GetServerSideProps, NextPage } from "next";
@@ -48,9 +49,9 @@ const Home: NextPage = () => {
                                             aria-label="Vertical tabs example"
                                             sx={{ borderRight: 1, borderColor: 'divider' }}
                                         >
-                                            <Tab label="Prendas" style={{fontSize: 12}} {...a11yProps(0)} />
-                                            <Tab label="Complejidades" style={{fontSize: 12}} {...a11yProps(1)} />
-                                            <Tab label="Precios Base" style={{fontSize: 12}} {...a11yProps(2)} />
+                                            <Tab label="Prendas" style={{ fontSize: 12 }} {...a11yProps(0)} />
+                                            <Tab label="Complejidades" style={{ fontSize: 12 }} {...a11yProps(1)} />
+                                            <Tab label="Precios Base" style={{ fontSize: 12 }} {...a11yProps(2)} />
                                         </Tabs>
                                     </div>
                                     <div className="m-auto flex justify-center items-center">
@@ -62,7 +63,7 @@ const Home: NextPage = () => {
                                             <ComplexitiesTab />
                                         </div>
                                         <div hidden={value !== 2} className='w-full mb-10'>
-                                            Tab 3
+                                            <BasePricesTab />
                                         </div>
                                     </div>
                                 </div>

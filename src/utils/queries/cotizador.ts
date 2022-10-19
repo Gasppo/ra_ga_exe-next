@@ -18,6 +18,14 @@ export type TipoPrendaExtended = {
         };
     }[];
 }
+
+export type PrecioPrendaExtended = {
+    id: string,
+    precioBase: number;
+    complejidad: { name: string };
+    tipo: { name: string }
+}
+
 export const errorHandle = (res: Response) => res.json().then(json => Promise.reject(json))
 
 
@@ -40,7 +48,7 @@ export const getClothingAndPrices = (id: string): Promise<TipoPrendaExtended> =>
     .catch((error) => { throw error });
 
 // Obtener todas las prendas con sus precios
-export const getAllClothesPrices = (): Promise<TipoPrendaExtended[]> => fetch('/api/clothes/obtainPrices')
+export const getAllClothesPrices = (): Promise<PrecioPrendaExtended[]> => fetch('/api/clothes/obtainPrices')
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 

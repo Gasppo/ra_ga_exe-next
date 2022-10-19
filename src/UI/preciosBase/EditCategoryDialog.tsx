@@ -72,7 +72,11 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
 
 
     const { mutateAsync } = useMutation(modifyClothes, {
-        onSuccess: () => queryClient.invalidateQueries(['clothes']),
+        onSuccess: () => {
+            addError('Prenda cambiada exitosamente', 'success')
+            queryClient.invalidateQueries(['clothesAndPrices'])
+            queryClient.invalidateQueries(['clothes'])
+        },
         onError: (error) => addError(JSON.stringify(error))
     })
 

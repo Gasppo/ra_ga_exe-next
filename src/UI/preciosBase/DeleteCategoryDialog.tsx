@@ -32,7 +32,11 @@ export default function DeleteCategoryDialog(props: ConfirmDialogProps) {
     const { addError } = useContext(ErrorHandlerContext)
     const { mutateAsync } = useMutation((id: string) => fetch('/api/clothes/delete/' + id).then(res => res.ok ? res.json() : errorHandle(res))
         .catch((error) => { throw error }), {
-        onSuccess: () => queryClient.invalidateQueries(['clothes']),
+        onSuccess: () => {
+            addError('Prenda eliminada correctamente', 'success')
+            queryClient.invalidateQueries(['clothesAndPrices'])
+            queryClient.invalidateQueries(['clothes'])
+        },
         onError: (error) => addError(JSON.stringify(error))
     })
 

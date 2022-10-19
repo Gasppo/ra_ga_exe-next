@@ -42,6 +42,7 @@ export default function AddNewCategoryDialog(props: ConfirmDialogProps) {
     const { mutateAsync: createPrendaMutation } = useMutation(addClothes, {
         onSuccess: () => {
             router.replace('/preciosBase')
+            queryClient.invalidateQueries(['clothesAndPrices'])
             queryClient.invalidateQueries(['clothes'])
         },
         onError: (error) => addError(JSON.stringify(error))

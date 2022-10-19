@@ -85,10 +85,10 @@ const NewClothesTab = () => {
             <AddNewCategoryDialog onClose={handleCloseNewCategoryConfirmDialog} open={confirmNewClothingOpen} />
             <EditCategoryDialog onClose={handleCloseEditCategoryDialog} open={confirmEditPricesOpen} idToShow={focusedItem} />
             <DeleteCategoryDialog onClose={handleCloseDeleteCategoryDialog} open={confirmDeleteClothingOpen} idToDelete={focusedItem} />
-            <div className="flex justify-center items-center text-4xl font-bold mt-5 text-gray-700">
-                Prendas actuales
+            <div className="flex justify-center items-center text-4xl font-bold mt-5 mb-10 text-gray-700">
+                Prendas Actuales
             </div>
-            <div className="mt-6 h-[400px] ">
+            <div className="h-[510px] ">
                 <DataGrid
                     rows={clothesData || []}
                     columns={columns || []}
@@ -100,6 +100,7 @@ const NewClothesTab = () => {
                             }
                         }
                     }}
+                    pageSize={7}
                 />
             </div>
             <div className="flex items-center justify-center mt-4">

@@ -1,13 +1,13 @@
 // src/pages/api/examples.ts
 import type { NextApiRequest, NextApiResponse } from "next";
+import { NewClothingCategorySchema } from "@backend/schemas/NewClothingCategorySchema";
 import { prisma } from '@server/db/client';
 
 
 const nuevaPrenda = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
-        const { name: categoryName, picture: pictureLink } = req.body;
-        const { precioBasico, precioMedio, precioComplejo, precioMuyComplejo, precioUltraComplejo, precioExtremadamenteComplejo } = req.body;
+        const { name: categoryName, picture: pictureLink, precioBasico, precioMedio, precioComplejo, precioMuyComplejo, precioUltraComplejo, precioExtremadamenteComplejo } = NewClothingCategorySchema.parse(req.body);
 
         const [precioBasicoObj, precioMedioObj, precioComplejoObj, precioMuyComplejoObj, precioUltraComplejoObj, precioExtremadamenteComplejoObj] = await prisma.complejidadConfeccion.findMany({
             where: {

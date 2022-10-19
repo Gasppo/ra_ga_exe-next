@@ -34,32 +34,31 @@ export interface ClothingAndPrices {
     id: string,
     name: string,
     picture: string,
-    precios: {
-        precioBase: number,
-        complejidad: {
-            name: string
-        }
-    }[]
+    precioBasico: number,
+    precioMedio: number,
+    precioComplejo: number,
+    precioMuyComplejo: number,
+    precioUltraComplejo: number,
+    precioExtremadamenteComplejo: number,
 }
-
-
 
 export default function EditCategoryDialog(props: ConfirmDialogProps) {
 
     const { addError } = React.useContext(ErrorHandlerContext)
+
 
     const handleClose = () => {
         props.onClose()
     };
 
     const handleNewClothingSubmit = (data: ClothingAndPrices) => {
-        console.log(data)
+        console.log('submit del edit es: ' + data)
     }
 
     const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrenda, ErrorMessage>(
         ['clothingAndPriceData'], () => getClothingAndPrices(props.idToShow), {
         refetchOnWindowFocus: false,
-        onSuccess: () => { console.log('se mando re nashe: ', clothingAndPriceData) },
+        onSuccess: () => { console.log('se mando impresionante: ', clothingAndPriceData) },
         onError: (error: any) => addError(error)
     });
 
@@ -75,15 +74,17 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
                 <div className="p-4">
                     <DialogTitle>{"Creación nueva prenda"}</DialogTitle>
                     <LoadingIndicator show={isFetchingClothingAndPriceData} >
-                        <HookForm defaultValues={clothingAndPriceData} onSubmit={handleNewClothingSubmit} >
-                            <DialogContent className='space-y-5'>
-                                <FormItem layout={editCategoryLayout} />
-                            </DialogContent>
-                            <DialogActions>
-                                <Button type='button' onClick={handleClose}>Cancelar</Button>
-                                <Button type="submit">Confirmar</Button>
-                            </DialogActions>
-                        </HookForm>
+                        {clothingAndPriceData &&
+                            <HookForm defaultValues={clothingAndPriceData} onSubmit={handleNewClothingSubmit} >
+                                <DialogContent className='space-y-5'>
+                                    <FormItem layout={editCategoryLayout} />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button type='button' onClick={handleClose}>Cancelar</Button>
+                                    <Button type="submit">Confirmar</Button>
+                                </DialogActions>
+                            </HookForm>
+                        }
                     </LoadingIndicator>
                 </div>
             </Dialog >

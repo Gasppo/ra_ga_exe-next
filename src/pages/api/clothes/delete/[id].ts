@@ -10,7 +10,6 @@ const del = async (req: NextApiRequest, res: NextApiResponse) => {
     const clothesId = Array.isArray(id) ? id[0] : id;
 
     try {
-        /* delete the clothing based on id and all the prices attached to it */
         const deletedClothing = await prisma.tipoPrenda.delete({
             where: {
                 id: clothesId

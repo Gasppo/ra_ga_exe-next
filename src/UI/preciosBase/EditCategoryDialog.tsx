@@ -45,7 +45,6 @@ export interface ClothingAndPrices {
 }
 
 export default function EditCategoryDialog(props: ConfirmDialogProps) {
-
     const { addError } = React.useContext(ErrorHandlerContext)
 
     const queryClient = useQueryClient()
@@ -81,6 +80,7 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
     })
 
     const handleNewClothingSubmit = async (data: TipoPrendaExtended) => {
+        console.log(data)
         await mutateAsync(data)
         props.onClose()
     }

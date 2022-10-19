@@ -56,6 +56,7 @@ export const getAllClothesPrices = (): Promise<PrecioPrendaExtended[]> => fetch(
 export const modifyClothes = (data: TipoPrendaExtended): Promise<TipoPrenda> => fetch(
     `/api/clothes/modify/${data.id}`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        id: data.id,
         name: data.name,
         picture: data.picture,
     })

@@ -1,3 +1,6 @@
+import { ModifyClothingCategorySchema } from '@backend/schemas/ModifyClothingCategorySchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Skeleton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -5,14 +8,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
-import { TipoPrenda } from '@prisma/client';
 import FormItem from '@UI/Forms/FormItem';
 import HookForm from '@UI/Forms/HookForm';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { ErrorMessage, getClothingAndPrices } from '@utils/queries/cotizador';
+import { ErrorMessage, getClothingAndPrices, modifyClothes, TipoPrendaExtended } from '@utils/queries/cotizador';
 import * as React from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { editCategoryLayout } from './forms/editCategory.layout';
 
 const Transition = React.forwardRef(function Transition(
@@ -46,21 +48,38 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
 
     const { addError } = React.useContext(ErrorHandlerContext)
 
+    const queryClient = useQueryClient()
+
+    const placeHolderData: TipoPrendaExtended = {
+        id: '',
+        name: '',
+        picture: '',
+        precios: []
+    }
 
     const handleClose = () => {
         props.onClose()
     };
 
-    const handleNewClothingSubmit = (data: ClothingAndPrices) => {
-        console.log('submit del edit es: ' + data)
-    }
 
-    const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrenda, ErrorMessage>(
-        ['clothingAndPriceData'], () => getClothingAndPrices(props.idToShow), {
+    const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrendaExtended, ErrorMessage>(
+        ['clothingAndPriceData', props.idToShow], () => getClothingAndPrices(props.idToShow), {
         refetchOnWindowFocus: false,
         onSuccess: () => { console.log('se mando impresionante: ', clothingAndPriceData) },
-        onError: (error: any) => addError(error)
+        onError: (error: any) => addError(error),
+        placeholderData: placeHolderData
     });
+
+
+    const { mutateAsync } = useMutation(modifyClothes, {
+        onSuccess: () => queryClient.invalidateQueries(['clothes']),
+        onError: (error) => addError(JSON.stringify(error))
+    })
+
+    const handleNewClothingSubmit = async (data: TipoPrendaExtended) => {
+        await mutateAsync(data)
+        props.onClose()
+    }
 
     return (
         <div>
@@ -72,10 +91,10 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
                 fullWidth={true}
             >
                 <div className="p-4">
-                    <DialogTitle>{"Creación nueva prenda"}</DialogTitle>
+                    <DialogTitle>{"Modificar Prenda"}</DialogTitle>
                     <LoadingIndicator show={isFetchingClothingAndPriceData} >
-                        {clothingAndPriceData &&
-                            <HookForm defaultValues={clothingAndPriceData} onSubmit={handleNewClothingSubmit} >
+                        {!isFetchingClothingAndPriceData &&
+                            <HookForm defaultValues={clothingAndPriceData} onSubmit={handleNewClothingSubmit} formOptions={{ resolver: zodResolver(ModifyClothingCategorySchema) }} >
                                 <DialogContent className='space-y-5'>
                                     <FormItem layout={editCategoryLayout} />
                                 </DialogContent>
@@ -84,6 +103,12 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
                                     <Button type="submit">Confirmar</Button>
                                 </DialogActions>
                             </HookForm>
+                        }
+                        {isFetchingClothingAndPriceData &&
+                            <div className='h-56 flex flex-col items-center'>
+                                <Skeleton width={'90%'} height={'80px'} />
+                                <Skeleton width={'90%'} height={'80px'} />
+                            </div>
                         }
                     </LoadingIndicator>
                 </div>

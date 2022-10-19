@@ -12,7 +12,7 @@ import { addClothes } from '@utils/queries/cotizador';
 import { useRouter } from "next/router";
 import * as React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { newCategoryLayout } from './forms/newCategory.layout';
+import { newCategoryLayout } from '../preciosBase/forms/newCategory.layout';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {

@@ -7,7 +7,17 @@ import { TipoPrenda } from "@prisma/client";
 export type FileUploadData = { clientName: string, orderID: string, formData: FormData }
 export type DriveUploadResponse = { data: FileUploadResponse | FileUploadResponse[] }
 export type ErrorMessage = { error: string }
-
+export type TipoPrendaExtended = {
+    id: string;
+    picture: string;
+    name: string;
+    precios: {
+        precioBase: number;
+        complejidad: {
+            name: string;
+        };
+    }[];
+}
 export const errorHandle = (res: Response) => res.json().then(json => Promise.reject(json))
 
 
@@ -16,6 +26,7 @@ export const getClothes = (): Promise<TipoPrenda[]> => fetch('/api/clothes/obtai
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+
 // Agregar nueva prenda
 export const addClothes = (data: TipoPrenda): Promise<TipoPrenda> => fetch('/api/clothes/new', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
@@ -23,24 +34,39 @@ export const addClothes = (data: TipoPrenda): Promise<TipoPrenda> => fetch('/api
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
-export const getClothingAndPrices = (id: string): Promise<TipoPrenda> => fetch(`/api/clothes/obtain/${id}`)
+export const getClothingAndPrices = (id: string): Promise<TipoPrendaExtended> => fetch(`/api/clothes/obtain/${id}`)
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
+
+
+// Modificar prenda
+export const modifyClothes = (data: TipoPrendaExtended): Promise<TipoPrenda> => fetch(
+    `/api/clothes/modify/${data.id}`, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({
+        name: data.name,
+        picture: data.picture,
+    })
+}).then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
 
 // Obtener lista de complejidades
 export const getComplexity = () => fetch('/api/complexity/obtain')
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+
 // Cargar archivos a Google Drive
 export const uploadFile = (data: FileUploadData): Promise<DriveUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { console.log('Broke here'); throw error });
 
+
 // Crear orden
 export const createOrder = (data: OrderCreationData): Promise<{ message: string }> => fetch(`/api/order/new`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
+
 
 
 export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse, mapKeys: { [key: string]: string }) => {

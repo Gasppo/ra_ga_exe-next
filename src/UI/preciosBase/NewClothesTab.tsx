@@ -1,14 +1,14 @@
 import ControlPointIcon from '@mui/icons-material/ControlPoint'
 import { Button } from '@mui/material'
 import { TipoPrenda } from '@prisma/client'
-import AddNewCategoryDialog from '@UI/orden/AddNewCategoryDialog'
-import DeleteCategoryDialog from '@UI/orden/DeleteCategoryDialog'
-import EditCategoryDialog from '@UI/orden/EditCategoryDialog'
+import DeleteCategoryDialog from '@UI/preciosBase/DeleteCategoryDialog'
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error'
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator'
 import { ErrorMessage, getClothes } from '@utils/queries/cotizador'
 import { useContext, useState } from 'react'
 import { useIsMutating, useQuery } from 'react-query'
+import AddNewCategoryDialog from './AddNewCategoryDialog'
+import EditCategoryDialog from './EditCategoryDialog'
 import NewClothesListItem from './NewClothesListItem'
 
 

@@ -56,7 +56,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     role          Role?        @relation(fields: [roleId], references: [id], onDelete: Cascade)
-    roleId        String?      @default("cl79gksfz0015nrvhrqpdy8ya")
+    roleId        Int?         @default(1)
     password      String?
     ResetToken    ResetToken[]
     orders        Orden[]
@@ -71,7 +71,7 @@ model VerificationToken {
 }
 
 model Role {
-    id          String @id @default(cuid())
+    id          Int    @id
     name        String @unique
     description String
     users       User[]

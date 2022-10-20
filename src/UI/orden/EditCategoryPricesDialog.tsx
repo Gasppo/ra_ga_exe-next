@@ -10,12 +10,11 @@ import { TransitionProps } from '@mui/material/transitions';
 import FormItem from '@UI/Forms/FormItem';
 import HookForm from '@UI/Forms/HookForm';
 import { editCategoryPriceLayout } from '@UI/preciosBase/forms/editCategoryPrice.layout';
-
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { ErrorMessage, getSinglePrice, PrecioPrendaExtended } from '@utils/queries/cotizador';
+import { ErrorMessage, getSinglePrice, modifySinglePrice, PrecioPrendaExtended } from '@utils/queries/cotizador';
 import * as React from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 
 const Transition = React.forwardRef(function Transition(
@@ -37,13 +36,15 @@ export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
 
     const { addError } = React.useContext(ErrorHandlerContext)
 
+    const queryClient = useQueryClient()
 
     const handleClose = () => {
         props.onClose()
     };
 
-    const handleNewClothingSubmit = (data: PrecioPrendaExtended) => {
-        console.log('submit del edit nashe es: ' + JSON.stringify(data))
+    const handleNewClothingSubmit = async (data: PrecioPrendaExtended) => {
+        await modifyPriceMutation(data)
+        props.onClose()
     }
 
     const placeHolderData: PrecioPrendaExtended = {
@@ -54,12 +55,21 @@ export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
     }
 
     const { data: singleClothingPriceData, isFetching: isFetchingSingleClothingPriceData } = useQuery<PrecioPrendaExtended, ErrorMessage>(
-        ['singlePriceData', props.idToShow], () => getSinglePrice(props.idToShow), {
+        ['singlePriceData', props.idToShow], () => props.idToShow ? getSinglePrice(props.idToShow) : placeHolderData, {
         refetchOnWindowFocus: false,
-        onSuccess: () => { console.log('se mando impresionante: ', singleClothingPriceData) },
+        onSuccess: () => { console.log('se mando impresionanteee: ', singleClothingPriceData) },
         onError: (error: any) => addError(error),
         initialData: placeHolderData
     });
+
+    const { mutateAsync: modifyPriceMutation } = useMutation<PrecioPrendaExtended, ErrorMessage, PrecioPrendaExtended>(
+        (data) => modifySinglePrice(data), {
+        onSuccess: () => {
+            addError('Precio modificado exitosamente', 'success')
+            queryClient.invalidateQueries('singlePriceData')
+            queryClient.invalidateQueries('clothesAndPrices')
+        }
+    })
 
     return (
         <div>

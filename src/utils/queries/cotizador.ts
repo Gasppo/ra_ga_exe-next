@@ -51,6 +51,13 @@ export const getSinglePrice = (id: string): Promise<PrecioPrendaExtended> => fet
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+// Modificar el precioBase de una prenda
+export const modifySinglePrice = (data: PrecioPrendaExtended): Promise<PrecioPrendaExtended> => fetch(`/api/clothes/singlePrice/modify/${data.id}`, {
+    method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
 // Obtener todas las prendas con sus precios
 export const getAllClothesPrices = (): Promise<PrecioPrendaExtended[]> => fetch('/api/clothes/obtainPrices')
     .then(res => res.ok ? res.json() : errorHandle(res))

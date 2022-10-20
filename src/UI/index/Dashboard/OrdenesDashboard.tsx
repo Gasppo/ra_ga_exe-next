@@ -9,7 +9,7 @@ import { errorHandle } from '@utils/queries/cotizador';
 import { useSession } from 'next-auth/react';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
-import { ExtendedOrdenData } from '../../../utils/Examples/BasicOrderTable';
+import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import PageTitle from '../../Generic/Utils/PageTitle';
 
 const UsuariosDashboard = () => {

@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
-import { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
+import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";

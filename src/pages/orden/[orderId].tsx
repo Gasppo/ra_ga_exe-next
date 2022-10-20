@@ -10,7 +10,7 @@ import OrderFilesTab from '@UI/orden/OrderFilesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
-import { ExtendedOrdenData } from "@utils/Examples/BasicOrderTable";
+import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "@utils/queries/cotizador";
 import type { GetServerSideProps, NextPage } from "next";
@@ -20,7 +20,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
 import { useIsFetching, useQuery } from "react-query";
-import CircularProgress, {  CircularProgressProps, } from '@mui/material/CircularProgress';
 
 const Home: NextPage = () => {
 

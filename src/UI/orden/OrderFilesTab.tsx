@@ -1,4 +1,4 @@
-import { ExtendedOrdenData } from '@utils/Examples/BasicOrderTable'
+import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData"
 import React, { useMemo } from 'react'
 import OrderDownloadItem from './OrderDownloadItem'
 

@@ -1,7 +1,7 @@
 import { EstadoOrden } from '@prisma/client';
 import FormItem from '@UI/Forms/FormItem';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
-import { ExtendedOrdenData } from '@utils/Examples/BasicOrderTable';
+import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData";
 import { errorHandle } from '@utils/queries/cotizador';
 import React, { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';

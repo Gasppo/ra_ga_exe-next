@@ -1,4 +1,4 @@
-import { ExtendedOrdenData } from '@utils/Examples/BasicOrderTable'
+import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData"
 
 type Props = {
     orderData: ExtendedOrdenData

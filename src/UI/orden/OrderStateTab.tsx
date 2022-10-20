@@ -2,7 +2,7 @@ import { OrderStateUpdateSchemaType } from '@backend/schemas/OrderStateUpdateSch
 import { Button } from '@mui/material'
 import HookForm from '@UI/Forms/HookForm'
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error'
-import { ExtendedOrdenData } from '@utils/Examples/BasicOrderTable'
+import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData"
 import { errorHandle } from '@utils/queries/cotizador'
 import React, { useContext, useState } from 'react'
 import { useMutation, useQueryClient } from 'react-query'

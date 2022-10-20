@@ -36,24 +36,6 @@ const Home: NextPage = () => {
     const { query } = useRouter()
     const { orderId: id } = query
 
-
-    const stepNames = [
-        'Orden Cancelada',
-        'Aguardando Seña',
-        'Moldería Base',
-        'Digitalización',
-        'Geometral',
-        'Aguardando materiales',
-        'Corte Muestra',
-        'Confección Muestra',
-        'Envío al cliente',
-        'Aguardando Aprobación Muestra',
-        'En producción',
-        'Finalizado',
-        'Entregado',
-        'Expirado'
-    ]
-
     const stepDescriptions = [
         'La orden fue cancelada y su desarrollo no va a continuar.',
         'La orden fue creada y se esta esperando la seña para comenzar las muestras.',

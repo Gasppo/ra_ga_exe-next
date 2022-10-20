@@ -71,11 +71,11 @@ const UsuariosDashboard = () => {
 
 
     const columns: GridColumns = [
-        { field: 'name', headerName: 'Nombre', width: 250 },
-        { field: 'email', headerName: 'Email', width: 250 },
-        { field: 'role', headerName: 'Rol', width: 150, valueGetter: (params) => params.row.role.name },
+        { field: 'name', headerName: 'Nombre', minWidth: 250, flex: 1 },
+        { field: 'email', headerName: 'Email', minWidth: 250, flex: 1 },
+        { field: 'role', headerName: 'Rol', minWidth: 150, valueGetter: (params) => params.row.role.name, flex: 1 },
         {
-            field: 'switchPermissions', headerName: 'Cambiar permisos', width: 150, renderCell: (params) => (
+            field: 'switchPermissions', headerName: 'Cambiar permisos', minWidth: 150, renderCell: (params) => (
                 <Button onClick={() =>
                     confirm('Desea modificar el rol al usuario?') ? updateUserRole(params.row.id) : ''}><CachedIcon /></Button>)
         },

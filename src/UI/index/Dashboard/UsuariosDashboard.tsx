@@ -48,9 +48,9 @@ const UsuariosDashboard = () => {
 
 
     const { data: usersData, isLoading: isFetchingUsers } = useQuery(
-        ['ordenes', sessionData?.user?.email],
+        ['usuarios', sessionData?.user?.email],
         () => fetchOrders(), {
-        onError: () => addError('Error al traer ordenes')
+        onError: () => addError('Error al traer usuarios')
     })
 
     const updateUserRole = (id: string): Promise<string> => {

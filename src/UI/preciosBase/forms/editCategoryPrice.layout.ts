@@ -8,7 +8,7 @@ export const editCategoryPriceLayout: LayoutElement<PrecioPrendaExtended> = {
         {
             type: "Input",
             scope: "precioBase",
-            label: "Nombre",
+            label: "Precio",
             className: 'mt-1',
             options: {
                 numeric: true,

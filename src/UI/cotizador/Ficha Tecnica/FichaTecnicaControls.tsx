@@ -32,14 +32,14 @@ const FichaTecnicaControls = (props: FichaTecnicaControlsProps) => {
                     <Button variant="outlined" disabled={continueDisabled} type="button" onClick={onForward}>Continuar</Button>
                 </div>}
                 {currStep === 4 && <div className="mx-4 md:flex" >
-                    <Button variant="outlined" disabled={false} type="submit">Submit </Button>
+                    <Button variant="outlined" disabled={false} type="submit">Generar orden</Button>
                 </div>}
                 <div className="mx-4" />
             </div>
             <div className='flex md:hidden w-full'>
                 <DotsMobileStepper {...props} />
                 {currStep === (numberSteps - 1) && <Button size="small" type="submit">
-                    Submit
+                    Generar orden
                 </Button>}
             </div>
         </>

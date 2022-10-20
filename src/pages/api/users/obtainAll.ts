@@ -12,6 +12,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 email: true,
                 role: {
                     select: {
+                        id: true,
                         name: true
                     }
                 }

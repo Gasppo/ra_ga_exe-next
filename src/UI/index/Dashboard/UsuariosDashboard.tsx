@@ -1,9 +1,11 @@
 import AddIcon from '@mui/icons-material/Add';
+import CachedIcon from '@mui/icons-material/Cached';
 import DownloadIcon from '@mui/icons-material/Download';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputBase, TextField } from '@mui/material';
+import { Button, InputBase, TextField } from '@mui/material';
+import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { errorHandle } from '@utils/queries/cotizador';
@@ -11,7 +13,6 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useContext } from 'react';
 import { useQuery } from 'react-query';
-import BasicUserTable, { ReducedUser } from '../../../utils/Examples/BasicUserTable';
 import PageTitle from '../../Generic/Utils/PageTitle';
 import ActionButton from './ActionButton';
 
@@ -21,6 +22,15 @@ const UsuariosDashboard = () => {
     const editEnabled = false
 
     const { addError } = useContext(ErrorHandlerContext);
+
+    interface ReducedUser {
+        id: string;
+        name: string,
+        email: string,
+        role: {
+            name: string
+        }
+    }
 
     const fetchOrders = (): Promise<ReducedUser[]> =>
         fetch(`/api/users/obtainAll`, {
@@ -38,11 +48,46 @@ const UsuariosDashboard = () => {
 
 
     const { data: usersData, isLoading: isFetchingUsers } = useQuery(
-        ['ordenes', sessionData?.user?.email],
-        () => fetchOrders(),
-        {
-            onError: () => addError('Error al traer ordenes')
+        ['usuarios', sessionData?.user?.email],
+        () => fetchOrders(), {
+        onError: () => addError('Error al traer usuarios')
+    })
+
+    const updateUserRole = (id: string): Promise<string> => {
+        return fetch(`/api/user/updateRole`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                accept: "application/json",
+            },
+            body: JSON.stringify({ id })
         })
+            .then((res) => (res.ok ? res.json() : errorHandle(res)))
+            .catch((error) => {
+                console.log("Broke here");
+                throw error;
+            });
+    }
+
+
+    const columns: GridColumns = [
+        { field: 'name', headerName: 'Nombre', minWidth: 250, flex: 1 },
+        { field: 'email', headerName: 'Email', minWidth: 250, flex: 1 },
+        { field: 'role', headerName: 'Rol', minWidth: 150, valueGetter: (params) => params.row.role.name, flex: 1 },
+        {
+            field: 'switchPermissions', headerName: 'Cambiar permisos', minWidth: 150, renderCell: (params) => (
+                <Button onClick={() =>
+                    confirm('Desea modificar el rol al usuario?') ? updateUserRole(params.row.id) : ''}><CachedIcon /></Button>)
+        },
+    ];
+
+    function CustomToolbar() {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarExport />
+            </GridToolbarContainer>
+        );
+    }
 
 
     return (
@@ -63,7 +108,16 @@ const UsuariosDashboard = () => {
                     </div>
                     <div>
                         <LoadingIndicator show={isFetchingUsers} >
-                            <BasicUserTable rows={usersData || []} />
+                            <div style={{ height: 510, width: '100%' }}>
+                                <DataGrid
+                                    rows={usersData || []}
+                                    columns={columns || []}
+                                    components={{
+                                        Toolbar: CustomToolbar,
+                                    }}
+                                    pageSize={7}
+                                />
+                            </div>
                         </LoadingIndicator>
                     </div>
                 </div>

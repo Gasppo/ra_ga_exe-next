@@ -1,13 +1,26 @@
-import { Slide } from "@mui/material";
+import { Slide, Tab, Tabs } from "@mui/material";
+import HeaderBar from "@UI/Generic/HeaderBar";
+import BasePricesTab from "@UI/preciosBase/BasePricesTab";
+import ComplexitiesTab from "@UI/preciosBase/ComplexitiesTab";
+import NewClothesTab from '@UI/preciosBase/NewClothesTab';
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
-import PageTitle from "../UI/Generic/Utils/PageTitle";
+import React from "react";
 import Footer from "../UI/Generic/Footer";
+import PageTitle from "../UI/Generic/Utils/PageTitle";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
-import HeaderBar from "@UI/Generic/HeaderBar";
 
 const Home: NextPage = () => {
+
+    const [value, setValue] = React.useState(0);
+
+
+    const a11yProps = (index: number) => ({ id: `vertical-tab-${index}`, 'aria-controls': `vertical-tabpanel-${index}` })
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+        setValue(newValue);
+    };
 
     return (
         <div className="bg-split-white-black">
@@ -24,14 +37,44 @@ const Home: NextPage = () => {
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title="Precios base" hasBack />
-                            <div className="m-auto">Pagina en desarrollo</div>
-                        </div>
 
-                    </div>
-                </Slide>
-            </main>
+                            <div className="flex items-center justify-center">
+                                <div className="w-full md:w-8/12 mt-16 border-2 shadow-2xl">
+                                    <div className='border-b-2'>
+                                        <Tabs
+                                            orientation="horizontal"
+                                            variant="fullWidth"
+                                            value={value}
+                                            onChange={handleChange}
+                                            aria-label="Vertical tabs example"
+                                            sx={{ borderRight: 1, borderColor: 'divider' }}
+                                        >
+                                            <Tab label="Prendas" style={{ fontSize: 12 }} {...a11yProps(0)} />
+                                            <Tab label="Complejidades" style={{ fontSize: 12 }} {...a11yProps(1)} />
+                                            <Tab label="Precios Base" style={{ fontSize: 12 }} {...a11yProps(2)} />
+                                        </Tabs>
+                                    </div>
+                                    <div className="m-auto flex justify-center items-center">
+                                        <div hidden={value !== 0} className='w-full mb-10'>
+                                            <NewClothesTab />
+                                        </div>
+
+                                        <div hidden={value !== 1} className='w-full mb-10'>
+                                            <ComplexitiesTab />
+                                        </div>
+                                        <div hidden={value !== 2} className='w-full mb-10'>
+                                            <BasePricesTab />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div >
+                </Slide >
+            </main >
             <Footer />
-        </div>
+        </div >
     );
 };
 

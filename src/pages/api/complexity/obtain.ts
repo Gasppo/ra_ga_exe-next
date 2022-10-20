@@ -5,7 +5,7 @@ import { prisma } from '@server/db/client';
 
 const get = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const clothes = await prisma.complejidad.findMany()
+    const clothes = await prisma.complejidadConfeccion.findMany()
     res.status(200).json(clothes);
   } catch (error) {
     res.status(500).json({ error: error })

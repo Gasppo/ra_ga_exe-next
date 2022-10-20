@@ -1,15 +1,16 @@
 import DownloadIcon from '@mui/icons-material/Download';
+import LaunchIcon from '@mui/icons-material/Launch';
 import SearchIcon from '@mui/icons-material/Search';
-import { InputBase } from '@mui/material';
+import { InputBase, Link } from '@mui/material';
+import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { errorHandle } from '@utils/queries/cotizador';
 import { useSession } from 'next-auth/react';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
-import BasicOrderTable, { ExtendedOrdenData } from '../../../utils/Examples/BasicOrderTable';
+import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import PageTitle from '../../Generic/Utils/PageTitle';
-
 
 const UsuariosDashboard = () => {
 
@@ -33,6 +34,22 @@ const UsuariosDashboard = () => {
         onError: () => addError('Error al traer ordenes')
     })
 
+    const columns = useMemo((): GridColumns<ExtendedOrdenData> => ([
+        { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
+        { field: '', headerName: 'Cliente', minWidth: 150, flex: 1, valueGetter: (params) => params.row.user.name},
+        { field: 'cantidad', headerName: 'Cantidad', flex: 1 },
+        { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
+        { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },
+        { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
+    ]), []);
+
+    function CustomToolbar() {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarExport />
+            </GridToolbarContainer>
+        );
+    }
 
     return (
         <div>
@@ -52,7 +69,16 @@ const UsuariosDashboard = () => {
                     </div>
                     <div>
                         <LoadingIndicator show={isFetchingAllOrders}>
-                            <BasicOrderTable rows={allOrderData || []} />
+                            <div style={{ height: 510, width: '100%' }}>
+                                <DataGrid
+                                    rows={allOrderData || []}
+                                    columns={columns || []}
+                                    components={{
+                                        Toolbar: CustomToolbar,
+                                    }}
+                                    pageSize={7}
+                                />
+                            </div>
                         </LoadingIndicator>
                     </div>
                 </div>

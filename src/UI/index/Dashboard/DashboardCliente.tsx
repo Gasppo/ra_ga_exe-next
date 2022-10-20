@@ -1,21 +1,24 @@
 import AddIcon from "@mui/icons-material/Add";
-import DownloadIcon from "@mui/icons-material/Download";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from "@mui/icons-material/Edit";
+import LaunchIcon from '@mui/icons-material/Launch';
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import SearchIcon from "@mui/icons-material/Search";
-import { Button, Divider, InputBase, Link, TextField } from "@mui/material";
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import { Button, Divider, Link, TextField } from "@mui/material";
+import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import PageTitle from "@UI/Generic/Utils/PageTitle";
+import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
+import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
-import BasicTable, { ExtendedOrdenData } from "../../../utils/Examples/BasicOrderTable";
+import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
-import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
+
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -47,19 +50,35 @@ const DashboardCliente = () => {
         setEditEnabled((prev) => !prev);
     };
 
-    useEffect(() => {
-        console.log(isFetchingOrders)
-    }, [isFetchingOrders]);
+    const columns: GridColumns = useMemo(() => ([
+        { field: 'id', headerName: 'Id', minWidth: 150, flex: 1 },
+        { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
+        { field: 'cantidad', headerName: 'Cantidad', minWidth: 75, flex: 1 },
+        { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
+        { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },
+        { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
+    ]), []);
+
+    function CustomToolbar() {
+        return (
+            <GridToolbarContainer>
+                <GridToolbarExport />
+            </GridToolbarContainer>
+        );
+    }
 
     return (
         <div>
-            <div className="flex justify-between ">
-                <div />
+
+            <div className="flex justify-between">
+                <PageTitle title="Mis Ordenes" hasBack={false} />
                 {sessionData?.user && (
-                    <div className="hidden md:flex md:mr-10 mt-10">
+                    <div className="hidden md:flex md:mr-10 items-center justify-center">
                         <div className="rounded-2xl">
                             <Link href={"/fichaTecnicaForm"}>
-                                <Button variant="text">Nueva cotización</Button>
+                                <Button variant="outlined" startIcon={<PostAddIcon />} className="font-extrabold text-gray-700 border-gray-600 border-2 rounded-lg">
+                                    Nueva Cotización
+                                </Button>
                             </Link>
                         </div>
                     </div>
@@ -68,23 +87,23 @@ const DashboardCliente = () => {
 
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
-                    <div className="text-xl my-8 flex flex-row justify-between">
-                        <div className="border-gray-400 border-2 rounded-xl w-2/3 p-2 flex items-center shadow-md">
-                            <SearchIcon className="w-1/12" />
-                            <div className="ml-2 w-8/12">
-                                <InputBase
-                                    placeholder="Busqueda por # orden, prenda..."
-                                    className="w-full"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-end items-center w-1/12 mr-1">
-                            <DownloadIcon fontSize="large" />
-                        </div>
-                    </div>
                     <LoadingIndicator show={isFetchingOrders}>
-                        <div>
-                            <BasicTable rows={orderData || []} />
+                        <div className="w-full h-[510px] p-4">
+                            <DataGrid
+                                rows={orderData || []}
+                                columns={columns || []}
+                                components={{
+                                    Toolbar: CustomToolbar,
+                                }}
+                                autoPageSize
+                                initialState={{
+                                    columns: {
+                                        columnVisibilityModel: {
+                                            id: false
+                                        }
+                                    }
+                                }}
+                            />
                         </div>
                     </LoadingIndicator>
                 </div>
@@ -182,3 +201,5 @@ const DashboardCliente = () => {
 };
 
 export default DashboardCliente;
+
+

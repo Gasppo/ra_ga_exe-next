@@ -43,7 +43,9 @@ export const generateEmailer = ({
         }
     };
 
-    return { sendEmail };
-}
+    const sendEmailTest = async (data: SendEmailData) => {
+        console.log('Sent [TEST]', data)
+    };
 
-
+    return { sendEmail: password === 'testing' ? sendEmailTest : sendEmail }
+};

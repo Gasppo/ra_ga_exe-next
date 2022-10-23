@@ -65,14 +65,14 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    //Delete everything created
-    await prisma.user.deleteMany({})
+    await prisma.atributoPrenda.deleteMany({})
+    await prisma.detallesPrenda.deleteMany({})
     await prisma.tipoPrenda.deleteMany({})
     await prisma.estadoOrden.deleteMany({})
     await prisma.precioDelDolar.deleteMany({})
     await prisma.complejidadConfeccion.deleteMany({})
     await prisma.precioPrenda.deleteMany({})
-    
+    await prisma.user.deleteMany({})
 })
 
 type ExpectedResponse = {

@@ -4,6 +4,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
 
     // Paso 1: Seleccion de prenda
     atributosPrenda: {
+        material: { observaciones: '', selected: true },
         genero: {
             selected: true,
             observaciones: "woman"

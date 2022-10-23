@@ -7,81 +7,26 @@ export const clothingMouldsLayout: LayoutElement<OrderCreationData> = {
         type: 'Horizontal',
         justifyContent: 'center',
         width: 12,
-        elements: [{
-            type: 'Switch',
-            scope: 'molderiaBase.selected',
-            label: "Molderia Base",
-            options: {
-                labelPlacement: 'end'
-            },
-            width: 12
-        },
-        {
-            type: 'Uploader',
-            scope: 'files',
-            width: 12,
-            rules: [
-                { type: 'required', scope: 'molderiaBase.selected' }
-            ],
-            options: {
-                fileSection: 'molderiaBase.files',
-                multifile: true
-            }
-        },
-        {
-            type: 'Input',
-            scope: 'molderiaBase.observaciones',
-            label: 'Observaciones Moldería Base',
-            options: {
-                multiline: 3
-            },
-            className: 'mr-4 mt-2 ml-2 md:ml-2 md:mr-6 md:mt-4',
-            width: 12,
-            rules: [
-                { type: 'required', scope: 'molderiaBase.selected' }
-            ]
-        }]
-    },
-    {
-        type: 'Horizontal',
-        width: 12,
-        className: 'mt-4',
         elements: [
-            {
-                type: 'Switch',
-                scope: 'geometral.selected',
-                label: "Geometral",
-                options: {
-                    labelPlacement: 'end'
-                },
-                width: 12
-            },
             {
                 type: 'Uploader',
                 scope: 'files',
                 width: 12,
-                rules: [
-                    { type: 'required', scope: 'geometral.selected' }
-                ],
                 options: {
-                    fileSection: 'geometral.files',
+                    fileSection: 'molderiaBase.files',
                     multifile: true
                 }
             },
             {
                 type: 'Input',
-                scope: 'geometral.observaciones',
-                label: 'Observaciones Geometral',
+                scope: 'molderiaBase.observaciones',
+                label: 'Observaciones Archivos',
                 options: {
-                    multiline: 3
+                    multiline: 6
                 },
                 className: 'mr-4 mt-2 ml-2 md:ml-2 md:mr-6 md:mt-4',
                 width: 12,
-                rules: [
-                    { type: 'required', scope: 'geometral.selected' }
-                ]
-            }
-        ]
+            }]
     }
 
     ]

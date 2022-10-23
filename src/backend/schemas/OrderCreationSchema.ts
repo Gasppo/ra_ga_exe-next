@@ -26,8 +26,15 @@ export const OrderCreationDataSchema = z.object({
             selected: z.boolean(),
             observaciones: z.string()
         }),
+        genero: z.object({
+            selected: z.boolean(),
+            observaciones: z.string()
+        }),
     }),
+    nombreProducto: z.string(),
+    complejidad: z.string(),
     cliente: z.string(),
+
     geometral: z.object({
         selected: z.boolean(),
         observaciones: z.string(),
@@ -46,7 +53,10 @@ export const OrderCreationDataSchema = z.object({
             type: z.string()
         }))
     }),
-
+    "Corte Muestra": z.object({ selected: z.boolean(), }),
+    "Confección Muestra": z.object({ selected: z.boolean() }),
+    "Ficha Técnica de Consumos": z.object({ selected: z.boolean() }),
+    "Digitalización y Progresiones": z.object({ selected: z.boolean() }),
     molderiaBase: z.object({
         selected: z.boolean(),
         observaciones: z.string(),
@@ -72,7 +82,7 @@ export const OrderCreationDataSchema = z.object({
     user: z.object({
         name: z.string(),
         email: z.string().email(),
-    }),
+    })
 })
 
 export type ValidatedOrderSchema = z.infer<typeof OrderCreationDataSchema>

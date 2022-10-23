@@ -15,7 +15,7 @@ const OrderDetailsTab = ({ orderData }: Props) => {
                             - {el.name}
                         </div>
                         {el.observacion && <div className='text-xs  flex flex-row'>
-                            <div>Observaciones: </div>
+                            <div></div>
                             <div className='mx-1'>{el.observacion}</div>
                         </div>}
 

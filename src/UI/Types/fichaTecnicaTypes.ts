@@ -4,7 +4,10 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
 
     // Paso 1: Seleccion de prenda
     atributosPrenda: {
-
+        genero: {
+            selected: true,
+            observaciones: "woman"
+        },
         bolsillos: {
             selected: false,
             cantidad: 0,
@@ -65,5 +68,11 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
         name: '',
         email: '',
     },
-    files: []
+    files: [],
+    "Confección Muestra": { selected: false },
+    "Corte Muestra": { selected: false },
+    "Ficha Técnica de Consumos": { selected: false },
+    "Digitalización y Progresiones": { selected: false },
+    complejidad: '',
+    nombreProducto: '',
 }

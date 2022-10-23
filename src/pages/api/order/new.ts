@@ -14,8 +14,11 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
     try {
         const data = OrderCreationDataSchema.parse(req.body);
-        const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })
+        const { id: idComplejidad } = await prisma.complejidadConfeccion.findFirst({ where: { name: data.complejidad } })
 
+        const selectedAttributes = Object.entries(data).filter(([, value]: [string, any]) => value?.selected && value?.selected === true).map(([key]) => key)
+        
+        const selectedServices = await prisma.servicio.findMany({select: {name: true}, where: {name: {in: selectedAttributes}}})
 
         const idOrden = generateOrderID(data)
 
@@ -28,16 +31,15 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
         await updateExpiredOrders();
 
-        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
-        const precio = await calculateOrderTotal(data, debugComplejidadID)
+        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, idComplejidad);
+        const precio = await calculateOrderTotal(data, idComplejidad)
         const atributosPrenda = await getAtributosPrenda(data)
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
-
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
             data: {
                 id: idOrden,
-                nombre: `${prendaPrecio.tipo.name} ${prendaPrecio.complejidad.name}`,
+                nombre: data.nombreProducto,
                 cantidad: 100,
                 expiresAt: fromToday(60 * 60 * 24 * 15),
                 estado: {
@@ -71,6 +73,10 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                             }
                         }
                     }
+                },
+                //Connect the order to services by finding the service by name and checking if it was selected orderData[service.name].selected
+                servicios: {
+                    connect: selectedServices.map(service => ({ name: service.name }))
                 }
             }
         })

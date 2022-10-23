@@ -31,7 +31,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 detallesPrenda: {
                     include: { atributos: true }
-                }
+                },
+                servicios: true,
             },
             where: { id: req.body.orderId }
         })

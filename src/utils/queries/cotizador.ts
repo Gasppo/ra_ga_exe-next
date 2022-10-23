@@ -1,6 +1,6 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { FileUploadResponse } from "@pages/api/drive/upload";
-import { TipoPrenda } from "@prisma/client";
+import { ComplejidadConfeccion, TipoPrenda } from "@prisma/client";
 
 
 // Cargar archivos a Google Drive
@@ -76,7 +76,7 @@ export const modifyClothes = (data: TipoPrendaExtended): Promise<TipoPrenda> => 
 
 
 // Obtener lista de complejidades
-export const getComplexity = () => fetch('/api/complexity/obtain')
+export const getComplexity = (): Promise<ComplejidadConfeccion[]> => fetch('/api/complexity/obtain')
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 

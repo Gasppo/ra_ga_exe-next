@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { clothingMouldsLayout } from './forms/clothingMoulds.layout';
 
-const ClothingMouldsForm = () => {
+const ClothingFilesForm = () => {
 
     const { watch, setValue } = useFormContext<OrderCreationData>()
 
@@ -30,4 +30,4 @@ const ClothingMouldsForm = () => {
     )
 }
 
-export default ClothingMouldsForm
+export default ClothingFilesForm

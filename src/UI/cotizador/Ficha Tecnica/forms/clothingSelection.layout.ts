@@ -32,13 +32,10 @@ export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
         }
         ,
         {
-            type: 'Select',
-            scope: 'tipoPrenda.name',
+            type: 'Input',
+            scope: 'atributosPrenda.material.observaciones',
             width: { xs: 12, sm: 12, md: 12, lg: 6, xl: 6 },
-            label: 'Material',
-            options: {
-                optionsName: 'clothesData',
-            }
+            label: 'Material'
         }
     ]
 }

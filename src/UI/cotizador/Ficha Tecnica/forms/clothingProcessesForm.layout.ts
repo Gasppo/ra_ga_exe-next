@@ -1,7 +1,7 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
 
-export const clothingSizesLayout: LayoutElement<OrderCreationData> = {
+export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
     type: 'Horizontal',
     elements: [
         {

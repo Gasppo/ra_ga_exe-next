@@ -3,6 +3,10 @@ import { z } from "zod";
 
 export const OrderCreationDataSchema = z.object({
     atributosPrenda: z.object({
+        material: z.object({
+            selected: z.boolean(),
+            observaciones: z.string()
+        }),
         bolsillos: z.object({
             selected: z.boolean(),
             cantidad: z.number(),

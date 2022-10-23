@@ -1,5 +1,5 @@
 import FormItem from '@UI/Forms/FormItem';
-import { clothingSizesLayout } from './forms/clothingSizesForm.layout';
+import { clothingProcessesLayout } from './forms/clothingProcessesForm.layout';
 
 const ClothingProcessesForm = () => {
 
@@ -8,7 +8,7 @@ const ClothingProcessesForm = () => {
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
             <div className="form-input-section">
-                <FormItem layout={clothingSizesLayout} selectOptions={{
+                <FormItem layout={clothingProcessesLayout} selectOptions={{
                     cantidades: [
                         { key: 'none', text: 'Sólo Desarrollo' },
                         { key: 'Muestra', text: 'Muestrario ( 1 a 5 prendas )' },

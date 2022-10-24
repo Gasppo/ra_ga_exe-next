@@ -53,20 +53,20 @@ const Home: NextPage = () => {
         'Orden expirada.'
     ]
 
-    const fetchStateNames = (): Promise<{id: number,nombre: string;}[]> => 
-        fetch(`/api/orders/states`,{
+    const fetchStateNames = (): Promise<{ id: number, nombre: string; }[]> =>
+        fetch(`/api/orders/states`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', accept: 'application/json' }
         })
-        .then((res) => res.ok ? res.json() : errorHandle(res))
-        .catch((e) => {throw e})
-    
-    const {data:stateNames,} = useQuery(['states'],fetchStateNames,{
+            .then((res) => res.ok ? res.json() : errorHandle(res))
+            .catch((e) => { throw e })
+
+    const { data: stateNames, } = useQuery(['states'], fetchStateNames, {
         onError: () => console.log("Error al traer los estados"),
         refetchOnWindowFocus: false,
         initialData: []
     });
-    const names = stateNames?.map(v =>  v.nombre);
+    const names = stateNames?.map(v => v.nombre);
 
     const fetchOrder = (): Promise<ExtendedOrdenData> =>
         fetch(`/api/order/obtain`, {
@@ -87,7 +87,7 @@ const Home: NextPage = () => {
     });
 
     const orderTitle = 'Orden: ' + orderData?.nombre
-    
+
 
     return (
         <div className="bg-split-white-black">
@@ -107,8 +107,8 @@ const Home: NextPage = () => {
                             <LoadingIndicator show={!!isLoading}>
 
                                 <div className="mt-16 w-full hidden md:flex">
-                                    <PriceCheckerSteps step={orderData?.estado?.id} price={price} isStepOptional={isStepOptional} steps={names} />
-                                   
+                                    <PriceCheckerSteps step={orderData?.estado?.id - 1} price={price} isStepOptional={isStepOptional} steps={names} />
+
                                 </div>
 
                                 <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >

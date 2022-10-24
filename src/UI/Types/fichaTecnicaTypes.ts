@@ -59,10 +59,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     },
 
     // Paso 4: Talles
-    talles: {
-        selected: false,
-        talle: []
-    },
+    talles: '',
     cantidad: '',
 
     user: {
@@ -76,4 +73,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     "Digitalización y Progresiones": { selected: false },
     complejidad: '',
     nombreProducto: '',
+    "Impresión Moldertía Base": { selected: false },
+    "Cotización": { selected: false },
+    "Terminación": { selected: false },
 }

@@ -33,7 +33,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                 {
                     type: 'Input',
                     label: 'Talles',
-                    scope: 'cantidad',
+                    scope: 'talles',
                     width: 6,
                     options: {
                         shrinkLabel: true,

@@ -26,7 +26,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
         },
         {
             type: 'Switch',
-            scope: 'molderiaBase.selected',
+            scope: 'Impresión Moldertía Base.selected',
             className: 'mt-2',
             label: "Impresión Moldertía Base",
             options: {
@@ -66,7 +66,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
         },
         {
             type: 'Switch',
-            scope: 'logoMarca.selected',
+            scope: 'Terminación.selected',
             className: 'mt-2',
             label: "Terminación (Ojal, Botón, Plancha, etc)",
             options: {
@@ -76,7 +76,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
         },
         {
             type: 'Switch',
-            scope: 'logoMarca.selected',
+            scope: 'Cotización.selected',
             className: 'mt-2',
             label: "Cotización",
             options: {

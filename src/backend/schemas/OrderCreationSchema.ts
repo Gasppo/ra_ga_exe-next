@@ -61,6 +61,9 @@ export const OrderCreationDataSchema = z.object({
     "Confección Muestra": z.object({ selected: z.boolean() }),
     "Ficha Técnica de Consumos": z.object({ selected: z.boolean() }),
     "Digitalización y Progresiones": z.object({ selected: z.boolean() }),
+    "Impresión Moldertía Base": z.object({ selected: z.boolean() }),
+    "Terminación": z.object({ selected: z.boolean() }),
+    "Cotización": z.object({ selected: z.boolean() }),
     molderiaBase: z.object({
         selected: z.boolean(),
         observaciones: z.string(),
@@ -70,13 +73,7 @@ export const OrderCreationDataSchema = z.object({
             type: z.string()
         }))
     }),
-    talles: z.object({
-        selected: z.boolean(),
-        talle: z.array(z.object({
-            nombre: z.string(),
-            medidas: z.string()
-        }))
-    }),
+    talles: z.string(),
     cantidad: z.string(),
     tipoPrenda: z.object({
         id: z.string().cuid(),

@@ -7,7 +7,8 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
         material: { observaciones: '', selected: true },
         genero: {
             selected: true,
-            observaciones: "woman"
+            observaciones: "",
+            values: [{ key: 'woman', text: 'Mujer' }]
         },
         bolsillos: {
             selected: false,

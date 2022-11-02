@@ -42,5 +42,6 @@ export interface Options<Model> {
     multiline?: number
     multifile?: boolean
     textType?: string
-    fileSection?: Paths<Model>
+    fileSection?: Paths<Model>,
+    placeholderText?: string
 }

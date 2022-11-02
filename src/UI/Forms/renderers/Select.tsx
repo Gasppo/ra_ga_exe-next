@@ -14,11 +14,12 @@ export type SelectProps<Model> = {
 } & Partial<TextFieldProps>
 
 function Select<Model>(props: SelectProps<Model>) {
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { layout, parentScope, hasParent, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
     const options = context?.[layout?.options?.optionsName] || []
 
-    console.log(parentScope, hasParent)
 
     return (
         <>

@@ -2,7 +2,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { LayoutElement } from '../types';
 
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-import { IconButton } from "@mui/material";
+import { Alert, IconButton } from "@mui/material";
 import FileInfoTag from '../../cotizador/Inputs/FileInfoTag';
 import { useIsDisabled } from '../../../utils/useIsDisabled';
 import { useEffect, useMemo } from 'react';
@@ -33,12 +33,10 @@ function Uploader<Model>(props: UploaderProps<Model>) {
         setValue(fileInfoScope, sectionFiles)
     }, [fileInfoScope, sectionFiles, setValue]);
 
-
     return (
         <>
             <Controller
                 name={layout.scope}
-                defaultValue={null}
                 rules={{
                     required: {
                         value: layout?.options?.required,
@@ -49,20 +47,26 @@ function Uploader<Model>(props: UploaderProps<Model>) {
                     field: { onChange, value },
                 }) => {
                     return (
-                        <div className='flex flex-row items-center'>
-                            <IconButton color="primary" aria-label="upload picture" component="label" className="justify-end" disabled={isDisabled} >
-                                <input multiple={layout?.options?.multifile} hidden accept="image/*" type="file" onChange={(event) => onChange(
-                                    [...value?.filter(el => el.section !== layout?.options?.fileSection), ...Array.from(event.target.files).map(el => ({
-                                        file: el,
-                                        section: layout?.options?.fileSection || ''
-                                    }))]
-                                )} />
-                                <FileUploadIcon />
-                            </IconButton>
-                            <div className='border-2 w-full mx-2 md:mx-4 p-4 flex flex-col md:flex-row md:flex-wrap overflow-x-hidden'>
-                                {value?.map((el: { file: File, section: string }, i: number) => {
-                                    if (el.section === layout?.options?.fileSection) return <FileInfoTag file={el.file} key={i} onRemove={(fileName) => onChange(value?.filter((el: { file: File, section: string }) => el.file.name !== fileName))} />
-                                })}
+                        <div className='flex flex-col'>
+                            {layout.options.helperText ?
+                                <div className='w-fit my-4'>
+                                    <Alert severity='info'>{layout.options.helperText}</Alert>
+                                </div> : null}
+                            <div className='flex flex-row items-center'>
+                                <IconButton color="primary" aria-label="upload picture" component="label" className="justify-end" disabled={isDisabled} >
+                                    <input multiple={layout?.options?.multifile} hidden accept="image/*,.plt,.jpg,.png,.pdf" type="file" onChange={(event) => onChange(
+                                        [...value?.filter(el => el.section !== layout?.options?.fileSection), ...Array.from(event.target.files).map(el => ({
+                                            file: el,
+                                            section: layout?.options?.fileSection || ''
+                                        }))]
+                                    )} />
+                                    <FileUploadIcon />
+                                </IconButton>
+                                <div className='border-2 w-full mx-2 md:mx-4 p-4 flex flex-col md:flex-row md:flex-wrap overflow-x-hidden rounded-sm border-gray-300'>
+                                    {value?.map((el: { file: File, section: string }, i: number) => {
+                                        if (el.section === layout?.options?.fileSection) return <FileInfoTag file={el.file} key={i} onRemove={(fileName) => onChange(value?.filter((el: { file: File, section: string }) => el.file.name !== fileName))} />
+                                    })}
+                                </div>
                             </div>
                         </div>
                     )

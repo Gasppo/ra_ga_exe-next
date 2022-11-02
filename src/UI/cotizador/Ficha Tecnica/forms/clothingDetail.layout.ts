@@ -11,8 +11,8 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
             spacing: 2,
             elements: [
                 {
-                    type: 'Select',
-                    scope: 'atributosPrenda.genero.observaciones',
+                    type: 'Autocomplete',
+                    scope: 'atributosPrenda.genero.values',
                     label: "Genero",
                     options: {
                         labelPlacement: 'end',
@@ -37,7 +37,9 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     width: 6,
                     options: {
                         shrinkLabel: true,
+                        helperText: 'Seleccione los talles que desea producir',
                         optionsName: 'cantidades',
+
                     }
                 }
             ]

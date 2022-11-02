@@ -32,7 +32,11 @@ export const OrderCreationDataSchema = z.object({
         }),
         genero: z.object({
             selected: z.boolean(),
-            observaciones: z.string()
+            observaciones: z.string(),
+            values: z.array(z.object({
+                key: z.string(),
+                text: z.string(),
+            }))
         }),
     }),
     nombreProducto: z.string(),

@@ -94,14 +94,7 @@ export const createOrder = (data: OrderCreationData): Promise<{ message: string 
 
 
 
-export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse, mapKeys: { [key: string]: string }) => {
-    if (mapKeys[file.fileName] === 'molderiaBase.files') {
-        data.molderiaBase.files = data.molderiaBase.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-    }
-    else if (mapKeys[file.fileName] === 'geometral.files') {
-        data.geometral.files = data.geometral.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-    }
-    else if (mapKeys[file.fileName] === 'logoMarca.files') {
-        data.logoMarca.files = data.logoMarca.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
-    }
+export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse) => {
+    data.orderFiles.files = data.orderFiles.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
+
 }

@@ -68,15 +68,7 @@ export const OrderCreationDataSchema = z.object({
     "Impresión Moldertía Base": z.object({ selected: z.boolean() }),
     "Terminación": z.object({ selected: z.boolean() }),
     "Cotización": z.object({ selected: z.boolean() }),
-    molderiaBase: z.object({
-        selected: z.boolean(),
-        observaciones: z.string(),
-        files: z.array(z.object({
-            name: z.string(),
-            urlID: z.string(),
-            type: z.string()
-        }))
-    }),
+    "Moldería Base": z.object({ selected: z.boolean() }),
     talles: z.string(),
     cantidad: z.string(),
     tipoPrenda: z.object({
@@ -87,7 +79,15 @@ export const OrderCreationDataSchema = z.object({
     user: z.object({
         name: z.string(),
         email: z.string().email(),
-    })
+    }),
+    orderFiles: z.object({
+        observaciones: z.string(),
+        files: z.array(z.object({
+            name: z.string(),
+            urlID: z.string(),
+            type: z.string()
+        }))
+    }),
 })
 
 export type ValidatedOrderSchema = z.infer<typeof OrderCreationDataSchema>

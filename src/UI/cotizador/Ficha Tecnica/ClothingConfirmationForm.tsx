@@ -25,8 +25,8 @@ const ClothingConfirmationForm = () => {
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.molderiaBase?.files ? "✔️" : "❌"} Archivos {cotizadorData.molderiaBase?.files?.length ? ' - ' + cotizadorData.molderiaBase?.files?.length + ' archivos seleccionados' : ''}</div>
-                <div>Observaciones: {cotizadorData.molderiaBase?.observaciones ? cotizadorData.molderiaBase?.observaciones : ' - '}</div>
+                <div>{cotizadorData.orderFiles.files ? "✔️" : "❌"} Archivos {cotizadorData.orderFiles?.files?.length ? ' - ' + cotizadorData.orderFiles?.files?.length + ' archivos seleccionados' : ''}</div>
+                <div>Observaciones: {cotizadorData.orderFiles?.observaciones ? cotizadorData.orderFiles?.observaciones : ' - '}</div>
             </div>
 
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
@@ -40,7 +40,7 @@ const ClothingConfirmationForm = () => {
             <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
 
             <div className="mt-3 w-2/4">
-                <div>{cotizadorData.molderiaBase?.selected ? "✔️ " : "❌ "} Moldería Base </div>
+                <div>{cotizadorData["Moldería Base"]?.selected ? "✔️ " : "❌ "} Moldería Base </div>
                 <div>{cotizadorData["Digitalización y Progresiones"]?.selected ? "✔️ " : "❌ "} Digitalización y Progresiones </div>
                 <div>{cotizadorData["Impresión Moldertía Base"] ? "✔️ " : "❌ "} Impresión Moldertía Base </div>
                 <div>{cotizadorData["Ficha Técnica de Consumos"] ? "✔️ " : "❌ "} Ficha Técnica (Geometral + Guía de Armado) </div>

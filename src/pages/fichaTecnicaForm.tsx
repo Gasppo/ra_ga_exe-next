@@ -56,7 +56,7 @@ const Home: NextPage = () => {
 
     const router = useRouter()
 
-    const steps = ['Selección Prenda', 'Archivos', 'Especificaciones', 'Procesos',  'Confirmación']
+    const steps = ['Selección Prenda', 'Archivos', 'Especificaciones', 'Procesos', 'Confirmación']
 
     const isStepOptional = () => false
 
@@ -69,10 +69,9 @@ const Home: NextPage = () => {
         const orderID = generateOrderID(data)
         if (data?.files?.length > 0) {
             const uploadedFiles = await (await handleUploadFile(data.files, orderID)).data
-            const mapKeys = data.files.reduce((prev, currStep) => ({ ...prev, [currStep.file.name]: currStep.section }), {})
             Array.isArray(uploadedFiles) ?
-                uploadedFiles.forEach(file => updateFileURL(data, file, mapKeys)) :
-                updateFileURL(data, uploadedFiles, mapKeys)
+                uploadedFiles.forEach(file => updateFileURL(data, file)) :
+                updateFileURL(data, uploadedFiles)
         }
         await createOrderMutation(data)
 

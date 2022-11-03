@@ -13,14 +13,14 @@ export const clothingFilesLayout: LayoutElement<OrderCreationData> = {
                 scope: 'files',
                 width: 12,
                 options: {
-                    fileSection: 'molderiaBase.files',
+                    fileSection: 'orderFiles.files',
                     multifile: true,
                     helperText: 'Inserte archivos correspondientes a imágenes, diseños, dibujos o bocetos de la prenda'
                 }
             },
             {
                 type: 'Input',
-                scope: 'molderiaBase.observaciones',
+                scope: 'orderFiles.observaciones',
                 label: 'Observaciones Archivos',
                 options: {
                     multiline: 6,

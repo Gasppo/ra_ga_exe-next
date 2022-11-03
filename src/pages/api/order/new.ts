@@ -17,8 +17,8 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
         const { id: idComplejidad } = await prisma.complejidadConfeccion.findFirst({ where: { name: data.complejidad } })
 
         const selectedAttributes = Object.entries(data).filter(([, value]: [string, any]) => value?.selected && value?.selected === true).map(([key]) => key)
-        
-        const selectedServices = await prisma.servicio.findMany({select: {name: true}, where: {name: {in: selectedAttributes}}})
+
+        const selectedServices = await prisma.servicio.findMany({ select: { name: true }, where: { name: { in: selectedAttributes } } })
 
         const idOrden = generateOrderID(data)
 
@@ -54,9 +54,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 archivos: {
                     createMany: {
                         data: [
-                            ...data.molderiaBase.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'molderiaBase' })),
-                            ...data.geometral.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'geometral' })),
-                            ...data.logoMarca.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'logoMarca' })),
+                            ...data.orderFiles.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'order' })),
                         ]
                     }
                 },

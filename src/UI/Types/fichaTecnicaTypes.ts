@@ -40,12 +40,6 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
         name: '',
         picture: ''
     },
-    // Paso 2: Moldería
-    molderiaBase: {
-        selected: false,
-        observaciones: '',
-        files: []
-    },
     geometral: {
         selected: false,
         observaciones: '',
@@ -75,6 +69,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     complejidad: '',
     nombreProducto: '',
     "Impresión Moldertía Base": { selected: false },
+    "Moldería Base": { selected: false },
     "Cotización": { selected: false },
     "Terminación": { selected: false },
 }

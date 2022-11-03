@@ -6,7 +6,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
     elements: [
         {
             type: 'Switch',
-            scope: 'molderiaBase.selected',
+            scope: 'Moldería Base.selected',
             className: 'mt-2',
             label: "Moldería Base",
             options: {

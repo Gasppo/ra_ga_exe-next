@@ -256,7 +256,7 @@ const DashboardCliente = () => {
                     <div className="hidden md:flex md:mr-10 items-center justify-center">
                         <div className="rounded-2xl">
                             <Link href={"/fichaTecnicaForm"}>
-                                <Button variant="outlined" startIcon={<PostAddIcon />} className="font-extrabold text-gray-700 border-gray-600 border-2 rounded-lg">
+                                <Button variant="outlined" startIcon={<PostAddIcon />} >
                                     Nueva Cotización
                                 </Button>
                             </Link>

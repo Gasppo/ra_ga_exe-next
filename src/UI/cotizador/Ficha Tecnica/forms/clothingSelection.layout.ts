@@ -2,7 +2,7 @@ import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { LayoutElement } from "../../../Forms/types";
 
 export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
-    type: 'Horizontal',
+    type: 'Vertical',
     spacing: 4,
     justifyContent: 'space-between',
     elements: [
@@ -11,6 +11,9 @@ export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
             scope: 'nombreProducto',
             label: 'Nombre del producto',
             width: { xs: 12, sm: 12, md: 12, lg: 6, xl: 6 },
+            options: {
+                required: true,
+            }
         },
         {
             type: 'Select',
@@ -18,6 +21,7 @@ export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
             width: { xs: 12, sm: 12, md: 12, lg: 6, xl: 6 },
             label: 'Tipo de prenda',
             options: {
+                required: true,
                 optionsName: 'clothesData',
             }
         },
@@ -28,6 +32,7 @@ export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
             label: 'Complejidad',
             options: {
                 optionsName: 'complexities',
+                required: true,
             }
         }
         ,
@@ -35,7 +40,10 @@ export const clothingSelectionLayout: LayoutElement<OrderCreationData> = {
             type: 'Input',
             scope: 'atributosPrenda.material.observaciones',
             width: { xs: 12, sm: 12, md: 12, lg: 6, xl: 6 },
-            label: 'Material'
+            label: 'Material',
+            options: {
+                required: true,
+            }
         }
     ]
 }

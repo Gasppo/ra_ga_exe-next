@@ -14,7 +14,7 @@ export type SelectProps<Model> = {
 } & Partial<TextFieldProps>
 
 function Select<Model>(props: SelectProps<Model>) {
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { layout, parentScope, hasParent, ...textFieldProps } = props
     const context = useContext(SelectOptionsContext)
@@ -52,6 +52,7 @@ function Select<Model>(props: SelectProps<Model>) {
                             name={name}
                             label={layout?.label}
                             helperText={layout?.options?.helperText}
+                            required={layout?.options?.required}
                         >
                             {options?.length > 0 ? options?.map((option) => {
                                 return (

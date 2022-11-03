@@ -52,6 +52,8 @@ function Autocomplete<Model>(props: SelectProps<Model>) {
                                     helperText={layout?.options?.helperText}
                                     size={(layout?.options?.variant === 'outlined' || !layout?.options?.variant) ? "medium" : "small"}
                                     className={layout.className}
+                                    InputLabelProps={{ shrink: true }}
+                                    required={layout?.options?.required}
                                 />
                             )}
                             renderOption={(props, option, { selected }) => (

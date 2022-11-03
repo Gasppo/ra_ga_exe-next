@@ -37,7 +37,7 @@ export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
                     width: 6,
                     options: {
                         shrinkLabel: true,
-                        helperText: 'Seleccione los talles que desea producir',
+                        helperText: 'Detalle la nomencaltura de los talles (ej: S, M, L, XL, XXL)',
                         optionsName: 'cantidades',
 
                     }

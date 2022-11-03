@@ -25,162 +25,72 @@ const fakeOrders = [
         date: '2021-01-01',
         nombre: 'Remera Basica MC',
         orden: 'Inv22-MerB-RemBas-001',
-        estado: {
-            diseño: {
-                estado: 'pedido',
-            },
-            molderia: {
-                estado: 'traido por cliente',
-            },
-            digitalizacion: {
-                estado: 'no pedido',
-            },
-            modificacion: {
-                estado: 'iniciado',
-            },
-            geometral: {
-                estado: 'en proceso',
-            },
-            impresion: {
-                estado: 'terminado',
-            },
-            materiales: {
-                estado: 'en pausa',
-            },
-            tizado: {
-                estado: 'terminado',
-            },
-            corte: {
-                estado: 'pedido',
-            },
-            preconfeccion: {
-                estado: 'pedido',
-            },
-            confeccion: {
-                estado: 'pedido',
-            },
-            terminado: {
-                estado: 'pedido',
-            },
-            planchado: {
-                estado: 'traido por cliente',
-            },
-            entregado: {
-                estado: 'pedido',
-            },
-            aprobado: {
-                estado: 'pedido',
-            }
-        }
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
     },
     {
         id: 2,
         date: '2021-01-01',
         nombre: 'Pantalon Cargo Chupin',
         orden: 'Ver22/23-MerB-PantMed-001',
-        estado: {
-            diseño: {
-                estado: 'pedido',
-            },
-            molderia: {
-                estado: 'pedido',
-            },
-            digitalizacion: {
-                estado: 'traido por cliente',
-            },
-            modificacion: {
-                estado: 'pedido',
-            },
-            geometral: {
-                estado: 'pedido',
-            },
-            impresion: {
-                estado: 'pedido',
-            },
-            materiales: {
-                estado: 'traido por cliente',
-            },
-            tizado: {
-                estado: 'pedido',
-            },
-            corte: {
-                estado: 'pedido',
-            },
-            preconfeccion: {
-                estado: 'pedido',
-            },
-            confeccion: {
-                estado: 'en pausa',
-            },
-            terminado: {
-                estado: 'pedido',
-            },
-            planchado: {
-                estado: 'traido por cliente',
-            },
-            entregado: {
-                estado: 'pedido',
-            },
-            aprobado: {
-                estado: 'traido por cliente',
-            }
-        }
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
     },
     {
         id: 3,
         date: '2021-01-01',
         nombre: 'Musculosas con Recortes y Bolsillos',
         orden: 'Ver22/23-MerB-MuscCom-001',
-        estado: {
-            diseño: {
-                estado: 'pedido',
-            },
-            molderia: {
-                estado: 'en pausa',
-            },
-            digitalizacion: {
-                estado: 'traido por cliente',
-            },
-            modificacion: {
-                estado: 'pedido',
-            },
-            geometral: {
-                estado: 'pedido',
-            },
-            impresion: {
-                estado: 'en pausa',
-            },
-            materiales: {
-                estado: 'en pausa',
-            },
-            tizado: {
-                estado: 'pedido',
-            },
-            corte: {
-                estado: 'no pedido',
-            },
-            preconfeccion: {
-                estado: 'traido por cliente',
-            },
-            confeccion: {
-                estado: 'iniciado',
-            },
-            terminado: {
-                estado: 'en proceso',
-            },
-            planchado: {
-                estado: 'terminado',
-            },
-            entregado: {
-                estado: 'en pausa',
-            },
-            aprobado: {
-                estado: 'cancelado',
-            }
-        }
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'No pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
     },
 ]
-
+type FakeOrderType = typeof fakeOrders[0]
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -212,27 +122,13 @@ const DashboardCliente = () => {
         setEditEnabled((prev) => !prev);
     };
 
-    const columns: GridColumns = useMemo(() => ([
+    const columns = useMemo((): GridColumns<FakeOrderType> => ([
         { field: 'nombre', headerName: 'Nombre', maxWidth: 250, minWidth: 100, flex: 1 },
         { field: 'orden', headerName: 'Orden', maxWidth: 250, minWidth: 100, flex: 1 },
         {
             field: 'estado', headerName: 'Diseño', flex: 1, renderCell: (params) =>
                 <>
-                    <IconState state={params.value.diseño.estado} alt='Diseño' icon="https://cdn-icons-png.flaticon.com/512/5996/5996559.png" />
-                    <IconState state={params.value.molderia.estado} alt='Molderia' icon="https://cdn-icons-png.flaticon.com/512/4277/4277751.png" />
-                    <IconState state={params.value.digitalizacion.estado} alt='Digitalización' icon='https://cdn-icons-png.flaticon.com/512/2630/2630802.png' />
-                    <IconState state={params.value.modificacion.estado} alt='Modificación' icon='https://cdn-icons-png.flaticon.com/512/4556/4556475.png' />
-                    <IconState state={params.value.geometral.estado} alt='Geometral' icon='https://cdn-icons-png.flaticon.com/512/4904/4904582.png' />
-                    <IconState state={params.value.impresion.estado} alt='Impresion' icon='https://cdn-icons-png.flaticon.com/512/8746/8746757.png' />
-                    <IconState state={params.value.materiales.estado} alt='Materiales' icon='https://cdn-icons-png.flaticon.com/512/5797/5797962.png' />
-                    <IconState state={params.value.tizado.estado} alt='Tizado' icon='https://cdn-icons-png.flaticon.com/512/1812/1812432.png' />
-                    <IconState state={params.value.corte.estado} alt='Corte' icon='https://cdn-icons-png.flaticon.com/512/6181/6181345.png' />
-                    <IconState state={params.value.preconfeccion.estado} alt='Pre-confección' icon='https://cdn-icons-png.flaticon.com/512/6232/6232486.png' />
-                    <IconState state={params.value.confeccion.estado} alt='Confección' icon='https://cdn-icons-png.flaticon.com/512/588/588488.png' />
-                    <IconState state={params.value.terminado.estado} alt='Terminado' icon='https://cdn-icons-png.flaticon.com/512/4283/4283035.png' />
-                    <IconState state={params.value.planchado.estado} alt='Planchado' icon='https://cdn-icons-png.flaticon.com/512/2990/2990664.png' />
-                    <IconState state={params.value.entregado.estado} alt='Entregado' icon='https://cdn-icons-png.flaticon.com/512/819/819873.png' />
-                    <IconState state={params.value.aprobado.estado} alt='Aprobado' icon='https://cdn-icons-png.flaticon.com/512/3161/3161829.png' />
+                    {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
                 </>
         },
 

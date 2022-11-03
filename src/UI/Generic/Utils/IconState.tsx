@@ -9,7 +9,7 @@ interface IconStateProps {
 }
 
 const IconBorders = (estado: string) => {
-    switch (estado) {
+    switch (estado.toLowerCase()) {
         case "pedido":
             return "border-yellow-500";
         case "traido por cliente":

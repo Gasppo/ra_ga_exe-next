@@ -6,8 +6,9 @@ import LoadingIndicatorProvider from "../utils/LoadingIndicator/LoadingContextPr
 import LoadingOverlay from "../utils/LoadingIndicator/LoadingOverlay";
 import LoadingSlider from "../utils/LoadingIndicator/LoadingSlider";
 import LoadingSkeleton from "../utils/LoadingIndicator/LoadingSkeleton";
-import { StyledEngineProvider } from "@mui/material";
+import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import ErrorHandlerProvider from "../utils/ErrorHandler/error";
+import { defaultTheme } from "@styles/defaultTheme";
 
 const queryClient = new QueryClient()
 
@@ -16,21 +17,23 @@ const MyApp: AppType = ({ Component, pageProps }) => {
 
 
   return (
-    <StyledEngineProvider injectFirst>
-      <SessionProvider session={pageProps.session}>
-        <QueryClientProvider client={queryClient}>
-          <ErrorHandlerProvider>
-            <LoadingIndicatorProvider
-              blocking={LoadingOverlay}
-              nonBlocking={LoadingSlider}
-              replacing={LoadingSkeleton}
-            >
-              <Component {...pageProps} />
-            </LoadingIndicatorProvider>
-          </ErrorHandlerProvider>
-        </QueryClientProvider>
-      </SessionProvider>
-    </StyledEngineProvider>
+    <ThemeProvider theme={defaultTheme}>
+      <StyledEngineProvider injectFirst>
+        <SessionProvider session={pageProps.session}>
+          <QueryClientProvider client={queryClient}>
+            <ErrorHandlerProvider>
+              <LoadingIndicatorProvider
+                blocking={LoadingOverlay}
+                nonBlocking={LoadingSlider}
+                replacing={LoadingSkeleton}
+              >
+                <Component {...pageProps} />
+              </LoadingIndicatorProvider>
+            </ErrorHandlerProvider>
+          </QueryClientProvider>
+        </SessionProvider>
+      </StyledEngineProvider>
+    </ThemeProvider>
   )
 };
 

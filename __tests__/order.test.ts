@@ -106,10 +106,9 @@ it('Should create a new order with correct values', async () => {
     const data: OrderCreationData = {
         ...fichaTecnicaVaciaForm,
         nombreProducto: 'Pantalón Básico',
-        geometral: {
-            files: [{ name: 'test', type: 'geometral', urlID: 'test' }],
+        orderFiles: {
+            files: [{ name: 'test', type: 'orderFiles', urlID: 'test' }],
             observaciones: 'Test',
-            selected: true
         },
         user: {
             email: 'gasppogb@gmail.com',

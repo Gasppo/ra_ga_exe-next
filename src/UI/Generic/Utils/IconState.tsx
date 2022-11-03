@@ -1,4 +1,4 @@
-import { Fade, Paper, Popper, PopperPlacementType, Slide, Tooltip, Typography, Zoom } from "@mui/material";
+import { Tooltip, Zoom } from "@mui/material";
 import Image from "next/image";
 import React from "react";
 

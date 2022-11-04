@@ -72,4 +72,8 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     "Moldería Base": { selected: false },
     "Cotización": { selected: false },
     "Terminación": { selected: false },
+    orderFiles: {
+        files: [],
+        observaciones: ''
+    }
 }

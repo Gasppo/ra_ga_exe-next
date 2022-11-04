@@ -18,8 +18,11 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
         const selectedAttributes = Object.entries(data).filter(([, value]: [string, any]) => value?.selected && value?.selected === true).map(([key]) => key)
 
-        const selectedServices = await prisma.servicio.findMany({ select: { name: true }, where: { name: { in: selectedAttributes } } })
-
+        const selectedServices = await prisma.servicio.findMany({ select: { name: true, procesos: true }, where: { name: { in: selectedAttributes } } })
+        const procesosDesarrollo = selectedServices.reduce((prev, curr) => [...prev, ...curr.procesos.map(proc => proc.id)], [] as number[])
+        console.log(procesosDesarrollo)
+        console.log('Selected ATT', selectedAttributes)
+        console.log('Selected SERV', selectedServices)
         const idOrden = generateOrderID(data)
 
         const { sendEmail } = generateEmailer({
@@ -75,6 +78,11 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 //Connect the order to services by finding the service by name and checking if it was selected orderData[service.name].selected
                 servicios: {
                     connect: selectedServices.map(service => ({ name: service.name }))
+                },
+                procesos: {
+                    createMany: {
+                        data: procesosDesarrollo.map(proc => ({idEstadoProceso: 1, idProceso: proc}))
+                    }
                 }
             }
         })

@@ -2,8 +2,10 @@ import { NextApiRequest, NextApiResponse } from "next";
 
 const getMessages = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const orderID = req.query.orderId as string;
-
+        const orderID = req.query.orderID as string;
+        if (!orderID) { throw new Error("No orderID provided"); }
+        
+        console.log(orderID)
         const messages = await prisma.mensaje.findMany({
             where: { idOrden: orderID },
             include: { user: true }

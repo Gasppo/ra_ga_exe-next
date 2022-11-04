@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useMemo } from 'react';
 import { useTheme } from '@mui/material/styles';
 import MobileStepper from '@mui/material/MobileStepper';
 import Button from '@mui/material/Button';
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
+import { useFormContext } from 'react-hook-form';
 
 
 interface DotsMobileStepperProps {
@@ -19,6 +21,24 @@ export default function DotsMobileStepper(props: DotsMobileStepperProps) {
 
     const theme = useTheme();
 
+    const formContext = useFormContext<OrderCreationData>()
+    const data = formContext.watch()
+    const isInvalid = (stepNumer: number, data: OrderCreationData) => {
+        switch (stepNumer) {
+            case 0:
+                return !data.nombreProducto || !data.tipoPrenda.name || !data.complejidad || !data.atributosPrenda.material.observaciones
+            case 1:
+                return false
+            case 2:
+                return !data.atributosPrenda.genero.observaciones || !data.cantidad
+            case 3:
+                return false
+            default:
+                return false
+        }
+    }
+    const continueDisabled = useMemo(() => currStep === numberSteps - 1 || isInvalid(currStep, data), [currStep, numberSteps, data])
+
     return (
         <MobileStepper
             variant="dots"
@@ -27,7 +47,7 @@ export default function DotsMobileStepper(props: DotsMobileStepperProps) {
             activeStep={currStep}
             sx={{ maxWidth: 400, flexGrow: 1 }}
             nextButton={
-                currStep !== (numberSteps - 1) ? (<Button size="small" onClick={() => { console.log('click'); onForward() }}  >
+                currStep !== (numberSteps - 1) ? (<Button size="small" onClick={() => { console.log('click'); onForward() }} disabled={continueDisabled} >
                     Next
                     {theme.direction === 'rtl' ? (
                         <KeyboardArrowLeft />

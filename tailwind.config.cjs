@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        'split-white-black': "linear-gradient(to bottom, #111827 40% , #e5e5e5 0%);"
+        'split-white-black': "linear-gradient(to bottom, #111827 0% , #e5e5e5 0%);"
       }
     },
   },

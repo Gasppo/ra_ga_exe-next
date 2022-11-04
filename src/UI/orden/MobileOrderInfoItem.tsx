@@ -9,7 +9,7 @@ interface MobileOrderInfoItemProps {
 
 const MobileOrderInfoItem = ({ orden }: MobileOrderInfoItemProps) => {
     const date = new Date(orden.updatedAt)
-    console.log(orden)
+    
     return (
         <Link href={'/orden/' + orden.id}>
             <div className="mx-4 my-2 flex flex-row active:bg-gray-100">

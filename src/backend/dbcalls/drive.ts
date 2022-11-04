@@ -6,7 +6,7 @@ import { drive_v3, google } from "googleapis";
 
 
 export const verifyFileType = (file: formidable.File) => {
-    const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", 'application/pdf'];
+    const allowedFileTypes = ["image/jpeg", "image/png", "image/gif", 'application/pdf', 'application/octet-stream'];
     return allowedFileTypes.includes(file.mimetype);
 }
 

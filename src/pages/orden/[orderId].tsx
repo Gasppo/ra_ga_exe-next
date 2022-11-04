@@ -7,6 +7,7 @@ import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import OrderDetailsTab from '@UI/orden/OrderDetailsTab';
 import OrderFilesTab from '@UI/orden/OrderFilesTab';
+import OrderMessagesTab from '@UI/orden/OrderMessagesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
@@ -19,11 +20,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import { useIsFetching, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 const Home: NextPage = () => {
 
-    const isLoading = useIsFetching()
     const { addError } = React.useContext(ErrorHandlerContext)
     const [price] = React.useState(0)
     const [value, setValue] = React.useState(0);
@@ -53,20 +53,20 @@ const Home: NextPage = () => {
         'Orden expirada.'
     ]
 
-    const fetchStateNames = (): Promise<{id: number,nombre: string;}[]> => 
-        fetch(`/api/orders/states`,{
+    const fetchStateNames = (): Promise<{ id: number, nombre: string; }[]> =>
+        fetch(`/api/orders/states`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', accept: 'application/json' }
         })
-        .then((res) => res.ok ? res.json() : errorHandle(res))
-        .catch((e) => {throw e})
-    
-    const {data:stateNames,} = useQuery(['states'],fetchStateNames,{
+            .then((res) => res.ok ? res.json() : errorHandle(res))
+            .catch((e) => { throw e })
+
+    const { data: stateNames, } = useQuery(['states'], fetchStateNames, {
         onError: () => console.log("Error al traer los estados"),
         refetchOnWindowFocus: false,
         initialData: []
     });
-    const names = stateNames?.map(v =>  v.nombre);
+    const names = stateNames?.map(v => v.nombre);
 
     const fetchOrder = (): Promise<ExtendedOrdenData> =>
         fetch(`/api/order/obtain`, {
@@ -81,13 +81,13 @@ const Home: NextPage = () => {
             });
 
 
-    const { data: orderData, } = useQuery(['order'], fetchOrder, {
+    const { data: orderData, isFetching: isFetchingOrders } = useQuery(['order'], fetchOrder, {
         onError: () => addError('Error al traer orden'),
         refetchOnWindowFocus: false
     });
 
     const orderTitle = 'Orden: ' + orderData?.nombre
-    
+
 
     return (
         <div className="bg-split-white-black">
@@ -104,11 +104,11 @@ const Home: NextPage = () => {
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title={orderTitle} hasBack size='medium' />
-                            <LoadingIndicator show={!!isLoading}>
+                            <LoadingIndicator show={isFetchingOrders}>
 
                                 <div className="mt-16 w-full hidden md:flex">
-                                    <PriceCheckerSteps step={orderData?.estado?.id} price={price} isStepOptional={isStepOptional} steps={names} />
-                                   
+                                    <PriceCheckerSteps step={orderData?.estado?.id - 1} price={price} isStepOptional={isStepOptional} steps={names} />
+
                                 </div>
 
                                 <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
@@ -131,6 +131,7 @@ const Home: NextPage = () => {
                                                     <Tab label="Estado" value={0} />
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                     {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}
+                                                    {true && <Tab label="Mensajes" value={3} />}
                                                 </Tabs>
                                             </div>
                                             <div hidden={value !== 0} className='w-full'>
@@ -141,6 +142,9 @@ const Home: NextPage = () => {
                                             </div>
                                             <div hidden={value !== 2} className='w-full'>
                                                 <OrderDetailsTab orderData={orderData} />
+                                            </div>
+                                            <div hidden={value !== 3} className='w-full'>
+                                                <OrderMessagesTab orderData={orderData} />
                                             </div>
                                         </div>
                                     </div>

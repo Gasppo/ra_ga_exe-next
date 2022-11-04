@@ -87,32 +87,36 @@ export const findPrendaPrecioByTypeAndComplexity = async (tipoId: string, comple
 // }
 
 export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, complexityId: string) => {
+    try {
+        const precioDolar = await getPrecioDolar()
+        await prisma.servicio.findMany({ where: { name: { in: Object.keys(orderData) } } })
 
-    const precioDolar = await getPrecioDolar()
+        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, complexityId);
+        console.log('prendaPrecio', prendaPrecio)
 
-    const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, complexityId);
-    console.log('prendaPrecio', prendaPrecio)
+        const services = await prisma.servicio.findMany({})
 
-    const services = await prisma.servicio.findMany({})
+        const servicesPrices = services.reduce<{ [key: string]: { precioFijo: number, factorMultiplicador: number } }>((acc, service) => {
+            acc[service.name] = { precioFijo: service.precioFijo, factorMultiplicador: service.factorMultiplicador }
+            return acc
+        }, {})
 
-    const servicesPrices = services.reduce<{ [key: string]: { precioFijo: number, factorMultiplicador: number } }>((acc, service) => {
-        acc[service.name] = { precioFijo: service.precioFijo, factorMultiplicador: service.factorMultiplicador }
-        return acc
-    }, {})
-
-    console.log(servicesPrices)
-
-    const factores = Object.keys(orderData).reduce((prev, key) => {
-        if (key in servicesPrices) {
-            if (orderData[key]?.selected) {
-                prev.factorMultiplicador += servicesPrices[key].factorMultiplicador
-                prev.precioFijo += servicesPrices[key].precioFijo
+        const factores = Object.keys(orderData).reduce((prev, key) => {
+            if (key in servicesPrices) {
+                if (orderData[key]?.selected) {
+                    prev.factorMultiplicador += servicesPrices[key].factorMultiplicador
+                    prev.precioFijo += servicesPrices[key].precioFijo
+                    console.log(`${key} - Adding ${servicesPrices[key].factorMultiplicador} to factorMultiplicador and ${servicesPrices[key].precioFijo} to precioFijo`)
+                    prev.servicios[key] = { precioFijo: servicesPrices[key].precioFijo, factorMultiplicador: servicesPrices[key].factorMultiplicador }
+                }
             }
-        }
-        return prev
-    }, { precioFijo: 0, factorMultiplicador: 0 })
-
-    return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))
+            return prev
+        }, { precioFijo: 0, factorMultiplicador: 0, servicios: {} })
+        return (precioDolar?.precio * (prendaPrecio.precioBase * factores.factorMultiplicador + factores.precioFijo))
+    }
+    catch (e) {
+        console.error(e)
+    }
 }
 
 

@@ -60,6 +60,7 @@ model User {
     password      String?
     ResetToken    ResetToken[]
     orders        Orden[]
+    Mensaje       Mensaje[]
 }
 
 model VerificationToken {
@@ -109,23 +110,36 @@ model PrecioDelDolar {
 }
 
 model Orden {
-    id               String            @id @default(cuid())
-    prenda           PrecioPrenda      @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
+    id               String                   @id @default(cuid())
+    prenda           PrecioPrenda             @relation(fields: [idPrenda], references: [id], onDelete: Cascade)
     idPrenda         String
     nombre           String?
     cantidad         Int?
     idEstado         Int?
-    estado           EstadoOrden?      @relation(fields: [idEstado], references: [id], onDelete: Cascade)
-    user             User?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+    estado           EstadoOrden?             @relation(fields: [idEstado], references: [id], onDelete: Cascade)
+    user             User?                    @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId           String?
-    createdAt        DateTime          @default(now())
-    updatedAt        DateTime          @default(now())
-    expiresAt        DateTime          @default(now())
+    createdAt        DateTime                 @default(now())
+    updatedAt        DateTime                 @default(now())
+    expiresAt        DateTime                 @default(now())
     servicios        Servicio[]
     archivos         Archivo[]
     cotizacionOrden  CotizacionOrden[]
     detallesPrenda   DetallesPrenda?
     idDetallesPrenda String?
+    procesos         ProcesoDesarrolloOrden[]
+    mensajes         Mensaje[]
+}
+
+model Mensaje {
+    id        String   @id @default(cuid())
+    orden     Orden    @relation(fields: [idOrden], references: [id], onDelete: Cascade)
+    idOrden   String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @default(now())
+    mensaje   String
 }
 
 model CotizacionOrden {
@@ -142,13 +156,40 @@ model EstadoOrden {
     ordenes Orden[]
 }
 
+model ProcesoDesarrollo {
+    id                     Int                      @id @default(autoincrement())
+    nombre                 String
+    icono                  String
+    ProcesoDesarrolloOrden ProcesoDesarrolloOrden[]
+    Servicio               Servicio[]
+    servicioId             String?
+}
+
+model EstadoProcesoDesarrollo {
+    id                     Int                      @id @default(autoincrement())
+    descripcion            String
+    color                  String
+    ProcesoDesarrolloOrden ProcesoDesarrolloOrden[]
+}
+
+model ProcesoDesarrolloOrden {
+    id              String                  @id @default(cuid())
+    orden           Orden                   @relation(fields: [idOrden], references: [id], onDelete: Cascade)
+    idOrden         String
+    proceso         ProcesoDesarrollo       @relation(fields: [idProceso], references: [id], onDelete: Cascade)
+    idProceso       Int
+    estado          EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
+    idEstadoProceso Int
+}
+
 model Servicio {
-    id                  String  @id @default(cuid())
-    name                String  @unique
+    id                  String              @id @default(cuid())
+    name                String              @unique
     description         String
-    precioFijo          Float   @default(0)
-    factorMultiplicador Float   @default(0)
+    precioFijo          Float               @default(0)
+    factorMultiplicador Float               @default(0)
     ordenes             Orden[]
+    procesos            ProcesoDesarrollo[]
 }
 
 model Archivo {

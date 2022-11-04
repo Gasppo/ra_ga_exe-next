@@ -1,4 +1,5 @@
 import { fromToday } from '@backend/dbcalls/user';
+import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
 import handleOrderCreation from '@pages/api/order/new';
 import handleUserCreation from '@pages/api/user/create';
 import { Orden, PrismaClient } from '@prisma/client';
@@ -68,13 +69,14 @@ beforeAll(async () => {
 
 afterAll(async () => {
     //Delete everything created
-    await prisma.user.deleteMany({})
+    await prisma.atributoPrenda.deleteMany({})
+    await prisma.detallesPrenda.deleteMany({})
     await prisma.tipoPrenda.deleteMany({})
     await prisma.estadoOrden.deleteMany({})
     await prisma.precioDelDolar.deleteMany({})
     await prisma.complejidadConfeccion.deleteMany({})
     await prisma.precioPrenda.deleteMany({})
-
+    await prisma.user.deleteMany({})
 })
 
 
@@ -101,12 +103,12 @@ it('Should create a User with correct values', async () => {
 
 it('Should create a new order with correct values', async () => {
     const prenda = await prisma.tipoPrenda.findFirst({ where: { name: 'Pantalón' } })
-    const data = {
+    const data: OrderCreationData = {
         ...fichaTecnicaVaciaForm,
-        geometral: {
-            files: [{ name: 'test', type: 'geometral', urlID: 'test' }],
+        nombreProducto: 'Pantalón Básico',
+        orderFiles: {
+            files: [{ name: 'test', type: 'orderFiles', urlID: 'test' }],
             observaciones: 'Test',
-            selected: true
         },
         user: {
             email: 'gasppogb@gmail.com',
@@ -115,7 +117,8 @@ it('Should create a new order with correct values', async () => {
         tipoPrenda: {
             id: prenda.id,
             name: prenda.name,
-        }
+        },
+        complejidad: 'Básico',
     }
 
 

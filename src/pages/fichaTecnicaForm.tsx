@@ -15,9 +15,9 @@ import { useContext, useState } from 'react';
 import { useIsFetching, useIsMutating, useMutation, useQuery } from "react-query";
 import ClothingConfirmationForm from "../UI/cotizador/Ficha Tecnica/ClothingConfirmationForm";
 import ClothingDetailForm from "../UI/cotizador/Ficha Tecnica/ClothingDetailForm";
-import ClothingMouldsForm from "../UI/cotizador/Ficha Tecnica/ClothingMouldsForm";
+import ClothingFilesForm from "../UI/cotizador/Ficha Tecnica/ClothingFilesForm";
 import ClothingSelectionForm from "../UI/cotizador/Ficha Tecnica/ClothingSelectionForm";
-import ClothingSizesForm from "../UI/cotizador/Ficha Tecnica/ClothingSizesForm";
+import ClothingProcessesForm from "../UI/cotizador/Ficha Tecnica/ClothingProcessesForm";
 import PriceCheckerSteps from "../UI/cotizador/Stepper";
 import Footer from "../UI/Generic/Footer";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
@@ -56,7 +56,7 @@ const Home: NextPage = () => {
 
     const router = useRouter()
 
-    const steps = ['Selección Prenda', 'Moldería', 'Especificaciones', 'Talles y Cant.', 'Confirmación']
+    const steps = ['Selección Prenda', 'Archivos', 'Especificaciones', 'Procesos', 'Confirmación']
 
     const isStepOptional = () => false
 
@@ -69,10 +69,9 @@ const Home: NextPage = () => {
         const orderID = generateOrderID(data)
         if (data?.files?.length > 0) {
             const uploadedFiles = await (await handleUploadFile(data.files, orderID)).data
-            const mapKeys = data.files.reduce((prev, currStep) => ({ ...prev, [currStep.file.name]: currStep.section }), {})
             Array.isArray(uploadedFiles) ?
-                uploadedFiles.forEach(file => updateFileURL(data, file, mapKeys)) :
-                updateFileURL(data, uploadedFiles, mapKeys)
+                uploadedFiles.forEach(file => updateFileURL(data, file)) :
+                updateFileURL(data, uploadedFiles)
         }
         await createOrderMutation(data)
 
@@ -109,9 +108,9 @@ const Home: NextPage = () => {
                                         <div className="md:mt-9 grow flex justify-evenly">
                                             <ClothingImage clothesData={clothesData} currStep={step} />
                                             {step === 0 && <ClothingSelectionForm clothesData={clothesData} />}
-                                            {step === 1 && <ClothingMouldsForm />}
+                                            {step === 1 && <ClothingFilesForm />}
                                             {step === 2 && <ClothingDetailForm />}
-                                            {step === 3 && <ClothingSizesForm />}
+                                            {step === 3 && <ClothingProcessesForm />}
                                             {step === 4 && <ClothingConfirmationForm />}
                                         </div>
                                         <div className="flex justify-self-end justify-center md:justify-end w-full md:w-10/12 space-x-4 mt-7 md::mb-7 md:mt-24">

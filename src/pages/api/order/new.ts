@@ -14,9 +14,15 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
     try {
         const data = OrderCreationDataSchema.parse(req.body);
-        const { id: debugComplejidadID } = await prisma.complejidadConfeccion.findFirst({ where: { name: 'Básico' } })
+        const { id: idComplejidad } = await prisma.complejidadConfeccion.findFirst({ where: { name: data.complejidad } })
 
+        const selectedAttributes = Object.entries(data).filter(([, value]: [string, any]) => value?.selected && value?.selected === true).map(([key]) => key)
 
+        const selectedServices = await prisma.servicio.findMany({ select: { name: true, procesos: true }, where: { name: { in: selectedAttributes } } })
+        const procesosDesarrollo = selectedServices.reduce((prev, curr) => [...prev, ...curr.procesos.map(proc => proc.id)], [] as number[])
+        console.log(procesosDesarrollo)
+        console.log('Selected ATT', selectedAttributes)
+        console.log('Selected SERV', selectedServices)
         const idOrden = generateOrderID(data)
 
         const { sendEmail } = generateEmailer({
@@ -28,16 +34,15 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
 
         await updateExpiredOrders();
 
-        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, debugComplejidadID);
-        const precio = await calculateOrderTotal(data, debugComplejidadID)
+        const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(data.tipoPrenda.id, idComplejidad);
+        const precio = await calculateOrderTotal(data, idComplejidad)
         const atributosPrenda = await getAtributosPrenda(data)
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
-
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
             data: {
                 id: idOrden,
-                nombre: `${prendaPrecio.tipo.name} ${prendaPrecio.complejidad.name}`,
+                nombre: data.nombreProducto,
                 cantidad: 100,
                 expiresAt: fromToday(60 * 60 * 24 * 15),
                 estado: {
@@ -52,9 +57,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 archivos: {
                     createMany: {
                         data: [
-                            ...data.molderiaBase.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'molderiaBase' })),
-                            ...data.geometral.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'geometral' })),
-                            ...data.logoMarca.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'logoMarca' })),
+                            ...data.orderFiles.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'order' })),
                         ]
                     }
                 },
@@ -70,6 +73,15 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                                 data: atributosPrenda.map(atr => ({ name: atr.name, observacion: atr.observaciones, cantidad: atr.cantidad }))
                             }
                         }
+                    }
+                },
+                //Connect the order to services by finding the service by name and checking if it was selected orderData[service.name].selected
+                servicios: {
+                    connect: selectedServices.map(service => ({ name: service.name }))
+                },
+                procesos: {
+                    createMany: {
+                        data: procesosDesarrollo.map(proc => ({idEstadoProceso: 1, idProceso: proc}))
                     }
                 }
             }

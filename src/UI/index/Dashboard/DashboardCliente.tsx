@@ -1,11 +1,11 @@
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from "@mui/icons-material/Edit";
-import LaunchIcon from '@mui/icons-material/Launch';
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { Button, Divider, Link, TextField } from "@mui/material";
 import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from "@mui/x-data-grid";
+import IconState from "@UI/Generic/Utils/IconState";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import MobileOrderInfoItem from "@UI/orden/MobileOrderInfoItem";
 import MobileOrderInfoSkeleton from "@UI/orden/MobileOrderInfoSkeleton";
@@ -19,6 +19,78 @@ import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
 
+const fakeOrders = [
+    {
+        id: 1,
+        date: '2021-01-01',
+        nombre: 'Remera Basica MC',
+        orden: 'Inv22-MerB-RemBas-001',
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
+    },
+    {
+        id: 2,
+        date: '2021-01-01',
+        nombre: 'Pantalon Cargo Chupin',
+        orden: 'Ver22/23-MerB-PantMed-001',
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
+    },
+    {
+        id: 3,
+        date: '2021-01-01',
+        nombre: 'Musculosas con Recortes y Bolsillos',
+        orden: 'Ver22/23-MerB-MuscCom-001',
+        procesos: [
+            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
+            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
+            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
+            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
+            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
+            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
+            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
+            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
+            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
+            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
+            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
+            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
+            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
+            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
+            { proceso: 'Aprobado', estado: 'No pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
+        ],
+    },
+]
+type FakeOrderType = typeof fakeOrders[0]
 
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
@@ -50,13 +122,17 @@ const DashboardCliente = () => {
         setEditEnabled((prev) => !prev);
     };
 
-    const columns: GridColumns = useMemo(() => ([
-        { field: 'id', headerName: 'Id', minWidth: 150, flex: 1 },
-        { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
-        { field: 'cantidad', headerName: 'Cantidad', minWidth: 75, flex: 1 },
-        { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
-        { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },
-        { field: ' ', headerName: 'Enlace', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
+    const columns = useMemo((): GridColumns<FakeOrderType> => ([
+        { field: 'nombre', headerName: 'Nombre', maxWidth: 250, minWidth: 100, flex: 1 },
+        { field: 'orden', headerName: 'Orden', maxWidth: 250, minWidth: 100, flex: 1 },
+        {
+            field: 'estado', headerName: 'Diseño', flex: 1, renderCell: (params) =>
+                <>
+                    {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
+                </>
+        },
+
+
     ]), []);
 
     function CustomToolbar() {
@@ -76,7 +152,7 @@ const DashboardCliente = () => {
                     <div className="hidden md:flex md:mr-10 items-center justify-center">
                         <div className="rounded-2xl">
                             <Link href={"/fichaTecnicaForm"}>
-                                <Button variant="outlined" startIcon={<PostAddIcon />} className="font-extrabold text-gray-700 border-gray-600 border-2 rounded-lg">
+                                <Button variant="outlined" startIcon={<PostAddIcon />} >
                                     Nueva Cotización
                                 </Button>
                             </Link>
@@ -90,7 +166,7 @@ const DashboardCliente = () => {
                     <LoadingIndicator show={isFetchingOrders}>
                         <div className="w-full h-[510px] p-4">
                             <DataGrid
-                                rows={orderData || []}
+                                rows={fakeOrders || []}
                                 columns={columns || []}
                                 components={{
                                     Toolbar: CustomToolbar,

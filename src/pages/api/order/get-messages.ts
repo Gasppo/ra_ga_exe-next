@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '@server/db/client';
 
 const getMessages = async (req: NextApiRequest, res: NextApiResponse) => {
     try {

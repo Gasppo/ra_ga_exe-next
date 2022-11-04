@@ -1,5 +1,7 @@
 import { OrderMessageSchema } from "@backend/schemas/OrderMessageSchema";
 import { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '@server/db/client';
+
 
 const postMessage = async (req: NextApiRequest, res: NextApiResponse) => {
     try {

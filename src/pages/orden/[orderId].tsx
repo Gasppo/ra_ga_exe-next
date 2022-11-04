@@ -111,7 +111,7 @@ const Home: NextPage = () => {
 
                                 </div>
 
-                                <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
+                                <div className="flex flex-col md:flex-row  mx-2 md:mx-20 justify-between" >
                                     <div className="md:mt-9 grow flex flex-col items-center md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
                                         <div className="hidden md:flex">
                                             <Image src={orderData?.prenda?.tipo?.picture || ''} height='200px' width={'200px'} alt="Seleccione prenda.." />
@@ -127,7 +127,7 @@ const Home: NextPage = () => {
                                     <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 mt-4 md:mt-9 md:p-10">
                                         <div className='w-full flex flex-col items-start border-2 p-4 shadow-lg max-h-[75vh] overflow-y-auto'>
                                             <div className='border-b-2 w-full'>
-                                                <Tabs value={value} onChange={handleChange} >
+                                                <Tabs value={value} onChange={handleChange} variant='scrollable'>
                                                     <Tab label="Estado" value={0} />
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                     {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}

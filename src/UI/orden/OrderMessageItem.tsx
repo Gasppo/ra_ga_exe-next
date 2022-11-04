@@ -13,8 +13,8 @@ const OrderMessageItem = ({ userEmail, message, loading }: Props) => {
     return (
         <div className={`rounded-lg w-fit p-2 min-w-[64px] flex flex-row justify-between items-center space-x-2 text-white ${userEmail === message.user.email ? 'bg-gray-800 self-end' : 'bg-gray-500'}`}>
             <div className='flex flex-col'>
-                <div>{message.message}</div>
-                <div className='text-xs flex flex-row space-x-2 items-center'>
+                <div className='text-xs md:text-base'>{message.message}</div>
+                <div className='text-[0.65rem] md:text-xs flex flex-row space-x-2 items-center'>
                     <div className='text-gray-300'>
                         [{date.toLocaleString()}] {message.user.name}
                     </div>

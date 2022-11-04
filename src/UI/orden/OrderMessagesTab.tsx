@@ -68,14 +68,14 @@ const OrderMessagesTab = ({ orderData }: Props) => {
                 {creatingMessage && <OrderMessageItem message={loadingMessage} userEmail={sessionData?.user?.email || ''} loading={creatingMessage} />}
             </div>
             <div className='mx-4'>
-                <HookForm defaultValues={{ message: '', userEmail: sessionData?.user?.email || '', orderId: orderData?.id || '' }} onSubmit={handleSendMessage} formOptions={{ resolver: zodResolver(OrderMessageSchema) }}>
+                <HookForm defaultValues={{ message: '', userEmail: sessionData?.user?.email || '', orderId: orderData?.id || '' }} onSubmit={handleSendMessage} formOptions={{ resolver: zodResolver(OrderMessageSchema) }} resetOnSubmit>
                     <div className='flex flex-row items-center'>
                         <div className='w-11/12'>
                             <FormItem layout={{ type: 'Input', scope: 'message', options: { placeholderText: 'Escriba su mensaje...' } }} />
                         </div>
                         <div className='flex justify-center items-center w-1/12 ml-2'>
                             <div>
-                                <IconButton type='submit'>
+                                <IconButton type='submit' disabled={creatingMessage}>
                                     <SendIcon />
                                 </IconButton>
                             </div>

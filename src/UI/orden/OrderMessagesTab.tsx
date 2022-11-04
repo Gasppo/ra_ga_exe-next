@@ -40,7 +40,7 @@ const OrderMessagesTab = ({ orderData }: Props) => {
     const queryClient = useQueryClient()
     const orderID = orderData?.id || ''
 
-    const { data: messages } = useQuery(['orderMessages', orderID], () => orderID ? getOrderMessages(orderID) : null, { initialData: [], refetchOnWindowFocus: false })
+    const { data: messages } = useQuery(['orderMessages', orderID], () => orderID ? getOrderMessages(orderID) : [], { initialData: [], refetchOnWindowFocus: false })
 
     const { mutateAsync, isLoading: creatingMessage } = useMutation(createMessage, {
         onSuccess: () => {

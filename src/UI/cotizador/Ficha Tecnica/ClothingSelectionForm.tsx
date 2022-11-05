@@ -1,6 +1,6 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { TipoPrenda } from "@prisma/client";
-import { getComplexity } from "@utils/queries/cotizador";
+import { availableComplexities } from "@utils/queries/cotizador";
 import { useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useQuery } from "react-query";
@@ -15,8 +15,9 @@ interface ModelFormProps {
 const ClothingSelectionForm = (props: ModelFormProps) => {
 
     const { clothesData } = props
-    const { data: complexitiesData } = useQuery(['complexities'], getComplexity, { initialData: [], refetchOnWindowFocus: false})
     const { setValue, watch } = useFormContext<OrderCreationData>()
+    const tipoPrendaID = watch('tipoPrenda.id')
+    const { data: complexitiesData } = useQuery(['complexities', tipoPrendaID], () => tipoPrendaID ? availableComplexities(tipoPrendaID) : [], { initialData: [], refetchOnWindowFocus: false })
     const clothes = useMemo(() => clothesData?.map(el => ({ key: el.name, text: el.name })) || [], [clothesData])
     const complexities = useMemo(() => complexitiesData?.map(el => ({ key: el.name, text: el.name })) || [], [complexitiesData])
 

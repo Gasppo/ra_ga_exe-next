@@ -150,6 +150,45 @@ const Home: NextPage = () => {
                                     </div>
 
                                 </div>
+                                {/*Yo se que ud se pregunta "¿Gasppo dejo codigo comentado pusheado????" y si, pero bueno cada tanto fallamos todos, pero este codigo requiere ser charlado con el cliente*/}
+                                {/* <div className='flex flex-row justify-between p-4 text-gray-800'>
+                                    <div className='flex flex-col items-start justify-between p-4 w-1/3 mx-2 space-y-2'>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Marca</p></div>
+                                            <div className="text-sm" ><span>{orderData.user.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Contacto</p></div>
+                                            <div className="text-sm" ><span>{orderData.user.email}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Nombre del producto</p></div>
+                                            <div className="text-sm" ><span>{orderData.nombre}</span></div>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col items-center p-4 w-1/3  mx-2 text-4xl'>Ficha de Proceso</div>
+                                    <div className='flex flex-col items-end p-4  w-1/3  mx-2 space-y-2'>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Codigo de producto</p></div>
+                                            <div className="text-sm" ><span>{orderData.id}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Categoría</p></div>
+                                            <div className="text-sm" ><span>{orderData.prenda.tipo.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Complejidad</p></div>
+                                            <div className="text-sm" ><span>{orderData.prenda.complejidad.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Género/s</p></div>
+                                            <div className="text-sm capitalize" ><span>{orderData.detallesPrenda.atributos.find(el => el.name === 'genero').observacion || ''}</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='m-6 p-4 border-2 min-h-screen'>
+
+                                </div> */}
                             </LoadingIndicator>
                         </div>
                     </div>

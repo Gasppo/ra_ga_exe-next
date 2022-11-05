@@ -63,7 +63,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 },
                 cotizacionOrden: {
                     create: {
-                        precio: precio,
+                        precio: precio.precioTotal,
                     }
                 },
                 detallesPrenda: {

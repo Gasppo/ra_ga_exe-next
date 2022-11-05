@@ -30,8 +30,15 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
             type: 'Input',
             label: 'Confirm Password',
             scope: 'confirmPassword',
-            options: { textType: 'password', size: 'small' },
+            options: { size: 'small' },
             width: 12,
+        },
+        {
+            type: 'Input',
+            label: 'Telefono',
+            scope: 'telefono',
+            options: { textType: 'password', size: 'small' },
+            width: 9,
         },
     ]
 }

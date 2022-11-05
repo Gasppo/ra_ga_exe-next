@@ -1,4 +1,4 @@
-import { emailErrorMessage, maxCharErrorMessage, minCharErrorMessage } from "@backend/errors/errorMessages";
+import { emailErrorMessage, maxCharErrorMessage, minCharErrorMessage, exactCharErrorMessage } from "@backend/errors/errorMessages";
 import { z } from "zod";
 
 export const UserCreationSchema = z.object({
@@ -6,6 +6,7 @@ export const UserCreationSchema = z.object({
     email: z.string().email({ message: emailErrorMessage() }),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
     confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
+    telefono: z.string().length(10, { message: exactCharErrorMessage(10)})
 }).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
 
 export type UserCreationSchemaType = z.infer<typeof UserCreationSchema>;

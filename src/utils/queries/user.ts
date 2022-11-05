@@ -9,6 +9,7 @@ export type SignupResponse = {
         user: {
             name: string,
             email: string,
+            telefono: string,
             image: string,
         }
     }

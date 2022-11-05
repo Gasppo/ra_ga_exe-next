@@ -95,7 +95,7 @@ type FakeOrderType = typeof fakeOrders[0]
 const DashboardCliente = () => {
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();
-
+    
     const { addError } = useContext(ErrorHandlerContext);
 
     const fetchOrders = (email: string): Promise<ExtendedOrdenData[]> =>
@@ -112,7 +112,26 @@ const DashboardCliente = () => {
                 console.log("Broke here");
                 throw error;
             });
+    
+    const fetchUser = (email: string): Promise<{ name: string, email: string, image: string, telefono: string }> => 
+        fetch(`/api/users/obtain` , {
+            method: "POST",
+            body: JSON.stringify({ email:email }),
+            headers: {
+                "Content-Type": "application/json",
+                accept: "application/json",
+            },
+        })
+        .then(res => (res.ok? res.json(): errorHandle(res)))
+        .catch(error => {
+            console.log('Broke fetching user');
+            throw error;
+        });
+    
 
+    const { data: userInfo, isLoading: isUserInfo } = useQuery(['userInfo', sessionData?.user?.email], () => fetchUser(sessionData?.user?.email), {
+        onError: () => addError('Error al traer el usuario')
+    })
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
         onError: () => addError('Error al traer ordenes')
@@ -195,7 +214,7 @@ const DashboardCliente = () => {
                             variant="standard"
                             disabled={!editEnabled}
                             label="Nombre"
-                            value={sessionData.user.name}
+                            value={userInfo.name}
                             InputProps={{ disableUnderline: !editEnabled }}
                         />
                     </div>
@@ -204,7 +223,16 @@ const DashboardCliente = () => {
                             variant="standard"
                             disabled
                             label="Correo"
-                            value={sessionData.user.email}
+                            value={userInfo.email}
+                            InputProps={{ disableUnderline: true }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <TextField
+                            variant="standard"
+                            disabled
+                            label="Telefono"
+                            value={userInfo.name}
                             InputProps={{ disableUnderline: true }}
                         />
                     </div>

@@ -97,13 +97,14 @@ export const createResetToken = async (userId: string) => {
 }
 
 
-export const createNewUser = async (data: { name: string, email: string, password: string }) => {
+export const createNewUser = async (data: { name: string, email: string, password: string ,telefono: string}) => {
     const password = hashPassword(data.password);
     return await prisma.user.create({
         data: {
             email: data.email,
             name: data.name,
             password: password,
+            telefono: data.telefono,
         }
     });
 }

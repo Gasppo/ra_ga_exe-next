@@ -28,7 +28,7 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
     const errors = error?.error ? (typeof error.error === 'string' ? {} : error?.error.fieldErrors) : {}
     const [completedSignUp, setCompletedSignUp] = useState(false)
 
-    const defaultFormValues = { name: '', email: '', password: '', confirmPassword: '' }
+    const defaultFormValues = { name: '', email: '', password: '', confirmPassword: '',telefono:'' }
 
     const handleFormSubmit = async (data: UserCreationSchemaType) => {
         try {

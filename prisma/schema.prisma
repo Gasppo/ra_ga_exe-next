@@ -52,6 +52,7 @@ model User {
     name          String?
     email         String?      @unique
     emailVerified DateTime?
+    telefono      String?
     image         String?
     accounts      Account[]
     sessions      Session[]
@@ -61,6 +62,24 @@ model User {
     ResetToken    ResetToken[]
     orders        Orden[]
     Mensaje       Mensaje[]
+}
+
+model MarcaDeUsuario {
+    id String @id @default(cuid())
+    imagen String?
+    genero String?
+    estilo String?
+    idTipoDePrenda String
+    tipoDePrenda TipoPrenda @relation(fields: [idTipoDePrenda], references: [id])
+    volumenProduccion Int?
+}
+//Corresponde a Ficha de Cliente como informacion del usuario
+model FichaDeUsuario {
+    id String @id @default(cuid())
+    cuit String?
+    direccionFacturacion String?
+    direccionEnvio String?
+
 }
 
 model VerificationToken {
@@ -93,6 +112,7 @@ model TipoPrenda {
     name    String         @unique
     picture String
     precios PrecioPrenda[]
+    marca MarcaDeUsuario[]
 }
 
 model ComplejidadConfeccion {

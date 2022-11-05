@@ -65,14 +65,32 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-    await prisma.atributoPrenda.deleteMany({})
-    await prisma.detallesPrenda.deleteMany({})
-    await prisma.tipoPrenda.deleteMany({})
-    await prisma.estadoOrden.deleteMany({})
-    await prisma.precioDelDolar.deleteMany({})
-    await prisma.complejidadConfeccion.deleteMany({})
-    await prisma.precioPrenda.deleteMany({})
-    await prisma.user.deleteMany({})
+    //Delete everything created
+    const deleteServices = prisma.servicio.deleteMany({})
+    const deletePrendas = prisma.atributoPrenda.deleteMany({})
+    const deleteDetalles = prisma.detallesPrenda.deleteMany({})
+    const deleteOrdenes = prisma.orden.deleteMany({})
+    const deleteTipoPrenda = prisma.tipoPrenda.deleteMany({})
+    const deleteEstadoOrden = prisma.estadoOrden.deleteMany({})
+    const deletePrecioDolar = prisma.precioDelDolar.deleteMany({})
+    const deleteComplejidad = prisma.complejidadConfeccion.deleteMany({})
+    const deletePrecioPrenda = prisma.precioPrenda.deleteMany({})
+    const deleteUser = prisma.user.deleteMany({})
+
+    await prisma.$transaction([
+        deleteServices,
+        deletePrendas,
+        deleteDetalles,
+        deleteOrdenes,
+        deleteTipoPrenda,
+        deleteEstadoOrden,
+        deletePrecioDolar,
+        deleteComplejidad,
+        deletePrecioPrenda,
+        deleteUser
+    ])
+
+    await prisma.$disconnect()
 })
 
 type ExpectedResponse = {
@@ -150,6 +168,7 @@ it('Should not create a User with incorrect email values', async () => {
 })
 
 it('Should not create a User with incorrect password values', async () => {
+
 
     const data = {
         name: 'Test',

@@ -11,7 +11,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const precio = await calculateOrderTotal(data, debugComplejidadID)
 
-        res.status(200).json({ price: precio });
+        res.status(200).json({ price: precio.precioTotal, preciosIndividuales: precio.preciosIndividuales});
 
     } catch (error) {
         res.status(500).json({ error: error })

@@ -98,3 +98,22 @@ export const updateFileURL = (data: OrderCreationData, file: FileUploadResponse)
     data.orderFiles.files = data.orderFiles.files.map(el => el.name === file.fileName ? { ...el, urlID: file.file.data.id } : el)
 
 }
+
+export const availableComplexities = (idPrenda: string): Promise<ComplejidadConfeccion[]> => fetch('/api/clothes/available-complexities?idPrenda=' + idPrenda,)
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
+
+export const fetchPrice = async (data: OrderCreationData): Promise<{
+    price: number,
+    preciosIndividuales: { servicio: string, precioTotal: number }[],
+}> => {
+    return await fetch(`/api/order/calculate-price`, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+            "Content-Type": "application/json",
+            accept: "application/json",
+        },
+    }).then(res => res.json())
+}

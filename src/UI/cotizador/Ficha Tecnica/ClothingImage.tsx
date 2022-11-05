@@ -1,5 +1,6 @@
 import { OrderCreationData } from '@backend/schemas/OrderCreationSchema'
 import { TipoPrenda } from '@prisma/client'
+import { fetchPrice } from '@utils/queries/cotizador'
 import Image from 'next/image'
 import { useMemo } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -16,24 +17,9 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
 
     const clothesName = formContext.watch('tipoPrenda.name')
     const formData = formContext.watch()
-
     const image = useMemo(() => clothesData?.find(el => el.name === clothesName), [clothesData, clothesName])?.picture
 
-    const fetchPrice = async (data: OrderCreationData): Promise<{ price: number }> => {
-        return await fetch(`/api/order/calculate-price`, {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: {
-                "Content-Type": "application/json",
-                accept: "application/json",
-            },
-        }).then(res => res.json())
-    }
-
-    const { data } = useQuery([formData, currStep], () => currStep === 4 ? fetchPrice(formData) : ({ price: 0 }), {
-        initialData: { price: 0 },
-        refetchOnWindowFocus: false
-    })
+    const { data } = useQuery([formData, currStep], () => currStep === 4 ? fetchPrice(formData) : null, { refetchOnWindowFocus: false })
 
     return (
         <>
@@ -41,7 +27,12 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
                 <div className='p-4'>
                     {image && <Image src={image} height='200px' width={'200px'} alt="Seleccione prenda.." />}
                 </div>
-                {currStep === 4 && <div className='mt-4'>Precio Estimado: ${data?.price?.toFixed(2) || '0.00'}</div>}
+                {currStep === 4 && <div className='flex flex-col space-y-2'>
+                    <div className='mt-4'>Precio Estimado: ${data?.price?.toFixed(0) || '0.00'}</div>
+                    <div className="flex flex-col list-disc" >
+                        {data?.preciosIndividuales?.map(el => <li className="text-xs" key={el.servicio}> {el.servicio}: ${el.precioTotal?.toFixed(0)} </li>)}
+                    </div>
+                </div>}
             </div>
         </>
     )

@@ -24,7 +24,7 @@ const ClothingConfirmationForm = () => {
             <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
 
             <div className="mt-3 w-full md:w-2/4">
-                <div>{cotizadorData.orderFiles.files ? "✔️" : "❌"} Archivos {cotizadorData.orderFiles?.files?.length ? ' - ' + cotizadorData.orderFiles?.files?.length + ' archivos seleccionados' : ''}</div>
+                <div>{cotizadorData.orderFiles.files?.length > 0 ? "✔️" : "❌"} Archivos {cotizadorData.orderFiles?.files?.length > 0 ? ' - ' + cotizadorData.orderFiles?.files?.length + ' archivos seleccionados' : ''}</div>
                 <div>Observaciones: {cotizadorData.orderFiles?.observaciones ? cotizadorData.orderFiles?.observaciones : ' - '}</div>
             </div>
 

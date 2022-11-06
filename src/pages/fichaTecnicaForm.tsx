@@ -26,6 +26,7 @@ import { ErrorHandlerContext } from "../utils/ErrorHandler/error";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, updateFileURL, uploadFile } from "../utils/queries/cotizador";
+import { obtainRole } from "@backend/dbcalls/user";
 
 const Home: NextPage = () => {
 
@@ -135,8 +136,12 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
     const session = await getSession({ req: context.req });
-    if (!session) {
+
+    const getUserRole = await obtainRole(session?.user?.email || '');
+
+    if (!session || getUserRole.role.name !== 'Usuario') {
         return {
             redirect: {
                 destination: '/',

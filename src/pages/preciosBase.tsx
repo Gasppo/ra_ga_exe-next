@@ -1,3 +1,4 @@
+import { obtainRole } from "@backend/dbcalls/user";
 import { Slide, Tab, Tabs } from "@mui/material";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import BasePricesTab from "@UI/preciosBase/BasePricesTab";
@@ -81,8 +82,12 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
     const session = await getSession({ req: context.req });
-    if (!session) {
+
+    const getUserRole = await obtainRole(session?.user?.email || '');
+
+    if (!session || getUserRole.role.name !== 'Dueño') {
         return {
             redirect: {
                 destination: '/',

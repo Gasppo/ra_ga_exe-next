@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+const obtainPrices = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const clothes = await prisma.precioPrenda.findMany({
@@ -31,4 +31,4 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default get;
+export default obtainPrices;

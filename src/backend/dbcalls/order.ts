@@ -49,8 +49,16 @@ export const verifyUserOrder = async (orderId: string | string[], userEmail: str
         }
     })
 
+
     //TODO: Check if user is admin
-    return order?.user.email === userEmail || userEmail === 'garciagb24@gmail.com'
+    if (order?.user.email === userEmail) return true
+
+    const role = await prisma.user.findUnique({
+        where: { email: userEmail },
+        select: { role: true }
+    })
+
+    return role?.role.name === "Dueño"
 }
 
 export const getPrecioDolar = async () => {

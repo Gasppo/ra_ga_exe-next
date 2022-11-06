@@ -1,79 +1,13 @@
 import handleCheckCredentials from '@pages/api/user/check-credentials';
 import handleUserCreation from '@pages/api/user/create';
-import { PrismaClient } from '@prisma/client';
+import { afterTesting, beforeTesting } from '@utils/tests/configitems';
 import { generateMockRes } from '@utils/tests/generateMockRes';
 import { NextApiRequest } from 'next';
-const prisma = new PrismaClient()
 
-beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(jest.fn());
-    jest.spyOn(console, 'debug').mockImplementation(jest.fn());
-
-    await prisma.tipoPrenda.createMany({
-        data: [
-            { name: 'Pantalón', picture: 'https://cdn-icons-png.flaticon.com/512/2122/2122621.png' },
-            { name: 'Remera / Camiseta', picture: 'https://cdn-icons-png.flaticon.com/512/2357/2357127.png' },
-        ]
-    })
-
-    await prisma.estadoOrden.createMany({
-        data: [
-            { nombre: 'Aguardando Confirmación' },
-            { nombre: 'Seña Pendiente' },
-            { nombre: 'En produccion' },
-            { nombre: 'Aguarando Servicios Externos' },
-            { nombre: 'Aguardando Envío' },
-            { nombre: 'Rechazado' },
-            { nombre: 'Expirado' },
-            { nombre: 'Cancelado' }
-        ]
-    })
-
-    await prisma.precioDelDolar.create({
-        data: { precio: 100 }
-    })
+beforeAll(beforeTesting);
+afterAll(afterTesting)
 
 
-    await prisma.complejidadConfeccion.createMany({
-        data: [
-            { name: 'Básico', description: 'Básico' },
-            { name: 'Medio', description: 'Medio' },
-            { name: 'Complejo', description: 'Complejo' },
-            { name: 'Muy Complejo', description: 'Muy Complejo' },
-            { name: 'Ultra Complejo', description: 'Ultra Complejo' }
-        ]
-    })
-
-    await prisma.precioPrenda.create({
-        data: {
-            precioBase: 18,
-            complejidad: { connect: { name: 'Básico' } },
-            tipo: { connect: { name: 'Pantalón' } },
-        }
-    })
-
-
-    await prisma.precioPrenda.create({
-        data: {
-            precioBase: 12,
-            complejidad: { connect: { name: 'Básico' } },
-            tipo: { connect: { name: 'Remera / Camiseta' } },
-        }
-    })
-
-
-});
-
-afterAll(async () => {
-    await prisma.atributoPrenda.deleteMany({})
-    await prisma.detallesPrenda.deleteMany({})
-    await prisma.tipoPrenda.deleteMany({})
-    await prisma.estadoOrden.deleteMany({})
-    await prisma.precioDelDolar.deleteMany({})
-    await prisma.complejidadConfeccion.deleteMany({})
-    await prisma.precioPrenda.deleteMany({})
-    await prisma.user.deleteMany({})
-})
 
 type ExpectedResponse = {
     statusCode?: number,
@@ -150,6 +84,7 @@ it('Should not create a User with incorrect email values', async () => {
 })
 
 it('Should not create a User with incorrect password values', async () => {
+
 
     const data = {
         name: 'Test',

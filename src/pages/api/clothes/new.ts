@@ -68,7 +68,7 @@ const nuevaPrenda = async (req: NextApiRequest, res: NextApiResponse) => {
             ]
         })
 
-        res.status(200).json([newClothes, newPricesForClothes])
+        res.status(200).json({ prenda: newClothes, precios: newPricesForClothes });
     }
 
     catch (error) {

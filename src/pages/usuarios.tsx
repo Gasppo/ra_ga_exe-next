@@ -6,6 +6,7 @@ import UsuariosDashboard from "../UI/index/Dashboard/UsuariosDashboard";
 import Footer from "../UI/Generic/Footer";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import HeaderBar from "@UI/Generic/HeaderBar";
+import { obtainRole } from "@backend/dbcalls/user";
 
 
 const Home: NextPage = () => {
@@ -37,8 +38,12 @@ const Home: NextPage = () => {
 export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
     const session = await getSession({ req: context.req });
-    if (!session) {
+
+    const getUserRole = await obtainRole(session?.user?.email || '');
+
+    if (!session || getUserRole?.role?.name !== 'Dueño') {
         return {
             redirect: {
                 destination: '/',

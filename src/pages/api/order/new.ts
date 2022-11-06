@@ -40,6 +40,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
+            include: { user: true, estado: true, archivos: true, servicios: true, cotizacionOrden: true },
             data: {
                 id: idOrden,
                 nombre: data.nombreProducto,
@@ -75,13 +76,12 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                         }
                     }
                 },
-                //Connect the order to services by finding the service by name and checking if it was selected orderData[service.name].selected
                 servicios: {
                     connect: selectedServices.map(service => ({ name: service.name }))
                 },
                 procesos: {
                     createMany: {
-                        data: procesosDesarrollo.map(proc => ({idEstadoProceso: 1, idProceso: proc}))
+                        data: procesosDesarrollo.map(proc => ({ idEstadoProceso: 1, idProceso: proc }))
                     }
                 }
             }
@@ -92,7 +92,6 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
             to: user.email,
             subject: 'Orden creada'
         })
-
         res.status(200).json({ message: 'Orden creada con éxito', data: orden });
 
     } catch (e) {

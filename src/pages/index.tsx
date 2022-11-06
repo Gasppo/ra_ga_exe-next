@@ -1,20 +1,32 @@
 import { Slide } from "@mui/material";
+import HeaderBar from "@UI/Generic/HeaderBar";
+import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
+import { getRole } from "@utils/queries/user";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
+import React, { useContext } from "react";
+import { useQuery } from "react-query";
+import Footer from "../UI/Generic/Footer";
 import DashboardAdmin from "../UI/index/Dashboard/DashboardAdmin";
 import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
 import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";
-import Footer from "../UI/Generic/Footer";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
-import { useGetRole } from "../utils/useGetRole";
-import HeaderBar from "@UI/Generic/HeaderBar";
 
 const Home: NextPage = () => {
 
   const { data } = useSession()
-  const role = useGetRole(data?.user?.email || '')
+  const { addError } = useContext(ErrorHandlerContext)
 
+  //const role = useGetRole(data?.user?.email || '')
+
+  const { data: roleData } = useQuery(['userRole', data?.user?.email], () => data?.user?.email ? getRole(data?.user?.email) : null,
+    { refetchOnWindowFocus: false, onError: (error) => addError(JSON.stringify(error)) }
+  )
+
+  React.useEffect(() => {
+    console.log('ROLE DATA', roleData, ' with current time being ', new Date())
+  }, [roleData])
 
   return (
     <div className="bg-split-white-black">
@@ -30,12 +42,12 @@ const Home: NextPage = () => {
           <div>
             <ErrorAlerter />
             <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
-              <div className="flex justify-between " >
+              <div className="flex justify-between" >
                 <div />
               </div>
               {!data?.user && <DashboardDesconectado />}
-              {data?.user && role !== 'admin' && <DashboardCliente />}
-              {data?.user && role === 'admin' && <DashboardAdmin />}
+              {roleData && data?.user && (roleData?.name !== 'Dueño') && <DashboardCliente roleName={roleData?.name} />}
+              {roleData && data?.user && (roleData?.name === 'Dueño') && <DashboardAdmin />}
             </div>
           </div>
         </Slide>
@@ -49,6 +61,5 @@ export default Home;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession({ req: context.req });
-
   return { props: { session } };
 };

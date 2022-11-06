@@ -107,3 +107,11 @@ export const createNewUser = async (data: { name: string, email: string, passwor
         }
     });
 }
+
+
+export const obtainRole = async (email: string) => {
+    return await prisma.user.findUnique({
+        where: { email: email },
+        select: { role: true }
+    })
+}

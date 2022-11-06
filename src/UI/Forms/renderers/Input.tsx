@@ -60,6 +60,8 @@ function Input<Model>(props: InputProps<Model>) {
                         error={!!error}
                         type={layout?.options?.textType || (layout?.options?.numeric ? 'number' : 'text')}
                         helperText={error?.message || layout?.options?.helperText}
+                        required={layout?.options?.required}
+                        placeholder={layout?.options?.placeholderText}
                     />
                 </>
             )

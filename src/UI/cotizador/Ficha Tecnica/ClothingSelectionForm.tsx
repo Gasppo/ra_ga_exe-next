@@ -1,7 +1,9 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { TipoPrenda } from "@prisma/client";
+import { availableComplexities } from "@utils/queries/cotizador";
 import { useEffect, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
+import { useQuery } from "react-query";
 import FormItem from "../../Forms/FormItem";
 import { clothingSelectionLayout } from "./forms/clothingSelection.layout";
 
@@ -13,8 +15,11 @@ interface ModelFormProps {
 const ClothingSelectionForm = (props: ModelFormProps) => {
 
     const { clothesData } = props
-    const clothes = useMemo(() => clothesData?.map(el => ({ key: el.name, text: el.name })) || [], [clothesData])
     const { setValue, watch } = useFormContext<OrderCreationData>()
+    const tipoPrendaID = watch('tipoPrenda.id')
+    const { data: complexitiesData } = useQuery(['complexities', tipoPrendaID], () => tipoPrendaID ? availableComplexities(tipoPrendaID) : [], { initialData: [], refetchOnWindowFocus: false })
+    const clothes = useMemo(() => clothesData?.map(el => ({ key: el.name, text: el.name })) || [], [clothesData])
+    const complexities = useMemo(() => complexitiesData?.map(el => ({ key: el.name, text: el.name })) || [], [complexitiesData])
 
     const currPrendaName = watch('tipoPrenda.name')
     const prendaSelected = useMemo(() => clothesData?.find(el => el.name === currPrendaName), [currPrendaName, clothesData])
@@ -28,8 +33,8 @@ const ClothingSelectionForm = (props: ModelFormProps) => {
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-center md:mt-0">
-            <div className="mt-7 md:w-3/6">
-                <FormItem layout={clothingSelectionLayout} selectOptions={{ 'clothesData': clothes }} />
+            <div className="mt-7 md:w-4/6">
+                <FormItem layout={clothingSelectionLayout} selectOptions={{ 'clothesData': clothes, complexities }} />
             </div>
         </div>
     )

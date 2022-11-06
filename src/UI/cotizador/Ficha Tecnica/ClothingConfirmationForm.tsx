@@ -1,6 +1,5 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { useFormContext } from "react-hook-form";
-import NumbersIcon from '@mui/icons-material/Numbers';
 
 const ClothingConfirmationForm = () => {
 
@@ -8,43 +7,51 @@ const ClothingConfirmationForm = () => {
     const cotizadorData = watch()
 
     return (
-        <div className="flex md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0 font-semibold">
-
-            <div className="w-2/4">
+        <div className="flex w-full md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0 font-semibold">
+            <div className="w-full md:w-2/4">
                 <div>Cliente: {cotizadorData.user.name ? cotizadorData.user.name : 'No esta logeado'}</div>
+            </div>
+
+            <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
+
+            <div className="mt-3 w-full md:w-2/4">
+                <div>Nombre del producto: {cotizadorData.nombreProducto ? cotizadorData.nombreProducto : ''}</div>
                 <div>Tipo prenda: {cotizadorData.tipoPrenda ? cotizadorData.tipoPrenda.name : 'No selecciono tipo prenda'}</div>
+                <div>Complejidad: {cotizadorData.complejidad ? cotizadorData.complejidad : 'No selecciono complejidad'}</div>
+                <div>Material: {cotizadorData.atributosPrenda?.material?.observaciones ? cotizadorData.atributosPrenda.material.observaciones : 'No anotó el material'}</div>
             </div>
 
-            <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
+            <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
 
-            <div className="mt-3 w-2/4">
-                <div>{cotizadorData.molderiaBase.selected ? "✔️" : "❌"} Moldería base {cotizadorData.molderiaBase?.files?.length ? ' - ' + cotizadorData.molderiaBase?.files?.length + ' archivos seleccionados' : ''}</div>
-                {cotizadorData.molderiaBase.observaciones && <div className="ml-3">Observaciones: {cotizadorData.molderiaBase.observaciones}</div>}
-                <div>{cotizadorData.geometral.selected ? "✔️" : "❌"} Geometral {cotizadorData.geometral?.files?.length ? ' - ' + cotizadorData.geometral?.files?.length + ' archivos seleccionados' : ''}</div>
-                {cotizadorData.geometral.observaciones && <div className="ml-3">Observaciones: {cotizadorData.geometral.observaciones}</div>}
+            <div className="mt-3 w-full md:w-2/4">
+                <div>{cotizadorData.orderFiles.files?.length > 0 ? "✔️" : "❌"} Archivos {cotizadorData.orderFiles?.files?.length > 0 ? ' - ' + cotizadorData.orderFiles?.files?.length + ' archivos seleccionados' : ''}</div>
+                <div>Observaciones: {cotizadorData.orderFiles?.observaciones ? cotizadorData.orderFiles?.observaciones : ' - '}</div>
             </div>
 
-            <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
+            <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
 
-            <div className="mt-3 w-2/4">
-                <div>{cotizadorData.logoMarca.selected ? "✔️" : "❌"} Logo Marca {cotizadorData.logoMarca?.files?.length ? ' - ' + cotizadorData.logoMarca?.files?.length + ' archivos seleccionados' : ''}</div>
-                {cotizadorData.logoMarca.observaciones && <div className="ml-3">Observaciones logo: {cotizadorData.logoMarca.observaciones}</div>}
-                <div>{cotizadorData.atributosPrenda?.bolsillos.selected ? "✔️" : "❌"} Bolsillos {cotizadorData.atributosPrenda?.bolsillos.selected ? ' - ' + cotizadorData.atributosPrenda?.bolsillos.cantidad + ' bolsillos y observaciones: ' + cotizadorData.atributosPrenda?.bolsillos.observaciones : ""} </div>
-                <div>{cotizadorData.atributosPrenda?.elastico.selected ? "✔️" : "❌"} Elástico {cotizadorData.atributosPrenda?.elastico.selected ? ' - ' + cotizadorData.atributosPrenda?.elastico.cantidad + ' metros y observaciones: ' + cotizadorData.atributosPrenda?.elastico.observaciones : ""} </div>
-                <div>{cotizadorData.atributosPrenda?.botones.selected ? "✔️" : "❌"} Botones {cotizadorData.atributosPrenda?.botones.selected ? ' - ' + cotizadorData.atributosPrenda?.botones.cantidad + ' totales y observaciones: ' + cotizadorData.atributosPrenda?.botones.observaciones : ""} </div>
-                <div>{cotizadorData.atributosPrenda?.cierre.selected ? "✔️" : "❌"} Cierre {cotizadorData.atributosPrenda?.cierre.selected ? ' - ' + cotizadorData.atributosPrenda?.cierre.observaciones : ""} </div>
-                <div>{cotizadorData.atributosPrenda?.manga.selected ? "✔️" : "❌"} Manga {cotizadorData.atributosPrenda?.manga.selected ? ' - ' + cotizadorData.atributosPrenda?.manga.observaciones : ""} </div>
+            <div className="mt-3 w-full md:w-2/4">
+                <div>Genero: {cotizadorData.atributosPrenda?.genero?.observaciones ? cotizadorData.atributosPrenda.genero.observaciones : ' - '}</div>
+                <div>Cantidad: {cotizadorData.cantidad ? cotizadorData.cantidad : ' - '}</div>
+                <div>Talles: {cotizadorData.talles ? cotizadorData.talles : ' - '}</div>
             </div>
 
-            <div className="border-gray-300 border-2 w-2/4 mt-3"></div>
+            <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
 
-            <div className="mt-3 w-2/4">
-                <div>{cotizadorData.talles.selected ? "✔️" : "❌"} Talles</div>
-                <div>{cotizadorData.talles.selected ? cotizadorData.talles.talle.map((talle, index) => {
-                    return <div className="ml-3" key={index}>Nombre: {' ' + talle.nombre} - Medidas: {' ' + talle.medidas} </div>
-                }) : ""}</div>
-                <div><NumbersIcon /> Cantidad: {cotizadorData.cantidad}</div>
+            <div className="mt-3 w-full md:w-2/4">
+                <div>{cotizadorData["Moldería Base"]?.selected ? "✔️ " : "❌ "} Moldería Base </div>
+                <div>{cotizadorData["Digitalización y Progresiones"]?.selected ? "✔️ " : "❌ "} Digitalización y Progresiones </div>
+                <div>{cotizadorData["Impresión Moldertía Base"] ? "✔️ " : "❌ "} Impresión Moldertía Base </div>
+                <div>{cotizadorData["Ficha Técnica de Consumos"] ? "✔️ " : "❌ "} Ficha Técnica (Geometral + Guía de Armado) </div>
+                <div>{cotizadorData["Corte Muestra"] ? "✔️ " : "❌ "} Corte Muestra </div>
+                <div>{cotizadorData["Confección Muestra"] ? "✔️ " : "❌ "} Confección Muestra </div>
+                <div>{cotizadorData.Terminación ? "✔️ " : "❌ "} Terminación (Ojal, Botón, Plancha, etc) </div>
+                <div>{cotizadorData.Cotización ? "✔️ " : "❌ "} Cotización </div>
             </div>
+
+            <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
+
+
 
         </div>
     )

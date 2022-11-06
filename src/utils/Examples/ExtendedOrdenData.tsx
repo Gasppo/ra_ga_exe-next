@@ -6,4 +6,5 @@ export type ExtendedOrdenData = Orden & {
   user: User; prenda: PrecioPrenda & { complejidad: ComplejidadConfeccion; tipo: TipoPrenda; };
   cotizacionOrden: CotizacionOrden[];
   detallesPrenda: DetallesPrenda & { atributos: AtributoPrenda[]; };
+  mensajes: { id: string, message: string, timestamp: string, user: { email: string, name: string } }[]
 };

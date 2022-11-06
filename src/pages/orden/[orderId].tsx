@@ -7,6 +7,7 @@ import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import OrderDetailsTab from '@UI/orden/OrderDetailsTab';
 import OrderFilesTab from '@UI/orden/OrderFilesTab';
+import OrderMessagesTab from '@UI/orden/OrderMessagesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
@@ -19,11 +20,10 @@ import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React from "react";
-import { useIsFetching, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 const Home: NextPage = () => {
 
-    const isLoading = useIsFetching()
     const { addError } = React.useContext(ErrorHandlerContext)
     const [price] = React.useState(0)
     const [value, setValue] = React.useState(0);
@@ -53,20 +53,20 @@ const Home: NextPage = () => {
         'Orden expirada.'
     ]
 
-    const fetchStateNames = (): Promise<{id: number,nombre: string;}[]> => 
-        fetch(`/api/orders/states`,{
+    const fetchStateNames = (): Promise<{ id: number, nombre: string; }[]> =>
+        fetch(`/api/orders/states`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', accept: 'application/json' }
         })
-        .then((res) => res.ok ? res.json() : errorHandle(res))
-        .catch((e) => {throw e})
-    
-    const {data:stateNames,} = useQuery(['states'],fetchStateNames,{
+            .then((res) => res.ok ? res.json() : errorHandle(res))
+            .catch((e) => { throw e })
+
+    const { data: stateNames, } = useQuery(['states'], fetchStateNames, {
         onError: () => console.log("Error al traer los estados"),
         refetchOnWindowFocus: false,
         initialData: []
     });
-    const names = stateNames?.map(v =>  v.nombre);
+    const names = stateNames?.map(v => v.nombre);
 
     const fetchOrder = (): Promise<ExtendedOrdenData> =>
         fetch(`/api/order/obtain`, {
@@ -81,13 +81,13 @@ const Home: NextPage = () => {
             });
 
 
-    const { data: orderData, } = useQuery(['order'], fetchOrder, {
+    const { data: orderData, isFetching: isFetchingOrders } = useQuery(['order'], fetchOrder, {
         onError: () => addError('Error al traer orden'),
         refetchOnWindowFocus: false
     });
 
     const orderTitle = 'Orden: ' + orderData?.nombre
-    
+
 
     return (
         <div className="bg-split-white-black">
@@ -104,14 +104,14 @@ const Home: NextPage = () => {
                         <ErrorAlerter />
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title={orderTitle} hasBack size='medium' />
-                            <LoadingIndicator show={!!isLoading}>
+                            <LoadingIndicator show={isFetchingOrders}>
 
                                 <div className="mt-16 w-full hidden md:flex">
-                                    <PriceCheckerSteps step={orderData?.estado?.id} price={price} isStepOptional={isStepOptional} steps={names} />
-                                   
+                                    <PriceCheckerSteps step={orderData?.estado?.id - 1} price={price} isStepOptional={isStepOptional} steps={names} />
+
                                 </div>
 
-                                <div className="flex flex-col md:flex-row  mx-8 md:mx-20 justify-between" >
+                                <div className="flex flex-col md:flex-row  mx-2 md:mx-20 justify-between" >
                                     <div className="md:mt-9 grow flex flex-col items-center md:w-8/12 lg:w-6/12 md:p-2 lg:p-10">
                                         <div className="hidden md:flex">
                                             <Image src={orderData?.prenda?.tipo?.picture || ''} height='200px' width={'200px'} alt="Seleccione prenda.." />
@@ -127,10 +127,11 @@ const Home: NextPage = () => {
                                     <div className="flex flex-col justify-center items-center md:justify-between w-full md:w-7/12 mt-4 md:mt-9 md:p-10">
                                         <div className='w-full flex flex-col items-start border-2 p-4 shadow-lg max-h-[75vh] overflow-y-auto'>
                                             <div className='border-b-2 w-full'>
-                                                <Tabs value={value} onChange={handleChange} >
+                                                <Tabs value={value} onChange={handleChange} variant='scrollable'>
                                                     <Tab label="Estado" value={0} />
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                     {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}
+                                                    {true && <Tab label="Mensajes" value={3} />}
                                                 </Tabs>
                                             </div>
                                             <div hidden={value !== 0} className='w-full'>
@@ -142,10 +143,52 @@ const Home: NextPage = () => {
                                             <div hidden={value !== 2} className='w-full'>
                                                 <OrderDetailsTab orderData={orderData} />
                                             </div>
+                                            <div hidden={value !== 3} className='w-full'>
+                                                <OrderMessagesTab orderData={orderData} />
+                                            </div>
                                         </div>
                                     </div>
 
                                 </div>
+                                {/*Yo se que ud se pregunta "¿Gasppo dejo codigo comentado pusheado????" y si, pero bueno cada tanto fallamos todos, pero este codigo requiere ser charlado con el cliente*/}
+                                {/* <div className='flex flex-row justify-between p-4 text-gray-800'>
+                                    <div className='flex flex-col items-start justify-between p-4 w-1/3 mx-2 space-y-2'>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Marca</p></div>
+                                            <div className="text-sm" ><span>{orderData.user.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Contacto</p></div>
+                                            <div className="text-sm" ><span>{orderData.user.email}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-start'>
+                                            <div className='font-bold text-lg'><p>Nombre del producto</p></div>
+                                            <div className="text-sm" ><span>{orderData.nombre}</span></div>
+                                        </div>
+                                    </div>
+                                    <div className='flex flex-col items-center p-4 w-1/3  mx-2 text-4xl'>Ficha de Proceso</div>
+                                    <div className='flex flex-col items-end p-4  w-1/3  mx-2 space-y-2'>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Codigo de producto</p></div>
+                                            <div className="text-sm" ><span>{orderData.id}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Categoría</p></div>
+                                            <div className="text-sm" ><span>{orderData.prenda.tipo.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Complejidad</p></div>
+                                            <div className="text-sm" ><span>{orderData.prenda.complejidad.name}</span></div>
+                                        </div>
+                                        <div className='flex flex-col items-end'>
+                                            <div className='font-bold text-lg'><p>Género/s</p></div>
+                                            <div className="text-sm capitalize" ><span>{orderData.detallesPrenda.atributos.find(el => el.name === 'genero').observacion || ''}</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className='m-6 p-4 border-2 min-h-screen'>
+
+                                </div> */}
                             </LoadingIndicator>
                         </div>
                     </div>

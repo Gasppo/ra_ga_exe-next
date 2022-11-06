@@ -4,7 +4,12 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
 
     // Paso 1: Seleccion de prenda
     atributosPrenda: {
-
+        material: { observaciones: '', selected: true },
+        genero: {
+            selected: true,
+            observaciones: "",
+            values: [{ key: 'woman', text: 'Mujer' }]
+        },
         bolsillos: {
             selected: false,
             cantidad: 0,
@@ -35,12 +40,6 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
         name: '',
         picture: ''
     },
-    // Paso 2: Moldería
-    molderiaBase: {
-        selected: false,
-        observaciones: '',
-        files: []
-    },
     geometral: {
         selected: false,
         observaciones: '',
@@ -55,15 +54,26 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     },
 
     // Paso 4: Talles
-    talles: {
-        selected: false,
-        talle: []
-    },
+    talles: '',
     cantidad: '',
 
     user: {
         name: '',
         email: '',
     },
-    files: []
+    files: [],
+    "Confección Muestra": { selected: false },
+    "Corte Muestra": { selected: false },
+    "Ficha Técnica de Consumos": { selected: false },
+    "Digitalización y Progresiones": { selected: false },
+    complejidad: '',
+    nombreProducto: '',
+    "Impresión Moldertía Base": { selected: false },
+    "Moldería Base": { selected: false },
+    "Cotización": { selected: false },
+    "Terminación": { selected: false },
+    orderFiles: {
+        files: [],
+        observaciones: ''
+    }
 }

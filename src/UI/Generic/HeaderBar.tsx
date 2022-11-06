@@ -1,4 +1,4 @@
-import { signIn, signOut, useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -37,25 +37,19 @@ const HeaderBar = () => {
     return (
         <div className='flex justify-center md:justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-2 md:px-10 py-4' >
             <div className='hidden md:flex md:flex-row'>
-                <div className='font-bold'>Contacto:</div>
-                <div className='ml-4 text-cyan-600 font-bold'>+123 466 777</div>
+                <div className='text-xl font-sans'>HS - Soluciones Textiles</div>
             </div>
             <div className='md:hidden' />
             <div>
                 {status !== 'authenticated' && (
                     <div className="text-xs md:text-base flex flex-row" >
                         <div className="flex flex-row">
-                            <div>Iniciar sesion:</div>
-                            <button onClick={() => signIn("google")} className="text-cyan-600 ml-2 " >
-                                Google
-                            </button>
-                            <p className='mx-1'></p>
-                            <button onClick={handleOpenSignIn} className="text-cyan-600" >
-                                Usuario
+                            <button onClick={handleOpenSignIn} className="text-white underline" >
+                                Iniciar Sesión
                             </button>
                         </div>
                         <div className='border-l-2 border-opacity-50 border-slate-700 pl-2 ml-2'>
-                            <button className="text-cyan-600" onClick={handleOpenSignUp}>
+                            <button className="text-white underline" onClick={handleOpenSignUp}>
                                 Registrarse
                             </button>
                         </div>

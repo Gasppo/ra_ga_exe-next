@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+const obtainClothes = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const clothes = await prisma.tipoPrenda.findMany()
     res.status(200).json(clothes);
@@ -14,4 +14,4 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
-export default get;
+export default obtainClothes;

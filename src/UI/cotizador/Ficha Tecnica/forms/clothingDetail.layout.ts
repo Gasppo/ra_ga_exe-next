@@ -4,267 +4,44 @@ import { LayoutElement } from "../../../Forms/types";
 export const clothingDetailLayout: LayoutElement<OrderCreationData> = {
     type: 'Horizontal',
     elements: [
-
-        //Logo Marca
         {
-            type: 'Horizontal',
+            type: 'Vertical',
             justifyContent: 'center',
             width: 12,
+            spacing: 2,
             elements: [
                 {
-                    type: 'Switch',
-                    scope: 'logoMarca.selected',
-                    label: "Logo Marca",
+                    type: 'Autocomplete',
+                    scope: 'atributosPrenda.genero.values',
+                    label: "Genero",
                     options: {
-                        labelPlacement: 'end'
+                        labelPlacement: 'end',
+                        optionsName: 'generos',
                     },
-                    width: 12
+                    width: 6
                 },
                 {
-                    type: 'Uploader',
-                    scope: 'files',
-                    width: 12,
-                    rules: [
-                        { type: 'required', scope: 'logoMarca.selected' }
-                    ],
+                    type: 'Select',
+                    label: 'Cantidad a producir',
+                    scope: 'cantidad',
+                    width: 6,
                     options: {
-                        fileSection: 'logoMarca.files',
-                        multifile: true
+                        shrinkLabel: true,
+                        optionsName: 'cantidades',
                     }
                 },
                 {
                     type: 'Input',
-                    scope: 'logoMarca.observaciones',
-                    label: 'Observaciones',
+                    label: 'Talles',
+                    scope: 'talles',
+                    width: 6,
                     options: {
-                        multiline: 3
-                    },
-                    className: 'mr-4 mt-2 ml-2 md:ml-2 md:mr-6 md:mt-4',
-                    width: 12,
-                    rules: [
-                        { type: 'required', scope: 'logoMarca.selected' }
-                    ]
-                },
-            ]
-        },
+                        shrinkLabel: true,
+                        helperText: 'Detalle la nomencaltura de los talles (ej: S, M, L, XL, XXL)',
+                        optionsName: 'cantidades',
 
-        //Bolsillos
-        {
-            type: 'Horizontal',
-            justifyContent: 'center',
-            width: 12,
-            spacing: 4,
-            className: 'mt-1 mr-4 ',
-            elements: [
-                {
-                    type: 'Switch',
-                    scope: 'atributosPrenda.bolsillos.selected',
-                    label: "Bolsillos",
-                    options: {
-                        labelPlacement: 'end'
-                    },
-                    width: {
-                        xs: 12,
-                        sm: 6,
                     }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.bolsillos.cantidad',
-                    label: 'Cantidad',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.bolsillos.selected' }
-                    ],
-                    options: {
-                        numeric: true
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.bolsillos.observaciones',
-                    label: 'Observaciones',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.bolsillos.selected' }
-                    ]
-                },
-            ]
-        },
-
-        //Elastico
-        {
-            type: 'Horizontal',
-            justifyContent: 'center',
-            width: 12,
-            spacing: 4,
-            className: 'mt-1 mr-4',
-            elements: [
-                {
-                    type: 'Switch',
-                    scope: 'atributosPrenda.elastico.selected',
-                    label: "Elástico",
-                    options: {
-                        labelPlacement: 'end'
-                    },
-                    width: {
-                        xs: 12,
-                        sm: 6,
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.elastico.cantidad',
-                    label: 'Cantidad',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.elastico.selected' }
-                    ],
-                    options: {
-                        numeric: true
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.elastico.observaciones',
-                    label: 'Observaciones',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.elastico.selected' }
-                    ]
-                },
-            ]
-        },
-
-        //Botones
-        {
-            type: 'Horizontal',
-            justifyContent: 'center',
-            width: 12,
-            spacing: 4,
-            className: 'mt-1 mr-4',
-            elements: [
-                {
-                    type: 'Switch',
-                    scope: 'atributosPrenda.botones.selected',
-                    label: "Botones",
-                    options: {
-                        labelPlacement: 'end'
-                    },
-                    width: {
-                        xs: 12,
-                        sm: 6
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.botones.cantidad',
-                    label: 'Cantidad',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.botones.selected' }
-                    ],
-                    options: {
-                        numeric: true
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.botones.observaciones',
-                    label: 'Observaciones',
-                    width: {
-                        xs: 6,
-                        sm: 3
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.botones.selected' }
-                    ]
-                },
-            ]
-        },
-
-        //Cierre
-        {
-            type: 'Horizontal',
-            justifyContent: 'center',
-            width: 12,
-            spacing: 4,
-            className: 'mt-1 mr-4',
-            elements: [
-                {
-                    type: 'Switch',
-                    scope: 'atributosPrenda.cierre.selected',
-                    label: "Cierre",
-                    options: {
-                        labelPlacement: 'end'
-                    },
-                    width: {
-                        xs: 12,
-                        sm: 6
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.cierre.observaciones',
-                    label: 'Observaciones',
-                    width: {
-                        xs: 12,
-                        sm: 6
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.cierre.selected' }
-                    ]
-                },
-            ]
-        },
-
-        //Manga
-        {
-            type: 'Horizontal',
-            justifyContent: 'center',
-            width: 12,
-            spacing: 4,
-            className: 'mt-1 mr-4',
-            elements: [
-                {
-                    type: 'Switch',
-                    scope: 'atributosPrenda.manga.selected',
-                    label: "Manga",
-                    options: {
-                        labelPlacement: 'end'
-                    },
-                    width: {
-                        xs: 12,
-                        sm: 6
-                    }
-                },
-                {
-                    type: 'Input',
-                    scope: 'atributosPrenda.manga.observaciones',
-                    label: 'Observaciones',
-                    width: {
-                        xs: 12,
-                        sm: 6
-                    },
-                    rules: [
-                        { type: 'required', scope: 'atributosPrenda.manga.selected' }
-                    ]
-                },
+                }
             ]
         }
     ]

@@ -1,5 +1,6 @@
 import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
 import { Button } from '@mui/material';
+import { useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import DotsMobileStepper from '../MobileStepper';
 
@@ -16,11 +17,25 @@ const FichaTecnicaControls = (props: FichaTecnicaControlsProps) => {
     const { currStep, onBack, onForward, numberSteps } = props
 
     const formContext = useFormContext<OrderCreationData>()
-
-    const disableContinueSeleccionPrenda = !formContext.watch('tipoPrenda.name')
-
+    const data = formContext.watch()
     const backDisabled = currStep <= 0
-    const continueDisabled = currStep === numberSteps - 1 || (disableContinueSeleccionPrenda /*|| disableContinueProduction*/)
+
+    const isInvalid = (stepNumer: number, data: OrderCreationData) => {
+        switch (stepNumer) {
+            case 0:
+                return !data.nombreProducto || !data.tipoPrenda.name || !data.complejidad || !data.atributosPrenda.material.observaciones
+            case 1:
+                return false
+            case 2:
+                return !data.atributosPrenda.genero.observaciones || !data.cantidad 
+            case 3:
+                return false
+            default:
+                return false
+        }
+    }
+
+    const continueDisabled = useMemo(() => currStep === numberSteps - 1 || isInvalid(currStep, data), [currStep, numberSteps, data])
 
     return (
         <>

@@ -31,11 +31,20 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 detallesPrenda: {
                     include: { atributos: true }
-                }
+                },
+                servicios: true,
+                procesos: {
+                    include: { estado: true, proceso: true }
+                },
+                mensajes: { include: { user: true } }
             },
             where: { id: req.body.orderId }
         })
-        res.status(200).json(orders);
+        res.status(200).json({
+            ...orders,
+            procesos: orders.procesos.map(proc => ({ estado: proc.estado.descripcion, proceso: proc.proceso.nombre, icon: proc.proceso.icono, id: proc.id })),
+            mensajes: orders.mensajes.map(msg => ({ message: msg.mensaje, user: { email: msg.user.email, name: msg.user.name }, timestamp: msg.createdAt, id: msg.id }))
+        });
     } catch (error) {
         res.status(500).json({ error: error })
         throw error;

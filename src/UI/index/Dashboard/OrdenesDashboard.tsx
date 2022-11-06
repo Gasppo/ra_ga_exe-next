@@ -36,7 +36,7 @@ const UsuariosDashboard = () => {
 
     const columns = useMemo((): GridColumns<ExtendedOrdenData> => ([
         { field: 'nombre', headerName: 'Nombre', minWidth: 150, flex: 1 },
-        { field: '', headerName: 'Cliente', minWidth: 150, flex: 1, valueGetter: (params) => params.row.user.name},
+        { field: 'user', headerName: 'Cliente', minWidth: 150, flex: 1, valueGetter: (params) => params.row.user.name},
         { field: 'cantidad', headerName: 'Cantidad', flex: 1 },
         { field: 'estado', headerName: 'Estado', minWidth: 150, valueGetter: (params) => params.row.estado.nombre, flex: 1 },
         { field: 'createdAt', type: 'date', headerName: 'Creación', minWidth: 150, valueFormatter: (params) => new Date(params.value as string).toLocaleDateString(), flex: 1 },

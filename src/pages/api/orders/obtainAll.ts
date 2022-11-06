@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 
 
-const post = async (req: NextApiRequest, res: NextApiResponse) => {
+const obtainAllOrders = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
         const orders = await prisma.orden.findMany({
@@ -28,4 +28,4 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default post;
+export default obtainAllOrders;

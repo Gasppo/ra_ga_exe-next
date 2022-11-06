@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from '@server/db/client';
 
 
-const get = async (req: NextApiRequest, res: NextApiResponse) => {
+const getComplexitiesByClothesID = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
 
@@ -25,4 +25,4 @@ const get = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 };
 
-export default get;
+export default getComplexitiesByClothesID;

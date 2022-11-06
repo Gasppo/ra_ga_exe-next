@@ -39,7 +39,7 @@ export const beforeTesting = async () => {
             { name: 'Complejo', description: 'Complejo' },
             { name: 'Muy Complejo', description: 'Muy Complejo' },
             { name: 'Ultra Complejo', description: 'Ultra Complejo' },
-            { name: "Extremadamente complejo", description: "Extremadamente complejo" }
+            { name: 'Extremadamente complejo', description: 'Extremadamente complejo' },
         ]
     })
 

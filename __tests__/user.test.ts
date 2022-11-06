@@ -1,97 +1,13 @@
 import handleCheckCredentials from '@pages/api/user/check-credentials';
 import handleUserCreation from '@pages/api/user/create';
-import { PrismaClient } from '@prisma/client';
+import { afterTesting, beforeTesting } from '@utils/tests/configitems';
 import { generateMockRes } from '@utils/tests/generateMockRes';
 import { NextApiRequest } from 'next';
-const prisma = new PrismaClient()
 
-beforeAll(async () => {
-    jest.spyOn(console, 'log').mockImplementation(jest.fn());
-    jest.spyOn(console, 'debug').mockImplementation(jest.fn());
-
-    await prisma.tipoPrenda.createMany({
-        data: [
-            { name: 'Pantalón', picture: 'https://cdn-icons-png.flaticon.com/512/2122/2122621.png' },
-            { name: 'Remera / Camiseta', picture: 'https://cdn-icons-png.flaticon.com/512/2357/2357127.png' },
-        ]
-    })
-
-    await prisma.estadoOrden.createMany({
-        data: [
-            { nombre: 'Aguardando Confirmación' },
-            { nombre: 'Seña Pendiente' },
-            { nombre: 'En produccion' },
-            { nombre: 'Aguarando Servicios Externos' },
-            { nombre: 'Aguardando Envío' },
-            { nombre: 'Rechazado' },
-            { nombre: 'Expirado' },
-            { nombre: 'Cancelado' }
-        ]
-    })
-
-    await prisma.precioDelDolar.create({
-        data: { precio: 100 }
-    })
+beforeAll(beforeTesting);
+afterAll(afterTesting)
 
 
-    await prisma.complejidadConfeccion.createMany({
-        data: [
-            { name: 'Básico', description: 'Básico' },
-            { name: 'Medio', description: 'Medio' },
-            { name: 'Complejo', description: 'Complejo' },
-            { name: 'Muy Complejo', description: 'Muy Complejo' },
-            { name: 'Ultra Complejo', description: 'Ultra Complejo' }
-        ]
-    })
-
-    await prisma.precioPrenda.create({
-        data: {
-            precioBase: 18,
-            complejidad: { connect: { name: 'Básico' } },
-            tipo: { connect: { name: 'Pantalón' } },
-        }
-    })
-
-
-    await prisma.precioPrenda.create({
-        data: {
-            precioBase: 12,
-            complejidad: { connect: { name: 'Básico' } },
-            tipo: { connect: { name: 'Remera / Camiseta' } },
-        }
-    })
-
-
-});
-
-afterAll(async () => {
-    //Delete everything created
-    const deleteServices = prisma.servicio.deleteMany({})
-    const deletePrendas = prisma.atributoPrenda.deleteMany({})
-    const deleteDetalles = prisma.detallesPrenda.deleteMany({})
-    const deleteOrdenes = prisma.orden.deleteMany({})
-    const deleteTipoPrenda = prisma.tipoPrenda.deleteMany({})
-    const deleteEstadoOrden = prisma.estadoOrden.deleteMany({})
-    const deletePrecioDolar = prisma.precioDelDolar.deleteMany({})
-    const deleteComplejidad = prisma.complejidadConfeccion.deleteMany({})
-    const deletePrecioPrenda = prisma.precioPrenda.deleteMany({})
-    const deleteUser = prisma.user.deleteMany({})
-
-    await prisma.$transaction([
-        deleteServices,
-        deletePrendas,
-        deleteDetalles,
-        deleteOrdenes,
-        deleteTipoPrenda,
-        deleteEstadoOrden,
-        deletePrecioDolar,
-        deleteComplejidad,
-        deletePrecioPrenda,
-        deleteUser
-    ])
-
-    await prisma.$disconnect()
-})
 
 type ExpectedResponse = {
     statusCode?: number,

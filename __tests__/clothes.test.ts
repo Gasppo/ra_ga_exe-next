@@ -42,7 +42,7 @@ it('Should obtain all clothes prices', async () => {
 
 })
 
-xit('Should create a new clothing type', async () => {
+it('Should create a new clothing type', async () => {
 
     const data: NewClothingCategorySchemaType = {
         name: 'Calzones',
@@ -66,12 +66,13 @@ xit('Should create a new clothing type', async () => {
 
     await nuevaPrenda(req_create, res_create)
     expect(status_create.mock.calls[0][0]).toBe(200)
-    expect(json_create.mock.calls[0][0].prenda).toBe('Test')
+    expect(json_create.mock.calls[0][0].prenda.name).toBe('Calzones')
+    expect(json_create.mock.calls[0][0].prenda.picture).toBe('test')
 
     await obtainClothes(req, res_obtainClothes)
     expect(status_obtainClothes.mock.calls[0][0]).toBe(200)
     expect(json_obtainClothes.mock.calls[0][0].length).toBe(3)
-    expect(json_obtainClothes.mock.calls[0][0][2].name).toBe('Test')
+    expect(json_obtainClothes.mock.calls[0][0][2].name).toBe('Calzones')
 
     await obtainPrices(req, res_obtainPrices)
     expect(status_obtainPrices.mock.calls[0][0]).toBe(200)

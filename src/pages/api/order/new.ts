@@ -1,12 +1,12 @@
 import { calculateOrderTotal, findPrendaPrecioByTypeAndComplexity, getAtributosPrenda, updateExpiredOrders } from '@backend/dbcalls/order';
+import { checkIfUserExists, fromToday } from '@backend/dbcalls/user';
 import { OrderCreationDataSchema } from '@backend/schemas/OrderCreationSchema';
 import { prisma } from '@server/db/client';
 import { generateEmailer } from '@utils/email/generateEmailer';
 import { newOrderNotificationHTML } from '@utils/email/newOrderNotification';
-import { checkIfUserExists, fromToday } from '@backend/dbcalls/user';
+import { generateOrderID } from '@utils/generateOrderID';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError } from 'zod';
-import { generateOrderID } from '@utils/generateOrderID';
 
 const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -16,13 +16,21 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
         const data = OrderCreationDataSchema.parse(req.body);
         const { id: idComplejidad } = await prisma.complejidadConfeccion.findFirst({ where: { name: data.complejidad } })
 
+
         const selectedAttributes = Object.entries(data).filter(([, value]: [string, any]) => value?.selected && value?.selected === true).map(([key]) => key)
 
+        const procesos = await prisma.procesoDesarrollo.findMany({ include: { servicio: true } })
         const selectedServices = await prisma.servicio.findMany({ select: { name: true, procesos: true }, where: { name: { in: selectedAttributes } } })
-        const procesosDesarrollo = selectedServices.reduce((prev, curr) => [...prev, ...curr.procesos.map(proc => proc.id)], [] as number[])
-        console.log(procesosDesarrollo)
-        console.log('Selected ATT', selectedAttributes)
-        console.log('Selected SERV', selectedServices)
+
+        const processCreateMap = procesos.map(proc => {
+            const { servicio } = proc
+            const selected = servicio.some(serv => selectedAttributes.includes(serv.name))
+            return {
+                idEstadoProceso: selected || servicio.length === 0 ? 1 : 3,
+                idProceso: proc.id,
+            }
+        })
+
         const idOrden = generateOrderID(data)
 
         const { sendEmail } = generateEmailer({
@@ -81,7 +89,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 },
                 procesos: {
                     createMany: {
-                        data: procesosDesarrollo.map(proc => ({ idEstadoProceso: 1, idProceso: proc }))
+                        data: processCreateMap
                     }
                 }
             }

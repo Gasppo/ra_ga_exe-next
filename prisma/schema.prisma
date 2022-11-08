@@ -160,8 +160,8 @@ model ProcesoDesarrollo {
     id                     Int                      @id @default(autoincrement())
     nombre                 String
     icono                  String
-    ProcesoDesarrolloOrden ProcesoDesarrolloOrden[]
-    Servicio               Servicio[]
+    procesoDesarrolloOrden ProcesoDesarrolloOrden[]
+    servicio               Servicio[]
     servicioId             String?
 }
 
@@ -214,6 +214,6 @@ model AtributoPrenda {
     name             String
     cantidad         Int?
     observacion      String?
-    DetallesPrenda   DetallesPrenda @relation(fields: [detallesPrendaId], references: [id])
+    detallesPrenda   DetallesPrenda @relation(fields: [detallesPrendaId], references: [id], onDelete: Cascade)
     detallesPrendaId String
 }

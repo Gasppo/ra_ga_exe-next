@@ -24,7 +24,7 @@ describe('User Testing', () => {
     it('Should not allow get requests', async () => {
         const data = {
             name: 'Test',
-            email: 'gasppogb@gmail.com',
+            email: 'gasppogb1@gmail.com',
             password: '123456asd',
             confirmPassword: '123456asd'
         }
@@ -46,7 +46,7 @@ describe('User Testing', () => {
 
         const data = {
             name: 'Test',
-            email: 'gasppogb@gmail.com',
+            email: 'gasppogb1@gmail.com',
             password: '123456asd',
             confirmPassword: '123456asd'
         }
@@ -57,7 +57,7 @@ describe('User Testing', () => {
 
         await handleUserCreation(req, res)
         expect(json.mock.calls[0][0].statusCode).toBe(200)
-        expect(json.mock.calls[0][0].body.user.email).toBe('gasppogb@gmail.com')
+        expect(json.mock.calls[0][0].body.user.email).toBe('gasppogb1@gmail.com')
         expect(json.mock.calls[0][0].body.user.name).toBe('Test')
         expect(json.mock.calls[0][0].body.user.name).toBe('Test')
     })
@@ -131,7 +131,7 @@ describe('User Testing', () => {
 
     it('Should check credentials for existing user', async () => {
         const data = {
-            username: 'gasppogb@gmail.com',
+            username: 'gasppogb1@gmail.com',
             password: '123456asd'
         }
 
@@ -153,7 +153,7 @@ describe('User Testing', () => {
 
     it('Should check incorrect credentials for existing user', async () => {
         const data = {
-            username: 'gasppogb@gmail.com',
+            username: 'gasppogb1@gmail.com',
             password: '12345asd'
         }
 

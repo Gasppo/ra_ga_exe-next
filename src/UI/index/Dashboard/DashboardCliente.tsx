@@ -20,6 +20,7 @@ import { ExtendedOrdenData, UserInfo } from "../../../utils/Examples/ExtendedOrd
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
+import update from "@pages/api/drive/upload";
 
 const fakeOrders = [
     {
@@ -131,11 +132,17 @@ const DashboardCliente = () => {
             throw error;
         });
     
-    const updateUser = (email: string) =>
+    const updateUser = (user: UserInfo):Promise<{message:string}> =>
         fetch(`/api/users/update`, {
             method: "PATCH",
             body: JSON.stringify({
-                email: email,
+                name:user.name,
+                razonSocial:user.razonSocial,
+                email: user.email,
+                cuit:user.cuit,
+                direccionFacturacion:user.direccionFacturacion,
+                direccionEnvio:user.direccionEnvio
+
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -152,6 +159,7 @@ const DashboardCliente = () => {
         onError: () => addError('Error al traer el usuario'),
         initialData: {name: "",razonSocial:"",email: "",image: "",telefono: "",cuit:"",direccionFacturacion:"",direccionEnvio:""},
     })
+    const updateUserInfo:UserInfo = userInfo
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
         onError: () => addError('Error al traer ordenes')
@@ -161,8 +169,10 @@ const DashboardCliente = () => {
         setEditEnabled((prev) => !prev);
     };
 
-    const handleEditUser = () => {
+    const handleEditUser = async (user:UserInfo) => {
         setEditEnabled((prev) => !prev);
+        const rta = await updateUser(user);
+        addError(rta.message,'success');
     }
 
     const columns = useMemo((): GridColumns<FakeOrderType> => ([
@@ -229,7 +239,7 @@ const DashboardCliente = () => {
                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
                     <div className="text-xl my-8 flex justify-between">
                         <div>Mis datos</div>
-                        {editEnabled ? <div className="cursor-pointer"><SaveIcon /></div> : null}
+                        {editEnabled ? <div className="cursor-pointer"><SaveIcon onClick={() => handleEditUser(updateUserInfo)} /></div> : null}
                         {editEnabled ? <div className="cursor-pointer"><CancelIcon onClick={handleEnableEdit} />
                         </div> : null}
                         <div className="cursor-pointer">
@@ -244,6 +254,7 @@ const DashboardCliente = () => {
                             label="Nombre"
                             value={userInfo.name}
                             InputProps={{ disableUnderline: !editEnabled }}
+                            onChange={(newValue)=> updateUserInfo.name=newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -253,6 +264,7 @@ const DashboardCliente = () => {
                             label="Razon Social"
                             value={userInfo.razonSocial}
                             InputProps={{ disableUnderline: !editEnabled }}
+                            onChange={(newValue) => updateUserInfo.razonSocial = newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -262,6 +274,7 @@ const DashboardCliente = () => {
                             label="Correo"
                             value={userInfo.email}
                             InputProps={{ disableUnderline: true }}
+                            onChange={(newValue) => updateUserInfo.email = newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -271,6 +284,7 @@ const DashboardCliente = () => {
                             label="Telefono"
                             value={userInfo.telefono}
                             InputProps={{ disableUnderline: !editEnabled  }}
+                            onChange={(newValue) => updateUserInfo.telefono = newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -280,6 +294,7 @@ const DashboardCliente = () => {
                             label="CUIT"
                             value={userInfo.cuit}
                             InputProps={{ disableUnderline: !editEnabled }}
+                            onChange={(newValue) => updateUserInfo.cuit = newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -289,6 +304,7 @@ const DashboardCliente = () => {
                             label="Direccion de Facturacion"
                             value={userInfo.direccionFacturacion}
                             InputProps={{ disableUnderline: !editEnabled }}
+                            onChange={(newValue) => updateUserInfo.direccionFacturacion = newValue.target.value}
                         />
                     </div>
                     <div className="my-2">
@@ -298,6 +314,7 @@ const DashboardCliente = () => {
                             label="Direccion de Envio"
                             value={userInfo.direccionEnvio}
                             InputProps={{ disableUnderline: !editEnabled }}
+                            onChange={(newValue) => updateUserInfo.direccionEnvio = newValue.target.value}
                         />
                     </div>
                     <div className="my-10 flex justify-center">

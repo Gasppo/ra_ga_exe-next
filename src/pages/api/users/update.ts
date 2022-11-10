@@ -16,7 +16,10 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 direccionEnvio: req.body.direccionEnvio,
             }
         });
-        res.status(200).json(updateUser);
+        const rta ={
+            message:"Usuario Actualizado"
+        }
+        res.status(200).json(rta);
     } catch (error) {
         res.status(500).json({ error: error })
         throw error;

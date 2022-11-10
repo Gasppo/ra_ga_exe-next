@@ -54,15 +54,15 @@ const DashboardCliente = ({ roleName }: Props) => {
     };
 
     const columns = useMemo((): GridColumns<ExtendedOrdenData> => ([
-        { field: 'nombre', headerName: 'Nombre', maxWidth: 250, minWidth: 100, flex: 1 },
-        { field: 'id', headerName: 'Orden', maxWidth: 250, minWidth: 100, flex: 1 },
+        { field: 'nombre', headerName: 'Nombre', maxWidth: 200, minWidth: 100, flex: 1 },
+        { field: 'id', headerName: 'Orden', maxWidth: 200, minWidth: 100, flex: 1 },
         {
-            field: '', headerName: 'Diseño', flex: 1, renderCell: (params) =>
+            field: 'procesos', headerName: 'Diseño', flex: 1, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) =>
                 <>
                     {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
                 </>
         },
-        { field: ' ', maxWidth: 50, headerName: '', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
+        { field: 'link', headerName: 'Ver', maxWidth: 75, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, minWidth: 75, flex: 1 }
 
 
     ]), []);

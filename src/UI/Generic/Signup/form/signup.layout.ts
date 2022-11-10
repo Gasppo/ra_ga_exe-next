@@ -21,6 +21,13 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
         },
         {
             type: 'Input',
+            label: 'Telefono',
+            scope: 'telefono',
+            options: { size: 'small' },
+            width: 9,
+        },
+        {
+            type: 'Input',
             label: 'Password',
             scope: 'password',
             options: { textType: 'password', size: 'small' },
@@ -30,15 +37,8 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
             type: 'Input',
             label: 'Confirm Password',
             scope: 'confirmPassword',
-            options: { size: 'small' },
+            options: { textType: 'password',size: 'small' },
             width: 12,
-        },
-        {
-            type: 'Input',
-            label: 'Telefono',
-            scope: 'telefono',
-            options: { textType: 'password', size: 'small' },
-            width: 9,
         },
     ]
 }

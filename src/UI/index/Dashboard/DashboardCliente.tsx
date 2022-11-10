@@ -14,7 +14,7 @@ import Image from "next/image";
 import { useContext, useMemo, useState } from "react";
 import { useQuery } from "react-query";
 import { ErrorHandlerContext } from "../../../utils/ErrorHandler/error";
-import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
+import { ExtendedOrdenData, UserInfo } from "../../../utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
@@ -113,7 +113,7 @@ const DashboardCliente = () => {
                 throw error;
             });
     
-    const fetchUser = (email: string): Promise<{ name: string, email: string, image: string, telefono: string }> => 
+    const fetchUser = (email: string): Promise<UserInfo> => 
         fetch(`/api/users/obtain` , {
             method: "POST",
             body: JSON.stringify({ email:email }),
@@ -130,7 +130,8 @@ const DashboardCliente = () => {
     
 
     const { data: userInfo, isLoading: isUserInfo } = useQuery(['userInfo', sessionData?.user?.email], () => fetchUser(sessionData?.user?.email), {
-        onError: () => addError('Error al traer el usuario')
+        onError: () => addError('Error al traer el usuario'),
+        initialData: {name: "",email: "",image: "",telefono: ""},
     })
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
@@ -232,7 +233,7 @@ const DashboardCliente = () => {
                             variant="standard"
                             disabled
                             label="Telefono"
-                            value={userInfo.name}
+                            value={userInfo.telefono}
                             InputProps={{ disableUnderline: true }}
                         />
                     </div>

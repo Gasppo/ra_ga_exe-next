@@ -8,3 +8,10 @@ export type ExtendedOrdenData = Orden & {
   detallesPrenda: DetallesPrenda & { atributos: AtributoPrenda[]; };
   mensajes: { id: string, message: string, timestamp: string, user: { email: string, name: string } }[]
 };
+
+export type UserInfo ={
+  name:string,
+  email: string,
+  image: string,
+  telefono: string
+}

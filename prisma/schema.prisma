@@ -69,8 +69,6 @@ model MarcaDeUsuario {
     imagen String?
     genero String?
     estilo String?
-    idTipoDePrenda String
-    tipoDePrenda TipoPrenda @relation(fields: [idTipoDePrenda], references: [id])
     volumenProduccion Int?
 }
 //Corresponde a Ficha de Cliente como informacion del usuario
@@ -112,7 +110,6 @@ model TipoPrenda {
     name    String         @unique
     picture String
     precios PrecioPrenda[]
-    marca MarcaDeUsuario[]
 }
 
 model ComplejidadConfeccion {

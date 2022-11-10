@@ -24,15 +24,23 @@ type Props = {
 }
 
 const DashboardCliente = ({ roleName }: Props) => {
+
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();
 
+    const emailToFetchOrders = useMemo(() => {
+        if (roleName === "Usuario") {
+            return { email: sessionData?.user?.email };
+        }
+        return '';
+    }, [roleName, sessionData]);
+
     const { addError } = useContext(ErrorHandlerContext);
 
-    const fetchOrders = (email: string): Promise<ExtendedOrdenData[]> =>
+    const fetchOrders = (): Promise<ExtendedOrdenData[]> =>
         fetch(`/api/orders/obtain`, {
             method: "POST",
-            body: JSON.stringify({ email: email }),
+            body: JSON.stringify(emailToFetchOrders),
             headers: {
                 "Content-Type": "application/json",
                 accept: "application/json",
@@ -45,7 +53,7 @@ const DashboardCliente = ({ roleName }: Props) => {
             });
 
 
-    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
+    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', emailToFetchOrders], () => fetchOrders(), {
         onError: () => addError('Error al traer ordenes')
     })
 

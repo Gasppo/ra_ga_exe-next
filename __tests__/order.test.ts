@@ -1,6 +1,7 @@
 import { OrderCreationData } from '@backend/schemas/OrderCreationSchema';
 import handleOrderCreation from '@pages/api/order/new';
 import obtainAllOrders from '@pages/api/orders/obtainAll';
+import handleUserCreation from '@pages/api/user/create';
 import { Archivo, CotizacionOrden, EstadoOrden, Orden, PrismaClient, Servicio, User } from '@prisma/client';
 import { fichaTecnicaVaciaForm } from '@UI/Types/fichaTecnicaTypes';
 import { generateMockRes } from '@utils/tests/generateMockRes';
@@ -18,6 +19,27 @@ type NewOrderResponse = Orden & {
 describe('Orders Testing', () => {
     jest.spyOn(console, 'log').mockImplementation(jest.fn());
     jest.spyOn(console, 'debug').mockImplementation(jest.fn());
+
+
+    it('Should create a User with correct values', async () => {
+
+        const data = {
+            name: 'Test',
+            email: 'gasppogb@gmail.com',
+            password: '123456asd',
+            confirmPassword: '123456asd'
+        }
+
+        const { res, json } = generateMockRes()
+
+        const req = { method: 'POST', body: data } as NextApiRequest
+
+        await handleUserCreation(req, res)
+        expect(json.mock.calls[0][0].statusCode).toBe(200)
+        expect(json.mock.calls[0][0].body.user.email).toBe('gasppogb@gmail.com')
+        expect(json.mock.calls[0][0].body.user.name).toBe('Test')
+        expect(json.mock.calls[0][0].body.user.name).toBe('Test')
+    })
 
     it('Should create a new order with correct values', async () => {
         const prenda = await prisma.tipoPrenda.findFirst({ where: { name: 'Pantalón' } })

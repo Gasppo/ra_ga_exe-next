@@ -12,5 +12,7 @@ module.exports = {
         '@utils/(.*)': '<rootDir>/src/utils/$1',
         '@server/(.*)': '<rootDir>/src/server/$1',
         '@UI/(.*)': '<rootDir>/src/UI/$1',
-    }
+    },
+    globalSetup: '<rootDir>/src/utils/tests/globalSetup.ts',
+    globalTeardown: '<rootDir>/src/utils/tests/globalTeardown.ts',
 };

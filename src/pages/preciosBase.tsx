@@ -40,7 +40,7 @@ const Home: NextPage = () => {
                             <PageTitle title="Precios base" hasBack />
 
                             <div className="flex items-center justify-center">
-                                <div className="w-full md:w-8/12 mt-16 border-2 shadow-2xl">
+                                <div className="w-full md:w-10/12 mt-8 border-2 shadow-2xl">
                                     <div className='border-b-2'>
                                         <Tabs
                                             orientation="horizontal"

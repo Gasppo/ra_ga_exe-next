@@ -20,6 +20,9 @@ import { ExtendedOrdenData, UserInfo } from "../../../utils/Examples/ExtendedOrd
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
+import FormItem from "@UI/Forms/FormItem";
+import HookForm from "@UI/Forms/HookForm";
+import { generateEditUserInfoLayout } from "@UI/user/reset/form/generateEditUserInfoLayoutoLayout";
 
 const fakeOrders = [
     {
@@ -98,8 +101,10 @@ const DashboardCliente = () => {
 
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();
-    
+
     const { addError } = useContext(ErrorHandlerContext);
+
+    const userInfoEditLayout = useMemo(() => generateEditUserInfoLayout(editEnabled), [editEnabled]);
 
     const fetchOrders = (email: string): Promise<ExtendedOrdenData[]> =>
         fetch(`/api/orders/obtain`, {
@@ -115,22 +120,22 @@ const DashboardCliente = () => {
                 console.log("Broke here");
                 throw error;
             });
-    
-    const fetchUser = (email: string): Promise<UserInfo> => 
-        fetch(`/api/users/obtain` , {
+
+    const fetchUser = (email: string): Promise<UserInfo> =>
+        fetch(`/api/users/obtain`, {
             method: "POST",
-            body: JSON.stringify({ email:email }),
+            body: JSON.stringify({ email: email }),
             headers: {
                 "Content-Type": "application/json",
                 accept: "application/json",
             },
         })
-        .then(res => (res.ok? res.json(): errorHandle(res)))
-        .catch(error => {
-            console.log('Broke fetching user');
-            throw error;
-        });
-    
+            .then(res => (res.ok ? res.json() : errorHandle(res)))
+            .catch(error => {
+                console.log('Broke fetching user');
+                throw error;
+            });
+
     const updateUser = (email: string) =>
         fetch(`/api/users/update`, {
             method: "PATCH",
@@ -150,7 +155,7 @@ const DashboardCliente = () => {
 
     const { data: userInfo, isLoading: isUserInfo } = useQuery(['userInfo', sessionData?.user?.email], () => fetchUser(sessionData?.user?.email), {
         onError: () => addError('Error al traer el usuario'),
-        initialData: {name: "",razonSocial:"",email: "",image: "",telefono: "",cuit:"",direccionFacturacion:"",direccionEnvio:""},
+        initialData: { name: "", razonSocial: "", email: "", image: "", telefono: "", cuit: "", direccionFacturacion: "", direccionEnvio: "" },
     })
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
@@ -235,16 +240,14 @@ const DashboardCliente = () => {
                         <div className="cursor-pointer">
                             <EditIcon onClick={handleEnableEdit} />
                         </div>
-                        
+
                     </div>
                     <div className="my-2">
-                        <TextField
-                            variant="standard"
-                            disabled={!editEnabled}
-                            label="Nombre"
-                            value={userInfo.name}
-                            InputProps={{ disableUnderline: !editEnabled }}
-                        />
+                        <HookForm defaultValues={userInfo} onSubmit={handleEditUser}>
+                            <FormItem layout={userInfoEditLayout} />
+                        </HookForm>
+
+
                     </div>
                     <div className="my-2">
                         <TextField
@@ -270,7 +273,7 @@ const DashboardCliente = () => {
                             disabled={!editEnabled}
                             label="Telefono"
                             value={userInfo.telefono}
-                            InputProps={{ disableUnderline: !editEnabled  }}
+                            InputProps={{ disableUnderline: !editEnabled }}
                         />
                     </div>
                     <div className="my-2">

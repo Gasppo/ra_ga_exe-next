@@ -15,7 +15,7 @@ const OrderProcessesTab = ({ orderData, role }: Props) => {
     return (
         <div className='flex flex-col mt-4'>
             <div className='flex flex-col max-h-[20rem] overflow-y-scroll'>
-                {procesos.map(proc => <OrderProcessItem key={proc.id} proceso={proc} role={role || 'admin'} />)}
+                {procesos.map(proc => <OrderProcessItem key={proc.id} proceso={proc} role={role || 'Cliente'} />)}
             </div>
         </div>
     )

@@ -1,6 +1,8 @@
 import { verifyUserOrder } from '@backend/dbcalls/order';
+import { obtainRole } from '@backend/dbcalls/user';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Tab, Tabs } from "@mui/material";
+import { Session } from '@prisma/client';
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
 import Footer from "@UI/Generic/Footer";
 import HeaderBar from "@UI/Generic/HeaderBar";
@@ -23,7 +25,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useQuery } from "react-query";
 
-const Home: NextPage = () => {
+const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
+
+    console.log(role)
 
     const { addError } = React.useContext(ErrorHandlerContext)
     const [price] = React.useState(0)
@@ -150,7 +154,7 @@ const Home: NextPage = () => {
                                                 <OrderMessagesTab orderData={orderData} />
                                             </div>
                                             <div hidden={value !== 4} className='w-full'>
-                                                <OrderProcessesTab orderData={orderData} />
+                                                <OrderProcessesTab orderData={orderData} role={role} />
                                             </div>
                                         </div>
                                     </div>
@@ -218,7 +222,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
     const correctOrder = await verifyUserOrder(context.query.orderId, session.user.email)
-    console.log(correctOrder)
+    const { role } = await obtainRole(session?.user?.email || '');
+    console.log(role)
     if (!correctOrder) {
         return {
             redirect: {
@@ -227,5 +232,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }
         }
     }
-    return { props: { session } };
+    return { props: { session, role: role.name } };
 };

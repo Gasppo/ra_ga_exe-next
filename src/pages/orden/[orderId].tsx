@@ -1,6 +1,8 @@
 import { verifyUserOrder } from '@backend/dbcalls/order';
+import { obtainRole } from '@backend/dbcalls/user';
 import InfoIcon from '@mui/icons-material/Info';
 import { Slide, Tab, Tabs } from "@mui/material";
+import { Session } from '@prisma/client';
 import PriceCheckerSteps from "@UI/cotizador/Stepper";
 import Footer from "@UI/Generic/Footer";
 import HeaderBar from "@UI/Generic/HeaderBar";
@@ -8,6 +10,7 @@ import PageTitle from "@UI/Generic/Utils/PageTitle";
 import OrderDetailsTab from '@UI/orden/OrderDetailsTab';
 import OrderFilesTab from '@UI/orden/OrderFilesTab';
 import OrderMessagesTab from '@UI/orden/OrderMessagesTab';
+import OrderProcessesTab from '@UI/orden/OrderProcessesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
@@ -22,7 +25,9 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useQuery } from "react-query";
 
-const Home: NextPage = () => {
+const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
+
+    console.log(role)
 
     const { addError } = React.useContext(ErrorHandlerContext)
     const [price] = React.useState(0)
@@ -30,6 +35,7 @@ const Home: NextPage = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
 
     const isStepOptional = () => false
 
@@ -129,6 +135,7 @@ const Home: NextPage = () => {
                                             <div className='border-b-2 w-full'>
                                                 <Tabs value={value} onChange={handleChange} variant='scrollable'>
                                                     <Tab label="Estado" value={0} />
+                                                    {true && <Tab label="Procesos" value={4} />}
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                     {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}
                                                     {true && <Tab label="Mensajes" value={3} />}
@@ -145,6 +152,9 @@ const Home: NextPage = () => {
                                             </div>
                                             <div hidden={value !== 3} className='w-full'>
                                                 <OrderMessagesTab orderData={orderData} />
+                                            </div>
+                                            <div hidden={value !== 4} className='w-full'>
+                                                <OrderProcessesTab orderData={orderData} role={role} />
                                             </div>
                                         </div>
                                     </div>
@@ -212,7 +222,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
     const correctOrder = await verifyUserOrder(context.query.orderId, session.user.email)
-    console.log(correctOrder)
+    const { role } = await obtainRole(session?.user?.email || '');
+    console.log(role)
     if (!correctOrder) {
         return {
             redirect: {
@@ -221,5 +232,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }
         }
     }
-    return { props: { session } };
+    return { props: { session, role: role.name } };
 };

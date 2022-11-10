@@ -1,6 +1,6 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { FileUploadResponse } from "@pages/api/drive/upload";
-import { ComplejidadConfeccion, TipoPrenda } from "@prisma/client";
+import { ComplejidadConfeccion, EstadoProcesoDesarrollo, Orden, ProcesoDesarrollo, ProcesoDesarrolloOrden, TipoPrenda, User } from "@prisma/client";
 
 
 // Cargar archivos a Google Drive
@@ -117,3 +117,19 @@ export const fetchPrice = async (data: OrderCreationData): Promise<{
         },
     }).then(res => res.json())
 }
+
+export const fetchProcessStates = (): Promise<EstadoProcesoDesarrollo[]> => fetch('/api/order/get-process-states')
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
+
+export const updateProcessState = (data: { estado: string; proceso: string; icon: string; id: string; }): Promise<
+    ProcesoDesarrolloOrden & {
+        orden: Orden & {
+            user: User;
+        };
+        proceso: ProcesoDesarrollo;
+    }> =>
+    fetch(`/api/order/update-process-state`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
+        .then(res => res.ok ? res.json() : errorHandle(res))
+        .catch((error) => { throw error });

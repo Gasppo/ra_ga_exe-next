@@ -8,10 +8,10 @@ interface IconStateProps {
     state: string
 }
 
-const IconBorders = (estado: string) => {
+export const IconBorders = (estado: string) => {
     switch (estado.toLowerCase()) {
         case "pedido":
-            return "border-yellow-500";
+            return "border-cyan-500";
         case "traido por cliente":
             return "border-violet-500";
         case "no pedido":
@@ -28,6 +28,9 @@ const IconBorders = (estado: string) => {
             return "border-red-500";
     }
 }
+
+
+
 
 const IconState = (props: IconStateProps) => {
     const [open, setOpen] = React.useState(false);

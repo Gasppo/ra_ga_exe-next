@@ -18,94 +18,29 @@ import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
-
-const fakeOrders = [
-    {
-        id: 1,
-        date: '2021-01-01',
-        nombre: 'Remera Basica MC',
-        orden: 'Inv22-MerB-RemBas-001',
-        procesos: [
-            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
-            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
-            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
-            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
-            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
-            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
-            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
-            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
-            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
-            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
-            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
-            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
-            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
-            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
-            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
-        ],
-    },
-    {
-        id: 2,
-        date: '2021-01-01',
-        nombre: 'Pantalon Cargo Chupin',
-        orden: 'Ver22/23-MerB-PantMed-001',
-        procesos: [
-            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
-            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
-            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
-            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
-            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
-            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
-            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
-            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
-            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
-            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
-            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
-            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
-            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
-            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
-            { proceso: 'Aprobado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
-        ],
-    },
-    {
-        id: 3,
-        date: '2021-01-01',
-        nombre: 'Musculosas con Recortes y Bolsillos',
-        orden: 'Ver22/23-MerB-MuscCom-001',
-        procesos: [
-            { proceso: 'Diseño', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/5996/5996559.png' },
-            { proceso: 'Molderia', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/4277/4277751.png' },
-            { proceso: 'Digitalización', estado: 'No Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/2630/2630802.png' },
-            { proceso: 'Modificación', estado: 'Iniciado', icon: 'https://cdn-icons-png.flaticon.com/512/4556/4556475.png' },
-            { proceso: 'Geometral', estado: 'En Proceso', icon: 'https://cdn-icons-png.flaticon.com/512/4904/4904582.png' },
-            { proceso: 'Impresion', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/8746/8746757.png' },
-            { proceso: 'Materiales', estado: 'En Pausa', icon: 'https://cdn-icons-png.flaticon.com/512/5797/5797962.png' },
-            { proceso: 'Tizado', estado: 'Terminado', icon: 'https://cdn-icons-png.flaticon.com/512/1812/1812432.png' },
-            { proceso: 'Corte', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6181/6181345.png' },
-            { proceso: 'Pre-confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/6232/6232486.png' },
-            { proceso: 'Confección', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/588/588488.png' },
-            { proceso: 'Terminado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/4283/4283035.png' },
-            { proceso: 'Planchado', estado: 'Traido Por Cliente', icon: 'https://cdn-icons-png.flaticon.com/512/2990/2990664.png' },
-            { proceso: 'Entregado', estado: 'Pedido', icon: 'https://cdn-icons-png.flaticon.com/512/819/819873.png' },
-            { proceso: 'Aprobado', estado: 'No pedido', icon: 'https://cdn-icons-png.flaticon.com/512/3161/3161829.png' }
-        ],
-    },
-]
-type FakeOrderType = typeof fakeOrders[0]
-
+import LaunchIcon from '@mui/icons-material/Launch';
 type Props = {
     roleName: string
 }
 
 const DashboardCliente = ({ roleName }: Props) => {
+
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();
 
+    const emailToFetchOrders = useMemo(() => {
+        if (roleName === "Usuario") {
+            return { email: sessionData?.user?.email };
+        }
+        return '';
+    }, [roleName, sessionData]);
+
     const { addError } = useContext(ErrorHandlerContext);
 
-    const fetchOrders = (email: string): Promise<ExtendedOrdenData[]> =>
+    const fetchOrders = (): Promise<ExtendedOrdenData[]> =>
         fetch(`/api/orders/obtain`, {
             method: "POST",
-            body: JSON.stringify({ email: email }),
+            body: JSON.stringify(emailToFetchOrders),
             headers: {
                 "Content-Type": "application/json",
                 accept: "application/json",
@@ -118,7 +53,7 @@ const DashboardCliente = ({ roleName }: Props) => {
             });
 
 
-    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
+    const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', emailToFetchOrders], () => fetchOrders(), {
         onError: () => addError('Error al traer ordenes')
     })
 
@@ -126,15 +61,16 @@ const DashboardCliente = ({ roleName }: Props) => {
         setEditEnabled((prev) => !prev);
     };
 
-    const columns = useMemo((): GridColumns<FakeOrderType> => ([
-        { field: 'nombre', headerName: 'Nombre', maxWidth: 250, minWidth: 100, flex: 1 },
-        { field: 'orden', headerName: 'Orden', maxWidth: 250, minWidth: 100, flex: 1 },
+    const columns = useMemo((): GridColumns<ExtendedOrdenData> => ([
+        { field: 'nombre', headerName: 'Nombre', maxWidth: 200, minWidth: 100, flex: 1 },
+        { field: 'id', headerName: 'Orden', maxWidth: 200, minWidth: 100, flex: 1 },
         {
-            field: 'estado', headerName: 'Diseño', flex: 1, renderCell: (params) =>
+            field: 'procesos', headerName: 'Diseño', flex: 1, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) =>
                 <>
                     {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
                 </>
         },
+        { field: 'link', headerName: 'Ver', maxWidth: 75, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, minWidth: 75, flex: 1 }
 
 
     ]), []);
@@ -172,7 +108,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                     <LoadingIndicator show={isFetchingOrders}>
                         <div className="w-full h-[510px] p-4">
                             <DataGrid
-                                rows={fakeOrders || []}
+                                rows={orderData || []}
                                 columns={columns || []}
                                 components={{
                                     Toolbar: CustomToolbar,
@@ -181,7 +117,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                                 initialState={{
                                     columns: {
                                         columnVisibilityModel: {
-                                            id: false
+                                            id: true
                                         }
                                     }
                                 }}

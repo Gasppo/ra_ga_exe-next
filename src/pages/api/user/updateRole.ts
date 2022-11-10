@@ -1,5 +1,7 @@
 import { RoleModificationSchema } from "@backend/schemas/RoleModificationSchema";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { prisma } from '@server/db/client';
+
 
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === "POST") await handlePOST(req, res);

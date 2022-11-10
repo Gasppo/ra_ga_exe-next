@@ -97,7 +97,16 @@ export const createResetToken = async (userId: string) => {
 }
 
 
-export const createNewUser = async (data: { name: string, email: string, password: string ,telefono: string}) => {
+export const createNewUser = async (data: { 
+    name: string, 
+    email: string, 
+    password: string ,
+    telefono: string,
+    cuit:string,
+    razonSocial:string,
+    direccionFacturacion:string,
+    direccionEnvio:string
+}) => {
     const password = hashPassword(data.password);
     return await prisma.user.create({
         data: {
@@ -105,6 +114,10 @@ export const createNewUser = async (data: { name: string, email: string, passwor
             name: data.name,
             password: password,
             telefono: data.telefono,
+            cuit:data.cuit,
+            razonSocial:data.razonSocial,
+            direccionFacturacion:data.direccionFacturacion,
+            direccionEnvio:data.direccionEnvio
         }
     });
 }

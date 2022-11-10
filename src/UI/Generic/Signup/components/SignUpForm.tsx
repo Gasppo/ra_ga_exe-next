@@ -7,7 +7,7 @@ const SignUpForm = () => {
 
     return (
         <div className="flex flex-row flex-wrap justify-center items-center">
-            <div className='md:w-64'>
+            <div className='md:w-full'>
                 <FormItem layout={signupLayout} />
             </div>
         </div>

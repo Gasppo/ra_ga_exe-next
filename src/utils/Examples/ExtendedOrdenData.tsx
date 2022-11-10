@@ -16,6 +16,6 @@ export type UserInfo ={
   image: string,
   telefono: string,
   cuit:string,
-  direccionFactuarcion:string,
+  direccionFacturacion:string,
   direccionEnvio:string,
 }

@@ -15,8 +15,8 @@ export default async function handleUserCreation(req: NextApiRequest, res: NextA
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const { name, email, password ,telefono} = UserCreationSchema.parse(req.body);
-        const user = await createNewUser({ name, email, password , telefono });
+        const { name, email, password ,telefono , razonSocial,cuit,direccionFacturacion,direccionEnvio} = UserCreationSchema.parse(req.body);
+        const user = await createNewUser({ name, email, password , telefono,razonSocial,cuit,direccionFacturacion,direccionEnvio});
 
         await createCredentialsAccountForUser(user.id);
 
@@ -25,9 +25,12 @@ async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
             body: {
                 user: {
                     name: user.name,
+                    razonSocial:razonSocial,
                     email: user.email,
                     telefono:user.telefono,
                     image: user.image,
+                    direccionFacturacion:direccionFacturacion,
+                    direccionEnvio:direccionEnvio,
                 }
             }
         })

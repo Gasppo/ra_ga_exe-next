@@ -41,14 +41,15 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
     }
 
     return (
-        <ModalComponent open={open} onClose={onClose} size='small'>
+        <ModalComponent open={open} onClose={onClose} size='large'>
+            <div className='w-full'>
             <LoadingIndicator show={isLoading}>
-                <div className="container mx-auto flex flex-col items-center bg-white rounded-none md:rounded-3xl">
+                <div className="container flex flex-col items-center bg-white rounded-none md:rounded-3xl">
                     <PageTitle title="Crear Cuenta" size="small" />
-                    <div className="mt-10" >
+                    <div className="mt-6 w-full" >
                         <HookForm defaultValues={defaultFormValues} formOptions={{ resolver: zodResolver(UserCreationSchema) }} onSubmit={handleFormSubmit}>
                             <div className="flex flex-col items-center justify-center">
-                                <div className="flex flex-row flex-wrap justify-center w-3/4">
+                                <div className="flex flex-row flex-wrap justify-center w-full">
                                     {completedSignUp && <SignUpCompleted onSignin={onSignin} />}
                                     {!completedSignUp && <SignUpForm />}
                                 </div>
@@ -59,6 +60,7 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
                     </div>
                 </div>
             </LoadingIndicator>
+            </div>
         </ModalComponent>
     )
 }

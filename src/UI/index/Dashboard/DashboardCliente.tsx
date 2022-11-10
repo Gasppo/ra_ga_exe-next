@@ -150,7 +150,7 @@ const DashboardCliente = () => {
 
     const { data: userInfo, isLoading: isUserInfo } = useQuery(['userInfo', sessionData?.user?.email], () => fetchUser(sessionData?.user?.email), {
         onError: () => addError('Error al traer el usuario'),
-        initialData: {name: "",razonSocial:"",email: "",image: "",telefono: "",cuit:"",direccionFactuarcion:"",direccionEnvio:""},
+        initialData: {name: "",razonSocial:"",email: "",image: "",telefono: "",cuit:"",direccionFacturacion:"",direccionEnvio:""},
     })
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
@@ -287,7 +287,7 @@ const DashboardCliente = () => {
                             variant="standard"
                             disabled={!editEnabled}
                             label="Direccion de Facturacion"
-                            value={userInfo.direccionFactuarcion}
+                            value={userInfo.direccionFacturacion}
                             InputProps={{ disableUnderline: !editEnabled }}
                         />
                     </div>

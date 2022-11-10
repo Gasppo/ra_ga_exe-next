@@ -9,7 +9,7 @@ const ClothingConfirmationForm = () => {
     return (
         <div className="flex w-full md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0 font-semibold">
             <div className="w-full md:w-2/4">
-                <div>Cliente: {cotizadorData.user.name ? cotizadorData.user.name : 'No esta logeado'}</div>
+                <div>Cliente: {cotizadorData?.user?.name ? cotizadorData?.user?.name : 'No esta logeado'}</div>
             </div>
 
             <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>

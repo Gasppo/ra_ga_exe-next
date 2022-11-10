@@ -28,10 +28,16 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
                     {image && <Image src={image} height='200px' width={'200px'} alt="Seleccione prenda.." />}
                 </div>
                 {currStep === 4 && <div className='flex flex-col space-y-2'>
-                    <div className='mt-4'>Precio Estimado: ${data?.price?.toFixed(0) || '0.00'}</div>
                     <div className="flex flex-col list-disc" >
-                        {data?.preciosIndividuales?.map(el => <li className="text-xs" key={el.servicio}> {el.servicio}: ${el.precioTotal?.toFixed(0)} </li>)}
+                        {data?.preciosIndividuales?.map(el =>
+                            <>
+                                <li className="text-xs mt-1" key={el.servicio}> {el.servicio}: </li>
+                                <div className="text-xs">${el.precioTotal?.toFixed(0)}</div>
+                            </>
+                        )}
+                        <li className="text-xs font-bold mt-1">Terminaciones y otros procesos se cotizan durante el desarrollo</li>
                     </div>
+                    <div className='mt-4 text-sm font-extrabold'>Precio total estimado: ${data?.price?.toFixed(0) || '0.00'}</div>
                 </div>}
             </div>
         </>

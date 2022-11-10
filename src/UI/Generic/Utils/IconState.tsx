@@ -8,24 +8,26 @@ interface IconStateProps {
     state: string
 }
 
-const IconBorders = (estado: string) => {
+export const IconBorders = (estado: string, element = 'border') => {
     switch (estado.toLowerCase()) {
         case "pedido":
-            return "border-cyan-500";
+            return element + "-cyan-500";
         case "traido por cliente":
-            return "border-violet-500";
+            return element + "-violet-500";
         case "no pedido":
-            return "border-gray-500";
+            return element + "-gray-500";
         case "iniciado":
-            return "border-orange-500";
+            return element + "-orange-500";
         case "en proceso":
-            return "border-yellow-500";
+            return element + "-yellow-500";
         case "terminado":
-            return "border-green-500";
+            return element + "-green-500";
         case "en pausa":
-            return "border-teal-500";
+            return element + "-teal-500";
         case "cancelado":
-            return "border-red-500";
+            return element + "-red-500";
+        default:
+            return element + "-gray-500"
     }
 }
 

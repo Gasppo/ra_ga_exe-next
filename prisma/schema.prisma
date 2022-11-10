@@ -167,7 +167,7 @@ model ProcesoDesarrollo {
 
 model EstadoProcesoDesarrollo {
     id                     Int                      @id @default(autoincrement())
-    descripcion            String
+    descripcion            String                   @unique
     color                  String
     ProcesoDesarrolloOrden ProcesoDesarrolloOrden[]
 }

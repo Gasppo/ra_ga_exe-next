@@ -8,6 +8,7 @@ import PageTitle from "@UI/Generic/Utils/PageTitle";
 import OrderDetailsTab from '@UI/orden/OrderDetailsTab';
 import OrderFilesTab from '@UI/orden/OrderFilesTab';
 import OrderMessagesTab from '@UI/orden/OrderMessagesTab';
+import OrderProcessesTab from '@UI/orden/OrderProcessesTab';
 import OrderStateTab from "@UI/orden/OrderStateTab";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
@@ -30,6 +31,7 @@ const Home: NextPage = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
+
 
     const isStepOptional = () => false
 
@@ -129,6 +131,7 @@ const Home: NextPage = () => {
                                             <div className='border-b-2 w-full'>
                                                 <Tabs value={value} onChange={handleChange} variant='scrollable'>
                                                     <Tab label="Estado" value={0} />
+                                                    {true && <Tab label="Procesos" value={4} />}
                                                     {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
                                                     {orderData?.detallesPrenda?.atributos?.length > 0 && <Tab label="Detalles" value={2} />}
                                                     {true && <Tab label="Mensajes" value={3} />}
@@ -145,6 +148,9 @@ const Home: NextPage = () => {
                                             </div>
                                             <div hidden={value !== 3} className='w-full'>
                                                 <OrderMessagesTab orderData={orderData} />
+                                            </div>
+                                            <div hidden={value !== 4} className='w-full'>
+                                                <OrderProcessesTab orderData={orderData} />
                                             </div>
                                         </div>
                                     </div>

@@ -18,7 +18,7 @@ import { ExtendedOrdenData } from "../../../utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "../../../utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "../../../utils/queries/cotizador";
 import ActionButton from "./ActionButton";
-
+import LaunchIcon from '@mui/icons-material/Launch';
 type Props = {
     roleName: string
 }
@@ -62,6 +62,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                     {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
                 </>
         },
+        { field: ' ', maxWidth: 50, headerName: '', renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, filterable: false, sortable: false, align: 'center', minWidth: 75, flex: 1 }
 
 
     ]), []);

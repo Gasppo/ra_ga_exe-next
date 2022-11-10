@@ -1,6 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import EditIcon from "@mui/icons-material/Edit";
+import SaveIcon from '@mui/icons-material/Save';
+import CancelIcon from '@mui/icons-material/Cancel';
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import { Button, Divider, Link, TextField } from "@mui/material";
@@ -93,6 +95,7 @@ const fakeOrders = [
 type FakeOrderType = typeof fakeOrders[0]
 
 const DashboardCliente = () => {
+
     const [editEnabled, setEditEnabled] = useState(false);
     const { data: sessionData } = useSession();
     
@@ -128,10 +131,26 @@ const DashboardCliente = () => {
             throw error;
         });
     
+    const updateUser = (email: string) =>
+        fetch(`/api/users/update`, {
+            method: "PATCH",
+            body: JSON.stringify({
+                email: email,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+                accept: "application/json",
+            },
+        })
+            .then(res => (res.ok ? res.json() : errorHandle(res)))
+            .catch(error => {
+                console.log('Broke updating user');
+                throw error;
+            });
 
     const { data: userInfo, isLoading: isUserInfo } = useQuery(['userInfo', sessionData?.user?.email], () => fetchUser(sessionData?.user?.email), {
         onError: () => addError('Error al traer el usuario'),
-        initialData: {name: "",email: "",image: "",telefono: ""},
+        initialData: {name: "",razonSocial:"",email: "",image: "",telefono: "",cuit:"",direccionFactuarcion:"",direccionEnvio:""},
     })
 
     const { data: orderData, isLoading: isFetchingOrders } = useQuery(['ordenes', sessionData?.user?.email], () => fetchOrders(sessionData?.user?.email), {
@@ -141,6 +160,10 @@ const DashboardCliente = () => {
     const handleEnableEdit = () => {
         setEditEnabled((prev) => !prev);
     };
+
+    const handleEditUser = () => {
+        setEditEnabled((prev) => !prev);
+    }
 
     const columns = useMemo((): GridColumns<FakeOrderType> => ([
         { field: 'nombre', headerName: 'Nombre', maxWidth: 250, minWidth: 100, flex: 1 },
@@ -206,9 +229,13 @@ const DashboardCliente = () => {
                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
                     <div className="text-xl my-8 flex justify-between">
                         <div>Mis datos</div>
+                        {editEnabled ? <div className="cursor-pointer"><SaveIcon /></div> : null}
+                        {editEnabled ? <div className="cursor-pointer"><CancelIcon onClick={handleEnableEdit} />
+                        </div> : null}
                         <div className="cursor-pointer">
                             <EditIcon onClick={handleEnableEdit} />
                         </div>
+                        
                     </div>
                     <div className="my-2">
                         <TextField
@@ -222,7 +249,16 @@ const DashboardCliente = () => {
                     <div className="my-2">
                         <TextField
                             variant="standard"
-                            disabled
+                            disabled={!editEnabled}
+                            label="Razon Social"
+                            value={userInfo.razonSocial}
+                            InputProps={{ disableUnderline: !editEnabled }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <TextField
+                            variant="standard"
+                            disabled={true}
                             label="Correo"
                             value={userInfo.email}
                             InputProps={{ disableUnderline: true }}
@@ -231,10 +267,37 @@ const DashboardCliente = () => {
                     <div className="my-2">
                         <TextField
                             variant="standard"
-                            disabled
+                            disabled={!editEnabled}
                             label="Telefono"
                             value={userInfo.telefono}
-                            InputProps={{ disableUnderline: true }}
+                            InputProps={{ disableUnderline: !editEnabled  }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <TextField
+                            variant="standard"
+                            disabled={!editEnabled}
+                            label="CUIT"
+                            value={userInfo.cuit}
+                            InputProps={{ disableUnderline: !editEnabled }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <TextField
+                            variant="standard"
+                            disabled={!editEnabled}
+                            label="Direccion de Facturacion"
+                            value={userInfo.direccionFactuarcion}
+                            InputProps={{ disableUnderline: !editEnabled }}
+                        />
+                    </div>
+                    <div className="my-2">
+                        <TextField
+                            variant="standard"
+                            disabled={!editEnabled}
+                            label="Direccion de Envio"
+                            value={userInfo.direccionEnvio}
+                            InputProps={{ disableUnderline: !editEnabled }}
                         />
                     </div>
                     <div className="my-10 flex justify-center">

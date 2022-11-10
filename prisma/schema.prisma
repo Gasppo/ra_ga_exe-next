@@ -53,6 +53,10 @@ model User {
     email         String?      @unique
     emailVerified DateTime?
     telefono      String?
+    cuit String?
+    razonSocial String?
+    direccionFacturacion String?
+    direccionEnvio String?
     image         String?
     accounts      Account[]
     sessions      Session[]

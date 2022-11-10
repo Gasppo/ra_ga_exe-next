@@ -11,7 +11,11 @@ export type ExtendedOrdenData = Orden & {
 
 export type UserInfo ={
   name:string,
+  razonSocial:string,
   email: string,
   image: string,
-  telefono: string
+  telefono: string,
+  cuit:string,
+  direccionFactuarcion:string,
+  direccionEnvio:string,
 }

@@ -10,9 +10,13 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             },
             select: {
                 name: true,
+                razonSocial:true,
                 email: true,
                 image: true,
-                telefono: true
+                telefono: true,
+                cuit:true,
+                direccionFacturacion:true,
+                direccionEnvio:true,
             }
         });
         res.status(200).json(user);

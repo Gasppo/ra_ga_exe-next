@@ -14,6 +14,13 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
         },
         {
             type: 'Input',
+            label: 'Razon Social',
+            scope: 'razonSocial',
+            width: 12,
+            options: { size: 'small' }
+        },
+        {
+            type: 'Input',
             label: 'Email',
             scope: 'email',
             width: 12,
@@ -23,6 +30,13 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
             type: 'Input',
             label: 'Telefono',
             scope: 'telefono',
+            options: { size: 'small' },
+            width: 9,
+        },
+        {
+            type: 'Input',
+            label: 'CUIT',
+            scope: 'cuit',
             options: { size: 'small' },
             width: 9,
         },
@@ -39,6 +53,20 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
             scope: 'confirmPassword',
             options: { textType: 'password',size: 'small' },
             width: 12,
+        },
+        {
+            type: 'Input',
+            label: 'Direccion de Facturacion',
+            scope: 'direccionFacturacion',
+            options: { size: 'small' },
+            width: 9,
+        },
+        {
+            type: 'Input',
+            label: 'Direccion de Envio',
+            scope: 'direccionEnvio',
+            options: { size: 'small' },
+            width: 9,
         },
     ]
 }

@@ -38,12 +38,12 @@ const Home: NextPage = () => {
     );
 
 
-    const { mutateAsync: uploadFilesMutation } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
+    const { mutateAsync: uploadFilesMutation, isLoading: isUploading } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
     )
 
 
-    const { mutateAsync: createOrderMutation } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
+    const { mutateAsync: createOrderMutation, isLoading: isCreatingOrder } = useMutation<{ message: string }, ErrorMessage, OrderCreationData>(createOrder, {
         onSuccess: (obj) => {
             router.replace('/');
             addError(obj.message, "info");
@@ -99,7 +99,7 @@ const Home: NextPage = () => {
             <main>
                 <Slide in={true} timeout={500} direction='up'>
                     <div>
-                        <LoadingIndicator show={isFetching || isMutating}>
+                        <LoadingIndicator show={isFetching || isMutating || isCreatingOrder || isUploading}>
                             <div className="container mx-auto flex flex-col justify-evenly min-h-[80vh] md:min-h-screen p-4 md:p-0 lg:p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                                 <PageTitle title="Cotizador" hasBack />
                                 <PriceCheckerSteps step={step} steps={steps} price={price} isStepOptional={isStepOptional} />

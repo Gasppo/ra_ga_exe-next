@@ -36,6 +36,7 @@ const UsuariosDashboard = () => {
     const columns = useMemo((): GridColumns<ExtendedOrdenData> => ([
         { field: 'nombre', headerName: 'Nombre', flex: 1, maxWidth: 200, align: "center", headerAlign: "center" },
         { field: 'id', headerName: 'Orden', flex: 1, maxWidth: 200, align: "center", headerAlign: "center" },
+        { field: 'createdAt', headerName: 'Fecha', flex: 1, maxWidth: 100, align: "center", headerAlign: "center", valueFormatter: (params) => params.value.slice(0, 10) },
         { field: 'user', headerName: 'Creador', flex: 1, maxWidth: 150, align: "center", headerAlign: "center", valueGetter: (params) => params.row.user.name },
         {
             field: 'procesos', headerName: 'Diseño', flex: 1, disableColumnMenu: true, align: "center", headerAlign: "center", filterable: false, sortable: false, renderCell: (params) =>

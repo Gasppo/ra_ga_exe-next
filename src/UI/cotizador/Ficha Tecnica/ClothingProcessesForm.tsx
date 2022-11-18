@@ -1,3 +1,4 @@
+import { Alert } from "@mui/material";
 import FormItem from '@UI/Forms/FormItem';
 import { clothingProcessesLayout } from './forms/clothingProcessesForm.layout';
 
@@ -7,6 +8,7 @@ const ClothingProcessesForm = () => {
 
     return (
         <div className="flex md:w-6/12 flex-col justify-center items-baseline mt-10 md:mt-0">
+            <Alert severity='info'>Seleccione los procesos que quiere adicionar a su orden</Alert>
             <div className="form-input-section">
                 <FormItem layout={clothingProcessesLayout} selectOptions={{
                     cantidades: [
@@ -19,6 +21,7 @@ const ClothingProcessesForm = () => {
                         { key: 'Alto', text: 'Gran Producción ( 1000 o más prendas )' }
                     ]
                 }} />
+
             </div>
 
         </div>

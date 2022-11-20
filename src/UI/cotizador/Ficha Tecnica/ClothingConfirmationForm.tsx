@@ -9,7 +9,7 @@ const ClothingConfirmationForm = () => {
     return (
         <div className="flex w-full md:w-6/12 flex-col justify-center items-center mt-10 md:mt-0 font-semibold">
             <div className="w-full md:w-2/4">
-                <div>Cliente: {cotizadorData.user.name ? cotizadorData.user.name : 'No esta logeado'}</div>
+                <div>Cliente: {cotizadorData?.user?.name ? cotizadorData?.user?.name : 'No esta logeado'}</div>
             </div>
 
             <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>
@@ -41,12 +41,12 @@ const ClothingConfirmationForm = () => {
             <div className="mt-3 w-full md:w-2/4">
                 <div>{cotizadorData["Moldería Base"]?.selected ? "✔️ " : "❌ "} Moldería Base </div>
                 <div>{cotizadorData["Digitalización y Progresiones"]?.selected ? "✔️ " : "❌ "} Digitalización y Progresiones </div>
-                <div>{cotizadorData["Impresión Moldertía Base"] ? "✔️ " : "❌ "} Impresión Moldertía Base </div>
-                <div>{cotizadorData["Ficha Técnica de Consumos"] ? "✔️ " : "❌ "} Ficha Técnica (Geometral + Guía de Armado) </div>
-                <div>{cotizadorData["Corte Muestra"] ? "✔️ " : "❌ "} Corte Muestra </div>
-                <div>{cotizadorData["Confección Muestra"] ? "✔️ " : "❌ "} Confección Muestra </div>
-                <div>{cotizadorData.Terminación ? "✔️ " : "❌ "} Terminación (Ojal, Botón, Plancha, etc) </div>
-                <div>{cotizadorData.Cotización ? "✔️ " : "❌ "} Cotización </div>
+                <div>{cotizadorData["Impresión Moldertía Base"]?.selected ? "✔️ " : "❌ "} Impresión Moldertía Base </div>
+                <div>{cotizadorData["Ficha Técnica de Consumos"]?.selected ? "✔️ " : "❌ "} Ficha Técnica (Geometral + Guía de Armado) </div>
+                <div>{cotizadorData["Corte Muestra"]?.selected ? "✔️ " : "❌ "} Corte Muestra </div>
+                <div>{cotizadorData["Confección Muestra"]?.selected ? "✔️ " : "❌ "} Confección Muestra </div>
+                <div>{cotizadorData.Terminación?.selected ? "✔️ " : "❌ "} Terminación (Ojal, Botón, Plancha, etc) </div>
+                <div>{cotizadorData.Cotización?.selected ? "✔️ " : "❌ "} Cotización </div>
             </div>
 
             <div className="border-gray-300 border-2 w-full md:w-2/4 mt-3"></div>

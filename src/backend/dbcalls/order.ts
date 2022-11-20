@@ -58,7 +58,7 @@ export const verifyUserOrder = async (orderId: string | string[], userEmail: str
         select: { role: true }
     })
 
-    return role?.role.name === "Dueño"
+    return role?.role.name === "Dueño" || role?.role.name === "Administrador"
 }
 
 export const getPrecioDolar = async () => {

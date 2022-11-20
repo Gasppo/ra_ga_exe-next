@@ -67,7 +67,13 @@ const DashboardCliente = ({ roleName }: Props) => {
         {
             field: 'procesos', headerName: 'Diseño', flex: 1, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) =>
                 <>
-                    {params.row?.procesos?.map(proceso => <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />)}
+                    {params.row?.procesos?.map(proceso =>
+                        proceso.estado === 'No Pedido' ?
+                            <button disabled={true} className={'opacity-30'}>
+                                <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />
+                            </button> :
+                            <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />
+                    )}
                 </>
         },
         { field: 'link', headerName: 'Ver', maxWidth: 75, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>, minWidth: 75, flex: 1 }
@@ -88,14 +94,14 @@ const DashboardCliente = ({ roleName }: Props) => {
 
             <div className="flex justify-between">
                 {
-                    roleName === 'Usuario' ? <PageTitle title="Mis Ordenes" hasBack={false} /> : <PageTitle title="Administrar ordenes" hasBack={false} />
+                    roleName === 'Usuario' ? <PageTitle title="Productos en desarrollo" hasBack={false} /> : <PageTitle title="Administrar ordenes" hasBack={false} />
                 }
                 {roleName === 'Usuario' && sessionData?.user && (
                     <div className="hidden md:flex md:mr-10 items-center justify-center">
                         <div className="rounded-2xl">
                             <Link href={"/fichaTecnicaForm"}>
                                 <Button variant="outlined" startIcon={<PostAddIcon />} >
-                                    Nueva Cotización
+                                    Nuevo Producto
                                 </Button>
                             </Link>
                         </div>
@@ -175,7 +181,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                         <div className="flex flex-row flex-wrap items-center justify-start mt-2">
                             <ActionButton
                                 Icon={AddIcon}
-                                label="Nueva Cotizacion"
+                                label="Nuevo Producto"
                                 href="/fichaTecnicaForm"
                             />
                             <ActionButton

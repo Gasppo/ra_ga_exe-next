@@ -129,7 +129,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                                 }}
                             />
                             }
-                            <div className="h-full border-2 flex justify-center items-center">
+                            {orderData?.length === 0 && < div className="h-full border-2 flex justify-center items-center">
                                 <div className="flex flex-col space-y-4 items-center">
                                     <div className="text-2xl">Actualmente no tiene ordenes de desarrollo activas</div>
                                     <div >
@@ -138,53 +138,55 @@ const DashboardCliente = ({ roleName }: Props) => {
                                         </Link>
                                     </div>
                                 </div>
-                            </div>
+                            </div>}
                         </div>
                     </LoadingIndicator>
                 </div>
 
-                {sessionData?.user && roleName === 'Usuario' && (
-                    <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
-                        <div className="text-xl my-8 flex justify-between">
-                            <div>Mis datos</div>
-                            <div className="cursor-pointer">
-                                <EditIcon onClick={handleEnableEdit} />
+                {
+                    sessionData?.user && roleName === 'Usuario' && (
+                        <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
+                            <div className="text-xl my-8 flex justify-between">
+                                <div>Mis datos</div>
+                                <div className="cursor-pointer">
+                                    <EditIcon onClick={handleEnableEdit} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="my-2">
-                            <TextField
-                                variant="standard"
-                                disabled={!editEnabled}
-                                label="Nombre"
-                                value={sessionData.user.name}
-                                InputProps={{ disableUnderline: !editEnabled }}
-                            />
-                        </div>
-                        <div className="my-2">
-                            <TextField
-                                variant="standard"
-                                disabled
-                                label="Correo"
-                                value={sessionData.user.email}
-                                InputProps={{ disableUnderline: true }}
-                            />
-                        </div>
-                        <div className="my-10 flex justify-center">
-                            <div className="rounded-full flex items-center hover:opacity-25 transition-all duration-300">
-                                <Image
-                                    src={
-                                        sessionData?.user?.image ||
-                                        "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
-                                    }
-                                    alt=""
-                                    width={128}
-                                    height={128}
-                                    className="rounded-full hover:b"
+                            <div className="my-2">
+                                <TextField
+                                    variant="standard"
+                                    disabled={!editEnabled}
+                                    label="Nombre"
+                                    value={sessionData.user.name}
+                                    InputProps={{ disableUnderline: !editEnabled }}
                                 />
                             </div>
+                            <div className="my-2">
+                                <TextField
+                                    variant="standard"
+                                    disabled
+                                    label="Correo"
+                                    value={sessionData.user.email}
+                                    InputProps={{ disableUnderline: true }}
+                                />
+                            </div>
+                            <div className="my-10 flex justify-center">
+                                <div className="rounded-full flex items-center hover:opacity-25 transition-all duration-300">
+                                    <Image
+                                        src={
+                                            sessionData?.user?.image ||
+                                            "https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg"
+                                        }
+                                        alt=""
+                                        width={128}
+                                        height={128}
+                                        className="rounded-full hover:b"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                )}
+                    )
+                }
                 <div className="flex flex-col  md:hidden w-full">
 
 
@@ -233,8 +235,8 @@ const DashboardCliente = ({ roleName }: Props) => {
                     </div>
 
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     );
 };
 

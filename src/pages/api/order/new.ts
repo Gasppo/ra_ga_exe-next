@@ -48,7 +48,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
         const { id: idEstadoBase } = await prisma.estadoOrden.findFirst({ where: { nombre: 'Aguardando Confirmación' } })
         const user = await checkIfUserExists({ email: data.user.email })
         const orden = await prisma.orden.create({
-            include: { user: true, estado: true, archivos: true, servicios: true, cotizacionOrden: true },
+            include: { user: true, estado: true, archivos: true, servicios: true, cotizacionOrden: true, procesos: true },
             data: {
                 id: idOrden,
                 nombre: data.nombreProducto,
@@ -93,6 +93,12 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                     }
                 }
             }
+        })
+
+        const procesosOrden = orden.procesos
+
+        await prisma.fichaTecnica.createMany({
+            data: procesosOrden.map(proc => ({ procesoId: proc.id }))
         })
 
         await sendEmail({

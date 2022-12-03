@@ -29,6 +29,7 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -37,6 +38,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model ResetToken {
@@ -45,6 +48,8 @@ model ResetToken {
     userId  String
     expires DateTime
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model User {
@@ -61,6 +66,8 @@ model User {
     ResetToken    ResetToken[]
     orders        Orden[]
     Mensaje       Mensaje[]
+
+    @@index([roleId])
 }
 
 model VerificationToken {
@@ -86,6 +93,9 @@ model PrecioPrenda {
     complejidad   ComplejidadConfeccion @relation(fields: [complejidadId], references: [id], onDelete: Cascade)
     complejidadId String
     ordenes       Orden[]
+
+    @@index([tipoId])
+    @@index([complejidadId])
 }
 
 model TipoPrenda {
@@ -129,6 +139,10 @@ model Orden {
     idDetallesPrenda String?
     procesos         ProcesoDesarrolloOrden[]
     mensajes         Mensaje[]
+
+    @@index([idPrenda])
+    @@index([userId])
+    @@index([idEstado])
 }
 
 model Mensaje {
@@ -140,6 +154,9 @@ model Mensaje {
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
     mensaje   String
+
+    @@index([idOrden])
+    @@index([userId])
 }
 
 model CotizacionOrden {
@@ -148,6 +165,8 @@ model CotizacionOrden {
     idOrden   String
     precio    Float
     createdAt DateTime @default(now())
+
+    @@index([idOrden])
 }
 
 model EstadoOrden {
@@ -180,6 +199,12 @@ model ProcesoDesarrolloOrden {
     idProceso       Int
     estado          EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
     idEstadoProceso Int
+    FichaTecnica    FichaTecnica?           @relation()
+    idFichaTecnica  String?
+
+    @@index([idOrden])
+    @@index([idProceso])
+    @@index([idEstadoProceso])
 }
 
 model Servicio {
@@ -200,6 +225,8 @@ model Archivo {
     type        String
     Orden       Orden   @relation(fields: [ordenId], references: [id], onDelete: Cascade)
     ordenId     String
+
+    @@index([ordenId])
 }
 
 model DetallesPrenda {
@@ -216,4 +243,23 @@ model AtributoPrenda {
     observacion      String?
     detallesPrenda   DetallesPrenda @relation(fields: [detallesPrendaId], references: [id], onDelete: Cascade)
     detallesPrendaId String
+
+    @@index([detallesPrendaId])
+}
+
+model FichaTecnica {
+    id          String                 @id @default(cuid())
+    proceso     ProcesoDesarrolloOrden @relation(fields: [procesoId], references: [id])
+    procesoId   String                 @unique
+    contenido   ContenidoFichaTencica? @relation()
+    contenidoId String?                @unique
+
+    @@index([procesoId])
+}
+
+model ContenidoFichaTencica {
+    id             String       @id @default(cuid())
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id])
+    fichaTecnicaId String       @unique
+    contenido      String
 }

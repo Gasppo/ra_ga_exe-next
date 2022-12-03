@@ -34,7 +34,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 servicios: true,
                 procesos: {
-                    include: { estado: true, proceso: true }
+                    include: { estado: true, proceso: true, FichaTecnica: true }
                 },
                 mensajes: { include: { user: true } }
             },
@@ -42,7 +42,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         res.status(200).json({
             ...orders,
-            procesos: orders.procesos.map(proc => ({ estado: proc.estado.descripcion, proceso: proc.proceso.nombre, icon: proc.proceso.icono, id: proc.id })),
+            procesos: orders.procesos.map(proc => ({ estado: proc.estado.descripcion, proceso: proc.proceso.nombre, icon: proc.proceso.icono, id: proc.id, ficha: proc.FichaTecnica })),
             mensajes: orders.mensajes.map(msg => ({ message: msg.mensaje, user: { email: msg.user.email, name: msg.user.name }, timestamp: msg.createdAt, id: msg.id }))
         });
     } catch (error) {

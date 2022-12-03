@@ -101,7 +101,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                         <div className="rounded-2xl">
                             <Link href={"/fichaTecnicaForm"}>
                                 <Button variant="outlined" startIcon={<PostAddIcon />} >
-                                    Nuevo Producto
+                                    Nueva Orden
                                 </Button>
                             </Link>
                         </div>
@@ -113,7 +113,7 @@ const DashboardCliente = ({ roleName }: Props) => {
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
                     <LoadingIndicator show={isFetchingOrders}>
                         <div className="w-full h-[510px] p-4">
-                            <DataGrid
+                            {orderData?.length > 0 && <DataGrid
                                 rows={orderData || []}
                                 columns={columns || []}
                                 components={{
@@ -128,6 +128,17 @@ const DashboardCliente = ({ roleName }: Props) => {
                                     }
                                 }}
                             />
+                            }
+                            <div className="h-full border-2 flex justify-center items-center">
+                                <div className="flex flex-col space-y-4 items-center">
+                                    <div className="text-2xl">Actualmente no tiene ordenes de desarrollo activas</div>
+                                    <div >
+                                        <Link href={"/fichaTecnicaForm"}>
+                                            <Button variant="outlined" startIcon={<PostAddIcon />} >Iniciar una nueva orden</Button>
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </LoadingIndicator>
                 </div>

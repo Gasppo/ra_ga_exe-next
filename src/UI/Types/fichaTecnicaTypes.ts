@@ -70,7 +70,7 @@ export const fichaTecnicaVaciaForm: OrderCreationData = {
     nombreProducto: '',
     "Impresión Moldertía Base": { selected: false },
     "Moldería Base": { selected: false },
-    "Cotización": { selected: false },
+    "Cotización": { selected: true },
     "Terminación": { selected: false },
     orderFiles: {
         files: [],

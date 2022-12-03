@@ -73,16 +73,6 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
                 labelPlacement: 'end'
             },
             width: 12
-        },
-        {
-            type: 'Switch',
-            scope: 'Cotización.selected',
-            className: 'mt-2',
-            label: "Cotización",
-            options: {
-                labelPlacement: 'end'
-            },
-            width: 12
-        },
+        }
     ]
 }

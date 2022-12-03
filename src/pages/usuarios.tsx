@@ -7,6 +7,7 @@ import Footer from "../UI/Generic/Footer";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import { obtainRole } from "@backend/dbcalls/user";
+import { adminRole } from "@utils/roles/SiteRoles";
 
 
 const Home: NextPage = () => {
@@ -43,7 +44,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const getUserRole = await obtainRole(session?.user?.email || '');
 
-    if (!session || getUserRole?.role?.name !== 'Dueño') {
+    if (!session || getUserRole?.role?.name !== adminRole) {
         return {
             redirect: {
                 destination: '/',

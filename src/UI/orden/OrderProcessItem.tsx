@@ -1,5 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
+import { adminRole } from '@utils/roles/SiteRoles';
 import Image from 'next/image';
 import { useState } from 'react';
 import OrderProcessItemChangeDialog from './OrderProcessItemChangeDialog';
@@ -52,7 +53,7 @@ const OrderProcessItem = ({ proceso, role }: Props) => {
     const color = ProcessStateTextColors(estado)
 
 
-    if (role === 'Dueño') return (
+    if (role === adminRole) return (
         <>
             <OrderProcessItemChangeDialog process={proceso} open={dialogOpen} onClose={handleDialogClose} />
             <div className="py-2 px-4 flex flex-row items-center justify-between text-2 m-2 border-2">

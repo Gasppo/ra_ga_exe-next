@@ -3,6 +3,7 @@ import DoneIcon from '@mui/icons-material/Done'
 
 interface SignUpCompletedProps {
     onSignin: () => void
+    adminCreation: boolean
 }
 
 const SignUpCompleted = (props: SignUpCompletedProps) => {
@@ -18,9 +19,11 @@ const SignUpCompleted = (props: SignUpCompletedProps) => {
                 <div className='mt-4 mx-4 text-green-500 text-base'>
                     <p>{'Creacion de cuenta exitosa!'}</p>
                 </div>
-                <div className='mt-6  mx-4 bg-gray-700 text-white p-2 rounded-lg hover:animate-pulse text-sm'>
-                    <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
-                </div>
+                {!props.adminCreation &&
+                    <div className='mt-6  mx-4 bg-gray-700 text-white p-2 rounded-lg hover:animate-pulse text-sm'>
+                        <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
+                    </div>
+                }
             </div>
         </div>
     )

@@ -24,6 +24,11 @@ const SignUpCompleted = (props: SignUpCompletedProps) => {
                         <button type='button' onClick={onSignin}>Proceder a Inicio de sesión</button>
                     </div>
                 }
+                {props.adminCreation &&
+                    <div className='mt-6  mx-4 bg-gray-700 text-white p-2 rounded-lg animate-pulse text-sm cursor-default'>
+                        <div>¡Recuerde modificar el rol al usuario!</div>
+                    </div>
+                }
             </div>
         </div>
     )

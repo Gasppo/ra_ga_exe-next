@@ -44,7 +44,7 @@ const OrderProcessContent = ({ orderData, selectedProcess }: Props) => {
                                 <OrderFilesTab orderData={orderData} />
                             </div>
                             <div hidden={value !== 2} className='w-full'>
-                                <OrderMessagesTab orderData={orderData} />
+                                <OrderMessagesTab orderData={orderData} selectedProcess={selectedProcess} />
                             </div>
                         </div>
                     </div>

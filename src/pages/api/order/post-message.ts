@@ -22,6 +22,7 @@ const postMessage = async (req: NextApiRequest, res: NextApiResponse) => {
                 mensaje: body.message,
                 orden: { connect: { id: body.orderId } },
                 user: { connect: { email: body.userEmail } },
+                seccion: body.section
             }
         })
         if (message.user.email !== message.orden.user.email) {

@@ -154,6 +154,7 @@ model Mensaje {
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
     mensaje   String
+    seccion   String   @default("general")
 
     @@index([idOrden])
     @@index([userId])

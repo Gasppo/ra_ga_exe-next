@@ -34,7 +34,7 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 servicios: true,
                 procesos: {
-                    include: { estado: true, proceso: true, FichaTecnica: true }
+                    include: { estado: true, proceso: true, FichaTecnica: { include: { archivos: true, contenido: true } } }
                 },
                 mensajes: { include: { user: true } }
             },

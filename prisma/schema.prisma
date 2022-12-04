@@ -254,6 +254,7 @@ model FichaTecnica {
     procesoId   String                 @unique
     contenido   ContenidoFichaTencica? @relation()
     contenidoId String?                @unique
+    archivos    ArchivoFichaTecnica[]
 
     @@index([procesoId])
 }
@@ -263,4 +264,15 @@ model ContenidoFichaTencica {
     fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id])
     fichaTecnicaId String       @unique
     contenido      String
+}
+
+model ArchivoFichaTecnica {
+    id             String       @id @default(cuid())
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id])
+    fichaTecnicaId String
+    name           String
+    observacion    String?
+    urlID          String
+
+    @@index([fichaTecnicaId])
 }

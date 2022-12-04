@@ -1,11 +1,11 @@
 import { LoadingButton } from '@mui/lab'
-import { Archivo } from '@prisma/client'
+import { Archivo, ArchivoFichaTecnica } from '@prisma/client'
 import { downloadFromFetch } from '@utils/downloadFromFetch'
 import React, { useState } from 'react'
 import SaveIcon from '@mui/icons-material/Save';
 
 type Props = {
-    archivo: Archivo
+    archivo: Archivo | ArchivoFichaTecnica
 }
 
 const OrderDownloadItem = ({ archivo }: Props) => {

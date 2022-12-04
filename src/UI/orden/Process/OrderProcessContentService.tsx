@@ -1,9 +1,9 @@
 import { Slide, Tab, Tabs } from "@mui/material";
 import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData";
 import { useEffect, useState } from "react";
-import OrderFilesTab from "./Tabs/General/Files/OrderFilesTab";
 import OrderMessagesTab from "./Tabs/General/Message/OrderMessagesTab";
 import ServiceDetailsTab from "./Tabs/Services/Details/ServiceDetailsTab";
+import ServiceFilesTab from "./Tabs/Services/Files/ServiceFilesTab";
 
 type Props = {
     orderData: ExtendedOrdenData
@@ -39,7 +39,7 @@ const OrderProcessContentService = ({ orderData, selectedProcess }: Props) => {
                             <ServiceDetailsTab orderData={orderData} selectedProcess={selectedProcess} />
                         </div>
                         <div hidden={value !== 1} className='w-full'>
-                            <OrderFilesTab orderData={orderData} />
+                            <ServiceFilesTab orderData={orderData} selectedProcess={selectedProcess} />
                         </div>
                         <div hidden={value !== 2} className='w-full'>
                             <OrderMessagesTab orderData={orderData} selectedProcess={selectedProcess} />

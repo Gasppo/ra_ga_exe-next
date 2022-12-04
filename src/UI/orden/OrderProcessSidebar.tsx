@@ -18,7 +18,8 @@ const OrderProcessSidebar = ({ orderData, role, selectedProcess, onSelect }: Pro
                         estado: 'N/A',
                         id: 'general',
                         icon: 'https://cdn-icons-png.flaticon.com/512/839/839599.png',
-                        proceso: 'General'
+                        proceso: 'General',
+                        ficha: { archivos: [], contenido: null, contenidoId: null, estimatedAt: null, id: null, procesoId: null, updatedAt: null }
                     }}
                     role={role || 'Cliente'}
                     onSelect={onSelect}

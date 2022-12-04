@@ -254,6 +254,8 @@ model FichaTecnica {
     contenido   ContenidoFichaTencica? @relation()
     contenidoId String?                @unique
     archivos    ArchivoFichaTecnica[]
+    updatedAt   DateTime               @default(now())
+    estimatedAt DateTime               @default(now())
 
     @@index([procesoId])
 }

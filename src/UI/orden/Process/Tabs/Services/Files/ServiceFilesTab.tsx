@@ -22,7 +22,9 @@ const ServiceFilesTab = ({ orderData, selectedProcess }: Props) => {
     return (
         <div className='flex flex-col mt-4'>
             <div hidden={currProcess?.ficha?.archivos?.length === 0}>
-                <div className='text-gray-700 text-lg font-medium '>Orden</div>
+                <div >
+                    <Button variant="text" onClick={handleUploadDialogOpen} startIcon={<AddIcon />}>Subir nuevo archivo</Button>
+                </div>
                 <div className='flex flex-row flex-wrap' >
                     {currProcess?.ficha?.archivos?.map(el => <OrderDownloadItem archivo={el} key={el.id} />)}
                 </div>
@@ -38,7 +40,7 @@ const ServiceFilesTab = ({ orderData, selectedProcess }: Props) => {
                 </div>
             </div>
             {uploadDialogOpen && <div>
-                <ServiceUploadDialog onClose={handleUploadDialogClose} open={uploadDialogOpen} process={currProcess} orderData={orderData}/>
+                <ServiceUploadDialog onClose={handleUploadDialogClose} open={uploadDialogOpen} process={currProcess} orderData={orderData} />
             </div>}
         </div>
     )

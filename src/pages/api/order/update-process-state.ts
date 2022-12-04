@@ -22,7 +22,13 @@ const updateProcessState = async (req: NextApiRequest, res: NextApiResponse) => 
             data: {
                 estado: {
                     connect: { descripcion: estado }
+                },
+                FichaTecnica: {
+                    update: {
+                        updatedAt: new Date()
+                    }
                 }
+
             }
         })
 

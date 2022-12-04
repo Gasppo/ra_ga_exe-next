@@ -2,7 +2,7 @@ import formidable from "formidable";
 import { GaxiosResponse } from "gaxios";
 import { drive_v3 } from "googleapis";
 import { NextApiRequest, NextApiResponse } from "next";
-import { createDirectory, createFolder, getDriveService, saveFile, verifyFileType } from "../../../backend/dbcalls/drive";
+import { createDirectory, createFolder, findFolderId, getDriveService, saveFile, verifyFileType } from "../../../backend/dbcalls/drive";
 /**
  * Uploads a file to Google Drive
  * @return{obj} file Id
@@ -43,7 +43,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
                 const orderFolder = await createDirectory(service, clientName, orderId);
                 console.log(orderFolder)
-                const fichaFolder = await createFolder(service, fichaTecnicaType, orderFolder);
+                const existingFolderID = await findFolderId(service, fichaTecnicaType, orderFolder);
+                const fichaFolder = existingFolderID ? existingFolderID : await createFolder(service, fichaTecnicaType, orderFolder);
 
                 if (Array.isArray(file)) {
                     const filesUploaded: FileUploadResponse[] = []

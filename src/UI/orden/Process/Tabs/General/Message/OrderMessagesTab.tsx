@@ -58,7 +58,7 @@ const OrderMessagesTab = ({ orderData, selectedProcess }: Props) => {
             user: { email: sessionData.user.email, name: sessionData.user.name },
             section: selectedProcess
         })
-        const mensaje = await mutateAsync({ ...messageData, orderId: orderData.id })
+        const mensaje = await mutateAsync({ ...messageData, orderId: orderData.id, section: selectedProcess })
         console.log(mensaje)
     }
 

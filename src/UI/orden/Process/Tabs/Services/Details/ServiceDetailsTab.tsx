@@ -19,14 +19,16 @@ const DetailsListElement = ({ title, value }: { title: string, value: string | n
 const ServiceDetailsTab = ({ orderData, selectedProcess }: Props) => {
 
   const currProcess = useMemo(() => orderData?.procesos.find(el => el.id === selectedProcess), [selectedProcess, orderData?.procesos])
+  const estimatedAt =  new Date(currProcess.ficha.estimatedAt).toLocaleDateString('es-AR')
+  const updatedAt = new Date(currProcess.ficha.updatedAt).toLocaleDateString('es-AR')+ ' ' + new Date(currProcess.ficha.updatedAt).toLocaleTimeString()
 
   return (
     <div className='flex flex-col mt-4'>
       <div className='text-gray-700 text-xl font-semibold'>{currProcess.proceso}</div>
       <div className='flex flex-col space-y-2 mt-2'>
         <DetailsListElement title='Estado' value={currProcess.estado} />
-        <DetailsListElement title='Fecha estimada' value={new Date().toLocaleDateString()} />
-        <DetailsListElement title='Ultima modificacion' value={new Date().toLocaleDateString()} />
+        <DetailsListElement title='Fecha estimada' value={estimatedAt} />
+        <DetailsListElement title='Ultima modificacion' value={updatedAt} />
       </div>
 
     </div>

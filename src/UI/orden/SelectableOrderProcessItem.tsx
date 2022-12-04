@@ -1,5 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
+import { ArchivoFichaTecnica, ContenidoFichaTencica, FichaTecnica } from '@prisma/client';
 import Image from 'next/image';
 import { useState } from 'react';
 import OrderProcessItemChangeDialog from './OrderProcessItemChangeDialog';
@@ -10,6 +11,10 @@ type Props = {
         proceso: string;
         icon: string;
         id: string;
+        ficha: FichaTecnica & {
+            archivos: ArchivoFichaTecnica[];
+            contenido: ContenidoFichaTencica;
+        };
     }
     role: string,
     selected?: boolean
@@ -42,7 +47,7 @@ export const ProcessStateTextColors = (estado: string) => {
 
 const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props) => {
 
-    const { estado, proceso: nombreProceso, icon, id } = proceso
+    const { estado, proceso: nombreProceso, icon, id, ficha } = proceso
     const [dialogOpen, setDialogOpen] = useState(false)
 
     const handleDialogClose = () => {
@@ -56,38 +61,14 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
     const color = ProcessStateTextColors(estado)
 
     const backgroundColor = selected ? 'bg-blue-100 border-blue-100' : estado === 'No Pedido' ? 'bg-gray-300' : 'hover:bg-gray-100 cursor-pointer'
+    const estimatedAt = new Date(ficha.estimatedAt).toLocaleDateString('es-AR')
 
     const handleSelectProcess = () => {
         if (selected || estado === 'No Pedido') return
         onSelect(id)
     }
 
-    if (role === 'Dueño') return (
-        <>
-            <OrderProcessItemChangeDialog process={proceso} open={dialogOpen} onClose={handleDialogClose} />
-            <div className={`py-2 px-4 flex flex-row items-center justify-between text-2 m-2 border-2 ${backgroundColor}`}>
-                <div className='flex flex-row items-center space-x-4'>
-                    <div>
-                        <Image src={icon} alt='hola' width={30} height={30} />
-                    </div>
-                    <div>
-                        <li className='flex flex-col'>
-                            <div className='font-bold text-lg'>{nombreProceso}</div>
-                            <div className='text-gray-400 text-xs'>Estado: <span className={`${color}`}>{estado}</span></div>
-                            <div className='text-gray-400 text-xs'>Plazo estimado: <span >N/A</span></div>
-                        </li>
-                    </div>
-                </div>
-                <div>
-                    <IconButton type='button' onClick={handleDialogOpen}>
-                        <EditIcon />
-                    </IconButton>
-                </div>
-            </div>
-        </>
-    )
-
-    if( id === 'general') return (
+    if (id === 'general') return (
         <div className={`py-2 px-4 flex flex-row items-center space-x-4 text-2 m-2 border-2 transition-all ${backgroundColor}`} onClick={handleSelectProcess}>
             <div>
                 <Image src={icon} alt='hola' width={30} height={30} />
@@ -100,6 +81,30 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
             </div>
         </div>
     )
+    if (role === 'Dueño') return (
+        <>
+            <OrderProcessItemChangeDialog process={proceso} open={dialogOpen} onClose={handleDialogClose} />
+            <div className={`py-2 px-4 flex flex-row items-center justify-between text-2 m-2 border-2 ${backgroundColor}`} onClick={handleSelectProcess}>
+                <div className='flex flex-row items-center space-x-4'>
+                    <div>
+                        <Image src={icon} alt='hola' width={30} height={30} />
+                    </div>
+                    <div>
+                        <li className='flex flex-col'>
+                            <div className='font-bold text-lg'>{nombreProceso}</div>
+                            <div className='text-gray-400 text-xs'>Estado: <span className={`${color}`}>{estado}</span></div>
+                            <div className='text-gray-400 text-xs'>Plazo estimado: <span >{estimatedAt}</span></div>
+                        </li>
+                    </div>
+                </div>
+                <div>
+                    <IconButton type='button' onClick={handleDialogOpen}>
+                        <EditIcon />
+                    </IconButton>
+                </div>
+            </div>
+        </>
+    )
 
     return (
         <div className={`py-2 px-4 flex flex-row items-center space-x-4 text-2 m-2 border-2 transition-all ${backgroundColor}`} onClick={handleSelectProcess}>
@@ -110,7 +115,7 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
                 <li className='flex flex-col'>
                     <div className='font-bold text-lg'>{nombreProceso}</div>
                     <div className='text-gray-400 text-xs'>Estado: <span className={`${color}`}>{estado}</span></div>
-                    <div className='text-gray-400 text-xs'>Plazo estimado: <span >N/A</span></div>
+                    <div className='text-gray-400 text-xs'>Plazo estimado: <span >{estimatedAt}</span></div>
                 </li>
             </div>
         </div>

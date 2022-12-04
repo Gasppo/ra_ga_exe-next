@@ -19,12 +19,11 @@ const VistaDashboardPrestadorDeServicios = () => {
     });
 
     const serviceColumns = useMemo(() => ([
-        { field: 'idOrden', headerName: 'Nombre', maxWidth: 200, minWidth: 100, flex: 1 },
-        { field: 'estado', headerName: 'Estado', maxWidth: 200, minWidth: 100, flex: 1, renderCell: (params) => params.row.estado.descripcion },
-        { field: 'proceso', headerName: 'Proceso', maxWidth: 200, minWidth: 100, flex: 1, renderCell: (params) => params.row.proceso.nombre },
-        { field: 'orden', headerName: 'Fecha Creacion', maxWidth: 200, minWidth: 100, flex: 1, renderCell: (params) => params.row.orden.createdAt.slice(0, 10) },
+        { field: 'idOrden', headerName: 'Cód. Orden', minWidth: 100, flex: 1 },
+        { field: 'proceso', headerName: 'Tipo de servicio', minWidth: 100, flex: 1, renderCell: (params) => params.row.proceso.nombre },
+        { field: 'estado', headerName: 'Estado proceso', minWidth: 100, flex: 1, renderCell: (params) => params.row.estado.descripcion },
+        { field: 'orden', headerName: 'Fecha Creacion orden', minWidth: 100, flex: 1, renderCell: (params) => params.row.orden.createdAt.slice(0, 10) },
         { field: 'link', headerName: 'Modificar', maxWidth: 100, disableColumnMenu: true, filterable: false, sortable: false, renderCell: () => <Link href={`#`}><CreateIcon /></Link>, minWidth: 75, flex: 1 }
-
     ]), []);
 
     function CustomToolbar() {

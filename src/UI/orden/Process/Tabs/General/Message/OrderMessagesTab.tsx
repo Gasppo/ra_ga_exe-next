@@ -8,7 +8,7 @@ import HookForm from '@UI/Forms/HookForm'
 import { ExtendedOrdenData } from '@utils/Examples/ExtendedOrdenData'
 import { errorHandle } from '@utils/queries/cotizador'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import OrderMessageItem from './OrderMessageItem'
 
@@ -40,7 +40,7 @@ const OrderMessagesTab = ({ orderData, selectedProcess }: Props) => {
     const [loadingMessage, setLoadingMessage] = useState<ShownMessage>({ id: 'temp', message: '', timestamp: '', user: { email: '', name: '' }, section: 'general' })
     const queryClient = useQueryClient()
     const orderID = orderData?.id || ''
-
+    const scrollRef = useRef<HTMLDivElement>(null)
     const { data: messages } = useQuery(['orderMessages', orderID], () => orderID ? getOrderMessages(orderID) : [] as ShownMessage[], { initialData: [], refetchOnWindowFocus: false })
 
     const { mutateAsync, isLoading: creatingMessage } = useMutation(createMessage, {
@@ -62,12 +62,17 @@ const OrderMessagesTab = ({ orderData, selectedProcess }: Props) => {
         console.log(mensaje)
     }
 
+    useEffect(() => {
+        if (creatingMessage) scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+    }, [creatingMessage]);
+
 
     return (
         <div className='flex flex-col mt-4'>
             <div className='m-4 border-4 shadow-lg min-h-[16rem] max-h-[20rem] overflow-y-scroll flex p-4 flex-col space-y-2'>
                 {messages.filter(mess => mess.section === selectedProcess).map(mess => <OrderMessageItem key={mess.id} message={mess} userEmail={sessionData?.user?.email || ''} />)}
                 {creatingMessage && <OrderMessageItem message={loadingMessage} userEmail={sessionData?.user?.email || ''} loading={creatingMessage} />}
+                <div ref={scrollRef} />
             </div>
             <div className='mx-4'>
                 <HookForm defaultValues={{ message: '', userEmail: sessionData?.user?.email || '', orderId: orderData?.id || '', section: selectedProcess }} onSubmit={handleSendMessage} formOptions={{ resolver: zodResolver(OrderMessageSchema) }} resetOnSubmit>

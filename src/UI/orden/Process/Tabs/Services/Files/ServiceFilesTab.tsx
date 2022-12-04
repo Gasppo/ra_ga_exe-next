@@ -38,7 +38,7 @@ const ServiceFilesTab = ({ orderData, selectedProcess }: Props) => {
                 </div>
             </div>
             {uploadDialogOpen && <div>
-                <ServiceUploadDialog onClose={handleUploadDialogClose} open={uploadDialogOpen} process={currProcess} />
+                <ServiceUploadDialog onClose={handleUploadDialogClose} open={uploadDialogOpen} process={currProcess} orderData={orderData}/>
             </div>}
         </div>
     )

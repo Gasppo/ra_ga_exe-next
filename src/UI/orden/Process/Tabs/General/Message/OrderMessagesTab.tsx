@@ -66,6 +66,7 @@ const OrderMessagesTab = ({ orderData, selectedProcess }: Props) => {
         if (creatingMessage) scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
     }, [creatingMessage]);
 
+    console.log(selectedProcess)
 
     return (
         <div className='flex flex-col mt-4'>

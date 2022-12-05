@@ -97,7 +97,7 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
                     </div>
                 </div>
 
-                {(role === adminRole || role === prestadorDeServiciosRole) && <div className='flex flex-row'>
+                {(role === adminRole) && <div className='flex flex-row'>
                     <div>
                         <IconButton type='button' onClick={handleGeneralDialogOpen}>
                             <EditIcon />

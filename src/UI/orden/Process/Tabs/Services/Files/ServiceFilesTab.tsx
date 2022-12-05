@@ -61,9 +61,9 @@ const ServiceFilesTab = ({ orderData, selectedProcess }: Props) => {
                 < div className="h-full border-2 flex justify-center items-center p-4">
                     <div className="flex flex-col space-y-4 items-center">
                         <div className="text-2xl">No hay archivos correspondientes al proceso de <span className="lowercase">{currProcess?.proceso}</span></div>
-                        <div >
+                        {role !== prestadorDeServiciosRole && <div >
                             <Button variant="outlined" onClick={handleUploadDialogOpen} startIcon={<AddIcon />}>Subir nuevo archivo</Button>
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

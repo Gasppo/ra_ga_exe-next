@@ -5,6 +5,7 @@ import { ArchivoFichaTecnica, ContenidoFichaTencica, FichaTecnica } from '@prism
 import { adminRole, prestadorDeServiciosRole } from '@utils/roles/SiteRoles';
 import Image from 'next/image';
 import { useState } from 'react';
+import OrderGeneralChangeDialog from './Process/OrderGeneralChangeDialog';
 import OrderProcessItemChangeDialog from './Process/OrderProcessItemChangeDialog';
 import OrderProcessItemResourcesDialog from './Process/OrderProcessItemResourcesDialog';
 
@@ -56,6 +57,10 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
     const { estado, proceso: nombreProceso, icon, id, ficha } = proceso
     const [statusDialogOpen, setStatusDialogOpen] = useState(false)
     const [resourceDialogOpen, setResourceDialogOpen] = useState(false)
+    const [generalDialogOpen, setGeneralDialogOpen] = useState(false)
+
+    const handleGeneralDialogClose = () => setGeneralDialogOpen(false)
+    const handleGeneralDialogOpen = () => setGeneralDialogOpen(true)
 
     const handleStatusDialogClose = () => setStatusDialogOpen(false)
     const handleStatusDialogOpen = () => setStatusDialogOpen(true)
@@ -76,17 +81,31 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
     }
 
     if (id === 'general') return (
-        <div className={`py-2 px-4 flex flex-row items-center space-x-4 text-2 m-2 border-2 transition-all ${backgroundColor}`} onClick={handleSelectProcess}>
-            <div>
-                <Image src={icon} alt='hola' width={30} height={30} />
+        <>
+            <OrderGeneralChangeDialog open={generalDialogOpen} onClose={handleGeneralDialogClose} />
+            <div className={`py-2 px-4 flex flex-row justify-between items-center space-x-4 text-2 m-2 border-2 transition-all ${backgroundColor}`} onClick={handleSelectProcess}>
+                <div className='flex flex-row items-center space-x-4'>
+
+                    <div>
+                        <Image src={icon} alt='hola' width={30} height={30} />
+                    </div>
+                    <div>
+                        <li className='flex flex-col'>
+                            <div className='font-bold text-lg'>{nombreProceso}</div>
+                            <div className='text-gray-400 text-xs'>Detalles generales de la orden</div>
+                        </li>
+                    </div>
+                </div>
+
+                {(role === adminRole || role === prestadorDeServiciosRole) && <div className='flex flex-row'>
+                    <div>
+                        <IconButton type='button' onClick={handleGeneralDialogOpen}>
+                            <EditIcon />
+                        </IconButton>
+                    </div>
+                </div>}
             </div>
-            <div>
-                <li className='flex flex-col'>
-                    <div className='font-bold text-lg'>{nombreProceso}</div>
-                    <div className='text-gray-400 text-xs'>Detalles generales de la orden</div>
-                </li>
-            </div>
-        </div>
+        </>
     )
     if (role === adminRole || role === prestadorDeServiciosRole) return (
         <>

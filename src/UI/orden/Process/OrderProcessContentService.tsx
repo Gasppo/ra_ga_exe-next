@@ -31,7 +31,7 @@ const OrderProcessContentService = ({ orderData, selectedProcess }: Props) => {
                         <div className='border-b-2 w-full'>
                             <Tabs value={value} onChange={handleChange} variant='scrollable'>
                                 {<Tab label="Detalles" value={0} />}
-                                {orderData?.archivos?.length > 0 && <Tab label="Archivos" value={1} />}
+                                {true && <Tab label="Archivos" value={1} />}
                                 {true && <Tab label="Mensajes" value={2} />}
                             </Tabs>
                         </div>

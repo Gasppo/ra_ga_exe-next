@@ -1,4 +1,5 @@
 import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
+import { OrderFieldsUpdateSchemaType } from "@backend/schemas/OrderFieldsUpdateSchema";
 import { ProcessUpdateSchemaType } from "@backend/schemas/ProcessUpdateResourcesSchema";
 import { FileUploadResponse } from "@pages/api/drive/upload";
 import { ComplejidadConfeccion, EstadoProcesoDesarrollo, Orden, ProcesoDesarrollo, ProcesoDesarrolloOrden, TipoPrenda, User } from "@prisma/client";
@@ -149,3 +150,9 @@ export const updateProcessResources = (data: ProcessUpdateSchemaType): Promise<
     }> => fetch(`/api/order/update-process-resources`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
         .then(res => res.ok ? res.json() : errorHandle(res))
         .catch((error) => { throw error });
+
+
+export const updateOrderFields = (data: OrderFieldsUpdateSchemaType): Promise<Orden> => fetch(`/api/order/update-fields`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+

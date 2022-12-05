@@ -12,6 +12,7 @@ import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
 import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
+import OrderViewProvider from '@utils/Order/OrderViewContext';
 import { errorHandle } from "@utils/queries/cotizador";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
@@ -66,17 +67,19 @@ const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
                         <div className="container mx-auto flex flex-col min-h-[80vh] md:min-h-screen p-4 bg-white mt-20 rounded-none md:rounded-3xl shadow-2xl">
                             <PageTitle title={'Detalles de orden'} hasBack size='medium' />
                             <LoadingIndicator show={isFetchingOrders}>
-                                {orderData?.id && <>
-                                    <OrderHeader orderData={orderData} />
-                                    <div className='m-6 p-4 border-2 min-h-screen flex flex-row'>
-                                        <div className='w-full md:w-1/3'>
-                                            <OrderProcessSidebar orderData={orderData} onSelect={handleSelectProcess} role={role} selectedProcess={selectedProcess} />
+                                {orderData?.id &&
+                                    <OrderViewProvider orderData={orderData}>
+                                        <OrderHeader orderData={orderData} />
+                                        <div className='m-6 p-4 border-2 min-h-screen flex flex-row'>
+                                            <div className='w-full md:w-1/3'>
+                                                <OrderProcessSidebar orderData={orderData} onSelect={handleSelectProcess} role={role} selectedProcess={selectedProcess} />
+                                            </div>
+                                            <div className='hidden md:w-2/3 m-6 p-4 md:flex flex-col items-center '>
+                                                <OrderProcessContent orderData={orderData} selectedProcess={selectedProcess} />
+                                            </div>
                                         </div>
-                                        <div className='hidden md:w-2/3 m-6 p-4 md:flex flex-col items-center '>
-                                            <OrderProcessContent orderData={orderData} selectedProcess={selectedProcess} />
-                                        </div>
-                                    </div>
-                                </>}
+                                    </OrderViewProvider>
+                                }
                             </LoadingIndicator>
                         </div>
                     </div>

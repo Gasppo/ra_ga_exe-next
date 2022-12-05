@@ -6,6 +6,7 @@ import { useGetRole } from '@utils/roles/useGetRole'
 import { useSession } from 'next-auth/react'
 import { useMemo, useState } from "react"
 import OrderDownloadItem from "../../General/Files/OrderDownloadItem"
+import OrderImageItem from '../../General/Files/OrderImageItem'
 import ServiceUploadDialog from './ServiceUploadDialog'
 
 type Props = {
@@ -39,8 +40,8 @@ const ServiceFilesTab = ({ orderData, selectedProcess }: Props) => {
                 </div>}
                 {imagenes?.length > 0 && <div className='flex flex-col'>
                     <div><p className='underline'>Imagenes</p></div>
-                    <div className='flex flex-row flex-wrap' >
-                        {imagenes.map(el => <OrderDownloadItem archivo={el} key={el.id} />)}
+                    <div className='flex flex-col flex-wrap' >
+                        {imagenes.map(el => <OrderImageItem archivo={el} key={el.id} />)}
                     </div>
                 </div>}
                 {pdfs?.length > 0 && <div className='flex flex-col'>

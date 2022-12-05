@@ -1,6 +1,7 @@
 import { ValidatedOrderSchema } from "@backend/schemas/OrderCreationSchema";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@server/db/client";
+import { adminRole, ayudanteRole } from "@utils/roles/SiteRoles";
 
 export const updateExpiredOrders = async () => {
     await prisma.orden.updateMany({
@@ -58,7 +59,7 @@ export const verifyUserOrder = async (orderId: string | string[], userEmail: str
         select: { role: true }
     })
 
-    return role?.role.name === "Dueño" || role?.role.name === "Administrador"
+    return role?.role.name === adminRole || role?.role.name === ayudanteRole
 }
 
 export const getPrecioDolar = async () => {

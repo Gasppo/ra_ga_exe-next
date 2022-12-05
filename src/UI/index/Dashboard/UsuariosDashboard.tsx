@@ -1,13 +1,16 @@
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import { IconButton } from '@mui/material';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import { Button, IconButton } from '@mui/material';
 import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
+import Signin from '@UI/Generic/Signin/Signin';
+import Signup from '@UI/Generic/Signup/Signup';
 import EditUserRoleDialog from '@UI/user/reset/EditUserRoleDialog';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { errorHandle } from '@utils/queries/cotizador';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { useIsMutating, useQuery, useQueryClient } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
@@ -19,9 +22,41 @@ const UsuariosDashboard = () => {
     const queryClient = useQueryClient()
     const isMutating = !!useIsMutating()
     const [confirmEditUserRoleOpen, setConfirmEditUserRoleOpen] = useState(false)
+    const [openSignUp, setOpenSignUp] = useState(false)
+    const [openSignIn, setOpenSignIn] = useState(false)
     const [focusedItem, setFocusedItem] = useState<ReducedUser>({ id: '', name: '', email: '', role: { name: '' } })
 
     const { addError } = useContext(ErrorHandlerContext);
+
+    const handleCloseSignIn = () => {
+        setOpenSignIn(false)
+    }
+
+    const handleCloseSignUp = () => {
+        setOpenSignUp(false)
+        queryClient.invalidateQueries(['usuarios'])
+    }
+
+    const handleOpenSignIn = async () => {
+        handleCloseSignUp()
+        await signOut()
+    }
+
+    const handleOpenSignUp = () => {
+        handleCloseSignIn()
+        setOpenSignUp(true)
+    }
+
+    const handleCloseEditUserRoleDialog = () => {
+        setConfirmEditUserRoleOpen(false)
+        queryClient.invalidateQueries(['usuarios'])
+    }
+
+    const handleEditUserRoleDialog = (data: ReducedUser) => {
+        setFocusedItem(data)
+        console.log('Edit user: ', JSON.stringify(data))
+        setConfirmEditUserRoleOpen(true)
+    }
 
     interface ReducedUser {
         id: string;
@@ -68,17 +103,6 @@ const UsuariosDashboard = () => {
         );
     }
 
-    const handleCloseEditUserRoleDialog = () => {
-        setConfirmEditUserRoleOpen(false)
-        queryClient.invalidateQueries(['usuarios'])
-    }
-
-    const handleEditUserRoleDialog = (data: ReducedUser) => {
-        setFocusedItem(data)
-        console.log('Edit user: ', JSON.stringify(data))
-        setConfirmEditUserRoleOpen(true)
-    }
-
     const EditButton = (id: string, email: string) => (
         <IconButton type="button" onClick={() => handleEditUserRoleDialog({ id, email, name: '', role: { name: '' } })}>
             <EditIcon color='primary' />
@@ -91,6 +115,11 @@ const UsuariosDashboard = () => {
             <EditUserRoleDialog onClose={handleCloseEditUserRoleDialog} open={confirmEditUserRoleOpen} idToShow={focusedItem?.id} email={focusedItem?.email} />
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
+                    <div className='flex flex-col justify-end items-end pr-4'>
+                        <Button variant="outlined" startIcon={<PersonAddAltIcon />} onClick={handleOpenSignUp} >
+                            Registrar nuevo usuario
+                        </Button>
+                    </div>
                     <div className="p-4" >
                         <LoadingIndicator show={isFetchingUsers || isMutating} >
                             <div style={{ height: 510, width: '100%' }}>
@@ -105,28 +134,9 @@ const UsuariosDashboard = () => {
                             </div>
                         </LoadingIndicator>
                     </div>
+                    {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} adminCreation={true} />}
+                    {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
                 </div>
-                {/*                 <div className="hidden lg:flex lg:flex-col p-4 lg:w-1/3 xl:w-1/4 shadow-2xl rounded-3xl bg-gray-100  mr-10">
-                    <div className="text-xl my-8 flex justify-between" >
-                        <div>
-                            Mis datos
-                        </div>
-                        <div className="cursor-pointer" >
-                            <EditIcon onClick={() => console.log('adios')} />
-                        </div>
-                    </div>
-                    <div className="my-2">
-                        <TextField variant="standard" disabled={!editEnabled} label='Nombre' value={sessionData?.user.name || 'Chau'} InputProps={{ disableUnderline: !editEnabled }} />
-                    </div>
-                    <div className="my-2">
-                        <TextField variant="standard" disabled label='Correo' value={sessionData?.user.email || 'Hola'} InputProps={{ disableUnderline: true }} />
-                    </div>
-                    <div className="my-10 flex justify-center">
-                        <div className="rounded-full flex items-center hover:opacity-25 transition-all duration-300" >
-                            <Image src={sessionData?.user?.image || 'https://lh3.googleusercontent.com/-XdUIqdMkCWA/AAAAAAAAAAI/AAAAAAAAAAA/4252rscbv5M/photo.jpg'} alt="" width={128} height={128} className="rounded-full hover:b" />
-                        </div>
-                    </div>
-                </div> */}
                 <div className="flex flex-col  md:hidden w-full" >
                     <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4 my-4'>
                         <div className="text-xl font-bold" >

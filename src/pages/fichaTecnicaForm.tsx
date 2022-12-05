@@ -27,6 +27,7 @@ import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 import LoadingIndicator from "../utils/LoadingIndicator/LoadingIndicator";
 import { createOrder, DriveUploadResponse, ErrorMessage, FileUploadData, getClothes, updateFileURL, uploadFile } from "../utils/queries/cotizador";
 import { obtainRole } from "@backend/dbcalls/user";
+import { clienteRole } from "@utils/roles/SiteRoles";
 
 const Home: NextPage = () => {
 
@@ -141,7 +142,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const getUserRole = await obtainRole(session?.user?.email || '');
 
-    if (!session || getUserRole.role.name !== 'Usuario') {
+    if (!session || getUserRole.role.name !== clienteRole) {
         return {
             redirect: {
                 destination: '/',

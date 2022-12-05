@@ -52,19 +52,20 @@ model ResetToken {
 }
 
 model User {
-    id            String       @id @default(cuid())
-    name          String?
-    email         String?      @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    role          Role?        @relation(fields: [roleId], references: [id], onDelete: Cascade)
-    roleId        Int?         @default(1)
-    password      String?
-    ResetToken    ResetToken[]
-    orders        Orden[]
-    Mensaje       Mensaje[]
+    id                 String                   @id @default(cuid())
+    name               String?
+    email              String?                  @unique
+    emailVerified      DateTime?
+    image              String?
+    accounts           Account[]
+    sessions           Session[]
+    role               Role?                    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    roleId             Int?                     @default(1)
+    password           String?
+    ResetToken         ResetToken[]
+    orders             Orden[]
+    Mensaje            Mensaje[]
+    serviciosAsignados ProcesoDesarrolloOrden[]
 
     @@index([roleId])
 }
@@ -192,15 +193,16 @@ model EstadoProcesoDesarrollo {
 }
 
 model ProcesoDesarrolloOrden {
-    id              String                  @id @default(cuid())
-    orden           Orden                   @relation(fields: [idOrden], references: [id], onDelete: Cascade)
-    idOrden         String
-    proceso         ProcesoDesarrollo       @relation(fields: [idProceso], references: [id], onDelete: Cascade)
-    idProceso       Int
-    estado          EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
-    idEstadoProceso Int
-    FichaTecnica    FichaTecnica?           @relation()
-    idFichaTecnica  String?
+    id                String                  @id @default(cuid())
+    orden             Orden                   @relation(fields: [idOrden], references: [id], onDelete: Cascade)
+    idOrden           String
+    proceso           ProcesoDesarrollo       @relation(fields: [idProceso], references: [id], onDelete: Cascade)
+    idProceso         Int
+    estado            EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
+    idEstadoProceso   Int
+    FichaTecnica      FichaTecnica?           @relation()
+    idFichaTecnica    String?
+    usuarioDeServicio User[]
 
     @@index([idOrden])
     @@index([idProceso])

@@ -1,6 +1,7 @@
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import { ArchivoFichaTecnica, ContenidoFichaTencica, FichaTecnica } from '@prisma/client';
+import { adminRole } from '@utils/roles/SiteRoles';
 import Image from 'next/image';
 import { useState } from 'react';
 import OrderProcessItemChangeDialog from './OrderProcessItemChangeDialog';
@@ -81,7 +82,7 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
             </div>
         </div>
     )
-    if (role === 'Dueño') return (
+    if (role === adminRole) return (
         <>
             <OrderProcessItemChangeDialog process={proceso} open={dialogOpen} onClose={handleDialogClose} />
             <div className={`py-2 px-4 flex flex-row items-center justify-between text-2 m-2 border-2 ${backgroundColor}`} onClick={handleSelectProcess}>

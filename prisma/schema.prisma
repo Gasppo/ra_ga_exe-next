@@ -66,6 +66,7 @@ model User {
     orders             Orden[]
     Mensaje            Mensaje[]
     serviciosAsignados ProcesoDesarrolloOrden[]
+    available          Boolean?                 @default(true)
 
     @@index([roleId])
 }

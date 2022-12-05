@@ -15,7 +15,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                         id: true,
                         name: true
                     }
-                }
+                },
+                available: true
             }
         });
         res.status(200).json(users);

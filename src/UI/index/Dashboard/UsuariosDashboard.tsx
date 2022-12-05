@@ -1,4 +1,6 @@
 import AddIcon from '@mui/icons-material/Add';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
@@ -6,11 +8,12 @@ import { Button, IconButton } from '@mui/material';
 import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import Signin from '@UI/Generic/Signin/Signin';
 import Signup from '@UI/Generic/Signup/Signup';
+import EditUserAvailabilityDialog from '@UI/user/reset/EditUserAvaiabilityData';
 import EditUserRoleDialog from '@UI/user/reset/EditUserRoleDialog';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { errorHandle } from '@utils/queries/cotizador';
-import { useSession, signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { useIsMutating, useQuery, useQueryClient } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
@@ -22,9 +25,10 @@ const UsuariosDashboard = () => {
     const queryClient = useQueryClient()
     const isMutating = !!useIsMutating()
     const [confirmEditUserRoleOpen, setConfirmEditUserRoleOpen] = useState(false)
+    const [confirmEditUserAvailabilityOpen, setConfirmEditUserAvailabilityOpen] = useState(false)
     const [openSignUp, setOpenSignUp] = useState(false)
     const [openSignIn, setOpenSignIn] = useState(false)
-    const [focusedItem, setFocusedItem] = useState<ReducedUser>({ id: '', name: '', email: '', role: { name: '' } })
+    const [focusedItem, setFocusedItem] = useState<ReducedUser>({ id: '', name: '', email: '', role: { name: '' }, available: false })
 
     const { addError } = useContext(ErrorHandlerContext);
 
@@ -54,8 +58,17 @@ const UsuariosDashboard = () => {
 
     const handleEditUserRoleDialog = (data: ReducedUser) => {
         setFocusedItem(data)
-        console.log('Edit user: ', JSON.stringify(data))
         setConfirmEditUserRoleOpen(true)
+    }
+
+    const handleCloseEditUserAvailabilityDialog = () => {
+        setConfirmEditUserAvailabilityOpen(false)
+        queryClient.invalidateQueries(['usuarios'])
+    }
+
+    const handleEditUserAvailabilityDialog = (data: ReducedUser) => {
+        setFocusedItem(data)
+        setConfirmEditUserAvailabilityOpen(true)
     }
 
     interface ReducedUser {
@@ -64,7 +77,8 @@ const UsuariosDashboard = () => {
         email: string,
         role: {
             name: string
-        }
+        },
+        available: boolean
     }
 
     const fetchUsers = (): Promise<ReducedUser[]> =>
@@ -87,12 +101,19 @@ const UsuariosDashboard = () => {
     })
 
     const columns: GridColumns = [
-        { field: 'name', headerName: 'Nombre', minWidth: 250, flex: 1 },
+        { field: 'name', headerName: 'Nombre', minWidth: 200, flex: 1 },
         { field: 'email', headerName: 'Email', minWidth: 250, flex: 1 },
         { field: 'role', headerName: 'Rol', minWidth: 150, valueGetter: (params) => params.row.role.name, flex: 1 },
         {
-            field: 'switchPermissions', headerName: 'Cambiar permisos', minWidth: 150, renderCell: (params) => EditButton(params.row.id, params.row.email)
+            field: 'switchPermissions', headerName: 'Cambiar permisos', minWidth: 150, renderCell: (params) => EditRoleButton(params.row.id, params.row.email)
         },
+        {
+            field: 'available', headerName: 'Habilitada', minWidth: 150, renderCell: (params) =>
+                params.row.available ? <CheckIcon /> : <CloseIcon />
+        },
+        {
+            field: 'switchAvailable', headerName: 'Cambiar estado', minWidth: 150, renderCell: (params) => EditAvailableButton(params.row.id, params.row.email)
+        }
     ];
 
     function CustomToolbar() {
@@ -103,8 +124,14 @@ const UsuariosDashboard = () => {
         );
     }
 
-    const EditButton = (id: string, email: string) => (
-        <IconButton type="button" onClick={() => handleEditUserRoleDialog({ id, email, name: '', role: { name: '' } })}>
+    const EditRoleButton = (id: string, email: string) => (
+        <IconButton type="button" onClick={() => handleEditUserRoleDialog({ id, email, name: '', role: { name: '' }, available: false })}>
+            <EditIcon color='primary' />
+        </IconButton>
+    )
+
+    const EditAvailableButton = (id: string, email: string) => (
+        <IconButton type="button" onClick={() => handleEditUserAvailabilityDialog({ id, email, name: '', role: { name: '' }, available: false })}>
             <EditIcon color='primary' />
         </IconButton>
     )
@@ -113,6 +140,7 @@ const UsuariosDashboard = () => {
         <div>
             <PageTitle title='Administración de usuarios' hasBack />
             <EditUserRoleDialog onClose={handleCloseEditUserRoleDialog} open={confirmEditUserRoleOpen} idToShow={focusedItem?.id} email={focusedItem?.email} />
+            <EditUserAvailabilityDialog onClose={handleCloseEditUserAvailabilityDialog} open={confirmEditUserAvailabilityOpen} idToShow={focusedItem?.id} email={focusedItem?.email} />
             <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
                 <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
                     <div className='flex flex-col justify-end items-end pr-4'>

@@ -19,7 +19,7 @@
     }
 
     .dashboard-card-enabled {
-          @apply text-slate-800 border-gray-200 border-2 rounded-xl shadow-lg flex flex-col items-center justify-center transition-all duration-300 hover:bg-gray-200 hover:text-teal-600 cursor-pointer
+          @apply text-slate-800 border-gray-200 border-2 rounded-xl shadow-lg flex flex-col items-center justify-center transition-all duration-300 hover:bg-gray-200 cursor-pointer
         }
     
     .dashboard-card-disabled {

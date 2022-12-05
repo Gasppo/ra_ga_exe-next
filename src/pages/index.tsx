@@ -2,6 +2,7 @@ import { Slide } from "@mui/material";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import { getRole } from "@utils/queries/user";
+import { adminRole } from "@utils/roles/SiteRoles";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession, useSession } from "next-auth/react";
 import Head from "next/head";
@@ -9,7 +10,7 @@ import React, { useContext } from "react";
 import { useQuery } from "react-query";
 import Footer from "../UI/Generic/Footer";
 import DashboardAdmin from "../UI/index/Dashboard/DashboardAdmin";
-import DashboardCliente from "../UI/index/Dashboard/DashboardCliente";
+import DashboardNoAdmin from "../UI/index/Dashboard/DashboardNoAdmin";
 import DashboardDesconectado from "../UI/index/Dashboard/DashboardDesconectado";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
 
@@ -46,8 +47,8 @@ const Home: NextPage = () => {
                 <div />
               </div>
               {!data?.user && <DashboardDesconectado />}
-              {roleData && data?.user && (roleData?.name !== 'Dueño') && <DashboardCliente roleName={roleData?.name} />}
-              {roleData && data?.user && (roleData?.name === 'Dueño') && <DashboardAdmin />}
+              {roleData && data?.user && (roleData?.name !== adminRole) && <DashboardNoAdmin roleName={roleData?.name} />}
+              {roleData && data?.user && (roleData?.name === adminRole) && <DashboardAdmin />}
             </div>
           </div>
         </Slide>

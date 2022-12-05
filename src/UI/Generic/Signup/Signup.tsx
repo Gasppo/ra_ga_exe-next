@@ -18,9 +18,10 @@ interface SignupProps {
     open: boolean
     onClose: () => void
     onSignin: () => void
+    adminCreation: boolean
 }
 
-const Signup = ({ open, onClose, onSignin }: SignupProps) => {
+const Signup = ({ open, onClose, onSignin, adminCreation }: SignupProps) => {
 
     const { isLoading, mutateAsync, error } = useMutation<SignupResponse, UserHandlerError, UserCreationSchemaType>(postSignup)
     const { queryErrorHandler } = useContext(ErrorHandlerContext)
@@ -49,7 +50,7 @@ const Signup = ({ open, onClose, onSignin }: SignupProps) => {
                         <HookForm defaultValues={defaultFormValues} formOptions={{ resolver: zodResolver(UserCreationSchema) }} onSubmit={handleFormSubmit}>
                             <div className="flex flex-col items-center justify-center">
                                 <div className="flex flex-row flex-wrap justify-center w-3/4">
-                                    {completedSignUp && <SignUpCompleted onSignin={onSignin} />}
+                                    {completedSignUp && <SignUpCompleted onSignin={onSignin} adminCreation={adminCreation} />}
                                     {!completedSignUp && <SignUpForm />}
                                 </div>
                                 {completedSignUp && errors && <SignUpFormErrors errors={errors} />}

@@ -1,4 +1,4 @@
-import { Archivo, AtributoPrenda, ComplejidadConfeccion, CotizacionOrden, DetallesPrenda, EstadoOrden, Orden, PrecioPrenda, Servicio, TipoPrenda, User } from '@prisma/client';
+import { Archivo, ArchivoFichaTecnica, AtributoPrenda, ComplejidadConfeccion, ContenidoFichaTencica, CotizacionOrden, DetallesPrenda, EstadoOrden, FichaTecnica, Orden, PrecioPrenda, Servicio, TipoPrenda, User } from '@prisma/client';
 
 export type ExtendedOrdenData = Orden & {
   archivos: Archivo[];
@@ -8,6 +8,6 @@ export type ExtendedOrdenData = Orden & {
   cotizacionOrden: CotizacionOrden[];
   detallesPrenda: DetallesPrenda & { atributos: AtributoPrenda[]; };
   mensajes: { id: string, message: string, timestamp: string, user: { email: string, name: string } }[]
-  procesos: { estado: string, proceso: string, icon: string, id: string }[]
+  procesos: { estado: string, proceso: string, icon: string, id: string, ficha: FichaTecnica & { archivos: ArchivoFichaTecnica[]; contenido: ContenidoFichaTencica; }, recursos: { key: string, text: string }[] }[]
   servicios: Servicio[]
 };

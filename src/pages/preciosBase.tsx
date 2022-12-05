@@ -4,6 +4,7 @@ import HeaderBar from "@UI/Generic/HeaderBar";
 import BasePricesTab from "@UI/preciosBase/BasePricesTab";
 import ComplexitiesTab from "@UI/preciosBase/ComplexitiesTab";
 import NewClothesTab from '@UI/preciosBase/NewClothesTab';
+import { adminRole } from "@utils/roles/SiteRoles";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
@@ -87,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const getUserRole = await obtainRole(session?.user?.email || '');
 
-    if (!session || getUserRole.role.name !== 'Dueño') {
+    if (!session || getUserRole.role.name !== adminRole) {
         return {
             redirect: {
                 destination: '/',

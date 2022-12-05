@@ -34,16 +34,37 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 },
                 servicios: true,
                 procesos: {
-                    include: { estado: true, proceso: true, FichaTecnica: { include: { archivos: true, contenido: true } } }
+                    include: { estado: true, proceso: true, FichaTecnica: { include: { archivos: true, contenido: true } }, usuarioDeServicio: true }
                 },
                 mensajes: { include: { user: true } }
             },
             where: { id: req.body.orderId }
         })
+
+        const formattedProcesses = orders.procesos.map(proc => ({
+            estado: proc.estado.descripcion,
+            proceso: proc.proceso.nombre,
+            icon: proc.proceso.icono,
+            id: proc.id,
+            ficha: proc.FichaTecnica,
+            recursos: proc.usuarioDeServicio.map(el => ({ key: el.email, text: el.name }))
+        }))
+
+
+        const formattedMessages = orders.mensajes.map(msg => ({
+            message: msg.mensaje,
+            user: {
+                email: msg.user.email,
+                name: msg.user.name
+            },
+            timestamp: msg.createdAt,
+            id: msg.id
+        }))
+
         res.status(200).json({
             ...orders,
-            procesos: orders.procesos.map(proc => ({ estado: proc.estado.descripcion, proceso: proc.proceso.nombre, icon: proc.proceso.icono, id: proc.id, ficha: proc.FichaTecnica })),
-            mensajes: orders.mensajes.map(msg => ({ message: msg.mensaje, user: { email: msg.user.email, name: msg.user.name }, timestamp: msg.createdAt, id: msg.id }))
+            procesos: formattedProcesses,
+            mensajes: formattedMessages
         });
     } catch (error) {
         res.status(500).json({ error: error })

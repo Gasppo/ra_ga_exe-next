@@ -1,22 +1,27 @@
 import EditIcon from '@mui/icons-material/Edit';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { IconButton } from '@mui/material';
 import { ArchivoFichaTecnica, ContenidoFichaTencica, FichaTecnica } from '@prisma/client';
 import { adminRole } from '@utils/roles/SiteRoles';
 import Image from 'next/image';
 import { useState } from 'react';
-import OrderProcessItemChangeDialog from './OrderProcessItemChangeDialog';
+import OrderProcessItemChangeDialog from './Process/OrderProcessItemChangeDialog';
+import OrderProcessItemResourcesDialog from './Process/OrderProcessItemResourcesDialog';
+
+export type ProcesoFicha = {
+    estado: string;
+    proceso: string;
+    icon: string;
+    id: string;
+    ficha: FichaTecnica & {
+        archivos: ArchivoFichaTecnica[];
+        contenido: ContenidoFichaTencica;
+    };
+    recursos: { key: string, text: string }[]
+}
 
 type Props = {
-    proceso: {
-        estado: string;
-        proceso: string;
-        icon: string;
-        id: string;
-        ficha: FichaTecnica & {
-            archivos: ArchivoFichaTecnica[];
-            contenido: ContenidoFichaTencica;
-        };
-    }
+    proceso: ProcesoFicha
     role: string,
     selected?: boolean
     onSelect?: (processID: string) => void
@@ -49,15 +54,14 @@ export const ProcessStateTextColors = (estado: string) => {
 const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props) => {
 
     const { estado, proceso: nombreProceso, icon, id, ficha } = proceso
-    const [dialogOpen, setDialogOpen] = useState(false)
+    const [statusDialogOpen, setStatusDialogOpen] = useState(false)
+    const [resourceDialogOpen, setResourceDialogOpen] = useState(false)
 
-    const handleDialogClose = () => {
-        setDialogOpen(false)
-    }
+    const handleStatusDialogClose = () => setStatusDialogOpen(false)
+    const handleStatusDialogOpen = () => setStatusDialogOpen(true)
 
-    const handleDialogOpen = () => {
-        setDialogOpen(true)
-    }
+    const handleResourceDialogClose = () => setResourceDialogOpen(false)
+    const handleResourceDialogOpen = () => setResourceDialogOpen(true)
 
     const color = ProcessStateTextColors(estado)
 
@@ -84,7 +88,8 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
     )
     if (role === adminRole) return (
         <>
-            <OrderProcessItemChangeDialog process={proceso} open={dialogOpen} onClose={handleDialogClose} />
+            <OrderProcessItemChangeDialog process={proceso} open={statusDialogOpen} onClose={handleStatusDialogClose} />
+            <OrderProcessItemResourcesDialog process={proceso} open={resourceDialogOpen} onClose={handleResourceDialogClose} />
             <div className={`py-2 px-4 flex flex-row items-center justify-between text-2 m-2 border-2 ${backgroundColor}`} onClick={handleSelectProcess}>
                 <div className='flex flex-row items-center space-x-4'>
                     <div>
@@ -98,10 +103,17 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
                         </li>
                     </div>
                 </div>
-                <div>
-                    <IconButton type='button' onClick={handleDialogOpen}>
-                        <EditIcon />
-                    </IconButton>
+                <div className='flex flex-row'>
+                    <div>
+                        <IconButton type='button' onClick={handleResourceDialogOpen}>
+                            <PersonAddIcon />
+                        </IconButton>
+                    </div>
+                    <div>
+                        <IconButton type='button' onClick={handleStatusDialogOpen}>
+                            <EditIcon />
+                        </IconButton>
+                    </div>
                 </div>
             </div>
         </>

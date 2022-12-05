@@ -4,9 +4,11 @@ import FormItem from '@UI/Forms/FormItem';
 import HookForm from '@UI/Forms/HookForm';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { fetchProcessStates, updateProcessState } from '@utils/queries/cotizador';
+import { fetchServiceUsers, updateProcessResources, updateProcessState } from '@utils/queries/cotizador';
 import React, { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { processItemResourceChangeLayout } from '../forms/processItemResourceChange.layout';
+import { ProcesoFicha } from '../SelectableOrderProcessItem';
 
 
 
@@ -20,38 +22,32 @@ const Transition = React.forwardRef(function Transition(
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-type Process = {
-    estado: string;
-    proceso: string;
-    icon: string;
-    id: string;
-}
-
 type Props = {
-    process: Process
+    process: ProcesoFicha
     open: boolean,
     onClose: () => void,
 }
 
-const OrderProcessItemChangeDialog = (props: Props) => {
+const OrderProcessItemResourcesDialog = (props: Props) => {
 
     const queryClient = useQueryClient()
 
     const { addError } = useContext(ErrorHandlerContext)
 
-    const { data } = useQuery(['processStates'], fetchProcessStates, {
+    const { data, isFetching: isFetchingUsers } = useQuery(['serviceUsers'], fetchServiceUsers, {
         initialData: [],
+        refetchOnWindowFocus: false,
         onError: (err) => addError(JSON.stringify(err))
     })
 
-    const { mutateAsync, isLoading: isUpdatingState } = useMutation(updateProcessState, {
+    const { mutateAsync, isLoading: isUpdatingState } = useMutation(updateProcessResources, {
         onSuccess: () => { props.onClose(); queryClient.invalidateQueries(['order']) },
         onError: (err) => addError(JSON.stringify(err))
     })
 
-    const states = data.map(el => ({ key: el.descripcion, text: el.descripcion }))
+    const serviceUsers = data.map(el => ({ key: el.email, text: el.name }))
 
-    const handleSubmit = async (data: Process) => {
+    const handleSubmit = async (data: ProcesoFicha) => {
         await mutateAsync(data)
     }
 
@@ -65,11 +61,11 @@ const OrderProcessItemChangeDialog = (props: Props) => {
             onClose={handleClose}
         >
             <HookForm defaultValues={props.process} onSubmit={handleSubmit} >
-                <LoadingIndicator show={isUpdatingState}>
+                <LoadingIndicator show={isUpdatingState || isFetchingUsers}>
                     <div className="p-4" >
-                        <DialogTitle>{"Cambiar el estado para el proceso?"}</DialogTitle>
+                        <DialogTitle>{"Modificar recursos asignados al proceso"}</DialogTitle>
                         <div className='my-4 mx-4'>
-                            <FormItem layout={{ type: 'Select', scope: 'estado', label: 'Estado', options: { optionsName: 'states' } }} selectOptions={{ states }} />
+                            <FormItem layout={processItemResourceChangeLayout} selectOptions={{ serviceUsers }} />
                         </div>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-slide-description">
@@ -87,4 +83,4 @@ const OrderProcessItemChangeDialog = (props: Props) => {
     </div >
 }
 
-export default OrderProcessItemChangeDialog
+export default OrderProcessItemResourcesDialog

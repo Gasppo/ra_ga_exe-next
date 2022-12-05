@@ -276,6 +276,7 @@ model ArchivoFichaTecnica {
     name           String
     observacion    String?
     urlID          String
+    type           String?
 
     @@index([fichaTecnicaId])
 }

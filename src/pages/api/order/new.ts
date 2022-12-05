@@ -66,7 +66,7 @@ const handleOrderCreation = async (req: NextApiRequest, res: NextApiResponse) =>
                 archivos: {
                     createMany: {
                         data: [
-                            ...data.orderFiles.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: 'order' })),
+                            ...data.orderFiles.files.map(file => ({ name: file.name || '', urlID: file.urlID || '', type: file.type })),
                         ]
                     }
                 },

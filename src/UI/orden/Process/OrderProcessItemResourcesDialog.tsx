@@ -57,7 +57,6 @@ const OrderProcessItemResourcesDialog = (props: Props) => {
         <Dialog
             open={props.open}
             TransitionComponent={Transition}
-            keepMounted
             onClose={handleClose}
         >
             <HookForm defaultValues={props.process} onSubmit={handleSubmit} resetOnDialogClose={{ dialogStatus: props.open }}>

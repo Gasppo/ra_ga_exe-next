@@ -20,6 +20,16 @@ const updateProcessResources = async (req: NextApiRequest, res: NextApiResponse)
 
         const users = await prisma.user.findMany({ where: { email: { in: userEmails } } })
 
+
+        //remove all resources from process
+        await prisma.procesoDesarrolloOrden.update({
+            where: { id: processID },
+            data: {
+                usuarioDeServicio: { set: [] }
+            }
+        })
+
+
         const proceso = await prisma.procesoDesarrolloOrden.update({
             include: { orden: { include: { user: true } }, proceso: true },
             where: { id: processID },

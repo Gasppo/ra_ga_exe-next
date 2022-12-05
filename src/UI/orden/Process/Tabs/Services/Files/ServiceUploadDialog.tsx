@@ -9,7 +9,6 @@ import { ExtendedOrdenData } from '@utils/Examples/ExtendedOrdenData'
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator'
 import { DriveUploadResponse } from '@utils/queries/cotizador'
 import { ErrorMessage } from '@utils/queries/user'
-import { useSession } from 'next-auth/react'
 import { useContext } from 'react'
 import { useMutation, useQueryClient } from 'react-query'
 import { updateFichaFiles, updateFileURL, uploadFile } from './serviceUploadAPIs'
@@ -39,7 +38,6 @@ const ServiceUploadDialog = ({ process, open, onClose, orderData }: Props) => {
     const queryClient = useQueryClient()
 
     const { addError } = useContext(ErrorHandlerContext)
-    const { data: sessionData } = useSession()
 
     const { mutateAsync: uploadFilesMutation, isLoading: isUploading } = useMutation<DriveUploadResponse, ErrorMessage, FileUploadData>(uploadFile,
         { onError: (error) => addError(error.error), }
@@ -64,7 +62,7 @@ const ServiceUploadDialog = ({ process, open, onClose, orderData }: Props) => {
 
 
     const handleUploadFile = async (file: { file: File, section: Paths<ValidatedFichaTecnicaFileUploadSchema> }[]) => {
-        const folderName = sessionData?.user.name || 'Sin Asignar'
+        const folderName = orderData?.user?.name || 'Sin Asignar'
         const formData = new FormData()
         for (const f of file) {
             formData.append('file', f.file)

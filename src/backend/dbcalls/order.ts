@@ -59,7 +59,14 @@ export const verifyUserOrder = async (orderId: string | string[], userEmail: str
         select: { role: true }
     })
 
-    return role?.role.name === adminRole || role?.role.name === ayudanteRole
+    if (role?.role.name === adminRole || role?.role.name === ayudanteRole) return true
+
+    const recursosAsignados = await prisma.procesoDesarrolloOrden.findMany({
+        select: { usuarioDeServicio: { select: { email: true } } },
+        where: { idOrden: id }
+    })
+
+    return recursosAsignados.some(el => el.usuarioDeServicio.some(el => el.email === userEmail))
 }
 
 export const getPrecioDolar = async () => {

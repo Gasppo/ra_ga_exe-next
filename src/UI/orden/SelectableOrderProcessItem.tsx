@@ -2,7 +2,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { IconButton } from '@mui/material';
 import { ArchivoFichaTecnica, ContenidoFichaTencica, FichaTecnica } from '@prisma/client';
-import { adminRole } from '@utils/roles/SiteRoles';
+import { adminRole, prestadorDeServiciosRole } from '@utils/roles/SiteRoles';
 import Image from 'next/image';
 import { useState } from 'react';
 import OrderProcessItemChangeDialog from './Process/OrderProcessItemChangeDialog';
@@ -86,7 +86,7 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
             </div>
         </div>
     )
-    if (role === adminRole) return (
+    if (role === adminRole || role === prestadorDeServiciosRole) return (
         <>
             <OrderProcessItemChangeDialog process={proceso} open={statusDialogOpen} onClose={handleStatusDialogClose} />
             <OrderProcessItemResourcesDialog process={proceso} open={resourceDialogOpen} onClose={handleResourceDialogClose} />
@@ -104,11 +104,11 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
                     </div>
                 </div>
                 <div className='flex flex-row'>
-                    <div>
+                    {role === adminRole && <div>
                         <IconButton type='button' onClick={handleResourceDialogOpen}>
                             <PersonAddIcon />
                         </IconButton>
-                    </div>
+                    </div>}
                     <div>
                         <IconButton type='button' onClick={handleStatusDialogOpen}>
                             <EditIcon />

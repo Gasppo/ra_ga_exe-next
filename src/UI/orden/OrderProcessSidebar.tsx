@@ -1,5 +1,6 @@
 import { ExtendedOrdenData } from '@utils/Examples/ExtendedOrdenData'
-import React from 'react'
+import { clienteRole, prestadorDeServiciosRole } from '@utils/roles/SiteRoles'
+import { useSession } from 'next-auth/react'
 import SelectableOrderProcessItem from './SelectableOrderProcessItem'
 
 type Props = {
@@ -10,9 +11,12 @@ type Props = {
 }
 
 const OrderProcessSidebar = ({ orderData, role, selectedProcess, onSelect }: Props) => {
+
+    const { data } = useSession()
+
     return (
         <div className='flex flex-col mt-4'>
-            <div className='flex flex-col max-h-screen overflow-y-auto'>
+            {role !== prestadorDeServiciosRole && <div className='flex flex-col max-h-screen overflow-y-auto'>
                 <SelectableOrderProcessItem
                     proceso={{
                         estado: 'N/A',
@@ -26,16 +30,21 @@ const OrderProcessSidebar = ({ orderData, role, selectedProcess, onSelect }: Pro
                     onSelect={onSelect}
                     selected={selectedProcess === 'general'}
                 />
-            </div>
+            </div>}
             <div className='m-2 font-bold text-lg'>Procesos</div>
             <div className='flex flex-col max-h-screen overflow-y-auto'>
-                {orderData?.procesos.filter(proc => role === 'Usuario' ? proc.estado !== 'No Pedido' : true).map(proc => <SelectableOrderProcessItem
-                    key={proc.id}
-                    proceso={proc}
-                    role={role || 'Cliente'}
-                    onSelect={onSelect}
-                    selected={selectedProcess === proc.id}
-                />)}
+                {orderData?.procesos.filter(proc => {
+                    if (role === clienteRole) return proc.estado !== 'No Pedido'
+                    if (role === prestadorDeServiciosRole) return proc.recursos.some(el => el.key === data.user.email)
+                    return true
+                })
+                    .map(proc => <SelectableOrderProcessItem
+                        key={proc.id}
+                        proceso={proc}
+                        role={role || 'Cliente'}
+                        onSelect={onSelect}
+                        selected={selectedProcess === proc.id}
+                    />)}
             </div>
         </div>
     )

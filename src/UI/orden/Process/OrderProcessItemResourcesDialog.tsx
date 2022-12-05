@@ -4,7 +4,7 @@ import FormItem from '@UI/Forms/FormItem';
 import HookForm from '@UI/Forms/HookForm';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { fetchServiceUsers, updateProcessResources, updateProcessState } from '@utils/queries/cotizador';
+import { fetchServiceUsers, updateProcessResources } from '@utils/queries/cotizador';
 import React, { useContext } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { processItemResourceChangeLayout } from '../forms/processItemResourceChange.layout';

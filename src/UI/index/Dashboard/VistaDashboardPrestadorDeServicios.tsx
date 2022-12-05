@@ -3,27 +3,29 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-g
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { fetchServicesFromEmail } from '@utils/queries/servicios';
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useContext, useMemo } from 'react';
 import { useQuery } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
-import MobileOrderDashboard from './MobileOrderDashboard';
 
 
 const VistaDashboardPrestadorDeServicios = () => {
 
     const { addError } = useContext(ErrorHandlerContext);
-
-    const { data: providerServices, isLoading: isFetchingProviderServices } = useQuery(['providerServices'], () => fetchServicesFromEmail('prestador@prestador.com'), {
+    const { data } = useSession()
+    const { data: providerServices, isLoading: isFetchingProviderServices } = useQuery(['providerServices'], () => fetchServicesFromEmail(data.user.email), {
         onError: () => addError('Error al traer ordenes')
     });
+
+
 
     const serviceColumns = useMemo(() => ([
         { field: 'idOrden', headerName: 'Cód. Orden', minWidth: 100, flex: 1 },
         { field: 'proceso', headerName: 'Tipo de servicio', minWidth: 100, flex: 1, renderCell: (params) => params.row.proceso.nombre },
         { field: 'estado', headerName: 'Estado proceso', minWidth: 100, flex: 1, renderCell: (params) => params.row.estado.descripcion },
         { field: 'orden', headerName: 'Fecha Creacion orden', minWidth: 100, flex: 1, renderCell: (params) => params.row.orden.createdAt.slice(0, 10) },
-        { field: 'link', headerName: 'Modificar', maxWidth: 100, disableColumnMenu: true, filterable: false, sortable: false, renderCell: () => <Link href={`#`}><CreateIcon /></Link>, minWidth: 75, flex: 1 }
+        { field: 'link', headerName: 'Modificar', maxWidth: 100, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <Link href={`/orden/${params.row.idOrden}`}><CreateIcon /></Link>, minWidth: 75, flex: 1 }
     ]), []);
 
     function CustomToolbar() {
@@ -69,8 +71,6 @@ const VistaDashboardPrestadorDeServicios = () => {
 
                 </div>
             </div>
-
-            <MobileOrderDashboard isFetchingOrders={isFetchingProviderServices} orderData={providerServices} />
 
         </>
     )

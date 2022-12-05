@@ -30,21 +30,36 @@ const SignInForm = (props: SignInFormProps) => {
 
     const loginSubmit = async (data: SignInSchemaType) => {
         try {
-            onLoading(true)
-            const res = await signIn("credentials", {
-                username: data?.email,
-                password: data?.password,
-                redirect: false
-            });
+            // verify if account availability is enabled
+            const availableData = await fetch('/api/user/obtainAvailability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: data?.email
+                })
+            }).then(res => res.json())
 
-            if (res.error) {
-                const errorMessage = JSON.parse(res.error)?.error as string || 'Login Invalido'
-                const message = typeof errorMessage === 'object' ? 'Login Invalido' : errorMessage
+            if (availableData?.available) {
+                onLoading(true)
+                const res = await signIn("credentials", {
+                    username: data?.email,
+                    password: data?.password,
+                    redirect: false
+                });
 
-                addError(message)
-                throw new Error(message)
+                if (res.error) {
+                    const errorMessage = JSON.parse(res.error)?.error as string || 'Login Invalido'
+                    const message = typeof errorMessage === 'object' ? 'Login Invalido' : errorMessage
+
+                    addError(message)
+                    throw new Error(message)
+                }
+                onClose()
+            } else {
+                addError('Cuenta bloqueada, por favor contactese para desbloquear')
             }
-            onClose()
         }
 
         catch (error) {

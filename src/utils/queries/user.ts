@@ -47,6 +47,14 @@ export const getRole = (email: string): Promise<Role> => fetch(`/api/user/obtain
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch(err => console.log(err))
 
+export const getAvailability = (email: string): Promise<{ available: boolean }> => fetch(`/api/user/obtainAvailability`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch(err => console.log(err))
+
 export const getRoleNames = (): Promise<Role[]> => fetch(`/api/user/obtainRoles`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -58,6 +66,14 @@ export const updateUserRole = (id: string, role: string) => fetch(`/api/user/upd
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ id, role })
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch(err => console.log(err))
+
+export const updateUserAvailability = (id: string, available: boolean) => fetch(`/api/user/updateAvailability`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, available })
 })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch(err => console.log(err))

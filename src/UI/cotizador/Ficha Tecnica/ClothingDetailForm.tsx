@@ -31,7 +31,7 @@ const ClothingDetailForm = () => {
                 generos: [
                     { key: 'bebe', text: 'Bebés' },
                     { key: 'kids', text: 'Niños y Niñas' },
-                    { key: 'teen', text: 'Adolecentes' },
+                    { key: 'teen', text: 'Adolescentes' },
                     { key: 'woman', text: 'Mujer' },
                     { key: 'man', text: 'Hombre' },
                     { key: 'unisex', text: 'Unisex' },

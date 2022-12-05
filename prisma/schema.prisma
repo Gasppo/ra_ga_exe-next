@@ -2,14 +2,13 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["referentialIntegrity"]
+    provider = "prisma-client-js"
 }
 
 datasource db {
-    provider             = "mysql"
-    url                  = env("DATABASE_URL")
-    referentialIntegrity = "prisma"
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
 model Account {
@@ -29,6 +28,7 @@ model Account {
     user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@index([userId])
 }
 
 model Session {
@@ -37,6 +37,8 @@ model Session {
     userId       String
     expires      DateTime
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model ResetToken {
@@ -45,22 +47,28 @@ model ResetToken {
     userId  String
     expires DateTime
     user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId])
 }
 
 model User {
-    id            String       @id @default(cuid())
-    name          String?
-    email         String?      @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    role          Role?        @relation(fields: [roleId], references: [id], onDelete: Cascade)
-    roleId        Int?         @default(1)
-    password      String?
-    ResetToken    ResetToken[]
-    orders        Orden[]
-    Mensaje       Mensaje[]
+    id                 String                   @id @default(cuid())
+    name               String?
+    email              String?                  @unique
+    emailVerified      DateTime?
+    image              String?
+    accounts           Account[]
+    sessions           Session[]
+    role               Role?                    @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    roleId             Int?                     @default(1)
+    password           String?
+    ResetToken         ResetToken[]
+    orders             Orden[]
+    Mensaje            Mensaje[]
+    serviciosAsignados ProcesoDesarrolloOrden[]
+    available          Boolean?                 @default(true)
+
+    @@index([roleId])
 }
 
 model VerificationToken {
@@ -86,6 +94,9 @@ model PrecioPrenda {
     complejidad   ComplejidadConfeccion @relation(fields: [complejidadId], references: [id], onDelete: Cascade)
     complejidadId String
     ordenes       Orden[]
+
+    @@index([tipoId])
+    @@index([complejidadId])
 }
 
 model TipoPrenda {
@@ -129,6 +140,10 @@ model Orden {
     idDetallesPrenda String?
     procesos         ProcesoDesarrolloOrden[]
     mensajes         Mensaje[]
+
+    @@index([idPrenda])
+    @@index([userId])
+    @@index([idEstado])
 }
 
 model Mensaje {
@@ -140,6 +155,10 @@ model Mensaje {
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now())
     mensaje   String
+    seccion   String   @default("general")
+
+    @@index([idOrden])
+    @@index([userId])
 }
 
 model CotizacionOrden {
@@ -148,6 +167,8 @@ model CotizacionOrden {
     idOrden   String
     precio    Float
     createdAt DateTime @default(now())
+
+    @@index([idOrden])
 }
 
 model EstadoOrden {
@@ -173,13 +194,20 @@ model EstadoProcesoDesarrollo {
 }
 
 model ProcesoDesarrolloOrden {
-    id              String                  @id @default(cuid())
-    orden           Orden                   @relation(fields: [idOrden], references: [id], onDelete: Cascade)
-    idOrden         String
-    proceso         ProcesoDesarrollo       @relation(fields: [idProceso], references: [id], onDelete: Cascade)
-    idProceso       Int
-    estado          EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
-    idEstadoProceso Int
+    id                String                  @id @default(cuid())
+    orden             Orden                   @relation(fields: [idOrden], references: [id], onDelete: Cascade)
+    idOrden           String
+    proceso           ProcesoDesarrollo       @relation(fields: [idProceso], references: [id], onDelete: Cascade)
+    idProceso         Int
+    estado            EstadoProcesoDesarrollo @relation(fields: [idEstadoProceso], references: [id], onDelete: Cascade)
+    idEstadoProceso   Int
+    FichaTecnica      FichaTecnica?           @relation()
+    idFichaTecnica    String?
+    usuarioDeServicio User[]
+
+    @@index([idOrden])
+    @@index([idProceso])
+    @@index([idEstadoProceso])
 }
 
 model Servicio {
@@ -200,6 +228,8 @@ model Archivo {
     type        String
     Orden       Orden   @relation(fields: [ordenId], references: [id], onDelete: Cascade)
     ordenId     String
+
+    @@index([ordenId])
 }
 
 model DetallesPrenda {
@@ -216,4 +246,38 @@ model AtributoPrenda {
     observacion      String?
     detallesPrenda   DetallesPrenda @relation(fields: [detallesPrendaId], references: [id], onDelete: Cascade)
     detallesPrendaId String
+
+    @@index([detallesPrendaId])
+}
+
+model FichaTecnica {
+    id          String                 @id @default(cuid())
+    proceso     ProcesoDesarrolloOrden @relation(fields: [procesoId], references: [id], onDelete: Cascade)
+    procesoId   String                 @unique
+    contenido   ContenidoFichaTencica? @relation()
+    contenidoId String?                @unique
+    archivos    ArchivoFichaTecnica[]
+    updatedAt   DateTime               @default(now())
+    estimatedAt DateTime               @default(now())
+
+    @@index([procesoId])
+}
+
+model ContenidoFichaTencica {
+    id             String       @id @default(cuid())
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id], onDelete: Cascade)
+    fichaTecnicaId String       @unique
+    contenido      String
+}
+
+model ArchivoFichaTecnica {
+    id             String       @id @default(cuid())
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id], onDelete: Cascade)
+    fichaTecnicaId String
+    name           String
+    observacion    String?
+    urlID          String
+    type           String?
+
+    @@index([fichaTecnicaId])
 }

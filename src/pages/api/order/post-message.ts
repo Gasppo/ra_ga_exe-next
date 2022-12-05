@@ -22,8 +22,20 @@ const postMessage = async (req: NextApiRequest, res: NextApiResponse) => {
                 mensaje: body.message,
                 orden: { connect: { id: body.orderId } },
                 user: { connect: { email: body.userEmail } },
+                seccion: body.section
             }
         })
+        
+        if (body.section !== 'general') {
+            await prisma.fichaTecnica.update({
+                include: { proceso: true },
+                where: {
+                    procesoId: message.seccion
+                },
+                data: { updatedAt: new Date() }
+            })
+        }
+
         if (message.user.email !== message.orden.user.email) {
             sendEmail({
                 to: message.orden.user.email,

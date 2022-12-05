@@ -1,4 +1,3 @@
-import React from 'react'
 
 type Props = {
     userEmail: string
@@ -6,7 +5,7 @@ type Props = {
     loading?: boolean
 }
 
-const OrderMessageItem = ({ userEmail, message, loading }: Props) => {
+const OrderMessageItem = ({ userEmail, message, loading}: Props) => {
 
     const date = new Date(message.timestamp)
 

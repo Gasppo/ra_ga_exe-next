@@ -1,6 +1,7 @@
 import { ValidatedOrderSchema } from "@backend/schemas/OrderCreationSchema";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@server/db/client";
+import { adminRole, ayudanteRole } from "@utils/roles/SiteRoles";
 
 export const updateExpiredOrders = async () => {
     await prisma.orden.updateMany({
@@ -58,7 +59,14 @@ export const verifyUserOrder = async (orderId: string | string[], userEmail: str
         select: { role: true }
     })
 
-    return role?.role.name === "Dueño" || role?.role.name === "Administrador"
+    if (role?.role.name === adminRole || role?.role.name === ayudanteRole) return true
+
+    const recursosAsignados = await prisma.procesoDesarrolloOrden.findMany({
+        select: { usuarioDeServicio: { select: { email: true } } },
+        where: { idOrden: id }
+    })
+
+    return recursosAsignados.some(el => el.usuarioDeServicio.some(el => el.email === userEmail))
 }
 
 export const getPrecioDolar = async () => {

@@ -17,7 +17,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
         {
             type: 'Switch',
             scope: 'Digitalización y Progresiones.selected',
-            label: "Digitalizacion y Progresionado / Corrección Moldería",
+            label: "Digitalización y Progresionado / Corrección Moldería",
             className: 'mt-2',
             options: {
                 labelPlacement: 'end'
@@ -28,7 +28,7 @@ export const clothingProcessesLayout: LayoutElement<OrderCreationData> = {
             type: 'Switch',
             scope: 'Impresión Moldertía Base.selected',
             className: 'mt-2',
-            label: "Impresión Moldertía Base",
+            label: "Impresión Moldería Base",
             options: {
                 labelPlacement: 'end'
             },

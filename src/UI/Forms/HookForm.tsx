@@ -8,11 +8,12 @@ interface HookFormProps<TFieldValues, TContext> {
     onSubmit: (data: TFieldValues) => void
     children?: React.ReactNode
     resetOnSubmit?: boolean
+    resetOnDialogClose?: { dialogStatus: boolean }
 }
 
 export default function HookForm<TFieldValues, TContext = any>(props: HookFormProps<TFieldValues, TContext>) {
 
-    const { onSubmit, defaultValues, formOptions, children, resetOnSubmit } = props
+    const { onSubmit, defaultValues, formOptions, children, resetOnSubmit, resetOnDialogClose } = props
 
     const formContext = useForm({ defaultValues, ...formOptions })
     const formState = formContext.formState
@@ -23,6 +24,10 @@ export default function HookForm<TFieldValues, TContext = any>(props: HookFormPr
     useEffect(() => {
         if (resetOnSubmit && formState.isSubmitSuccessful) { reset() }
     }, [resetOnSubmit, formState.isSubmitSuccessful, reset]);
+
+    useEffect(() => {
+        if (resetOnDialogClose && resetOnDialogClose.dialogStatus === false) { reset() }
+    }, [resetOnDialogClose, reset])
 
     return (
         <FormProvider {...formContext} >

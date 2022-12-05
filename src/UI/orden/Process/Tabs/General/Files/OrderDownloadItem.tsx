@@ -1,11 +1,11 @@
-import { LoadingButton } from '@mui/lab'
-import { Archivo } from '@prisma/client'
-import { downloadFromFetch } from '@utils/downloadFromFetch'
-import React, { useState } from 'react'
 import SaveIcon from '@mui/icons-material/Save';
+import { LoadingButton } from '@mui/lab';
+import { Archivo, ArchivoFichaTecnica } from '@prisma/client';
+import { downloadFromFetch } from '@utils/downloadFromFetch';
+import { useState } from 'react';
 
 type Props = {
-    archivo: Archivo
+    archivo: Archivo | ArchivoFichaTecnica
 }
 
 const OrderDownloadItem = ({ archivo }: Props) => {
@@ -18,6 +18,7 @@ const OrderDownloadItem = ({ archivo }: Props) => {
         setDownloading(false)
     }
 
+
     return (
         <div className='my-3 mr-4'>
             <LoadingButton
@@ -28,7 +29,11 @@ const OrderDownloadItem = ({ archivo }: Props) => {
                 variant='outlined'
                 type='button'
             >
-                {archivo.name}
+                <div className='flex flex-col space-y-2'>
+                    <div>
+                        {archivo.name}
+                    </div>
+                </div>
             </LoadingButton>
         </div>
     )

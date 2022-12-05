@@ -4,7 +4,7 @@ import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '
 import IconState from '@UI/Generic/Utils/IconState';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
-import { errorHandle } from '@utils/queries/cotizador';
+import { fetchAllOrders } from '@utils/queries/order';
 import { useSession } from 'next-auth/react';
 import React, { useMemo } from 'react';
 import { useQuery } from 'react-query';
@@ -16,20 +16,9 @@ const UsuariosDashboard = () => {
     const { data: sessionData } = useSession();
     const { addError } = React.useContext(ErrorHandlerContext);
 
-    const fetchOrders = (): Promise<ExtendedOrdenData[]> =>
-        fetch(`/api/orders/obtain`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json", accept: "application/json" },
-        })
-            .then((res) => (res.ok ? res.json() : errorHandle(res)))
-            .catch((error) => {
-                console.log("Broke bringing orders");
-                throw error;
-            });
-
     const { data: allOrderData, isLoading: isFetchingAllOrders } = useQuery(
         ['ordenes', sessionData?.user?.email],
-        () => fetchOrders(), {
+        () => fetchAllOrders(), {
         onError: () => addError('Error al traer ordenes'),
     })
 

@@ -16,7 +16,7 @@ const OrderProcessSidebar = ({ orderData, role, selectedProcess, onSelect }: Pro
 
     return (
         <div className='flex flex-col mt-4'>
-            {role !== prestadorDeServiciosRole && <div className='flex flex-col max-h-screen overflow-y-auto'>
+            <div className='flex flex-col max-h-screen overflow-y-auto'>
                 <SelectableOrderProcessItem
                     proceso={{
                         estado: 'N/A',
@@ -30,7 +30,7 @@ const OrderProcessSidebar = ({ orderData, role, selectedProcess, onSelect }: Pro
                     onSelect={onSelect}
                     selected={selectedProcess === 'general'}
                 />
-            </div>}
+            </div>
             <div className='m-2 font-bold text-lg'>Procesos</div>
             <div className='flex flex-col max-h-screen overflow-y-auto'>
                 {orderData?.procesos.filter(proc => {

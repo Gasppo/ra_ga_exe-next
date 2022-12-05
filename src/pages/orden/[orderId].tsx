@@ -13,18 +13,16 @@ import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
 import { ExtendedOrdenData } from "@utils/Examples/ExtendedOrdenData";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
 import { errorHandle } from "@utils/queries/cotizador";
-import { prestadorDeServiciosRole } from '@utils/roles/SiteRoles';
 import type { GetServerSideProps, NextPage } from "next";
-import { getSession, useSession } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { useQuery } from "react-query";
 
 const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
 
     const { addError } = useContext(ErrorHandlerContext)
-    const { data } = useSession()
     const { query } = useRouter()
     const { orderId: id } = query
 
@@ -46,9 +44,7 @@ const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
         refetchOnWindowFocus: false
     });
 
-    const defaultProcess = role !== prestadorDeServiciosRole ? 'general' : orderData?.procesos.find(el => el.recursos.some(rec => rec.key === data?.user.email)).id
-
-    const [selectedProcess, setSelectedProcess] = useState(defaultProcess)
+    const [selectedProcess, setSelectedProcess] = useState('general')
     const handleSelectProcess = (processID: string) => {
         setSelectedProcess(processID)
     }

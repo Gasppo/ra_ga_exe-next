@@ -25,7 +25,7 @@ const VistaDashboardPrestadorDeServicios = () => {
         { field: 'proceso', headerName: 'Tipo de servicio', minWidth: 100, flex: 1, renderCell: (params) => params.row.proceso.nombre },
         { field: 'estado', headerName: 'Estado proceso', minWidth: 100, flex: 1, renderCell: (params) => params.row.estado.descripcion },
         { field: 'orden', headerName: 'Fecha Creacion orden', minWidth: 100, flex: 1, renderCell: (params) => params.row.orden.createdAt.slice(0, 10) },
-        { field: 'link', headerName: 'Modificar', maxWidth: 100, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <Link href={`/orden/${params.row.idOrden}`}><CreateIcon /></Link>, minWidth: 75, flex: 1 }
+        { field: 'link', headerName: 'Modificar', maxWidth: 100, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) => <div className="cursor-pointer"><Link href={`/orden/${params.row.idOrden}`} ><CreateIcon /></Link></div>, minWidth: 75, flex: 1 }
     ]), []);
 
     function CustomToolbar() {

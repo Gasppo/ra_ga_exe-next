@@ -29,7 +29,7 @@ type Props = {
 
 
 export const ProcessStateTextColors = (estado: string) => {
-    switch (estado.toLowerCase()) {
+    switch (estado?.toLowerCase()) {
         case "pedido":
             return "text-cyan-500";
         case "traido por cliente":

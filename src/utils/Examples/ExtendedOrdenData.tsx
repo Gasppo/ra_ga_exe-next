@@ -8,6 +8,6 @@ export type ExtendedOrdenData = Orden & {
   cotizacionOrden: CotizacionOrden[];
   detallesPrenda: DetallesPrenda & { atributos: AtributoPrenda[]; };
   mensajes: { id: string, message: string, timestamp: string, user: { email: string, name: string } }[]
-  procesos: { estado: string, proceso: string, icon: string, id: string, ficha: FichaTecnica & { archivos: ArchivoFichaTecnica[]; contenido: ContenidoFichaTencica; recursos: string[] } }[]
+  procesos: { estado: string, proceso: string, icon: string, id: string, ficha: FichaTecnica & { archivos: ArchivoFichaTecnica[]; contenido: ContenidoFichaTencica; }, recursos: { key: string, text: string }[] }[]
   servicios: Servicio[]
 };

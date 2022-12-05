@@ -60,7 +60,7 @@ const OrderProcessItemResourcesDialog = (props: Props) => {
             keepMounted
             onClose={handleClose}
         >
-            <HookForm defaultValues={props.process} onSubmit={handleSubmit} >
+            <HookForm defaultValues={props.process} onSubmit={handleSubmit} resetOnDialogClose={{ dialogStatus: props.open }}>
                 <LoadingIndicator show={isUpdatingState || isFetchingUsers}>
                     <div className="p-4" >
                         <DialogTitle>{"Modificar recursos asignados al proceso"}</DialogTitle>

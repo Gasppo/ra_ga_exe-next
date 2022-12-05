@@ -251,7 +251,7 @@ model AtributoPrenda {
 
 model FichaTecnica {
     id          String                 @id @default(cuid())
-    proceso     ProcesoDesarrolloOrden @relation(fields: [procesoId], references: [id])
+    proceso     ProcesoDesarrolloOrden @relation(fields: [procesoId], references: [id], onDelete: Cascade)
     procesoId   String                 @unique
     contenido   ContenidoFichaTencica? @relation()
     contenidoId String?                @unique
@@ -264,14 +264,14 @@ model FichaTecnica {
 
 model ContenidoFichaTencica {
     id             String       @id @default(cuid())
-    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id])
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id], onDelete: Cascade)
     fichaTecnicaId String       @unique
     contenido      String
 }
 
 model ArchivoFichaTecnica {
     id             String       @id @default(cuid())
-    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id])
+    fichaTecnica   FichaTecnica @relation(fields: [fichaTecnicaId], references: [id], onDelete: Cascade)
     fichaTecnicaId String
     name           String
     observacion    String?

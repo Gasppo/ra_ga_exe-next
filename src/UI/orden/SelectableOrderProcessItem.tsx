@@ -65,11 +65,13 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
 
     const color = ProcessStateTextColors(estado)
 
-    const backgroundColor = selected ? 'bg-blue-100 border-blue-100' : estado === 'No Pedido' ? 'bg-gray-300' : 'hover:bg-gray-100 cursor-pointer'
+    const selectable = estado !== 'No Pedido' || ['Modlería', 'Geometral'].includes(nombreProceso)
+
+    const backgroundColor = selected ? 'bg-blue-100 border-blue-100' : !selectable ? 'bg-gray-300' : 'hover:bg-gray-100 cursor-pointer'
     const estimatedAt = new Date(ficha.estimatedAt).toLocaleDateString('es-AR')
 
     const handleSelectProcess = () => {
-        if (selected || estado === 'No Pedido') return
+        if (selected || !selectable) return
         onSelect(id)
     }
 

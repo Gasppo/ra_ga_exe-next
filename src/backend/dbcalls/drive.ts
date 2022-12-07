@@ -106,6 +106,8 @@ export async function findFolderId(service: drive_v3.Drive, folderName: string, 
 //create folder by name
 export async function createFolder(service: drive_v3.Drive, folderName: string, parentFolderId?: string) {
     try {
+
+
         const fileMetadata = {
             name: folderName,
             mimeType: 'application/vnd.google-apps.folder',
@@ -115,6 +117,16 @@ export async function createFolder(service: drive_v3.Drive, folderName: string, 
             requestBody: fileMetadata,
             fields: 'id',
         });
+
+        //make folder shared with all users
+        await service.permissions.create({
+            fileId: folder.data.id,
+            requestBody: {
+                role: 'reader',
+                type: 'anyone',
+            },
+        });
+
         return folder.data.id;
     }
     catch (error) {

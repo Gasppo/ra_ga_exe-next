@@ -126,7 +126,23 @@ export async function createFolder(service: drive_v3.Drive, folderName: string, 
 export async function getFile(service: drive_v3.Drive, fileId: string) {
     try {
         const file = await service.files.get({ fileId, alt: 'media' }, { responseType: 'stream' });
+
+        //get webcontentlink for file
+        const fileLink = await service.files.get({ fileId, fields: 'webContentLink' });
+        console.log(fileLink.data.webContentLink);
+
         return file;
+    }
+    catch (error) {
+        throw error;
+    }
+}
+
+export async function getFileDownloadLink(service: drive_v3.Drive, fileId: string) {
+    try {
+        const file = await service.files.get({ fileId, fields: 'webContentLink' });
+        console.log(file.data.webContentLink);
+        return file.data.webContentLink;
     }
     catch (error) {
         throw error;

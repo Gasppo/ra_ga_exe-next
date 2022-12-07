@@ -58,7 +58,13 @@ const OrderProcessItemChangeDialog = (props: Props) => {
     const states = data.map(el => ({ key: el.descripcion, text: el.descripcion }))
 
     const handleSubmit = async (data: Process) => {
-        await mutateAsync(data)
+        await mutateAsync({
+            estado: data.estado,
+            icon: data.icon,
+            estimatedAt: data.ficha.estimatedAt.toLocaleString(),
+            id: data.id,
+            proceso: data.proceso
+        })
     }
 
     const handleClose = () => props.onClose()

@@ -7,7 +7,7 @@ import { updateProcessStateHTML } from "@utils/email/updateProcessState";
 const updateProcessState = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
 
-        const { id: processID, estado } = ProcessUpdateSchema.parse(req.body);
+        const { id: processID, estado, estimatedAt,  } = ProcessUpdateSchema.parse(req.body);
 
         const { sendEmail } = generateEmailer({
             password: process.env.MAILGUN_SMTP_PASS,
@@ -25,6 +25,7 @@ const updateProcessState = async (req: NextApiRequest, res: NextApiResponse) => 
                 },
                 FichaTecnica: {
                     update: {
+                        estimatedAt: estimatedAt ? new Date(estimatedAt) : null,
                         updatedAt: new Date()
                     }
                 }

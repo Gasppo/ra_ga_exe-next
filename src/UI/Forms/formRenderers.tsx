@@ -1,4 +1,5 @@
 import Autocomplete from "./renderers/Autocomplete"
+import DatePicker from "./renderers/DatePicker"
 import Horizontal from "./renderers/Horizontal"
 import Input from "./renderers/Input"
 import Select from "./renderers/Select"
@@ -14,7 +15,8 @@ export const formRenderers = {
     'Horizontal': Horizontal,
     'Select': Select,
     'Switch': Switch,
-    'Uploader': Uploader
+    'Uploader': Uploader,
+    'DatePicker': DatePicker
 }
 
 export type Renderers = keyof typeof formRenderers

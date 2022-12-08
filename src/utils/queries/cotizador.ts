@@ -125,7 +125,7 @@ export const fetchProcessStates = (): Promise<EstadoProcesoDesarrollo[]> => fetc
     .catch((error) => { throw error });
 
 
-export const updateProcessState = (data: { estado: string; proceso: string; icon: string; id: string; }): Promise<
+export const updateProcessState = (data: { estado: string; proceso: string; icon: string; id: string; estimatedAt: string }): Promise<
     ProcesoDesarrolloOrden & {
         orden: Orden & {
             user: User;

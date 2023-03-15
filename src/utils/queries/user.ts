@@ -1,6 +1,7 @@
 import { ReducedUserInfoSchemaType } from "@backend/schemas/ReducedUserInfoSchema"
 import { UserCreationSchemaType } from "@backend/schemas/UserCreationSchema"
 import { UserInfoSchemaType } from "@backend/schemas/UserInfoSchema"
+import { UserInfoUpdateSchemaType } from "@backend/schemas/UserInfoUpdateSchema"
 import { Role } from "@prisma/client"
 
 export type ErrorMessage = { error: string }
@@ -96,7 +97,7 @@ export const getUserInfo = (id: string): Promise<UserInfoSchemaType> => fetch(`/
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch(err => console.log(err))
 
-export const updateUser = (data: UserInfoSchemaType) => fetch(`/api/user/updateInfo`, {
+export const updateUser = (data: UserInfoUpdateSchemaType) => fetch(`/api/user/updateInfo`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)

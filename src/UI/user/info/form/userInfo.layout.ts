@@ -15,31 +15,17 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
         },
         {
             type: 'Input',
-            label: 'Email',
-            scope: 'email',
-            width: 12,
-            options: { size: 'small', variant: 'standard' }
-        },
-        {
-            type: 'Input',
-            label: 'Fecha Creación',
-            scope: 'createdAt',
-            width: 12,
-            options: { size: 'small', variant: 'standard' }
-        },
-        {
-            type: 'Input',
             label: 'Teléfono',
             scope: 'telefono',
             width: 12,
-            options: { size: 'small', variant: 'standard' }
+            options: { size: 'small', variant: 'standard', numeric: true }
         },
         {
             type: 'Input',
             label: 'Whatsapp',
             scope: 'whatsapp',
             width: 12,
-            options: { size: 'small', variant: 'standard' }
+            options: { size: 'small', variant: 'standard', numeric: true }
         },
         {
             type: 'Input',

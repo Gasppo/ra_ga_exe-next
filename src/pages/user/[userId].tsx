@@ -5,24 +5,28 @@ import HeaderBar from "@UI/Generic/HeaderBar";
 import PageTitle from "@UI/Generic/Utils/PageTitle";
 import { userInfoLayout } from "@UI/user/info/form/userInfo.layout";
 import { obtainRole, verifyUserProfile } from "@backend/dbcalls/user";
-import { UserInfoSchema, UserInfoSchemaType } from "@backend/schemas/UserInfoSchema";
+
+import { UserInfoSchemaType } from "@backend/schemas/UserInfoSchema";
+import { UserInfoUpdateSchema, UserInfoUpdateSchemaType } from "@backend/schemas/UserInfoUpdateSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Slide } from "@mui/material";
 import ErrorAlerter from "@utils/ErrorHandler/ErrorAlerter";
 import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
 import { ErrorMessage } from "@utils/queries/cotizador";
-import { getUserInfo } from "@utils/queries/user";
+import { getUserInfo, updateUser } from "@utils/queries/user";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from 'next/router';
 import { useContext } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQueryClient, useQuery } from "react-query";
 
 const Home: NextPage = () => {
 
     const router = useRouter()
+    const queryClient = useQueryClient()
+
     const { addError } = useContext(ErrorHandlerContext)
     const { userId } = router.query as { userId: string }
 
@@ -32,9 +36,24 @@ const Home: NextPage = () => {
     })
 
     const handleUserInfoSubmit = function (data: UserInfoSchemaType) {
-        console.log(JSON.stringify(data))
+    
+        delete data.createdAt
+        delete data.updatedAt
 
+        //console.log(JSON.stringify(data))
+        modifyUserInfoMutation(data)
     }
+
+    const { mutate: modifyUserInfoMutation } = useMutation<UserInfoUpdateSchemaType, ErrorMessage, UserInfoUpdateSchemaType>
+    (
+        (data) => updateUser(data), {
+        onError: () => addError('Error al modificar información del usuario'),
+        onSuccess: () => {
+            addError('Información modificada exitosamente', 'success')
+            queryClient.invalidateQueries(['userInfo', userId])
+        }
+    })
+
 
     return (
         <div className="bg-split-white-black">
@@ -54,7 +73,7 @@ const Home: NextPage = () => {
                                 <PageTitle title="Mis datos" hasBack={false} />
                                 <div className="flex justify-center items-center">
                                     {!isFetchingUserInfo && userInfo &&
-                                        <HookForm defaultValues={userInfo} formOptions={{ resolver: zodResolver(UserInfoSchema) }} onSubmit={handleUserInfoSubmit} >
+                                        <HookForm defaultValues={userInfo} formOptions={{ resolver: zodResolver(UserInfoUpdateSchema) }} onSubmit={handleUserInfoSubmit} >
                                             <FormItem layout={userInfoLayout} />
                                             <Button type="submit">Confirmar</Button>
                                         </HookForm>

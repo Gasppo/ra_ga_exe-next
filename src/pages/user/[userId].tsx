@@ -32,15 +32,18 @@ const Home: NextPage = () => {
 
     const { data: userInfo, isLoading: isFetchingUserInfo } = useQuery<UserInfoSchemaType, ErrorMessage>(['userInfo', userId], () => getUserInfo(userId), {
         onError: () => addError('Error al traer información del usuario'),
+        onSuccess: () => console.log('Se trajo la info del usuario', userInfo),
         refetchOnWindowFocus: false,
     })
 
     const handleUserInfoSubmit = function (data: UserInfoSchemaType) {
-    
+
+        console.log('La data antes es: ' , data)
+        data = { ...data, userId: userId, id: userInfo?.id }
+        console.log('La data despues es: ' , data)
         delete data.createdAt
         delete data.updatedAt
 
-        //console.log(JSON.stringify(data))
         modifyUserInfoMutation(data)
     }
 

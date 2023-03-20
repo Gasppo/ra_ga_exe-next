@@ -9,8 +9,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const { 
             name, 
-            id, 
-            userId, 
             telefono, 
             whatsapp, 
             marca, 
@@ -19,10 +17,12 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
             ciudad 
         } = UserInfoUpdateSchema.parse(req.body);
 
+        const { id, userId } = req.body;
+
         const userNameEdit:User = await prisma.user.update({
             where: { id: userId },
             data: {
-                name
+                name,
             }
         })
 
@@ -34,7 +34,8 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 marca,
                 direccionFacturacion,
                 direccionEnvio,
-                ciudad
+                ciudad,
+                updatedAt: new Date()
             }
         });
 

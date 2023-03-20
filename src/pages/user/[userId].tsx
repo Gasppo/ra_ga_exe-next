@@ -15,6 +15,7 @@ import { ErrorHandlerContext } from "@utils/ErrorHandler/error";
 import LoadingIndicator from "@utils/LoadingIndicator/LoadingIndicator";
 import { ErrorMessage } from "@utils/queries/cotizador";
 import { getUserInfo, updateUser } from "@utils/queries/user";
+import { adminRole } from "@utils/roles/SiteRoles";
 import type { GetServerSideProps, NextPage } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
@@ -105,9 +106,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
     const correctUser = await verifyUserProfile(context.query.userId, session.user.email)
-    const { role } = await obtainRole(session?.user?.email || '');
+    
+    const getUserRole = await obtainRole(session?.user?.email || '');
 
-    if (!correctUser) {
+    console.log('ROLE IS: ', getUserRole)
+    if (!correctUser || getUserRole?.role?.name === adminRole) {
         return {
             redirect: {
                 destination: '/',
@@ -115,5 +118,5 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             }
         }
     }
-    return { props: { session, role: role.name } };
+    return { props: { session, role: getUserRole?.role?.name } };
 };

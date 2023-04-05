@@ -15,8 +15,8 @@ export default async function handleUserCreation(req: NextApiRequest, res: NextA
 async function handlePOST(req: NextApiRequest, res: NextApiResponse) {
 
     try {
-        const { name, email, password } = UserCreationSchema.parse(req.body);
-        const user = await createNewUser({ name, email, password });
+        const { name, email, password , isServiceProvider} = UserCreationSchema.parse(req.body);
+        const user = await createNewUser({ name, email, password , isServiceProvider});
 
         await createCredentialsAccountForUser(user.id);
 

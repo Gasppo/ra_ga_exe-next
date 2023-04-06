@@ -105,7 +105,7 @@ export const createNewUser = async (data: { name: string, email: string, passwor
             email: data.email,
             name: data.name,
             password: password,
-            roleId: data.isServiceProvider ? 1 : 0
+            roleId: data.isServiceProvider ? 4 : 1
         }
     });
 }

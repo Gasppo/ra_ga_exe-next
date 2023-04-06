@@ -2,7 +2,7 @@ import { OrderCreationData } from "@backend/schemas/OrderCreationSchema";
 import { OrderFieldsUpdateSchemaType } from "@backend/schemas/OrderFieldsUpdateSchema";
 import { ProcessUpdateSchemaType } from "@backend/schemas/ProcessUpdateResourcesSchema";
 import { FileUploadResponse } from "@pages/api/drive/upload";
-import { ComplejidadConfeccion, EstadoProcesoDesarrollo, Orden, ProcesoDesarrollo, ProcesoDesarrolloOrden, TipoPrenda, User } from "@prisma/client";
+import { ComplejidadConfeccion, EstadoProcesoDesarrollo, Orden, ProcesoDesarrollo, ProcesoDesarrolloOrden, TipoPrenda, User, Servicio } from "@prisma/client";
 
 
 // Cargar archivos a Google Drive
@@ -26,6 +26,13 @@ export type PrecioPrendaExtended = {
     precioBase: number;
     complejidad: { name: string };
     tipo: { name: string }
+}
+
+export type PrecioServicioExtended = {
+    id: string,
+    name: string,
+    precioBase: number;
+    factorMultiplicador: number;
 }
 
 export const errorHandle = (res: Response) => res.json().then(json => Promise.reject(json))
@@ -53,8 +60,20 @@ export const getSinglePrice = (id: string): Promise<PrecioPrendaExtended> => fet
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 
+// Obtener precios de un servicio
+export const getServicePrice = (id: string): Promise<PrecioServicioExtended> => fetch(`/api/services/obtainPrice/${id}`)
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
 // Modificar el precioBase de una prenda
 export const modifySinglePrice = (data: PrecioPrendaExtended): Promise<PrecioPrendaExtended> => fetch(`/api/clothes/singlePrice/modify/${data.id}`, {
+    method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
+// Modificar el precio de un servicio
+export const modifyServicePrice = (data: PrecioServicioExtended): Promise<PrecioServicioExtended> => fetch(`/api/services/modifyPrice/${data.id}`, {
     method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data)
 })
     .then(res => res.ok ? res.json() : errorHandle(res))
@@ -79,6 +98,12 @@ export const modifyClothes = (data: TipoPrendaExtended): Promise<TipoPrenda> => 
 
 // Obtener lista de complejidades
 export const getComplexity = (): Promise<ComplejidadConfeccion[]> => fetch('/api/complexity/obtain')
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch((error) => { throw error });
+
+
+// Obtener lista de servicios
+export const getServices = (): Promise<Servicio[]> => fetch('/api/services/obtainAll')
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch((error) => { throw error });
 

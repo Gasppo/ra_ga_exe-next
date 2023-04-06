@@ -8,19 +8,38 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
         const user = await prisma.user.findUnique({ where: { id: req.body.id }, select: { id: true, name: true, email: true } })
 
-        const userData = await prisma.userPersonalData.findUnique({ where: { userId: user.id } }) 
+        const userData = await prisma.userPersonalData.findUnique({ where: { userId: user.id } })
         if (!userData) {
-            await prisma.userPersonalData.create({ data: { 
-                userId: user.id, 
-                ciudad: '', 
-                direccionEnvio: '', 
-                direccionFacturacion: '',
-                marca: '',
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                telefono: 0,
-                whatsapp: 0
-            }})
+            const newUserData = await prisma.userPersonalData.create({
+                data: {
+                    userId: user.id,
+                    user: {
+                        connect: {
+                            id: user.id
+                        }
+                    },
+                    ciudad: '',
+                    direccionEnvio: '',
+                    direccionFacturacion: '',
+                    marca: '',
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    telefono: 0,
+                    whatsapp: 0,
+                    cuitORazonSocial: '',
+                    mediosDePago: '',
+                    datosBancarios: '',
+                }
+            })
+
+            await prisma.user.update({
+                data: {
+                    userPersonalDataId: newUserData.id
+                },
+                where: {
+                    id: user.id
+                }
+            })
         }
 
         const userInfo = { name: user.name, email: user.email, ...userData }

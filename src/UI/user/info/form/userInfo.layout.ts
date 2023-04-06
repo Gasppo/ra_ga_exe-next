@@ -55,6 +55,26 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             width: 12,
             options: { size: 'small', variant: 'standard' }
         },
-
+        {
+            type: 'Input',
+            label: 'Cuit / RazonSocial',
+            scope: 'cuitORazonSocial',
+            width: 12,
+            options: { size: 'small', variant: 'standard' }
+        },
+        {
+            type: 'Input',
+            label: 'Medios de Pago',
+            scope: 'mediosDePago',
+            width: 12,
+            options: { size: 'small', variant: 'standard' }
+        },
+        {
+            type: 'Input',
+            label: 'Datos Bancarios',
+            scope: 'datosBancarios',
+            width: 12,
+            options: { size: 'small', variant: 'standard' }
+        }
     ]
 }

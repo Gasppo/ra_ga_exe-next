@@ -7,26 +7,29 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
 
     try {
 
-        const { 
-            name, 
-            telefono, 
-            whatsapp, 
-            marca, 
-            direccionFacturacion, 
-            direccionEnvio, 
-            ciudad 
+        const {
+            name,
+            telefono,
+            whatsapp,
+            marca,
+            direccionFacturacion,
+            direccionEnvio,
+            ciudad,
+            cuitORazonSocial,
+            mediosDePago,
+            datosBancarios,
         } = UserInfoUpdateSchema.parse(req.body);
 
         const { id, userId } = req.body;
 
-        const userNameEdit:User = await prisma.user.update({
+        const userNameEdit: User = await prisma.user.update({
             where: { id: userId },
             data: {
                 name,
             }
         })
 
-        const userInfo:UserPersonalData = await prisma.userPersonalData.update({
+        const userInfo: UserPersonalData = await prisma.userPersonalData.update({
             where: { id },
             data: {
                 telefono,
@@ -35,7 +38,10 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 direccionFacturacion,
                 direccionEnvio,
                 ciudad,
-                updatedAt: new Date()
+                updatedAt: new Date(),
+                cuitORazonSocial,
+                mediosDePago,
+                datosBancarios,
             }
         });
 

@@ -85,6 +85,9 @@ model UserPersonalData {
     direccionFacturacion String
     direccionEnvio       String
     ciudad               String
+    cuitORazonSocial     String
+    mediosDePago         String
+    datosBancarios       String
 
     @@index([userId])
 }

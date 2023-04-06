@@ -39,7 +39,6 @@ const VistaDashboardCliente = (props: props) => {
     const { data: reducedUserInfo, isLoading: isFetchingReducedUserInfo } = useQuery<ReducedUserInfoSchemaType>(
         ['reducedUserInfo', props?.emailToFetchOrders], () => getReducedUser(props?.emailToFetchOrders), {
         onError: () => addError('Error al traer información del usuario'),
-        refetchOnWindowFocus: false,
     })
 
 

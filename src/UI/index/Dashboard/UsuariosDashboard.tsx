@@ -4,7 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import EditIcon from '@mui/icons-material/Edit';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Button, IconButton } from '@mui/material';
+import { Button, IconButton, Link } from '@mui/material';
 import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import Signin from '@UI/Generic/Signin/Signin';
 import Signup from '@UI/Generic/Signup/Signup';
@@ -18,6 +18,7 @@ import { useContext, useState } from 'react';
 import { useIsMutating, useQuery, useQueryClient } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
 import ActionButton from './ActionButton';
+import LaunchIcon from '@mui/icons-material/Launch';
 
 const UsuariosDashboard = () => {
 
@@ -113,6 +114,10 @@ const UsuariosDashboard = () => {
         },
         {
             field: 'switchAvailable', headerName: 'Cambiar estado', minWidth: 150, renderCell: (params) => EditAvailableButton(params.row.id, params.row.email)
+        },
+        {
+            field: 'link', headerName: 'Link', flex: 1, maxWidth: 75, align: "center", disableColumnMenu: true, headerAlign: "center", filterable: false, sortable: false, renderCell: (params) =>
+                <Link href={`/user/${params.row.id}`}><LaunchIcon /></Link>
         }
     ];
 

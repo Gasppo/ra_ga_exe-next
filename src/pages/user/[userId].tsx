@@ -39,24 +39,22 @@ const Home: NextPage = () => {
 
     const handleUserInfoSubmit = function (data: UserInfoSchemaType) {
 
-        console.log('La data antes es: ' , data)
         data = { ...data, userId: userId, id: userInfo?.id }
-        console.log('La data despues es: ' , data)
         delete data.createdAt
         delete data.updatedAt
-
         modifyUserInfoMutation(data)
     }
 
     const { mutate: modifyUserInfoMutation } = useMutation<UserInfoUpdateSchemaType, ErrorMessage, UserInfoUpdateSchemaType>
-    (
-        (data) => updateUser(data), {
-        onError: () => addError('Error al modificar información del usuario'),
-        onSuccess: () => {
-            addError('Información modificada exitosamente', 'success')
-            queryClient.invalidateQueries(['userInfo', userId])
-        }
-    })
+        (
+            (data) => updateUser(data), {
+            onError: () => addError('Error al modificar información del usuario'),
+            onSuccess: () => {
+                addError('Información modificada exitosamente', 'success')
+                queryClient.invalidateQueries(['userInfo', userId])
+                queryClient.invalidateQueries(['reducedUserInfo'])
+            }
+        })
 
 
     return (
@@ -80,6 +78,7 @@ const Home: NextPage = () => {
                                         <HookForm defaultValues={userInfo} formOptions={{ resolver: zodResolver(UserInfoUpdateSchema) }} onSubmit={handleUserInfoSubmit} >
                                             <FormItem layout={userInfoLayout} />
                                             <Button type="submit">Confirmar</Button>
+                                            <Button onClick={() => router.back()}>Cancelar</Button>
                                         </HookForm>
                                     }
                                 </div>
@@ -106,16 +105,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         }
     }
     const correctUser = await verifyUserProfile(context.query.userId, session.user.email)
-    
+
     const getUserRole = await obtainRole(session?.user?.email || '');
 
     console.log('ROLE IS: ', getUserRole)
-    if (!correctUser || getUserRole?.role?.name === adminRole) {
-        return {
-            redirect: {
-                destination: '/',
-                permanent: false
+    if (!correctUser) {
+        if (getUserRole?.role?.name !== adminRole) {
+            return {
+                redirect: {
+                    destination: '/',
+                    permanent: false
+                }
             }
+
         }
     }
     return { props: { session, role: getUserRole?.role?.name } };

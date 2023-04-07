@@ -19,6 +19,8 @@ import { useIsMutating, useQuery, useQueryClient } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
 import ActionButton from './ActionButton';
 import LaunchIcon from '@mui/icons-material/Launch';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 const UsuariosDashboard = () => {
 
@@ -102,22 +104,22 @@ const UsuariosDashboard = () => {
     })
 
     const columns: GridColumns = [
+        {
+            field: '', headerName: '', flex: 1, maxWidth: 75, align: "center", disableColumnMenu: true, headerAlign: "center", filterable: false, sortable: false, renderCell: (params) =>
+                <Link href={`/user/${params.row.id}`}><LaunchIcon /></Link>
+        },
         { field: 'name', headerName: 'Nombre', minWidth: 200, flex: 1 },
         { field: 'email', headerName: 'Email', minWidth: 250, flex: 1 },
-        { field: 'role', headerName: 'Rol', minWidth: 150, valueGetter: (params) => params.row.role.name, flex: 1 },
+        { field: 'role', headerName: 'Rol', maxWidth: 110, valueGetter: (params) => params.row.role.name },
         {
-            field: 'switchPermissions', headerName: 'Cambiar permisos', minWidth: 150, renderCell: (params) => EditRoleButton(params.row.id, params.row.email)
+            field: 'switchPermissions', headerName: '', maxWidth: 80, align: 'center', headerAlign: 'center', disableColumnMenu: true, renderCell: (params) => EditRoleButton(params.row.id, params.row.email)
         },
         {
-            field: 'available', headerName: 'Habilitada', minWidth: 150, renderCell: (params) =>
-                params.row.available ? <CheckIcon /> : <CloseIcon />
+            field: 'available', headerName: 'Habilitada', minWidth: 110, headerAlign: 'center', align: 'center', renderCell: (params) =>
+                params.row.available ? <CheckIcon style={{ color: '#2E7D32' }} /> : <CloseIcon style={{ color: '#C62828' }} />
         },
         {
-            field: 'switchAvailable', headerName: 'Cambiar estado', minWidth: 150, renderCell: (params) => EditAvailableButton(params.row.id, params.row.email)
-        },
-        {
-            field: 'link', headerName: 'Link', flex: 1, maxWidth: 75, align: "center", disableColumnMenu: true, headerAlign: "center", filterable: false, sortable: false, renderCell: (params) =>
-                <Link href={`/user/${params.row.id}`}><LaunchIcon /></Link>
+            field: 'switchAvailable', headerName: '', disableColumnMenu: true, align: 'center', sortable: false, maxWidth: 80, renderCell: (params) => EditAvailableButton(params.row.id, params.row.email)
         }
     ];
 
@@ -131,13 +133,13 @@ const UsuariosDashboard = () => {
 
     const EditRoleButton = (id: string, email: string) => (
         <IconButton type="button" onClick={() => handleEditUserRoleDialog({ id, email, name: '', role: { name: '' }, available: false })}>
-            <EditIcon color='primary' />
+            <SupervisedUserCircleIcon color='primary' />
         </IconButton>
     )
 
     const EditAvailableButton = (id: string, email: string) => (
         <IconButton type="button" onClick={() => handleEditUserAvailabilityDialog({ id, email, name: '', role: { name: '' }, available: false })}>
-            <EditIcon color='primary' />
+            <PublishedWithChangesIcon color='primary' />
         </IconButton>
     )
 

@@ -225,6 +225,7 @@ model ProcesoDesarrolloOrden {
     FichaTecnica      FichaTecnica?           @relation()
     idFichaTecnica    String?
     usuarioDeServicio User[]
+    lastUpdated       DateTime                @default(now())
 
     @@index([idOrden])
     @@index([idProceso])

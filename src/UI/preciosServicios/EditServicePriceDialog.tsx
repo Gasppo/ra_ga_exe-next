@@ -104,7 +104,7 @@ export default function EditServicePriceDialog(props: ConfirmDialogProps) {
                     </div>
                     :
                     <div className="p-4">
-                        <DialogTitle>{("DOLAR " + servicePriceData?.name) || ''}</DialogTitle>
+                        <DialogTitle>{("Modificación " + servicePriceData?.name) || ''}</DialogTitle>
                         <LoadingIndicator show={isFetchingServicePriceData} >
                             {!isFetchingServicePriceData &&
                                 <HookForm defaultValues={servicePriceData} onSubmit={handleNewClothingSubmit} formOptions={{ resolver: zodResolver(ModifyPreciosServiciosSchema) }} >

@@ -8,12 +8,15 @@ import { useState } from 'react';
 import OrderGeneralChangeDialog from './Process/OrderGeneralChangeDialog';
 import OrderProcessItemChangeDialog from './Process/OrderProcessItemChangeDialog';
 import OrderProcessItemResourcesDialog from './Process/OrderProcessItemResourcesDialog';
+import React from 'react';
+
 
 export type ProcesoFicha = {
     estado: string;
     proceso: string;
     icon: string;
     id: string;
+    lastUpdated: Date,
     ficha: FichaTecnica & {
         archivos: ArchivoFichaTecnica[];
         contenido: ContenidoFichaTencica;
@@ -24,7 +27,7 @@ export type ProcesoFicha = {
 type Props = {
     proceso: ProcesoFicha
     role: string,
-    selected?: boolean
+    selected?: boolean,
     onSelect?: (processID: string) => void
 }
 
@@ -54,7 +57,7 @@ export const ProcessStateTextColors = (estado: string) => {
 
 const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props) => {
 
-    const { estado, proceso: nombreProceso, icon, id, ficha } = proceso
+    const { estado, proceso: nombreProceso,lastUpdated, icon, id, ficha } = proceso
     const [statusDialogOpen, setStatusDialogOpen] = useState(false)
     const [resourceDialogOpen, setResourceDialogOpen] = useState(false)
     const [generalDialogOpen, setGeneralDialogOpen] = useState(false)
@@ -121,6 +124,8 @@ const SelectableOrderProcessItem = ({ proceso, role, selected, onSelect }: Props
                             <div className='font-bold text-lg'>{nombreProceso}</div>
                             <div className='text-gray-400 text-xs'>Estado: <span className={`${color}`}>{estado}</span></div>
                             <div className='text-gray-400 text-xs'>Plazo estimado: <span >{estimatedAt}</span></div>
+                            {/* Date.now() - lastUpdated?.getTime() < 24 * 60 * 60 * 1000 && <div className='text-gray-400 text-xs'>Actualizado hace: <span >{Math.round((Date.now() - lastUpdated?.getTime()) / 1000 / 60)} minutos</span></div> */}
+                            {lastUpdated? <div className='text-gray-400 text-xs'>Actualizado el: <span >{new Date(lastUpdated).toLocaleDateString('es-AR')}</span></div> : null}
                         </li>
                     </div>
                 </div>

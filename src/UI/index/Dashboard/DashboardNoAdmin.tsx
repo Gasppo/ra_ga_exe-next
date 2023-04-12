@@ -18,7 +18,7 @@ const DashboardNoAdmin = ({ roleName }: Props) => {
     const { data: sessionData } = useSession();
 
     const emailToFetchOrders = useMemo(() => {
-        if (roleName === clienteRole) {
+        if (roleName === clienteRole || roleName === prestadorDeServiciosRole) {
             return { email: sessionData?.user?.email };
         }
         return '';
@@ -26,8 +26,9 @@ const DashboardNoAdmin = ({ roleName }: Props) => {
 
 
     const orderColumns = useMemo((): GridColumns<ExtendedOrdenData> => ([
-        { field: 'nombre', headerName: 'Nombre', maxWidth: 200, minWidth: 100, flex: 1 },
+        { field: 'nombre', headerName: 'Nombre', maxWidth: 180, minWidth: 100, flex: 1 },
         { field: 'id', headerName: 'Orden', maxWidth: 200, minWidth: 100, flex: 1 },
+        { field: 'createdAt', headerName: 'Fecha', flex: 1, maxWidth: 100, align: "center", headerAlign: "center", valueFormatter: (params) => params.value.slice(0, 10) },
         {
             field: 'procesos', headerName: 'Diseño', flex: 1, disableColumnMenu: true, filterable: false, sortable: false, renderCell: (params) =>
                 <>
@@ -48,7 +49,7 @@ const DashboardNoAdmin = ({ roleName }: Props) => {
 
             {sessionData?.user && roleName === clienteRole && <VistaDashboardCliente columns={orderColumns} emailToFetchOrders={emailToFetchOrders} />}
             {sessionData?.user && roleName === ayudanteRole && <VistaDashboardAyudante columns={orderColumns} emailToFetchOrders={emailToFetchOrders} />}
-            {sessionData?.user && roleName === prestadorDeServiciosRole && <VistaDashboardPrestadorDeServicios />}
+            {sessionData?.user && roleName === prestadorDeServiciosRole && <VistaDashboardPrestadorDeServicios emailToFetchOrders={emailToFetchOrders} />}
 
         </div>
 

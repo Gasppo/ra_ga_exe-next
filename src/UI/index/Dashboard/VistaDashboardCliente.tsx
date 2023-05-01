@@ -58,7 +58,7 @@ const VistaDashboardCliente = (props: props) => {
 
         <>
             <div className="lg:flex lg:justify-between pl-8 pr-8 pt-4">
-                <PageTitle title="Productos en desarrollo" hasBack={false} />
+                <PageTitle title="Desarrollos" hasBack={false} />
                 <div className="hidden md:flex items-center justify-center space-x-2 md:mt-4">
                     <div className="rounded-2xl">
                         <Link href={"/fichaTecnicaForm"}>
@@ -154,7 +154,7 @@ const VistaDashboardCliente = (props: props) => {
 
             </div>
 
-            <MobileOrderDashboard isFetchingOrders={isFetchingOrders} orderData={orderData} />
+            <MobileOrderDashboard isFetchingOrders={isFetchingOrders} orderData={orderData} userId={reducedUserInfo?.user.id} />
 
         </>
     )

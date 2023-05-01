@@ -1,15 +1,16 @@
-import AddIcon from '@mui/icons-material/Add';
-import CheckIcon from '@mui/icons-material/Check';
-import CloseIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Button, IconButton, Link } from '@mui/material';
-import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import Signin from '@UI/Generic/Signin/Signin';
 import Signup from '@UI/Generic/Signup/Signup';
 import EditUserAvailabilityDialog from '@UI/user/reset/EditUserAvaiabilityData';
 import EditUserRoleDialog from '@UI/user/reset/EditUserRoleDialog';
+import AddHomeIcon from '@mui/icons-material/AddHome';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
+import LaunchIcon from '@mui/icons-material/Launch';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import { Button, IconButton, Link } from '@mui/material';
+import { DataGrid, GridColumns, GridToolbarContainer, GridToolbarExport } from '@mui/x-data-grid';
 import { ErrorHandlerContext } from '@utils/ErrorHandler/error';
 import LoadingIndicator from '@utils/LoadingIndicator/LoadingIndicator';
 import { errorHandle } from '@utils/queries/cotizador';
@@ -17,10 +18,6 @@ import { signOut, useSession } from 'next-auth/react';
 import { useContext, useState } from 'react';
 import { useIsMutating, useQuery, useQueryClient } from 'react-query';
 import PageTitle from '../../Generic/Utils/PageTitle';
-import ActionButton from './ActionButton';
-import LaunchIcon from '@mui/icons-material/Launch';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 const UsuariosDashboard = () => {
 
@@ -145,17 +142,58 @@ const UsuariosDashboard = () => {
 
     return (
         <div>
-            <PageTitle title='Administración de usuarios' hasBack />
             <EditUserRoleDialog onClose={handleCloseEditUserRoleDialog} open={confirmEditUserRoleOpen} idToShow={focusedItem?.id} email={focusedItem?.email} />
             <EditUserAvailabilityDialog onClose={handleCloseEditUserAvailabilityDialog} open={confirmEditUserAvailabilityOpen} idToShow={focusedItem?.id} email={focusedItem?.email} />
-            <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
-                <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
-                    <div className='flex flex-col justify-end items-end pr-4'>
-                        <Button variant="outlined" startIcon={<PersonAddAltIcon />} onClick={handleOpenSignUp} >
-                            Registrar nuevo usuario
-                        </Button>
+
+            <div className='hidden md:block'>
+                <PageTitle title='Administración de usuarios' size='medium' hasBack />
+                <div className="md:mt-9 flex justify-center md:justify-evenly md:mx-10 lg:mx-0">
+
+                    <div className="hidden md:flex flex-col p-4 md:w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100 mx-10">
+                        <div className='flex flex-col justify-end items-end pr-4'>
+                            <Button variant="outlined" startIcon={<PersonAddAltIcon />} onClick={handleOpenSignUp} >
+                                Registrar nuevo usuario
+                            </Button>
+                        </div>
+                        <div className="p-4" >
+                            <LoadingIndicator show={isFetchingUsers || isMutating} >
+                                <div style={{ height: 510, width: '100%' }}>
+                                    <DataGrid
+                                        rows={usersData || []}
+                                        columns={columns || []}
+                                        components={{
+                                            Toolbar: CustomToolbar,
+                                        }}
+                                        pageSize={7}
+                                    />
+                                </div>
+                            </LoadingIndicator>
+                        </div>
+                        {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} adminCreation={true} />}
+                        {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
                     </div>
-                    <div className="p-4" >
+                </div>
+            </div>
+
+            <div className="md:hidden md:mt-9 flex md:justify-evenly">
+                <div className="md:hidden flex-col w-full lg:w-2/3 xl:w-3/4 shadow-2xl rounded-3xl bg-gray-100">
+                    <PageTitle title='Administración de usuarios' size='medium' />
+                    <div className='flex flex-row justify-around items-center mb-4 mt-4'>
+                        <div>
+                            <Button variant="outlined" onClick={handleOpenSignUp}>
+                                <PersonAddAltIcon />
+                            </Button>
+                        </div>
+                        <div>
+                            <Link href={"/"}>
+                                <Button variant="outlined">
+                                    <AddHomeIcon />
+                                </Button>
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div>
                         <LoadingIndicator show={isFetchingUsers || isMutating} >
                             <div style={{ height: 510, width: '100%' }}>
                                 <DataGrid
@@ -171,25 +209,6 @@ const UsuariosDashboard = () => {
                     </div>
                     {openSignUp && <Signup open={openSignUp} onClose={handleCloseSignUp} onSignin={handleOpenSignIn} adminCreation={true} />}
                     {openSignIn && <Signin open={openSignIn} onClose={handleCloseSignIn} />}
-                </div>
-                <div className="flex flex-col  md:hidden w-full" >
-                    <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4 my-4'>
-                        <div className="text-xl font-bold" >
-                            <div>
-                                Mis pedidos
-                            </div>
-                        </div>
-                        <div>
-                            detalles de pedidos abiertos aca...
-                        </div>
-                    </div>
-
-                    <div className='bg-white border-2 border-gray-100 w-full rounded-md shadow-lg shadow-gray-400 p-4'>
-                        <div className="flex flex-row flex-wrap items-center justify-start mt-2" >
-                            <ActionButton Icon={AddIcon} label="Nueva Cotizacion" href='/fichaTecnicaNueva' />
-                            <ActionButton Icon={ManageAccountsIcon} label="Editar mi Perfil" href='/fichaTecnicaNueva' />
-                        </div>
-                    </div>
                 </div>
 
             </div>

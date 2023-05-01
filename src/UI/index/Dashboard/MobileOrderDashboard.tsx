@@ -9,7 +9,8 @@ import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 interface mobileOrderDashboardProps {
     orderData: ExtendedOrdenData[],
-    isFetchingOrders: boolean
+    isFetchingOrders: boolean,
+    userId: string,
 }
 
 const MobileOrderDashboard = (props: mobileOrderDashboardProps) => {
@@ -27,7 +28,7 @@ const MobileOrderDashboard = (props: mobileOrderDashboardProps) => {
                     <ActionButton
                         Icon={ManageAccountsIcon}
                         label="Editar mi Perfil"
-                        href="/perfil"
+                        href={"/user/" + props.userId}
                     />
                 </div>
             </div>

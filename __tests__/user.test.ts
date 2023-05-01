@@ -26,7 +26,8 @@ describe('User Testing', () => {
             name: 'Test',
             email: 'gasppogb1@gmail.com',
             password: '123456asd',
-            confirmPassword: '123456asd'
+            confirmPassword: '123456asd',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes<ExpectedResponse>()
@@ -48,7 +49,8 @@ describe('User Testing', () => {
             name: 'Test',
             email: 'gasppogb1@gmail.com',
             password: '123456asd',
-            confirmPassword: '123456asd'
+            confirmPassword: '123456asd',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes<ExpectedResponse>()
@@ -68,7 +70,8 @@ describe('User Testing', () => {
             name: 'Test',
             email: '',
             password: '123456asd',
-            confirmPassword: '123456asd'
+            confirmPassword: '123456asd',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes<ExpectedResponse>()
@@ -89,7 +92,8 @@ describe('User Testing', () => {
             name: 'Test',
             email: 'gasppo2@gmail.com',
             password: '1234',
-            confirmPassword: '12345'
+            confirmPassword: '12345',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes<ExpectedResponse>()
@@ -115,7 +119,8 @@ describe('User Testing', () => {
             name: '',
             email: 'gasppo2@gmail.com',
             password: '12345asd',
-            confirmPassword: '12345asd'
+            confirmPassword: '12345asd',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes<ExpectedResponse>()

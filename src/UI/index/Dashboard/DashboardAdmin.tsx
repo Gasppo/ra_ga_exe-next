@@ -15,9 +15,9 @@ const DashboardAdmin = () => {
     return (
         <div className="md:mt-4 flex flex-col md:mx-10 lg:mx-0">
             <PageTitle title='Panel Administrador' />
-            <div className={`flex flex-col justify-evenly transition-all duration-200 mt-32`} >
+            <div className={`flex flex-col justify-evenly transition-all duration-200 md:mt-32`} >
                 <div className="flex flex-wrap my-8 -m-4 justify-evenly" >
-                    {sections.map((section, i) => <LinkCard customSize='w-96 h-96  md:w-80 md:h-80 m-4' {...section} key={i} />)}
+                    {sections.map((section, i) => <LinkCard customSize='w-60 h-80 md:w-80 md:h-80 m-2' {...section} key={i} />)}
                 </div>
             </div>
         </div>

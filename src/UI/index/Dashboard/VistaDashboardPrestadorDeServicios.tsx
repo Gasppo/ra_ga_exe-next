@@ -101,6 +101,30 @@ const VistaDashboardPrestadorDeServicios = (props: props) => {
                 </div>
             </div >
 
+            <div className="md:hidden mt-7 flex justify-center md:justify-evenly ">
+                <div className="md:flex flex-col w-full shadow-2xl rounded-3xl bg-gray-100">
+                    <LoadingIndicator show={isFetchingProviderServices}>
+                        <div className="w-full h-[510px]">
+                            <DataGrid
+                                rows={providerServices || []}
+                                columns={serviceColumns || []}
+                                components={{
+                                    Toolbar: CustomToolbar,
+                                }}
+                                autoPageSize
+                                initialState={{
+                                    columns: {
+                                        columnVisibilityModel: {
+                                            id: true
+                                        }
+                                    }
+                                }}
+                            />
+                        </div>
+                    </LoadingIndicator>
+                </div>
+            </div >
+
 
         </>
     )

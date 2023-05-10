@@ -34,7 +34,7 @@ const DashboardNoAdmin = ({ roleName }: Props) => {
                 <>
                     {params.row?.procesos?.map(proceso =>
                         proceso.estado === 'No Pedido' ?
-                            <button disabled={true} className={'opacity-30'}>
+                            <button disabled={true} className={'opacity-30'} key={proceso.proceso}>
                                 <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />
                             </button> :
                             <IconState key={proceso.proceso} state={proceso.estado} alt={proceso.proceso} icon={proceso.icon} />

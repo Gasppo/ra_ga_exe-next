@@ -116,11 +116,11 @@ const VistaDashboardCliente = (props: props) => {
                             <div>Mi cuenta</div>
                             <div>
                                 <Link href={"/user/" + reducedUserInfo?.user.id} passHref={true}>
-                                    <a>
+                                    <div>
                                         <Button variant="outlined" startIcon={<EditIcon />}>
                                             Mi Perfil
                                         </Button>
-                                    </a>
+                                    </div>
                                 </Link>
                             </div>
                         </div>

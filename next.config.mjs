@@ -12,6 +12,8 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    loader: customLoader,
+    loader: "custom",
+    path: "",
+    customLoader,
   },
 });

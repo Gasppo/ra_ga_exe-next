@@ -16,6 +16,11 @@ export default defineNextConfig({
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com", "cdn-icons-png.flaticon.com", "preview.redd.it", "i.redd.it", "lh3.google.com", "drive.google.com"]
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
   }
 });

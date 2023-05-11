@@ -75,20 +75,24 @@ const Home: NextPage = () => {
                                 <PageTitle title="Mis datos" hasBack={false} />
                                 <div className="flex justify-center items-center">
                                     {!isFetchingUserInfo && userInfo &&
-                                        <HookForm defaultValues={userInfo} formOptions={{ resolver: zodResolver(UserInfoUpdateSchema) }} onSubmit={handleUserInfoSubmit} >
-                                            <FormItem layout={userInfoLayout} />
-                                            <Button type="submit">Confirmar</Button>
-                                            <Button onClick={() => router.back()}>Cancelar</Button>
-                                        </HookForm>
+                                        <div className="md:w-1/4 w-3/4">
+                                            <HookForm defaultValues={userInfo} formOptions={{ resolver: zodResolver(UserInfoUpdateSchema) }} onSubmit={handleUserInfoSubmit} >
+                                                <FormItem layout={userInfoLayout} />
+                                                <div className='w-full mt-6 flex flex-row md:flex-row items-center md:justify-around justify-between'>
+                                                    <Button type="submit" className="bg-gray-500 hover:bg-gray-700 text-white font-bold md:py-2 md:px-4 rounded">Confirmar</Button>
+                                                    <Button onClick={() => router.back()} className="bg-gray-500 hover:bg-gray-700 text-white font-bold md:py-2 md:px-4 rounded">Cancelar</Button>
+                                                </div>
+                                            </HookForm>
+                                        </div>
                                     }
                                 </div>
                             </LoadingIndicator>
                         </div>
-                    </div>
-                </Slide>
-            </main>
+                    </div >
+                </Slide >
+            </main >
             <Footer />
-        </div>
+        </div >
     );
 };
 

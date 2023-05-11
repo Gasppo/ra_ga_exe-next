@@ -11,6 +11,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Nombre',
             scope: 'name',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard', }
         },
         {
@@ -18,6 +19,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Teléfono',
             scope: 'telefono',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard', numeric: true }
         },
         {
@@ -25,6 +27,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Whatsapp',
             scope: 'whatsapp',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard', numeric: true }
         },
         {
@@ -32,6 +35,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Marca',
             scope: 'marca',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -39,6 +43,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Dirección de Facturación',
             scope: 'direccionFacturacion',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -46,6 +51,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Dirección de Envío',
             scope: 'direccionEnvio',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -53,6 +59,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Ciudad',
             scope: 'ciudad',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -60,6 +67,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Cuit / RazonSocial',
             scope: 'cuitORazonSocial',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -67,6 +75,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Medios de Pago',
             scope: 'mediosDePago',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         },
         {
@@ -74,6 +83,7 @@ export const userInfoLayout: LayoutElement<UserInfoSchemaType> = {
             label: 'Datos Bancarios',
             scope: 'datosBancarios',
             width: 12,
+            className: 'mt-2',
             options: { size: 'small', variant: 'standard' }
         }
     ]

@@ -37,7 +37,9 @@ const HeaderBar = () => {
     return (
         <div className='flex justify-center md:justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-2 md:px-10 py-4' >
             <div className='hidden md:flex md:flex-row'>
-                <div className='text-xl font-sans'>HS - Soluciones Textiles</div>
+                <Link href={'/'}>
+                    <div className='text-xl font-sans'>HS - Soluciones Textiles</div>
+                </Link>
             </div>
             <div className='md:hidden' />
             <div>

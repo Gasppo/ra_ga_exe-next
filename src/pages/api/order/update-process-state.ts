@@ -28,8 +28,8 @@ const updateProcessState = async (req: NextApiRequest, res: NextApiResponse) => 
                         estimatedAt: estimatedAt ? new Date(estimatedAt) : null,
                         updatedAt: new Date()
                     }
-                }
-
+                },
+                lastUpdated: new Date(Date.now())
             }
         })
 

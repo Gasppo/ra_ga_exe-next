@@ -25,10 +25,6 @@ const Home: NextPage = () => {
     { refetchOnWindowFocus: false, onError: (error) => addError(JSON.stringify(error)) }
   )
 
-  React.useEffect(() => {
-    console.log('ROLE DATA', roleData, ' with current time being ', new Date())
-  }, [roleData])
-
   return (
     <div className="bg-split-white-black">
       <Head>

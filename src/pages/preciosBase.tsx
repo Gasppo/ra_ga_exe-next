@@ -2,7 +2,6 @@ import { obtainRole } from "@backend/dbcalls/user";
 import { Slide, Tab, Tabs } from "@mui/material";
 import HeaderBar from "@UI/Generic/HeaderBar";
 import BasePricesTab from "@UI/preciosBase/BasePricesTab";
-import ComplexitiesTab from "@UI/preciosBase/ComplexitiesTab";
 import NewClothesTab from '@UI/preciosBase/NewClothesTab';
 import { adminRole } from "@utils/roles/SiteRoles";
 import type { GetServerSideProps, NextPage } from "next";
@@ -12,6 +11,7 @@ import React from "react";
 import Footer from "../UI/Generic/Footer";
 import PageTitle from "../UI/Generic/Utils/PageTitle";
 import ErrorAlerter from "../utils/ErrorHandler/ErrorAlerter";
+import ServicesPricesTab from "@UI/preciosBase/ServicesPrices";
 
 const Home: NextPage = () => {
 
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
                                             sx={{ borderRight: 1, borderColor: 'divider' }}
                                         >
                                             <Tab label="Prendas" style={{ fontSize: 12 }} {...a11yProps(0)} />
-                                            <Tab label="Complejidades" style={{ fontSize: 12 }} {...a11yProps(1)} />
+                                            <Tab label="Precios Servicios" style={{ fontSize: 12 }} {...a11yProps(1)} />
                                             <Tab label="Precios Base" style={{ fontSize: 12 }} {...a11yProps(2)} />
                                         </Tabs>
                                     </div>
@@ -62,7 +62,7 @@ const Home: NextPage = () => {
                                         </div>
 
                                         <div hidden={value !== 1} className='w-full mb-10'>
-                                            <ComplexitiesTab />
+                                            <ServicesPricesTab />
                                         </div>
                                         <div hidden={value !== 2} className='w-full mb-10'>
                                             <BasePricesTab />

@@ -39,6 +39,14 @@ const UsuariosDashboard = () => {
         }
     ]), []);
 
+    const mobileColumns = useMemo((): GridColumns<ExtendedOrdenData> => ([
+        { field: 'nombre', headerName: 'Nombre', flex: 1, minWidth: 100, align: "center", headerAlign: "center" },
+        {
+            field: 'link', headerName: 'Link', flex: 1, maxWidth: 75, align: "center", disableColumnMenu: true, headerAlign: "center", filterable: false, sortable: false, renderCell: (params) =>
+                <Link href={`/orden/${params.row.id}`}><LaunchIcon /></Link>
+        }
+    ]), []);
+
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
@@ -58,6 +66,32 @@ const UsuariosDashboard = () => {
                                 <DataGrid
                                     rows={allOrderData || []}
                                     columns={columns || []}
+                                    components={{
+                                        Toolbar: CustomToolbar,
+                                    }}
+                                    autoPageSize
+                                    disableSelectionOnClick
+                                    disableColumnSelector
+                                    initialState={{
+                                        columns: {
+                                            columnVisibilityModel: {
+                                                id: true
+                                            }
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </LoadingIndicator>
+                    </div>
+                </div>
+
+                <div className="md:hidden w-full flex-col shadow-2xl rounded-3xl bg-gray-100">
+                    <div>
+                        <LoadingIndicator show={isFetchingAllOrders}>
+                            <div style={{ height: 510, width: '100%' }}>
+                                <DataGrid
+                                    rows={allOrderData || []}
+                                    columns={mobileColumns || []}
                                     components={{
                                         Toolbar: CustomToolbar,
                                     }}

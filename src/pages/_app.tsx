@@ -19,7 +19,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <StyledEngineProvider injectFirst>
-        <SessionProvider session={pageProps.session}>
+        <SessionProvider>
           <QueryClientProvider client={queryClient}>
             <ErrorHandlerProvider>
               <LoadingIndicatorProvider

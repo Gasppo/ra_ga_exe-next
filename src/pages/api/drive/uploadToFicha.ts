@@ -42,7 +42,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
                 const service = getDriveService();
 
                 const orderFolder = await createDirectory(service, clientName, orderId);
-                console.log(orderFolder)
                 const existingFolderID = await findFolderId(service, fichaTecnicaType, orderFolder);
                 const fichaFolder = existingFolderID ? existingFolderID : await createFolder(service, fichaTecnicaType, orderFolder);
 

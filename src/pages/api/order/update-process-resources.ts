@@ -25,7 +25,8 @@ const updateProcessResources = async (req: NextApiRequest, res: NextApiResponse)
         await prisma.procesoDesarrolloOrden.update({
             where: { id: processID },
             data: {
-                usuarioDeServicio: { set: [] }
+                usuarioDeServicio: { set: [] },
+                lastUpdated: new Date(Date.now())
             }
         })
 
@@ -39,11 +40,10 @@ const updateProcessResources = async (req: NextApiRequest, res: NextApiResponse)
                     update: {
                         updatedAt: new Date()
                     }
-                }
-
+                },
+                lastUpdated: new Date()
             }
         })
-
 
         sendEmail({
             to: proceso.orden.user.email,

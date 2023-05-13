@@ -63,7 +63,7 @@ const OrderImageItem = ({ archivo }: Props) => {
                         <div className='self-start'>
                             <Button type='button' onClick={handleImageHide}>Cerrar visualización</Button>
                         </div>
-                        <Image src={imageSRC} height='300%' width={'300%'} alt="Imagen" />
+                        <Image src={imageSRC} height={150} width={150} alt="Imagen" />
                     </div>
                 </div>
             </Grow>

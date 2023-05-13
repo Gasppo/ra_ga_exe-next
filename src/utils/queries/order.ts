@@ -13,7 +13,6 @@ export const fetchOrderFromEmail = (emailToFetchOrders): Promise<ExtendedOrdenDa
     })
         .then((res) => (res.ok ? res.json() : errorHandle(res)))
         .catch((error) => {
-            console.log("Broke here");
             throw error;
         });
 
@@ -25,6 +24,5 @@ export const fetchAllOrders = (): Promise<ExtendedOrdenData[]> =>
     })
         .then((res) => (res.ok ? res.json() : errorHandle(res)))
         .catch((error) => {
-            console.log("Broke bringing orders");
             throw error;
         });

@@ -109,7 +109,6 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
 
         const preciosIndividuales = []
         const prendaPrecio = await findPrendaPrecioByTypeAndComplexity(orderData.tipoPrenda.id, complexityId);
-        console.log('prendaPrecio', prendaPrecio)
 
         const services = await prisma.servicio.findMany({})
 
@@ -123,7 +122,6 @@ export const calculateOrderTotal = async (orderData: ValidatedOrderSchema, compl
                 if (orderData[key]?.selected) {
                     prev.factorMultiplicador += servicesPrices[key].factorMultiplicador
                     prev.precioFijo += servicesPrices[key].precioFijo
-                    console.log(`${key} - Adding ${servicesPrices[key].factorMultiplicador} to factorMultiplicador and ${servicesPrices[key].precioFijo} to precioFijo`)
                     prev.servicios[key] = { precioFijo: servicesPrices[key].precioFijo, factorMultiplicador: servicesPrices[key].factorMultiplicador }
                     preciosIndividuales.push({
                         servicio: key,

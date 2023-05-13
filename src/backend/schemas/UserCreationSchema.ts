@@ -6,6 +6,7 @@ export const UserCreationSchema = z.object({
     email: z.string().email({ message: emailErrorMessage() }),
     password: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
     confirmPassword: z.string().min(8, { message: minCharErrorMessage(8) }).max(50, { message: maxCharErrorMessage(50) }),
+    isServiceProvider: z.boolean()
 }).refine(data => data.password === data.confirmPassword, "Las contraseñas deben ser iguales");
 
 export type UserCreationSchemaType = z.infer<typeof UserCreationSchema>;

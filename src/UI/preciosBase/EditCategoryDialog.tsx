@@ -64,7 +64,6 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
     const { data: clothingAndPriceData, isFetching: isFetchingClothingAndPriceData } = useQuery<TipoPrendaExtended, ErrorMessage>(
         ['clothingAndPriceData', props.idToShow], () => getClothingAndPrices(props.idToShow), {
         refetchOnWindowFocus: false,
-        onSuccess: () => { console.log('se mando impresionante: ', clothingAndPriceData) },
         onError: (error: any) => addError(error),
         placeholderData: placeHolderData
     });
@@ -80,7 +79,6 @@ export default function EditCategoryDialog(props: ConfirmDialogProps) {
     })
 
     const handleNewClothingSubmit = async (data: TipoPrendaExtended) => {
-        console.log(data)
         await mutateAsync(data)
         props.onClose()
     }

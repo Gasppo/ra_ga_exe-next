@@ -12,9 +12,9 @@ export const updateFileURL = (data: FichaTecnicaUploadFormData, file: FileUpload
 
 export const uploadFile = (data: FileUploadData): Promise<DriveUploadResponse> => fetch(`/api/drive/uploadToFicha?client=${data.clientName}&order=${data.orderID}&fichaType=${data.fichaType}`, { method: 'POST', body: data.formData })
     .then(res => res.ok ? res.json() : errorHandle(res))
-    .catch((error) => { console.log('Broke here'); throw error });
+    .catch((error) => { throw error });
 
 
 export const updateFichaFiles = ({ data, fichaID }: { data: ValidatedFichaTecnicaFileUploadSchema, fichaID: string }): Promise<FichaTecnica> => fetch(`/api/order/update-ficha-files?fichaID=${fichaID}`, { method: 'POST', headers: { "Content-Type": "application/json", accept: "application/json" }, body: JSON.stringify(data) })
     .then(res => res.ok ? res.json() : errorHandle(res))
-    .catch((error) => { console.log('Broke here'); throw error });
+    .catch((error) => { throw error });

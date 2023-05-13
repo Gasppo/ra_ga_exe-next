@@ -25,7 +25,7 @@ const ClothingImage = ({ clothesData, currStep }: ClothingImageProps) => {
         <>
             <div className="hidden md:flex flex-col w-2/12 items-center justify-center">
                 <div className='p-4'>
-                    {image && <Image src={image} height='200px' width={'200px'} alt="Seleccione prenda.." />}
+                    {image && <Image src={image} height={200} width={200} alt="Seleccione prenda.." />}
                 </div>
                 {currStep === 4 && <div className='flex flex-col space-y-2'>
                     <div className="flex flex-col list-disc" >

@@ -6,7 +6,6 @@ const getMessages = async (req: NextApiRequest, res: NextApiResponse) => {
         const orderID = req.query.orderID as string;
         if (!orderID) { throw new Error("No orderID provided"); }
 
-        console.log(orderID)
         const messages = await prisma.mensaje.findMany({
             where: { idOrden: orderID },
             include: { user: true }

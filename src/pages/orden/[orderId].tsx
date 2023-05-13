@@ -35,7 +35,6 @@ const Home: NextPage<{ session: Session, role: string }> = ({ role }) => {
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
-                console.log("Broke bringing order");
                 throw error;
             });
 
@@ -104,7 +103,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
     const correctOrder = await verifyUserOrder(context.query.orderId, session.user.email)
     const { role } = await obtainRole(session?.user?.email || '');
-    console.log(role)
+
     if (!correctOrder) {
         return {
             redirect: {

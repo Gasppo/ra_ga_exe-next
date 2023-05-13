@@ -37,7 +37,9 @@ const HeaderBar = () => {
     return (
         <div className='flex justify-center md:justify-between items-center w-full h-14 transition-all duration-200 bg-zinc-800 text-white px-2 md:px-10 py-4' >
             <div className='hidden md:flex md:flex-row'>
-                <div className='text-xl font-sans'>HS - Soluciones Textiles</div>
+                <Link href={'/'}>
+                    <div className='text-xl font-sans'>HS - Soluciones Textiles</div>
+                </Link>
             </div>
             <div className='md:hidden' />
             <div>
@@ -58,7 +60,7 @@ const HeaderBar = () => {
                 {status === 'authenticated' && (
                     <div className='flex flex-row items-center text-xs md:text-base'>
                         {data.user?.image && <div className="flex" >
-                            <Image src={data.user?.image || ''} width="32" height="32" className='rounded-full' alt=""></Image>
+                            <Image src={data.user?.image || ''} width={32} height={32} className='rounded-full' alt=""></Image>
                         </div>}
                         <div className='ml-2 mr-5'>
                             <div className='font-bold'>

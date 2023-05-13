@@ -67,8 +67,29 @@ model User {
     Mensaje            Mensaje[]
     serviciosAsignados ProcesoDesarrolloOrden[]
     available          Boolean?                 @default(true)
+    userPersonalDataId String?                  @unique
+    userPersonalData   UserPersonalData?        @relation(fields: [userPersonalDataId], references: [id], onDelete: Cascade)
 
     @@index([roleId])
+}
+
+model UserPersonalData {
+    id                   String   @id @default(cuid())
+    userId               String   @unique
+    user                 User?
+    createdAt            DateTime @default(now())
+    updatedAt            DateTime @default(now())
+    telefono             Int
+    whatsapp             Int
+    marca                String
+    direccionFacturacion String
+    direccionEnvio       String
+    ciudad               String
+    cuitORazonSocial     String
+    mediosDePago         String
+    datosBancarios       String
+
+    @@index([userId])
 }
 
 model VerificationToken {
@@ -204,6 +225,7 @@ model ProcesoDesarrolloOrden {
     FichaTecnica      FichaTecnica?           @relation()
     idFichaTecnica    String?
     usuarioDeServicio User[]
+    lastUpdated       DateTime                @default(now())
 
     @@index([idOrden])
     @@index([idProceso])

@@ -23,7 +23,7 @@ function Input<Model>(props: InputProps<Model>) {
             field: { onChange, value, name, ref },
             fieldState: { error }
         }) => {
-            const val = layout?.options?.numeric ? parseInt(value) : value
+            const val = layout?.options?.numeric ? parseFloat(value) : value
             return (
                 <>
                     <TextField
@@ -47,7 +47,7 @@ function Input<Model>(props: InputProps<Model>) {
                         onChange={(e) => {
                             let parsedValue: string | number = e.target.value
                             if (layout?.options?.numeric) {
-                                parsedValue = parseInt(parsedValue, 10)
+                                parsedValue = parseFloat(parsedValue)
                                 if (isNaN(parsedValue as number)) {
                                     parsedValue = ''
                                 }

@@ -2,6 +2,7 @@ import { prisma } from "../../server/db/client";
 import sha256 from "crypto-js/sha256";
 import { User } from "@prisma/client";
 import { randomUUID } from "crypto";
+import { adminRole, ayudanteRole } from "@utils/roles/SiteRoles";
 
 
 
@@ -97,13 +98,14 @@ export const createResetToken = async (userId: string) => {
 }
 
 
-export const createNewUser = async (data: { name: string, email: string, password: string }) => {
+export const createNewUser = async (data: { name: string, email: string, password: string , isServiceProvider:boolean }) => {
     const password = hashPassword(data.password);
     return await prisma.user.create({
         data: {
             email: data.email,
             name: data.name,
             password: password,
+            roleId: data.isServiceProvider ? 4 : 1
         }
     });
 }
@@ -114,4 +116,26 @@ export const obtainRole = async (email: string) => {
         where: { email: email },
         select: { role: true }
     })
+}
+
+export const verifyUserProfile = async (userId: string | string[], userEmail: string) => {
+
+    const id = Array.isArray(userId) ? userId[0] : userId;
+    const user = await prisma.user.findFirst({
+        where: { id: id }
+    })
+
+
+    //TODO: Check if user is admin
+    if (user?.email === userEmail) return true
+
+    const role = await prisma.user.findUnique({
+        where: { email: userEmail },
+        select: { role: true }
+    })
+
+    if (role?.role.name === adminRole || role?.role.name === ayudanteRole) return true
+
+    return false
+
 }

@@ -27,7 +27,8 @@ describe('Orders Testing', () => {
             name: 'Test',
             email: 'gasppogb@gmail.com',
             password: '123456asd',
-            confirmPassword: '123456asd'
+            confirmPassword: '123456asd',
+            isServiceProvider: false
         }
 
         const { res, json } = generateMockRes()

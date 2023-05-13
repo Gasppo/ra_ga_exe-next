@@ -33,5 +33,10 @@ export const signupLayout: LayoutElement<UserCreationSchemaType> = {
             options: { textType: 'password', size: 'small' },
             width: 12,
         },
+        {
+            type:'Switch',
+            label:'Es Proveedor de Servicio?',
+            scope:'isServiceProvider',
+        },
     ]
 }

@@ -47,7 +47,7 @@ export default function DotsMobileStepper(props: DotsMobileStepperProps) {
             activeStep={currStep}
             sx={{ maxWidth: 400, flexGrow: 1 }}
             nextButton={
-                currStep !== (numberSteps - 1) ? (<Button size="small" onClick={() => { console.log('click'); onForward() }} disabled={continueDisabled} >
+                currStep !== (numberSteps - 1) ? (<Button size="small" onClick={() => { onForward() }} disabled={continueDisabled} >
                     Next
                     {theme.direction === 'rtl' ? (
                         <KeyboardArrowLeft />

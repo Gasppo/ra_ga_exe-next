@@ -1,4 +1,7 @@
+import { ReducedUserInfoSchemaType } from "@backend/schemas/ReducedUserInfoSchema"
 import { UserCreationSchemaType } from "@backend/schemas/UserCreationSchema"
+import { UserInfoSchemaType } from "@backend/schemas/UserInfoSchema"
+import { UserInfoUpdateSchemaType } from "@backend/schemas/UserInfoUpdateSchema"
 import { Role } from "@prisma/client"
 
 export type ErrorMessage = { error: string }
@@ -77,3 +80,28 @@ export const updateUserAvailability = (id: string, available: boolean) => fetch(
 })
     .then(res => res.ok ? res.json() : errorHandle(res))
     .catch(err => console.log(err))
+
+export const getReducedUser = (email): Promise<ReducedUserInfoSchemaType> => fetch(`/api/user/obtainReduced`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(email)
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch(err => console.log(err))
+
+export const getUserInfo = (id: string): Promise<UserInfoSchemaType> => fetch(`/api/user/obtainUserInfo`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: id })
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch(err => console.log(err))
+
+export const updateUser = (data: UserInfoUpdateSchemaType) => fetch(`/api/user/updateInfo`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+})
+    .then(res => res.ok ? res.json() : errorHandle(res))
+    .catch(err => console.log(err))
+

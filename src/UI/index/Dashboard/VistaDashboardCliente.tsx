@@ -51,7 +51,7 @@ const VistaDashboardCliente = (props: props) => {
     }
 
     const handleFormSubmit = function () {
-        console.log(":(")
+        console.log("Submit")
     }
 
     return (

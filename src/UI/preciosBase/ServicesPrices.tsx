@@ -24,7 +24,6 @@ const ServicesPricesTab = () => {
         refetchOnWindowFocus: false,
         initialData: [],
         onError: (error) => addError(error.error),
-        onSuccess: () => { console.log('se trajo de bd servicios: ', servicesData) }
     });
 
     const EditButton = (id: string) => (

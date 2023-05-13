@@ -59,9 +59,6 @@ export default function EditServicePriceDialog(props: ConfirmDialogProps) {
     const { data: servicePriceData, isFetching: isFetchingServicePriceData } = useQuery<PrecioServicioExtended, ErrorMessage>(
         ['servicePriceData', props.idToShow], () => props.idToShow ? getServicePrice(props.idToShow) : placeHolderData, {
         refetchOnWindowFocus: false,
-        onSuccess: () => {
-            console.log('se trajo de bd: ', servicePriceData)
-        },
         onError: (error: any) => addError(error),
         initialData: placeHolderData
     });
@@ -72,7 +69,6 @@ export default function EditServicePriceDialog(props: ConfirmDialogProps) {
             addError('Precio modificado exitosamente', 'success')
             queryClient.invalidateQueries('servicePriceData')
             queryClient.invalidateQueries('services')
-            console.log('se mando anashe: ', servicePriceData)
         }
     })
 

@@ -29,7 +29,6 @@ const OrderStateTab = (props: Props) => {
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
-                console.log("Broke trying to update order");
                 throw error;
             });
     };

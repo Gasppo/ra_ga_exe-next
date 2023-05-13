@@ -20,7 +20,6 @@ const OrderStateChange = ({ order }: OrderStateChangeProps) => {
         fetch(`/api/orders/states`, {})
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
-                console.log("Broke bringing order states");
                 throw error;
             });
 

@@ -111,7 +111,7 @@ export const getServices = (): Promise<Servicio[]> => fetch('/api/services/obtai
 // Cargar archivos a Google Drive
 export const uploadFile = (data: FileUploadData): Promise<DriveUploadResponse> => fetch(`/api/drive/upload?client=${data.clientName}&order=${data.orderID}`, { method: 'POST', body: data.formData })
     .then(res => res.ok ? res.json() : errorHandle(res))
-    .catch((error) => { console.log('Broke here'); throw error });
+    .catch((error) => { throw error });
 
 
 // Crear orden

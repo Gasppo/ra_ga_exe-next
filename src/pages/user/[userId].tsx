@@ -33,7 +33,6 @@ const Home: NextPage = () => {
 
     const { data: userInfo, isLoading: isFetchingUserInfo } = useQuery<UserInfoSchemaType, ErrorMessage>(['userInfo', userId], () => getUserInfo(userId), {
         onError: () => addError('Error al traer información del usuario'),
-        onSuccess: () => console.log('Se trajo la info del usuario', userInfo),
         refetchOnWindowFocus: false,
     })
 
@@ -112,7 +111,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const getUserRole = await obtainRole(session?.user?.email || '');
 
-    console.log('ROLE IS: ', getUserRole)
     if (!correctUser) {
         if (getUserRole?.role?.name !== adminRole) {
             return {

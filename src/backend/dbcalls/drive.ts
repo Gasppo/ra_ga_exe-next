@@ -153,7 +153,6 @@ export async function getFile(service: drive_v3.Drive, fileId: string) {
 export async function getFileDownloadLink(service: drive_v3.Drive, fileId: string) {
     try {
         const file = await service.files.get({ fileId, fields: 'webContentLink' });
-        console.log(file.data.webContentLink);
         return file.data.webContentLink;
     }
     catch (error) {

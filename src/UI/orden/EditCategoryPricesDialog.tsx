@@ -57,7 +57,6 @@ export default function EditCategoryPricesDialog(props: ConfirmDialogProps) {
     const { data: singleClothingPriceData, isFetching: isFetchingSingleClothingPriceData } = useQuery<PrecioPrendaExtended, ErrorMessage>(
         ['singlePriceData', props.idToShow], () => props.idToShow ? getSinglePrice(props.idToShow) : placeHolderData, {
         refetchOnWindowFocus: false,
-        onSuccess: () => { console.log('se mando impresionanteee: ', singleClothingPriceData) },
         onError: (error: any) => addError(error),
         initialData: placeHolderData
     });

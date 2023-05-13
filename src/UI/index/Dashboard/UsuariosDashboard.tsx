@@ -91,7 +91,6 @@ const UsuariosDashboard = () => {
         })
             .then((res) => (res.ok ? res.json() : errorHandle(res)))
             .catch((error) => {
-                console.log("Broke here");
                 throw error;
             });
 

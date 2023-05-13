@@ -29,18 +29,7 @@ const VistaDashboardPrestadorDeServicios = (props: props) => {
     const { data: reducedUserInfo, isLoading: isFetchingReducedUserInfo } = useQuery<ReducedUserInfoSchemaType>(
         ['reducedUserInfo', props?.emailToFetchOrders], () => getReducedUser(props?.emailToFetchOrders), {
         onError: () => addError('Error al traer información del usuario'),
-        onSuccess: () => {
-            console.log('reducedUserInfo vale: ', JSON.stringify(reducedUserInfo))
-        }
     })
-
-    React.useEffect(() => {
-        console.log('Data user vale:', JSON.stringify(data?.user))
-    }, [data.user])
-
-    React.useEffect(() => {
-        console.log('Props vale: ', JSON.stringify(props))
-    }, [props])
 
     const serviceColumns = useMemo(() => ([
         { field: 'idOrden', headerName: 'Cód. Orden', minWidth: 100, flex: 1 },

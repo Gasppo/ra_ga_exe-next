@@ -10,7 +10,6 @@ const post = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
         const service = getDriveService();
         const file = await getFileDownloadLink(service, fileId);
-        console.log(file)
         res.status(200).json({ file: file })
     }
     catch (error) {
